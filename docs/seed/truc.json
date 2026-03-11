@@ -1,0 +1,14 @@
+[
+  { "index": 0,  "name": "Kiến", "score_base": 1,  "auspicious_for": ["KHAI_TRUONG","DONG_THO","XUAT_HANH"], "inauspicious_for": [] },
+  { "index": 1,  "name": "Trừ",  "score_base": 1,  "auspicious_for": ["MAC_DINH"], "inauspicious_for": [] },
+  { "index": 2,  "name": "Mãn",  "score_base": 2,  "auspicious_for": ["KHAI_TRUONG","CUOI_HOI","KY_HOP_DONG","MAC_DINH"], "inauspicious_for": [] },
+  { "index": 3,  "name": "Bình", "score_base": 1,  "auspicious_for": ["XUAT_HANH","KY_HOP_DONG","MAC_DINH"], "inauspicious_for": [] },
+  { "index": 4,  "name": "Định", "score_base": 2,  "auspicious_for": ["CUOI_HOI","KY_HOP_DONG","KHAI_TRUONG"], "inauspicious_for": [] },
+  { "index": 5,  "name": "Chấp", "score_base": 0,  "auspicious_for": [], "inauspicious_for": ["DONG_THO"] },
+  { "index": 6,  "name": "Phá",  "score_base": -2, "auspicious_for": [], "inauspicious_for": ["KHAI_TRUONG","CUOI_HOI","DONG_THO","XUAT_HANH","KY_HOP_DONG","MAC_DINH"], "layer1_discard": true },
+  { "index": 7,  "name": "Nguy", "score_base": -2, "auspicious_for": [], "inauspicious_for": ["KHAI_TRUONG","CUOI_HOI","DONG_THO","XUAT_HANH","KY_HOP_DONG","MAC_DINH"], "layer1_discard": true },
+  { "index": 8,  "name": "Thành","score_base": 2,  "auspicious_for": ["KHAI_TRUONG","CUOI_HOI","DONG_THO","KY_HOP_DONG","MAC_DINH"], "inauspicious_for": [] },
+  { "index": 9,  "name": "Thu",  "score_base": 0,  "auspicious_for": [], "inauspicious_for": [] },
+  { "index": 10, "name": "Khai", "score_base": 2,  "auspicious_for": ["KHAI_TRUONG","XUAT_HANH","CUOI_HOI","MAC_DINH"], "inauspicious_for": [] },
+  { "index": 11, "name": "Bế",   "score_base": -1, "auspicious_for": [], "inauspicious_for": ["KHAI_TRUONG","CUOI_HOI","DONG_THO"] }
+]

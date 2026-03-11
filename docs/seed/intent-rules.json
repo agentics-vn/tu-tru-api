@@ -1,0 +1,374 @@
+{
+  "_meta": {
+    "version": "2.0",
+    "total_intents": 25,
+    "source_primary": "Ngọc Hạp Thông Thư (Hứa Chân Quân, bản Triều Nguyễn 1926)",
+    "source_secondary": "xemvm.com, tuvikhoahoc.vn, lich365.net",
+    "truc_index_map": {
+      "0": "Kiến", "1": "Trừ", "2": "Mãn", "3": "Bình",
+      "4": "Định", "5": "Chấp", "6": "Phá", "7": "Nguy",
+      "8": "Thành", "9": "Thu", "10": "Khai", "11": "Bế"
+    },
+    "scoring_note": "preferred_truc +10, forbidden_truc -20 (override), bonus_sao +8, forbidden_sao -15",
+    "_sme_verified": false,
+    "last_updated": "2026-03-11"
+  },
+
+  "KHAI_TRUONG": {
+    "_label_vi": "Khai trương cửa hàng / công ty",
+    "_description": "Khai trương, ra mắt sản phẩm, khánh thành, lễ khai quang",
+    "preferred_truc": [2, 3, 8, 10],
+    "_preferred_truc_names": ["Mãn", "Bình", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienDucHop", "nguyetDucHop", "thienPhu", "thienTai", "diaTai", "nguyetTai", "locKho", "thienQuy", "catKhanh"],
+    "forbidden_sao": ["thienTac", "tieuHao", "thienCuong", "daiHao", "nguyetKy", "duongCongKy", "nguyetSat", "nguyetHoa", "vatVong"],
+    "_notes_vi": "Ưu tiên ngày có Thiên Tài, Lộc Khố, Nguyệt Tài — đây là ba sao 'cầu tài' mạnh nhất. Tránh tuyệt đối ngày Nguyệt Kỵ và Thiên Tặc.",
+    "_sme_verified": false
+  },
+
+  "KY_HOP_DONG": {
+    "_label_vi": "Ký kết hợp đồng / giao dịch kinh doanh",
+    "_description": "Ký hợp đồng, thỏa thuận, đàm phán thương mại, mua bán có giấy tờ",
+    "preferred_truc": [2, 4, 8, 10],
+    "_preferred_truc_names": ["Mãn", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 11],
+    "_forbidden_truc_names": ["Phá", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "nguyetTai", "locKho", "thienQuy", "giaiThan", "thienPhuc", "tamHop", "lucHop"],
+    "forbidden_sao": ["thienTac", "diaTac", "vatVong", "cuuKhong", "nguyetKy", "duongCongKy", "lucBatThanh"],
+    "_notes_vi": "Nguyệt Đức tốt cho mọi giao dịch TRỪ kiện tụng. Tránh Lục Bất Thành vì ký xong dễ bị hủy/thất bại.",
+    "_sme_verified": false
+  },
+
+  "AN_HOI": {
+    "_label_vi": "Lễ ăn hỏi / đính hôn / dạm ngõ",
+    "_description": "Dạm ngõ, ăn hỏi, lễ đính hôn, lại mặt",
+    "preferred_truc": [4, 8, 10],
+    "_preferred_truc_names": ["Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienHy", "thienDuc", "nguyetDuc", "ichHau", "tucThe", "yeuYen", "phoHo", "thienPhuc", "catKhanh"],
+    "forbidden_sao": ["tamNuong", "nguyetKy", "duongCongKy", "nguyetSat", "nguyetHoa", "nhanCach", "phiMaSat", "vatVong"],
+    "_notes_vi": "Thiên Hỷ là sao QUAN TRỌNG NHẤT cho hôn nhân. Tam Nương severity=3 (tuyệt đối tránh). Nguyệt Sát (Nguyệt Hư) đại kỵ hôn nhân theo Thông Thư Vạn Sự.",
+    "_sme_verified": false
+  },
+
+  "DAM_CUOI": {
+    "_label_vi": "Đám cưới / Lễ thành hôn",
+    "_description": "Tổ chức lễ cưới, rước dâu, tiệc cưới",
+    "preferred_truc": [4, 8, 10],
+    "_preferred_truc_names": ["Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 9, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Thu", "Bế"],
+    "bonus_sao": ["thienHy", "thienDuc", "nguyetDuc", "thienDucHop", "nguyetDucHop", "ichHau", "tucThe", "yeuYen", "phoHo", "lucHop", "tamHop"],
+    "forbidden_sao": ["tamNuong", "nguyetKy", "duongCongKy", "nguyetSat", "nguyetHoa", "nhanCach", "phiMaSat", "vatVong", "nguyetYemDaiHoa", "thoTu"],
+    "_notes_vi": "Nghiêm ngặt hơn Ăn Hỏi. Tránh thêm Trực Thu (thu là 'thu lại', điềm xấu cho hôn nhân), Nguyệt Yếm Đại Họa. Cô Hồn tháng 7 âm lịch cần tránh tuyệt đối.",
+    "_special_rules": {
+      "avoid_lunar_month_7": true,
+      "reason": "Tháng Cô Hồn — không tổ chức hôn lễ"
+    },
+    "_sme_verified": false
+  },
+
+  "DONG_THO": {
+    "_label_vi": "Động thổ / Khởi công xây dựng",
+    "_description": "Động thổ, đổ móng, khởi công nhà mới, công trình",
+    "preferred_truc": [1, 4, 5, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Định", "Chấp", "Thành", "Khai"],
+    "forbidden_truc": [0, 3, 6, 7, 9],
+    "_forbidden_truc_names": ["Kiến", "Bình", "Phá", "Nguy", "Thu"],
+    "bonus_sao": ["sinhKhi", "thienDuc", "nguyetDuc", "thienDucHop", "nguyetDucHop", "nguyetKhong", "thienAn"],
+    "forbidden_sao": ["thoOn", "thoPhU", "thoCam", "cuuThoQuy", "thienTac", "nguyetKienChuyenSat", "thienDiaChuyenSat", "nguyetKy", "duongCongKy", "thienXa", "haKhoiCauGiao", "diaTac"],
+    "_notes_vi": "Thiên Xá là sao tốt cho mọi việc NHƯNG KỴ ĐỘNG THỔ — đây là ngoại lệ quan trọng. Thổ Ôn/Thổ Phủ/Thổ Cấm là 3 sao đất xấu nhất cần tránh tuyệt đối.",
+    "_special_rules": {
+      "avoid_lunar_month_7": true,
+      "reason": "Tháng Cô Hồn — không khởi công"
+    },
+    "_sme_verified": false
+  },
+
+  "NHAP_TRACH": {
+    "_label_vi": "Nhập trạch / Chuyển nhà mới / Dọn vào nhà",
+    "_description": "Vào nhà mới, nhập trạch, dọn đồ chuyển nhà",
+    "preferred_truc": [2, 8, 10],
+    "_preferred_truc_names": ["Mãn", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["sinhKhi", "thienDuc", "nguyetDuc", "thienPhuc", "nguyetKhong", "thienPhu", "thienQuan"],
+    "forbidden_sao": ["thienTac", "thienXa", "nguyetKy", "duongCongKy", "phiMaSat", "cuuKhong", "thoOn", "nguyetSat"],
+    "_notes_vi": "Thiên Xá KỴ nhập trạch. Nguyệt Không tốt cho làm nhà, làm giường. Giờ Không Vong là giờ đặc biệt xấu khi nhập trạch.",
+    "_special_rules": {
+      "avoid_lunar_month_7": true,
+      "reason": "Tháng Cô Hồn — không nhập trạch",
+      "avoid_gio_khong_vong": true
+    },
+    "_sme_verified": false
+  },
+
+  "LAM_NHA": {
+    "_label_vi": "Làm nhà / Sửa nhà / Xây dựng",
+    "_description": "Khởi tạo, sửa chữa nhà cửa, lợp mái, xây bếp, đóng cột",
+    "preferred_truc": [1, 3, 4, 5, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Bình", "Định", "Chấp", "Thành", "Khai"],
+    "forbidden_truc": [0, 6, 7, 11],
+    "_forbidden_truc_names": ["Kiến", "Phá", "Nguy", "Bế"],
+    "bonus_sao": ["sinhKhi", "thienDuc", "nguyetDuc", "nguyetKhong", "thienPhu", "thienPhuc", "thienAn"],
+    "forbidden_sao": ["thoOn", "thoPhU", "thoCam", "cuuThoQuy", "nguyetKienChuyenSat", "thienDiaChuyenSat", "thienTac", "diaTac", "nguyetKy", "duongCongKy", "thienNgucThienHoa", "hoaTai", "lucBatThanh", "loiCong", "diaPha", "haKhoiCauGiao"],
+    "_notes_vi": "Nhóm sao Thổ (Thổ Ôn, Thổ Phủ, Thổ Cấm, Cửu Thổ Quỷ) xấu đặc biệt cho xây dựng. Thiên Ngục Thiên Hỏa đặc biệt xấu khi lợp mái.",
+    "_sme_verified": false
+  },
+
+  "AN_TANG": {
+    "_label_vi": "An táng / Chôn cất / Lễ tang",
+    "_description": "Khâm liệm, đưa tang, mai táng, hạ huyệt",
+    "preferred_truc": [1, 10, 11],
+    "_preferred_truc_names": ["Trừ", "Khai", "Bế"],
+    "forbidden_truc": [2, 6, 9],
+    "_forbidden_truc_names": ["Mãn", "Phá", "Thu"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienDucHop", "nguyetDucHop", "thienPhu", "kinhTam", "thienXa", "thienAn"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "tamNuong", "trungTang", "diaTac", "quyCoc", "nguyetSat"],
+    "_notes_vi": "Trực Bế không xấu cho an táng (ngược với hầu hết việc khác). Kính Tâm là sao tốt ĐẶC BIỆT cho tang lễ. Trùng Tang phải kiêng kỵ nghiêm ngặt. Trực Mãn rất xấu cho an táng.",
+    "_sme_verified": false
+  },
+
+  "CAI_TANG": {
+    "_label_vi": "Cải táng / Bốc mộ / Sửa mộ",
+    "_description": "Cải táng, bốc hài cốt, xây mộ mới, sửa sang phần mộ",
+    "preferred_truc": [1, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Thành", "Khai"],
+    "forbidden_truc": [2, 6, 7, 9, 11],
+    "_forbidden_truc_names": ["Mãn", "Phá", "Nguy", "Thu", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienDucHop", "nguyetDucHop", "kinhTam", "thienPhu", "thienAn", "thienXa"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "tamNuong", "trungTang", "thoOn", "thoPhU", "nguyetSat", "satChu", "quyCoc"],
+    "_notes_vi": "Nghiêm ngặt hơn An Táng, cộng thêm các sao đất xấu vì phải đào xới đất. Trùng Tang đặc biệt nguy hiểm khi cải táng.",
+    "_sme_verified": false
+  },
+
+  "XUAT_HANH": {
+    "_label_vi": "Xuất hành / Đi xa / Du lịch",
+    "_description": "Khởi hành đi xa, xuất ngoại, du lịch, chuyến công tác dài ngày",
+    "preferred_truc": [3, 4, 8, 10],
+    "_preferred_truc_names": ["Bình", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienMa", "dichMa", "nguyetTai", "phoHo", "thienDuc", "nguyetDuc", "thienPhuc"],
+    "forbidden_sao": ["hoangSa", "diaTac", "vatVong", "cuuKhong", "nguNguyQuiet", "nguyetKy", "duongCongKy", "nguyetYemDaiHoa"],
+    "_notes_vi": "Thiên Mã và Dịch Mã là hai sao tốt đặc trưng cho xuất hành. Hoàng Sa xấu cho xuất hành. Ngũ Quỷ kỵ xuất hành.",
+    "_sme_verified": false
+  },
+
+  "CAU_TAI": {
+    "_label_vi": "Cầu tài lộc / Vay vốn / Huy động vốn",
+    "_description": "Vay tiền ngân hàng, huy động vốn, cầu tài, mở tài khoản kinh doanh",
+    "preferred_truc": [2, 4, 8, 10],
+    "_preferred_truc_names": ["Mãn", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienTai", "diaTai", "nguyetTai", "locKho", "thienMa", "mauThuong", "phucHau", "thienDuc", "nguyetDuc"],
+    "forbidden_sao": ["daiHao", "tieuHao", "vatVong", "cuuKhong", "nguyetKy", "duongCongKy", "nguyetSat"],
+    "_notes_vi": "Ba sao Thiên Tài, Địa Tài, Nguyệt Tài là tam tài — ngày có cả 3 là ngày cực tốt để cầu tài. Đại Hao và Tiểu Hao đặc biệt xấu cho tài chính.",
+    "_sme_verified": false
+  },
+
+  "TE_TU": {
+    "_label_vi": "Tế tự / Cúng bái / Lễ chùa",
+    "_description": "Cúng tổ tiên, cúng Thần Tài, cúng đình chùa, lễ giải hạn, dâng sớ",
+    "preferred_truc": [1, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Thành", "Khai"],
+    "forbidden_truc": [6],
+    "_forbidden_truc_names": ["Phá"],
+    "bonus_sao": ["thienXa", "thienDuc", "nguyetDuc", "thanhTam", "giaiThan", "thienPhuc", "thienAn", "minhTinh"],
+    "forbidden_sao": ["thanCach", "thoOn", "nguyetKy", "duongCongKy", "thienCuong"],
+    "_notes_vi": "Thiên Xá là sao tốt NHẤT cho tế tự và giải oan. Thần Cách kỵ tế tự. Thánh Tâm tốt đặc biệt cho cầu phúc.",
+    "_sme_verified": false
+  },
+
+  "KHAM_BENH": {
+    "_label_vi": "Khám bệnh / Uống thuốc / Điều trị",
+    "_description": "Khám chữa bệnh lần đầu, bắt đầu liệu trình điều trị, uống thuốc bắc",
+    "preferred_truc": [1, 3, 4, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Bình", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7],
+    "_forbidden_truc_names": ["Phá", "Nguy"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienXa", "giaiThan", "dichMa", "thienPhuc", "thienAn"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "thoTu", "thienTac", "nguyetSat"],
+    "_notes_vi": "Trực Trừ đặc biệt tốt cho chữa bệnh ('trừ' tà khí). Thọ Tử tuy xấu mọi việc nhưng ĐẶC BIỆT kỵ phẫu thuật. Dịch Mã tốt cho cầu y.",
+    "_sme_verified": false
+  },
+
+  "PHAU_THUAT": {
+    "_label_vi": "Phẫu thuật / Mổ xẻ / Thủ thuật y tế",
+    "_description": "Phẫu thuật có gây mê, thủ thuật y tế quan trọng, nhổ răng khó",
+    "preferred_truc": [1, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienXa", "giaiThan", "thienAn", "thienPhuc"],
+    "forbidden_sao": ["thoTu", "nguyetKy", "duongCongKy", "satChu", "thienCuong", "daiHao", "nguyetSat", "thienNgucThienHoa"],
+    "_notes_vi": "Thọ Tử KỴ TUYỆT ĐỐI phẫu thuật (không giống y học hiện đại — đây là quan niệm truyền thống). Nghiêm ngặt hơn Khám Bệnh nhiều. Sát Chủ cần kiêng trong phẫu thuật.",
+    "_special_rules": {
+      "note": "Phẫu thuật cấp cứu không áp dụng — đây chỉ cho phẫu thuật có kế hoạch trước"
+    },
+    "_sme_verified": false
+  },
+
+  "NHAP_HOC_THI_CU": {
+    "_label_vi": "Nhập học / Thi cử / Khai bút",
+    "_description": "Ngày nhập học, thi quan trọng, khai bút đầu năm, đăng ký học",
+    "preferred_truc": [2, 4, 8, 10],
+    "_preferred_truc_names": ["Mãn", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienQuy", "thienPhuc", "thienQuan", "minhTinh", "catKhanh", "thanhTam"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "nguNguyQuiet", "vatVong", "cuuKhong", "thienTac"],
+    "_notes_vi": "Thiên Quý tốt cho học tập, thi cử. Minh Tinh (Minh Đường) tượng trưng sự sáng suốt. Trực Khai là trực tốt nhất để 'khai' trí tuệ.",
+    "_sme_verified": false
+  },
+
+  "NHAM_CHUC": {
+    "_label_vi": "Nhậm chức / Bổ nhiệm / Thăng chức",
+    "_description": "Nhậm chức vụ mới, ký quyết định bổ nhiệm, ra mắt vị trí lãnh đạo",
+    "preferred_truc": [2, 4, 8, 10],
+    "_preferred_truc_names": ["Mãn", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienQuan", "thienQuy", "thienPhuc", "locKho", "thienThanh", "catKhanh"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "thienTac", "nguNguyQuiet", "vatVong"],
+    "_notes_vi": "Thiên Quan là sao ĐẶC TRƯNG cho nhậm chức/quan lộc. Lộc Khố tượng trưng bổng lộc quan trường.",
+    "_sme_verified": false
+  },
+
+  "MUA_NHA_DAT": {
+    "_label_vi": "Mua nhà / đất / bất động sản",
+    "_description": "Ký hợp đồng mua bán bất động sản, đặt cọc mua nhà đất",
+    "preferred_truc": [2, 4, 8, 10],
+    "_preferred_truc_names": ["Mãn", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienPhu", "sinhKhi", "nguyetKhong", "thienPhuc", "thienTai", "locKho"],
+    "forbidden_sao": ["thienTac", "diaTac", "thoOn", "thoPhU", "nguyetKy", "duongCongKy", "vatVong", "lucBatThanh", "nguyetSat"],
+    "_notes_vi": "Thiên Phú đặc biệt tốt cho bất động sản. Sinh Khí tốt cho nhà đất, trồng cây. Nhóm sao Thổ (Thổ Ôn, Thổ Phủ) liên quan đến đất, cần tránh.",
+    "_sme_verified": false
+  },
+
+  "DAO_GIENG": {
+    "_label_vi": "Đào giếng / Đào ao / Đào hầm",
+    "_description": "Đào giếng nước, đào ao hồ, xây hồ bơi, đào hầm",
+    "preferred_truc": [3, 4, 5, 8, 10],
+    "_preferred_truc_names": ["Bình", "Định", "Chấp", "Thành", "Khai"],
+    "forbidden_truc": [0, 6, 7, 11],
+    "_forbidden_truc_names": ["Kiến", "Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "sinhKhi", "nguyetKhong"],
+    "forbidden_sao": ["thoOn", "thoPhU", "thoCam", "cuuThoQuy", "nguyetKienChuyenSat", "thienDiaChuyenSat", "nguyetKy", "duongCongKy", "thienTac"],
+    "_notes_vi": "Thổ Ôn đặc biệt kỵ đào giếng/ao — cùng nhóm sao đất với động thổ. Nguyệt Không tốt cho việc đào đất nước.",
+    "_sme_verified": false
+  },
+
+  "TRONG_CAY": {
+    "_label_vi": "Trồng cây / Làm vườn / Gieo hạt",
+    "_description": "Trồng cây ăn quả, cây cảnh, gieo hạt giống, làm vườn",
+    "preferred_truc": [1, 3, 4, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Bình", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["sinhKhi", "thienDuc", "nguyetDuc", "thienPhuc", "thienAn"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "thoOn", "thoCam"],
+    "_notes_vi": "Sinh Khí là sao tốt NHẤT cho trồng cây — đặc biệt phù hợp với tên 'sinh khí'. Thổ Ôn xấu cho mọi việc liên quan đến đất.",
+    "_sme_verified": false
+  },
+
+  "CAU_TU": {
+    "_label_vi": "Cầu tự / Cầu con / Xin duyên",
+    "_description": "Đến đền chùa cầu con, cầu duyên, xin thụ thai thuận lợi",
+    "preferred_truc": [4, 8, 10],
+    "_preferred_truc_names": ["Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 9, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Thu", "Bế"],
+    "bonus_sao": ["thienHy", "thienDuc", "nguyetDuc", "ichHau", "thanhTam", "thienXa", "phucSinh", "thienPhuc"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "nguyetSat", "nguyetHoa", "tamNuong", "vatVong"],
+    "_notes_vi": "Thiên Hỷ tốt nhất cho mọi việc liên quan hôn nhân và sinh sản. Phúc Sinh ('sinh ra phúc lộc') tốt đặc biệt cho cầu tự.",
+    "_sme_verified": false
+  },
+
+  "XAY_BEP": {
+    "_label_vi": "Xây bếp / Sửa bếp / Đặt bếp mới",
+    "_description": "Xây bếp mới, sửa chữa bếp, đặt bếp lần đầu",
+    "preferred_truc": [3, 4, 5, 8, 10],
+    "_preferred_truc_names": ["Bình", "Định", "Chấp", "Thành", "Khai"],
+    "forbidden_truc": [0, 6, 7, 11],
+    "_forbidden_truc_names": ["Kiến", "Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienPhuc", "sinhKhi"],
+    "forbidden_sao": ["nguyetHoaDockHoa", "thienNgucThienHoa", "hoaTai", "thoOn", "thoPhU", "thoCam", "nguyetKy", "duongCongKy"],
+    "_notes_vi": "Nguyệt Hỏa và Độc Hỏa đặc biệt xấu cho bếp (sao Hỏa xấu + bếp liên quan Hỏa). Thiên Ngục Thiên Hỏa cũng cần tránh.",
+    "_sme_verified": false
+  },
+
+  "LAM_GIUONG": {
+    "_label_vi": "Làm giường / Mua giường / Kê giường",
+    "_description": "Đóng giường mới, mua giường đặt vào phòng lần đầu, di chuyển giường",
+    "preferred_truc": [3, 4, 8, 10],
+    "_preferred_truc_names": ["Bình", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["nguyetKhong", "thienDuc", "nguyetDuc", "thienPhuc"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "thoOn", "nguyetSat", "tamNuong"],
+    "_notes_vi": "Nguyệt Không tốt đặc biệt cho làm giường theo Ngọc Hạp Thông Thư.",
+    "_sme_verified": false
+  },
+
+  "KIEN_TUNG": {
+    "_label_vi": "Kiện tụng / Nộp đơn khiếu nại / Tố cáo",
+    "_description": "Nộp đơn kiện, ra tòa, nộp khiếu nại hành chính, tố cáo",
+    "preferred_truc": [1, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["giaiThan", "thienXa", "thienDuc", "thienQuan"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "vatVong", "cuuKhong", "lucBatThanh"],
+    "_notes_vi": "NGOẠI LỆ: Nguyệt Đức tốt cho mọi việc TRỪ tố tụng/kiện tụng — không đưa vào bonus. Giải Thần tốt cho giải oan, tố tụng. Thiên Hình (hắc đạo) kỵ kiện tụng.",
+    "_special_rules": {
+      "exclude_nguyet_duc_bonus": true,
+      "reason": "Nguyệt Đức tốt mọi việc trừ kiện tụng — theo Ngọc Hạp Thông Thư"
+    },
+    "_sme_verified": false
+  },
+
+  "DI_CHUYEN_NGOAI": {
+    "_label_vi": "Xuất ngoại / Du học / Di cư",
+    "_description": "Đi nước ngoài lần đầu, xuất cảnh định cư, nhận học bổng đi học",
+    "preferred_truc": [3, 4, 8, 10],
+    "_preferred_truc_names": ["Bình", "Định", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["thienMa", "dichMa", "nguyetTai", "thienDuc", "nguyetDuc", "thienPhuc", "phoHo"],
+    "forbidden_sao": ["hoangSa", "diaTac", "nguNguyQuiet", "vatVong", "cuuKhong", "nguyetKy", "duongCongKy", "nguyetYemDaiHoa"],
+    "_notes_vi": "Giống Xuất Hành nhưng nghiêm ngặt hơn vì tính chất lâu dài. Thiên Mã, Dịch Mã là hai sao 'đi xa' quan trọng nhất.",
+    "_sme_verified": false
+  },
+
+  "GIAI_HAN": {
+    "_label_vi": "Giải hạn / Cúng sao / Hóa giải",
+    "_description": "Cúng giải hạn sao xấu, làm lễ hóa giải, cúng tam tai",
+    "preferred_truc": [1, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Thành", "Khai"],
+    "forbidden_truc": [6, 7],
+    "_forbidden_truc_names": ["Phá", "Nguy"],
+    "bonus_sao": ["thienXa", "giaiThan", "thienDuc", "nguyetDuc", "thienAn", "thanhTam", "nguyetAn"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "thanCach", "thoTu", "thienCuong"],
+    "_notes_vi": "Thiên Xá ('trời tha thứ') và Giải Thần ('thần giải hóa') là hai sao QUAN TRỌNG NHẤT cho lễ giải hạn. Nguyệt Ân tốt cho xá tội, hòa giải.",
+    "_sme_verified": false
+  },
+
+  "MAC_DINH": {
+    "_label_vi": "Mặc định / Sự kiện chung",
+    "_description": "Fallback cho các việc chưa phân loại — áp dụng nguyên tắc cơ bản nhất",
+    "preferred_truc": [4, 8, 10],
+    "_preferred_truc_names": ["Định", "Thành", "Khai"],
+    "forbidden_truc": [6],
+    "_forbidden_truc_names": ["Phá"],
+    "bonus_sao": ["thienDuc", "nguyetDuc", "thienDucHop", "nguyetDucHop", "thienPhuc"],
+    "forbidden_sao": ["nguyetKy", "duongCongKy", "thoTu", "thienCuong", "daiHao"],
+    "_notes_vi": "Nguyên tắc tối thiểu: Thiên Đức + Nguyệt Đức tốt cho mọi việc. Nguyệt Kỵ, Dương Công Kỵ là 2 nhóm ngày LUÔN xấu cho bất kỳ việc gì.",
+    "_sme_verified": false
+  }
+}

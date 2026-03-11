@@ -1,0 +1,26 @@
+[
+  { "type": "NGUYET_KY", "month": null, "day": 5,  "severity": 3, "reason_vi": "Nguyệt Kỵ — ngày xấu chung cả tháng" },
+  { "type": "NGUYET_KY", "month": null, "day": 14, "severity": 3, "reason_vi": "Nguyệt Kỵ — ngày xấu chung cả tháng" },
+  { "type": "NGUYET_KY", "month": null, "day": 23, "severity": 3, "reason_vi": "Nguyệt Kỵ — ngày xấu chung cả tháng" },
+
+  { "type": "TAM_NUONG", "month": null, "day": 3,  "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 7,  "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 13, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 18, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 22, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 27, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
+
+  { "type": "DUONG_CONG_KY", "month": 1,  "day": 13, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 1" },
+  { "type": "DUONG_CONG_KY", "month": 2,  "day": 11, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 2" },
+  { "type": "DUONG_CONG_KY", "month": 3,  "day": 9,  "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 3" },
+  { "type": "DUONG_CONG_KY", "month": 4,  "day": 7,  "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 4" },
+  { "type": "DUONG_CONG_KY", "month": 5,  "day": 5,  "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 5" },
+  { "type": "DUONG_CONG_KY", "month": 6,  "day": 3,  "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 6" },
+  { "type": "DUONG_CONG_KY", "month": 7,  "day": 1,  "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 7" },
+  { "type": "DUONG_CONG_KY", "month": 7,  "day": 29, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 7 (ngày 29)" },
+  { "type": "DUONG_CONG_KY", "month": 8,  "day": 27, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 8" },
+  { "type": "DUONG_CONG_KY", "month": 9,  "day": 25, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 9" },
+  { "type": "DUONG_CONG_KY", "month": 10, "day": 23, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 10" },
+  { "type": "DUONG_CONG_KY", "month": 11, "day": 21, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 11" },
+  { "type": "DUONG_CONG_KY", "month": 12, "day": 19, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 12" }
+]
