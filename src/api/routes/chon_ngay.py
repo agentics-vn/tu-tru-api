@@ -199,8 +199,10 @@ def _build_bat_tu_summary(user_chart: dict) -> dict:
 
     if user_chart.get("dung_than"):
         summary["dung_than"] = user_chart["dung_than"]
-        summary["hi_than"] = user_chart.get("hi_than")
-        summary["chart_strength"] = user_chart.get("chart_strength")
+        if user_chart.get("hi_than"):
+            summary["hi_than"] = user_chart["hi_than"]
+        if user_chart.get("chart_strength"):
+            summary["chart_strength"] = user_chart["chart_strength"]
 
     if user_chart.get("current_dai_van"):
         dv = user_chart["current_dai_van"]
@@ -340,6 +342,8 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
             },
         )
 
+    except HTTPException:
+        raise
     except Exception:
         logger.exception("Internal error in chon_ngay")
         return _error_response(
