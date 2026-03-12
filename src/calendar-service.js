@@ -13,7 +13,7 @@
  * Source of truth: docs/algorithm.md §2, §4, §12, §13, §14
  *
  * All results are plain JSON — no class instances, no side effects.
- * Safe to cache at Redis with key pattern "day:{YYYY-MM-DD}".
+ * Safe to serialize to JSON.
  */
 
 'use strict';
@@ -287,7 +287,7 @@ function isCohon(lunarMonth) {
  * getDayInfo — primary entry point.
  *
  * Returns all Layer-1 relevant data for a single solar date.
- * Output is a plain JSON object — safe to serialize to Redis.
+ * Output is a plain JSON object.
  *
  * @param {string} isoDate - 'YYYY-MM-DD'
  * @returns {DayInfo}
@@ -375,13 +375,12 @@ function getDayInfo(isoDate) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 7. MONTH INFO (for Redis cache warming)
+// 7. MONTH INFO
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * getMonthInfo — compute Layer 1 data for every day in a solar month.
  *
- * Cache key: "L1:{YYYY-MM}"  TTL: 30 days
  * Returns array of DayInfo objects, filtered to isLayer1Pass only if filterPassed=true.
  *
  * @param {number} year
