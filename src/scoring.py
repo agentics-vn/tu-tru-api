@@ -363,6 +363,12 @@ def compute_score(
                 f"Đại Vận {current_dv['display']} ({dv_hanh}) là Kỵ Thần "
                 f"({PENALTY['dai_van_unfavorable']})"
             )
+        elif dv_hanh == user_chart.get("cuu_than"):
+            score += PENALTY["dai_van_unfavorable"]
+            reasons.append(
+                f"Đại Vận {current_dv['display']} ({dv_hanh}) là Cừu Thần "
+                f"({PENALTY['dai_van_unfavorable']})"
+            )
 
     # 10. Grade
     if score >= GRADE_THRESHOLDS["A"]:
