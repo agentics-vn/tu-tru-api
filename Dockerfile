@@ -1,22 +1,30 @@
-# ── Stage 1: build dependencies ──────────────────────────────────────────────
+# ── Stage 1: install dependencies ────────────────────────────────────────────
 FROM python:3.11-slim AS builder
 
-WORKDIR /build
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+WORKDIR /app
 
-# ── Stage 2: runtime ────────────────────────────────────────────────────────
+# Install only dependencies (cached layer — re-runs only when lock changes)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project --no-dev
+
+# ── Stage 2: runtime (no uv) ────────────────────────────────────────────────
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy installed packages from builder
-COPY --from=builder /install /usr/local
+# Copy virtualenv from builder
+COPY --from=builder /app/.venv /app/.venv
 
 # Copy application code and static data
 COPY src/ ./src/
 COPY docs/seed/ ./docs/seed/
+
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH=/app/src
 
 EXPOSE 8000
 
