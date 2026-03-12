@@ -102,7 +102,7 @@ SAO_DETECTORS: dict[str, callable] = {
     "thienCuong": lambda d, u=None: check_thien_cuong(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
     "daiHao": lambda d, u=None: check_dai_hao(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
     "satChu": lambda d, u=None: check_sat_chu(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "thienTac": lambda d, u=None: check_thien_tac(d.get("lunar_month", 0), d.get("day_can_idx", -1)),
+    "thienTac": lambda d, u=None: check_thien_tac(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
     "thienNgucThienHoa": lambda d, u=None: check_thien_nguc_thien_hoa(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
 }
 

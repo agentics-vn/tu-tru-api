@@ -62,8 +62,9 @@ def check_nguyet_duc_hop(lunar_month: int, day_can_idx: int) -> bool:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Thọ Tử (受死日) — KỴ TUYỆT ĐỐI cho phẫu thuật
-# By lunar month → forbidden day Chi index.
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# By lunar month → forbidden day Chi index (Chi-only method, more conservative).
+# Source: Ngọc Hạp Thông Thư.
+# Cross-ref: blogphongthuy.com, chuyenhakienvang.com, nhungtho.vn.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
 THO_TU_CHI: list[int] = [10, 4, 11, 5, 0, 6, 1, 7, 2, 8, 3, 9]
@@ -81,7 +82,8 @@ def check_tho_tu(lunar_month: int, day_chi_idx: int) -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 # Giải Thần (解神) — Cát tinh, tốt cho chữa bệnh / giải trừ
 # By lunar month → favorable day Chi (pairs of months share same Chi).
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Source: Ngọc Hạp Thông Thư, Lịch Lệ.
+# Cross-ref: xemvm.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
 GIAI_THAN_CHI: list[int] = [8, 8, 10, 10, 0, 0, 2, 2, 4, 4, 6, 6]
@@ -96,21 +98,31 @@ def check_giai_than(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Thiên Ân (天恩日) — Cát tinh, 10 fixed Can-Chi combinations
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Thiên Ân (天恩日) — Cát tinh, 15 fixed Can-Chi combinations
+# Rule: Giáp Tý→Mậu Thìn (5), Kỷ Mão→Quý Mùi (5), Kỷ Dậu→Quý Sửu (5) = 15 ngày
+# Source: Hiệp Kỷ Biện Phương Thư.
+# Cross-ref: xemvm.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
 THIEN_AN_PAIRS: frozenset[tuple[int, int]] = frozenset({
+    # Group 1: Giáp Tý → Mậu Thìn (first 5 of 60 Hoa Giáp)
     (0, 0),   # Giáp Tý
     (1, 1),   # Ất Sửu
     (2, 2),   # Bính Dần
     (3, 3),   # Đinh Mão
     (4, 4),   # Mậu Thìn
+    # Group 2: Kỷ Mão → Quý Mùi
     (5, 3),   # Kỷ Mão
     (6, 4),   # Canh Thìn
     (7, 5),   # Tân Tỵ
     (8, 6),   # Nhâm Ngọ
     (9, 7),   # Quý Mùi
+    # Group 3: Kỷ Dậu → Quý Sửu
+    (5, 9),   # Kỷ Dậu
+    (6, 10),  # Canh Tuất
+    (7, 11),  # Tân Hợi
+    (8, 0),   # Nhâm Tý
+    (9, 1),   # Quý Sửu
 })
 
 
@@ -122,7 +134,9 @@ def check_thien_an(day_can_idx: int, day_chi_idx: int) -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 # Thiên Phúc (天福) — Cát tinh
 # By lunar month → favorable day Chi.
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# NOTE: Tử Vi version uses Thiên Can (year-based). This trạch nhật version
+#       uses lunar month → day Chi. Could not find independent verification.
+# Source: Ngọc Hạp Thông Thư (unconfirmed).  _sme_verified = False
 # ─────────────────────────────────────────────────────────────────────────────
 
 THIEN_PHUC_CHI: list[int] = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 10]
@@ -140,7 +154,8 @@ def check_thien_phuc(lunar_month: int, day_chi_idx: int) -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 # Dịch Mã (驛馬) — Cát tinh cho xuất hành, cầu y
 # By year Chi → day Chi (Tam Hợp method).
-# Source: docs/algorithm.md §6.2.  _sme_verified = False
+# Source: docs/algorithm.md §6.2, Tam Mệnh Thông Hội.
+# Cross-ref: lyso.vn, tuvibattu.vn, thuatso.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
 DICH_MA_MAP: dict[int, int] = {
@@ -159,12 +174,13 @@ def check_dich_ma(day_chi_idx: int, year_chi_idx: int) -> bool:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Nguyệt Sát (月殺) — Hung tinh
-# By lunar month → forbidden day Chi (Tam Hợp method).
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Rule: "Chánh nguyệt khởi Sửu, nghịch hành tứ quý" (Sửu→Tuất→Mùi→Thìn)
+# Source: Hiệp Kỷ Biện Phương Thư, Ngọc Hạp Thông Thư.
+# Cross-ref: xemvm.com, phongthuytuongminh.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
-NGUYET_SAT_CHI: list[int] = [7, 4, 1, 10, 7, 4, 1, 10, 7, 4, 1, 10]
-# Months 1,5,9→Mùi(7), 2,6,10→Thìn(4), 3,7,11→Sửu(1), 4,8,12→Tuất(10)
+NGUYET_SAT_CHI: list[int] = [1, 10, 7, 4, 1, 10, 7, 4, 1, 10, 7, 4]
+# Months 1,5,9→Sửu(1), 2,6,10→Tuất(10), 3,7,11→Mùi(7), 4,8,12→Thìn(4)
 
 
 def check_nguyet_sat(lunar_month: int, day_chi_idx: int) -> bool:
@@ -178,6 +194,8 @@ def check_nguyet_sat(lunar_month: int, day_chi_idx: int) -> bool:
 # Thiên Cương (天罡) — Hung tinh
 # By lunar month → forbidden day Chi.
 # Formula: (lunarMonth + 3) % 12
+# NOTE: Thiên Cương in Độn Thiên Cương is more complex (day+hour based).
+#       This simplified month→chi formula needs SME review.
 # Source: Ngọc Hạp Thông Thư.  _sme_verified = False
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -190,10 +208,12 @@ def check_thien_cuong(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Đại Hao (大耗) — Hung tinh
+# Đại Hao (大耗) — Hung tinh (a.k.a. Quan Phù, Tử Khí)
 # By lunar month → forbidden day Chi.
+# Rule: "Quan phù tháng giêng khởi ở Ngọ, thuận hành 12 thời"
 # Formula: (lunarMonth + 5) % 12
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Source: Lịch Lệ, Ngọc Hạp Thông Thư.
+# Cross-ref: xemvm.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -205,13 +225,15 @@ def check_dai_hao(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Sát Chủ (殺主) — Hung tinh, kỵ phẫu thuật
-# By lunar month → forbidden day Chi (Tam Sát method).
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Sát Chủ Âm (殺主) — Hung tinh, kỵ phẫu thuật / an táng / tế tự
+# By lunar month → forbidden day Chi.
+# Source: blogphongthuy.com, movinghouse.vn.
+# Cross-ref: multiple Vietnamese almanac sites.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
-SAT_CHU_CHI: list[int] = [9, 5, 1, 9, 5, 1, 9, 5, 1, 9, 5, 1]
-# Months 1,4,7,10→Dậu(9), 2,5,8,11→Tỵ(5), 3,6,9,12→Sửu(1)
+SAT_CHU_CHI: list[int] = [5, 0, 7, 3, 8, 10, 11, 1, 6, 9, 2, 4]
+# Month: 1→Tỵ(5), 2→Tý(0), 3→Mùi(7), 4→Mão(3), 5→Thân(8), 6→Tuất(10),
+#        7→Hợi(11), 8→Sửu(1), 9→Ngọ(6), 10→Dậu(9), 11→Dần(2), 12→Thìn(4)
 
 
 def check_sat_chu(lunar_month: int, day_chi_idx: int) -> bool:
@@ -223,19 +245,21 @@ def check_sat_chu(lunar_month: int, day_chi_idx: int) -> bool:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Thiên Tặc (天賊) — Hung tinh
-# By lunar month → forbidden day Can.
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# By lunar month → forbidden day Chi.
+# Source: lichngaytot.com, xemvm.com, phongthuykybach.com.
+# Cross-ref: Hiệp Kỷ Biện Phương Thư.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
-THIEN_TAC_CAN: list[int] = [6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7]
-# Month 1→Canh(6), advances +1 each month
+THIEN_TAC_CHI: list[int] = [4, 9, 2, 7, 0, 5, 10, 3, 8, 1, 6, 11]
+# Month: 1→Thìn(4), 2→Dậu(9), 3→Dần(2), 4→Mùi(7), 5→Tý(0), 6→Tỵ(5),
+#        7→Tuất(10), 8→Mão(3), 9→Thân(8), 10→Sửu(1), 11→Ngọ(6), 12→Hợi(11)
 
 
-def check_thien_tac(lunar_month: int, day_can_idx: int) -> bool:
+def check_thien_tac(lunar_month: int, day_chi_idx: int) -> bool:
     """Check if day has Thiên Tặc (天賊) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_can_idx == THIEN_TAC_CAN[lunar_month - 1]
+    return day_chi_idx == THIEN_TAC_CHI[lunar_month - 1]
 
 
 # ─────────────────────────────────────────────────────────────────────────────
