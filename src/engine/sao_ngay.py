@@ -191,20 +191,25 @@ def check_nguyet_sat(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Thiên Cương (天罡) — Hung tinh
+# Thiên Cương (天罡) — Hung tinh, "diệt môn", bách sự hung
 # By lunar month → forbidden day Chi.
-# Formula: (lunarMonth + 3) % 12
-# NOTE: Thiên Cương in Độn Thiên Cương is more complex (day+hour based).
-#       This simplified month→chi formula needs SME review.
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Source: 《玉匣記》逐月凶星總局:
+#   "天罡一云灭门，百事凶。正月巳、二月子、三月未、四月寅、
+#    五月酉、六月辰、七月亥、八月午、九月丑、十月申、
+#    十一月卯、十二月戌。"
+# Cross-ref: phongthuykybach.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
+
+THIEN_CUONG_CHI: list[int] = [5, 0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10]
+# Month: 1→Tỵ(5), 2→Tý(0), 3→Mùi(7), 4→Dần(2), 5→Dậu(9), 6→Thìn(4),
+#        7→Hợi(11), 8→Ngọ(6), 9→Sửu(1), 10→Thân(8), 11→Mão(3), 12→Tuất(10)
 
 
 def check_thien_cuong(lunar_month: int, day_chi_idx: int) -> bool:
     """Check if day has Thiên Cương (天罡) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_chi_idx == (lunar_month + 3) % 12
+    return day_chi_idx == THIEN_CUONG_CHI[lunar_month - 1]
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -227,8 +232,9 @@ def check_dai_hao(lunar_month: int, day_chi_idx: int) -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 # Sát Chủ Âm (殺主) — Hung tinh, kỵ phẫu thuật / an táng / tế tự
 # By lunar month → forbidden day Chi.
+# NOTE: Not found in 《玉匣記》 — may originate from 《象吉通書》or 《鰲頭通書》.
 # Source: blogphongthuy.com, movinghouse.vn.
-# Cross-ref: multiple Vietnamese almanac sites.  _sme_verified = True
+# Cross-ref: multiple Vietnamese almanac sites.  _sme_verified = True (from VN sources)
 # ─────────────────────────────────────────────────────────────────────────────
 
 SAT_CHU_CHI: list[int] = [5, 0, 7, 3, 8, 10, 11, 1, 6, 9, 2, 4]
@@ -244,10 +250,12 @@ def check_sat_chu(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Thiên Tặc (天賊) — Hung tinh
-# By lunar month → forbidden day Chi.
-# Source: lichngaytot.com, xemvm.com, phongthuykybach.com.
-# Cross-ref: Hiệp Kỷ Biện Phương Thư.  _sme_verified = True
+# Thiên Tặc (天賊) — Hung tinh, kỵ thụ tạo / nhập trạch / động thổ / khai thương khố
+# By lunar month → forbidden day Chi (+5 cycle from Thìn).
+# Source: 《玉匣記》逐月凶星總局:
+#   "天贼忌竖造、入宅、动土、开仓库。正月辰、二月酉、三月寅、四月未、
+#    五月子、六月巳、七月戌、八月卯、九月申、十月丑、十一月午、十二月亥。"
+# Cross-ref: lichngaytot.com, xemvm.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
 THIEN_TAC_CHI: list[int] = [4, 9, 2, 7, 0, 5, 10, 3, 8, 1, 6, 11]
@@ -266,14 +274,19 @@ def check_thien_tac(lunar_month: int, day_chi_idx: int) -> bool:
 # Thiên Ngục (天獄) + Thiên Hỏa (天火) — Hung tinh compound
 # Two separate stars, both kỵ phẫu thuật. Triggered if either matches.
 # By lunar month → forbidden day Chi.
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Source: 《玉匣記》逐月凶星總局:
+#   "天狱：正月子、二月卯、三月午、四月酉、(repeats quarterly)"
+#   "天火忌盖屋、起造、修方。正月子、二月卯、三月午、四月酉、(same)"
+# NOTE: Both stars share identical month→chi mapping (子卯午酉 Tứ Chính cycle).
+#       They differ only in kỵ: 天火 especially kỵ construction/roofing.
+# Cross-ref: 《玉匣記》.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
-THIEN_NGUC_CHI: list[int] = [4, 4, 7, 7, 10, 10, 1, 1, 4, 4, 7, 7]
-# Grouped by season: Spring(1,2)→Thìn, Summer(3,4)→Mùi, Autumn(5,6)→Tuất, Winter(7,8)→Sửu, repeats
+THIEN_NGUC_CHI: list[int] = [0, 3, 6, 9, 0, 3, 6, 9, 0, 3, 6, 9]
+# Quarterly cycle: 1,5,9→Tý(0), 2,6,10→Mão(3), 3,7,11→Ngọ(6), 4,8,12→Dậu(9)
 
-THIEN_HOA_CHI: list[int] = [6, 6, 9, 9, 0, 0, 3, 3, 6, 6, 9, 9]
-# Grouped by season: Spring(1,2)→Ngọ, Summer(3,4)→Dậu, Autumn(5,6)→Tý, Winter(7,8)→Mão, repeats
+THIEN_HOA_CHI: list[int] = [0, 3, 6, 9, 0, 3, 6, 9, 0, 3, 6, 9]
+# Same as Thiên Ngục — both follow 子卯午酉 (Tứ Chính) cycle per 《玉匣記》
 
 
 def check_thien_nguc_thien_hoa(lunar_month: int, day_chi_idx: int) -> bool:
