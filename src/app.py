@@ -19,6 +19,7 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from api.middleware.auth import AuthMiddleware
 from api.routes.chon_ngay import router as chon_ngay_router
 from api.routes.ngay_hom_nay import router as ngay_hom_nay_router
 from api.routes.lich_thang import router as lich_thang_router
@@ -57,6 +58,9 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+# Auth + rate limiting middleware
+app.add_middleware(AuthMiddleware)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -13,17 +13,30 @@ Special Rules:
 from __future__ import annotations
 
 from engine.sao_ngay import (
+    check_cuu_khong,
     check_dai_hao,
+    check_dia_tac,
     check_dich_ma,
     check_giai_than,
+    check_luc_bat_thanh,
+    check_luc_hop,
+    check_nguyet_hoa,
     check_nguyet_sat,
     check_sat_chu,
+    check_sinh_khi,
+    check_tam_hop,
     check_thien_an,
     check_thien_cuong,
+    check_thien_hy,
     check_thien_nguc_thien_hoa,
     check_thien_phuc,
     check_thien_tac,
+    check_thien_xa,
+    check_tho_on,
+    check_tho_phu,
     check_tho_tu,
+    check_tieu_hao,
+    check_vang_vong,
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -81,8 +94,24 @@ GRADE_THRESHOLDS = {"A": 80, "B": 65, "C": 50}
 # SAO DETECTORS — maps sao key → check function(day_info, user_chart) → bool
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _lm(d: dict) -> int:
+    return d.get("lunar_month", 0)
+
+
+def _dci(d: dict) -> int:
+    return d.get("day_chi_idx", -1)
+
+
+def _dcani(d: dict) -> int:
+    return d.get("day_can_idx", -1)
+
+
+def _yci(u: dict | None) -> int:
+    return (u or {}).get("year_chi_idx", -1)
+
+
 SAO_DETECTORS: dict[str, callable] = {
-    # Pre-computed in day_info
+    # ── Pre-computed in day_info ──────────────────────────────────────────
     "thienDuc": lambda d, u=None: d.get("has_thien_duc", False),
     "thienDucHop": lambda d, u=None: d.get("has_thien_duc_hop", False),
     "nguyetDuc": lambda d, u=None: d.get("has_nguyet_duc", False),
@@ -92,18 +121,74 @@ SAO_DETECTORS: dict[str, callable] = {
     "nguyetKy": lambda d, u=None: d.get("is_nguyet_ky", False),
     "duongCongKy": lambda d, u=None: d.get("is_duong_cong_ky", False),
     "thienXa": lambda d, u=None: d.get("has_thien_xa", False),
-    # Computed on-the-fly from day_info fields — _sme_verified = False
-    "thoTu": lambda d, u=None: check_tho_tu(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "giaiThan": lambda d, u=None: check_giai_than(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "thienAn": lambda d, u=None: check_thien_an(d.get("day_can_idx", -1), d.get("day_chi_idx", -1)),
-    "thienPhuc": lambda d, u=None: check_thien_phuc(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "dichMa": lambda d, u=None: check_dich_ma(d.get("day_chi_idx", -1), (u or {}).get("year_chi_idx", -1)),
-    "nguyetSat": lambda d, u=None: check_nguyet_sat(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "thienCuong": lambda d, u=None: check_thien_cuong(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "daiHao": lambda d, u=None: check_dai_hao(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "satChu": lambda d, u=None: check_sat_chu(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "thienTac": lambda d, u=None: check_thien_tac(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
-    "thienNgucThienHoa": lambda d, u=None: check_thien_nguc_thien_hoa(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+
+    # ── Implemented on-the-fly from day_info fields ───────────────────────
+    "thoTu": lambda d, u=None: check_tho_tu(_lm(d), _dci(d)),
+    "giaiThan": lambda d, u=None: check_giai_than(_lm(d), _dci(d)),
+    "thienAn": lambda d, u=None: check_thien_an(_dcani(d), _dci(d)),
+    "thienPhuc": lambda d, u=None: check_thien_phuc(_lm(d), _dci(d)),
+    "dichMa": lambda d, u=None: check_dich_ma(_dci(d), _yci(u)),
+    "nguyetSat": lambda d, u=None: check_nguyet_sat(_lm(d), _dci(d)),
+    "thienCuong": lambda d, u=None: check_thien_cuong(_lm(d), _dci(d)),
+    "daiHao": lambda d, u=None: check_dai_hao(_lm(d), _dci(d)),
+    "satChu": lambda d, u=None: check_sat_chu(_lm(d), _dci(d)),
+    "thienTac": lambda d, u=None: check_thien_tac(_lm(d), _dci(d)),
+    "thienNgucThienHoa": lambda d, u=None: check_thien_nguc_thien_hoa(_lm(d), _dci(d)),
+    # New — implemented in sao_ngay.py
+    "sinhKhi": lambda d, u=None: check_sinh_khi(_lm(d), _dci(d)),
+    "thienHy": lambda d, u=None: check_thien_hy(_lm(d), _dci(d)),
+    "tieuHao": lambda d, u=None: check_tieu_hao(_lm(d), _dci(d)),
+    "vatVong": lambda d, u=None: check_vang_vong(_lm(d), _dci(d)),
+    "cuuKhong": lambda d, u=None: check_cuu_khong(_lm(d), _dci(d)),
+    "lucBatThanh": lambda d, u=None: check_luc_bat_thanh(_lm(d), _dci(d)),
+    "diaTac": lambda d, u=None: check_dia_tac(_lm(d), _dci(d)),
+    "nguyetHoa": lambda d, u=None: check_nguyet_hoa(_lm(d), _dci(d)),
+    "thoOn": lambda d, u=None: check_tho_on(_lm(d), _dci(d)),
+    "thoPhU": lambda d, u=None: check_tho_phu(_lm(d), _dci(d)),
+    "lucHop": lambda d, u=None: check_luc_hop(_dci(d), _yci(u)),
+    "tamHop": lambda d, u=None: check_tam_hop(_dci(d), _yci(u)),
+
+    # ── Stubs — need SME-verified formulas (return False for now) ─────────
+    # TODO: implement when SME provides formulas
+    "thienPhu": lambda d, u=None: False,     # Thiên Phú
+    "thienTai": lambda d, u=None: False,     # Thiên Tài
+    "diaTai": lambda d, u=None: False,       # Địa Tài
+    "nguyetTai": lambda d, u=None: False,    # Nguyệt Tài
+    "locKho": lambda d, u=None: False,       # Lộc Khố
+    "thienQuy": lambda d, u=None: False,     # Thiên Quý
+    "catKhanh": lambda d, u=None: False,     # Cát Khánh
+    "ichHau": lambda d, u=None: False,       # Ích Hậu
+    "tucThe": lambda d, u=None: False,       # Tục Thế
+    "yeuYen": lambda d, u=None: False,       # Yếu Yên
+    "phoHo": lambda d, u=None: False,        # Phổ Hộ
+    "thienMa": lambda d, u=None: False,      # Thiên Mã
+    "mauThuong": lambda d, u=None: False,    # Mậu Thương
+    "phucHau": lambda d, u=None: False,      # Phúc Hậu
+    "thanhTam": lambda d, u=None: False,     # Thánh Tâm
+    "thienQuan": lambda d, u=None: False,    # Thiên Quan
+    "minhTinh": lambda d, u=None: False,     # Minh Tinh
+    "kinhTam": lambda d, u=None: False,      # Kính Tâm
+    "phucSinh": lambda d, u=None: False,     # Phúc Sinh
+    "nguyetAn": lambda d, u=None: False,     # Nguyệt Ân
+    "thienThanh": lambda d, u=None: False,   # Thiên Thanh
+    "nguyetKhong": lambda d, u=None: False,  # Nguyệt Không
+    "nhanCach": lambda d, u=None: False,     # Nhân Cách
+    "phiMaSat": lambda d, u=None: False,     # Phi Ma Sát
+    "nguyetYemDaiHoa": lambda d, u=None: False,  # Nguyệt Yếm Đại Họa
+    "thoCam": lambda d, u=None: False,       # Thổ Cấm
+    "cuuThoQuy": lambda d, u=None: False,    # Cửu Thổ Quỷ
+    "thienDiaChuyenSat": lambda d, u=None: False,  # Thiên Địa Chuyển Sát
+    "nguyetKienChuyenSat": lambda d, u=None: False,  # Nguyệt Kiến Chuyển Sát
+    "haKhoiCauGiao": lambda d, u=None: False,  # Hà Khôi Câu Giảo
+    "hoaTai": lambda d, u=None: False,       # Hỏa Tai
+    "trungTang": lambda d, u=None: False,    # Trùng Tang
+    "quyCoc": lambda d, u=None: False,       # Quỷ Cốc
+    "thanCach": lambda d, u=None: False,     # Thần Cách
+    "hoangSa": lambda d, u=None: False,      # Hoàng Sa
+    "nguNguyQuiet": lambda d, u=None: False,  # Ngũ Quỷ
+    "nguyetHoaDockHoa": lambda d, u=None: False,  # Nguyệt Hỏa Độc Hỏa
+    "loiCong": lambda d, u=None: False,      # Lôi Công
+    "diaPha": lambda d, u=None: False,       # Địa Phá
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -111,6 +196,7 @@ SAO_DETECTORS: dict[str, callable] = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 SAO_LABELS: dict[str, str] = {
+    # Cát tinh
     "thienDuc": "Thiên Đức", "thienDucHop": "Thiên Đức Hợp",
     "nguyetDuc": "Nguyệt Đức", "nguyetDucHop": "Nguyệt Đức Hợp",
     "thienXa": "Thiên Xá", "sinhKhi": "Sinh Khí",
@@ -119,6 +205,17 @@ SAO_LABELS: dict[str, str] = {
     "nguyetTai": "Nguyệt Tài", "locKho": "Lộc Khố",
     "thienMa": "Thiên Mã", "dichMa": "Dịch Mã",
     "phoHo": "Phổ Hộ", "ichHau": "Ích Hậu",
+    "catKhanh": "Cát Khánh", "thienPhuc": "Thiên Phúc",
+    "thienQuy": "Thiên Quý", "giaiThan": "Giải Thần",
+    "tucThe": "Tục Thế", "yeuYen": "Yếu Yên",
+    "thienAn": "Thiên Ân", "lucHop": "Lục Hợp",
+    "tamHop": "Tam Hợp", "mauThuong": "Mậu Thương",
+    "phucHau": "Phúc Hậu", "thanhTam": "Thánh Tâm",
+    "thienQuan": "Thiên Quan", "minhTinh": "Minh Tinh",
+    "kinhTam": "Kính Tâm", "phucSinh": "Phúc Sinh",
+    "nguyetAn": "Nguyệt Ân", "thienThanh": "Thiên Thanh",
+    "nguyetKhong": "Nguyệt Không",
+    # Hung tinh
     "tamNuong": "Tam Nương", "nguyetKy": "Nguyệt Kỵ",
     "duongCongKy": "Dương Công Kỵ",
     "thienTac": "Thiên Tặc", "diaTac": "Địa Tặc",
@@ -127,11 +224,19 @@ SAO_LABELS: dict[str, str] = {
     "nguyetHoa": "Nguyệt Hỏa", "vatVong": "Vãng Vong",
     "cuuKhong": "Cửu Không", "lucBatThanh": "Lục Bất Thành",
     "nhanCach": "Nhân Cách", "phiMaSat": "Phi Ma Sát",
-    "catKhanh": "Cát Khánh", "thienPhuc": "Thiên Phúc",
-    "thienQuy": "Thiên Quý", "giaiThan": "Giải Thần",
-    "tucThe": "Tục Thế", "yeuYen": "Yếu Yên",
-    "thoTu": "Thọ Tử", "thienAn": "Thiên Ân",
-    "satChu": "Sát Chủ", "thienNgucThienHoa": "Thiên Ngục/Thiên Hỏa",
+    "thoTu": "Thọ Tử", "satChu": "Sát Chủ",
+    "thienNgucThienHoa": "Thiên Ngục/Thiên Hỏa",
+    "thoOn": "Thổ Ôn", "thoPhU": "Thổ Phủ",
+    "thoCam": "Thổ Cấm", "cuuThoQuy": "Cửu Thổ Quỷ",
+    "nguyetYemDaiHoa": "Nguyệt Yếm Đại Họa",
+    "thienDiaChuyenSat": "Thiên Địa Chuyển Sát",
+    "nguyetKienChuyenSat": "Nguyệt Kiến Chuyển Sát",
+    "haKhoiCauGiao": "Hà Khôi Câu Giảo",
+    "hoaTai": "Hỏa Tai", "trungTang": "Trùng Tang",
+    "quyCoc": "Quỷ Cốc", "thanCach": "Thần Cách",
+    "hoangSa": "Hoàng Sa", "nguNguyQuiet": "Ngũ Quỷ",
+    "nguyetHoaDockHoa": "Nguyệt Hỏa Độc Hỏa",
+    "loiCong": "Lôi Công", "diaPha": "Địa Phá",
 }
 
 INTENT_LABELS: dict[str, str] = {
@@ -179,17 +284,29 @@ SAO_PLAIN: dict[str, str] = {
     "thienPhuc": "ngày có phúc lành từ trời",
     "giaiThan": "có thần giải trừ bệnh tật, tốt cho chữa bệnh",
     "dichMa": "thuận lợi cho di chuyển, thay đổi",
+    "sinhKhi": "ngày có sinh khí vượng, tốt cho khởi đầu",
+    "thienHy": "ngày có hỷ khí, tốt cho hôn nhân và việc vui",
+    "lucHop": "ngày hợp tuổi, thuận lợi cho mọi việc",
+    "tamHop": "ngày tam hợp tuổi, rất thuận lợi",
     # Hung tinh
     "thoTu": "ngày rất xấu cho phẫu thuật theo quan niệm truyền thống",
     "thienCuong": "ngày có sao dữ, bách sự không nên",
     "daiHao": "ngày dễ hao tốn, tổn thất",
+    "tieuHao": "ngày dễ hao tốn nhỏ",
     "nguyetSat": "ngày xung khắc với tháng, không thuận lợi",
     "satChu": "ngày có sao sát, kiêng phẫu thuật",
     "thienTac": "ngày có sao trộm cắp, kiêng xây dựng",
+    "diaTac": "ngày có sao trộm cắp (đất), kiêng xây dựng",
     "thienNgucThienHoa": "ngày có sao ngục tù và hỏa hoạn, cần cẩn thận",
     "tamNuong": "ngày Tam Nương, bách sự kiêng kỵ",
     "nguyetKy": "ngày kiêng kỵ trong tháng",
     "duongCongKy": "ngày Dương Công kỵ, không nên làm việc lớn",
+    "vatVong": "ngày Vãng Vong, kiêng xuất hành",
+    "cuuKhong": "ngày Cửu Không, sự việc khó thành",
+    "lucBatThanh": "ngày Lục Bất Thành, sự việc không thành",
+    "nguyetHoa": "ngày có sao Nguyệt Hỏa, kiêng lửa/bếp",
+    "thoOn": "ngày có sao đất xấu, kiêng xây dựng/đào đất",
+    "thoPhU": "ngày có sao đất xấu, kiêng xây dựng",
 }
 
 ELEMENT_PLAIN: dict[str, str] = {

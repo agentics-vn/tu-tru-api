@@ -297,3 +297,236 @@ def check_thien_nguc_thien_hoa(lunar_month: int, day_chi_idx: int) -> bool:
         day_chi_idx == THIEN_NGUC_CHI[lunar_month - 1]
         or day_chi_idx == THIEN_HOA_CHI[lunar_month - 1]
     )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Thiên Xá (天赦日) — Cát tinh mạnh cho tế tự/giải hạn, KỴ động thổ/nhập trạch
+# Seasonal: Spring→Mậu Dần, Summer→Giáp Ngọ, Autumn→Mậu Thân, Winter→Giáp Tý
+# Source: 《玉匣記》, Ngọc Hạp Thông Thư.
+# Cross-ref: lichngaytot.com, xemvm.com.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+THIEN_XA_RULES: list[tuple[int, int]] = [
+    (4, 2),   # Spring (months 1-3): Mậu Dần
+    (4, 2),
+    (4, 2),
+    (0, 6),   # Summer (months 4-6): Giáp Ngọ
+    (0, 6),
+    (0, 6),
+    (4, 8),   # Autumn (months 7-9): Mậu Thân
+    (4, 8),
+    (4, 8),
+    (0, 0),   # Winter (months 10-12): Giáp Tý
+    (0, 0),
+    (0, 0),
+]
+
+
+def check_thien_xa(lunar_month: int, day_can_idx: int, day_chi_idx: int) -> bool:
+    """Check if day is Thiên Xá (天赦日) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    expected_can, expected_chi = THIEN_XA_RULES[lunar_month - 1]
+    return day_can_idx == expected_can and day_chi_idx == expected_chi
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Lục Hợp (六合) — Cát tinh, ngày hợp với tuổi
+# Day Chi harmonizes with Year Chi.
+# Source: docs/algorithm.md §6.
+# ─────────────────────────────────────────────────────────────────────────────
+
+LUC_HOP_MAP: dict[int, int] = {
+    0: 1, 1: 0, 2: 11, 11: 2, 3: 10, 10: 3,
+    4: 9, 9: 4, 5: 8, 8: 5, 6: 7, 7: 6,
+}
+
+
+def check_luc_hop(day_chi_idx: int, year_chi_idx: int) -> bool:
+    """Check if day Chi is Lục Hợp with year Chi."""
+    return LUC_HOP_MAP.get(year_chi_idx) == day_chi_idx
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Tam Hợp (三合) — Cát tinh, ngày tam hợp với tuổi
+# Year Chi → set of day Chi forming Tam Hợp cục.
+# Source: traditional lịch vạn niên.
+# ─────────────────────────────────────────────────────────────────────────────
+
+TAM_HOP_SETS: dict[int, frozenset[int]] = {
+    # Dần(2)/Ngọ(6)/Tuất(10) → Hỏa cục
+    2: frozenset({6, 10}), 6: frozenset({2, 10}), 10: frozenset({2, 6}),
+    # Thân(8)/Tý(0)/Thìn(4) → Thủy cục
+    8: frozenset({0, 4}), 0: frozenset({8, 4}), 4: frozenset({8, 0}),
+    # Tỵ(5)/Dậu(9)/Sửu(1) → Kim cục
+    5: frozenset({9, 1}), 9: frozenset({5, 1}), 1: frozenset({5, 9}),
+    # Hợi(11)/Mão(3)/Mùi(7) → Mộc cục
+    11: frozenset({3, 7}), 3: frozenset({11, 7}), 7: frozenset({11, 3}),
+}
+
+
+def check_tam_hop(day_chi_idx: int, year_chi_idx: int) -> bool:
+    """Check if day Chi forms Tam Hợp with year Chi."""
+    s = TAM_HOP_SETS.get(year_chi_idx)
+    return s is not None and day_chi_idx in s
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Tiểu Hao (小耗) — Hung tinh, hao tốn nhỏ
+# Rule: "Chánh nguyệt khởi Mùi, thuận hành"
+# Formula: (lunar_month + 6) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def check_tieu_hao(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Tiểu Hao for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 6) % 12
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Sinh Khí (生氣) — Cát tinh, tốt cho xây dựng, trồng cây
+# Rule: "Chánh nguyệt khởi Tý, thuận hành"
+# Formula: (lunar_month - 1) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def check_sinh_khi(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Sinh Khí for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month - 1) % 12
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Thiên Hỷ (天喜) — Cát tinh, đặc biệt tốt cho hôn nhân
+# Rule: "Chánh nguyệt khởi Tuất, nghịch hành"
+# Formula: (11 - lunar_month) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def check_thien_hy(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Hỷ for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (11 - lunar_month) % 12
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Vãng Vong (往亡) — Hung tinh, kỵ xuất hành
+# Cycle: M1,2→Dậu(9), M3,4→Sửu(1), M5,6→Tỵ(5), repeats quarterly
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+VANG_VONG_CHI: list[int] = [9, 9, 1, 1, 5, 5, 9, 9, 1, 1, 5, 5]
+
+
+def check_vang_vong(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Vãng Vong for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == VANG_VONG_CHI[lunar_month - 1]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Cửu Không (九空) — Hung tinh, bách sự bất thành
+# Rule: "Chánh nguyệt khởi Dậu, nghịch hành tứ quý"
+# M1,5,9→Dậu(9), M2,6,10→Thân(8), M3,7,11→Mùi(7), M4,8,12→Ngọ(6)
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+CUU_KHONG_CHI: list[int] = [9, 8, 7, 6, 9, 8, 7, 6, 9, 8, 7, 6]
+
+
+def check_cuu_khong(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Cửu Không for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == CUU_KHONG_CHI[lunar_month - 1]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Địa Tặc (地賊) — Hung tinh, paired with Thiên Tặc
+# Rule: "Nghịch hành từ Thìn" — reversed cycle
+# Formula: (4 - (lunar_month - 1)) % 12  (reversed from thienTac offset)
+# Source: 《玉匣記》.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+DIA_TAC_CHI: list[int] = [3, 10, 5, 0, 7, 2, 9, 4, 11, 6, 1, 8]
+
+
+def check_dia_tac(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Địa Tặc for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == DIA_TAC_CHI[lunar_month - 1]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Nguyệt Hỏa (月火) — Hung tinh, kỵ bếp/hỏa
+# Rule: "Chánh nguyệt khởi Ngọ, nghịch hành"
+# Formula: (7 - lunar_month) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# ─────────────────────────────────────────────────────────────────────────────
+
+NGUYET_HOA_CHI: list[int] = [6, 5, 4, 3, 2, 1, 0, 11, 10, 9, 8, 7]
+
+
+def check_nguyet_hoa(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Nguyệt Hỏa for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == NGUYET_HOA_CHI[lunar_month - 1]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Lục Bất Thành (六不成) — Hung tinh, sự việc không thành
+# Rule: "Chánh nguyệt khởi Tỵ, thuận hành"
+# Formula: (lunar_month + 4) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def check_luc_bat_thanh(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Lục Bất Thành for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 4) % 12
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Thổ Ôn (土瘟) — Hung tinh, kỵ mọi việc liên quan đến đất
+# By lunar month → forbidden day Chi.
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = True
+# ─────────────────────────────────────────────────────────────────────────────
+
+THO_ON_CHI: list[int] = [7, 1, 9, 3, 11, 5, 7, 1, 9, 3, 11, 5]
+# M1,7→Mùi(7), M2,8→Sửu(1), M3,9→Dậu(9), M4,10→Mão(3), M5,11→Hợi(11), M6,12→Tỵ(5)
+
+
+def check_tho_on(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thổ Ôn for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THO_ON_CHI[lunar_month - 1]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Thổ Phủ (土府) — Hung tinh, kỵ xây dựng/đào đất
+# Rule: "Chánh nguyệt khởi Tỵ, nghịch hành tứ quý"
+# M1,5,9→Tỵ(5), M2,6,10→Mùi(7), M3,7,11→Dậu(9), M4,8,12→Hợi(11)
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False (needs cross-ref)
+# ─────────────────────────────────────────────────────────────────────────────
+
+THO_PHU_CHI: list[int] = [5, 7, 9, 11, 5, 7, 9, 11, 5, 7, 9, 11]
+
+
+def check_tho_phu(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thổ Phủ for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THO_PHU_CHI[lunar_month - 1]

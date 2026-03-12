@@ -16,7 +16,10 @@ from fastapi.testclient import TestClient
 
 from app import app
 
-client = TestClient(app)
+# Set dev API key for testing
+os.environ.setdefault("NODE_ENV", "development")
+
+client = TestClient(app, headers={"X-API-Key": "test-key-dev"})
 
 
 # ─────────────────────────────────────────────────────────────────────────────
