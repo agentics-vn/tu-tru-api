@@ -16,7 +16,7 @@
 |---|---|---|---|
 | birth_date | Yes | string ISO | Past date, year >= 1900 |
 | birth_time | No | HH:MM \| null | 24h format |
-| intent | Yes | enum | `KHAI_TRUONG\|CUOI_HOI\|DONG_THO\|XUAT_HANH\|KY_HOP_DONG\|MAC_DINH` |
+| intent | Yes | enum | `KHAI_TRUONG\|KY_HOP_DONG\|CAU_TAI\|NHAM_CHUC\|AN_HOI\|CUOI_HOI\|DAM_CUOI\|CAU_TU\|DONG_THO\|NHAP_TRACH\|LAM_NHA\|MUA_NHA_DAT\|XAY_BEP\|LAM_GIUONG\|DAO_GIENG\|AN_TANG\|CAI_TANG\|XUAT_HANH\|DI_CHUYEN_NGOAI\|TE_TU\|GIAI_HAN\|KHAM_BENH\|PHAU_THUAT\|NHAP_HOC_THI_CU\|KIEN_TUNG\|TRONG_CAY\|MAC_DINH` |
 | range_start | Yes | string ISO | Not in past |
 | range_end | Yes | string ISO | range_end - range_start <= 90 days |
 | top_n | No | integer | 1–10, default 3 |
