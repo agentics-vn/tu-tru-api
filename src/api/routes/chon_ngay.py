@@ -164,6 +164,17 @@ def _format_lunar_date(day_info: dict) -> str:
     )
 
 
+ELEMENT_PLAIN_VI: dict[str, str] = {
+    "Kim": "Kim (kim loại)", "Mộc": "Mộc (cây cỏ)",
+    "Thủy": "Thủy (nước)", "Hỏa": "Hỏa (lửa)", "Thổ": "Thổ (đất)",
+}
+
+STRENGTH_PLAIN_VI: dict[str, str] = {
+    "weak": "thân nhược — cần bổ trợ thêm năng lượng phù hợp",
+    "strong": "thân vượng — cần cân bằng, tránh thừa năng lượng",
+}
+
+
 def _build_bat_tu_summary(user_chart: dict) -> dict:
     """Build the bat_tu_summary section for the response."""
     summary: dict = {
@@ -211,6 +222,58 @@ def _build_bat_tu_summary(user_chart: dict) -> dict:
             "hanh": dv["can_hanh"],
             "age_range": f"{dv['start_age']}-{dv['end_age']}",
         }
+
+    # ── Plain-language summary for non-experts ──
+    menh = user_chart["menh_hanh"]
+    plain_parts = [f"Mệnh bạn thuộc hành {ELEMENT_PLAIN_VI.get(menh, menh)}."]
+
+    if user_chart.get("chart_strength"):
+        strength = user_chart["chart_strength"]
+        plain_parts.append(
+            f"Lá số của bạn {STRENGTH_PLAIN_VI.get(strength, strength)}."
+        )
+
+    if user_chart.get("dung_than"):
+        dung = user_chart["dung_than"]
+        plain_parts.append(
+            f"Yếu tố có lợi nhất cho bạn là hành "
+            f"{ELEMENT_PLAIN_VI.get(dung, dung)} — "
+            f"nên chọn ngày có năng lượng này."
+        )
+
+    if user_chart.get("hi_than"):
+        hi = user_chart["hi_than"]
+        plain_parts.append(
+            f"Hành {ELEMENT_PLAIN_VI.get(hi, hi)} cũng tốt cho bạn."
+        )
+
+    if user_chart.get("ky_than_v2"):
+        ky = user_chart["ky_than_v2"]
+        plain_parts.append(
+            f"Nên tránh những ngày có năng lượng hành "
+            f"{ELEMENT_PLAIN_VI.get(ky, ky)} vì xung khắc với mệnh bạn."
+        )
+
+    if user_chart.get("current_dai_van"):
+        dv = user_chart["current_dai_van"]
+        dv_hanh = dv.get("can_hanh", "")
+        dung = user_chart.get("dung_than", "")
+        hi = user_chart.get("hi_than", "")
+        ky = user_chart.get("ky_than_v2", "")
+        cuu = user_chart.get("cuu_than", "")
+
+        if dv_hanh == dung or dv_hanh == hi:
+            plain_parts.append(
+                f"Giai đoạn vận may hiện tại ({dv['start_age']}-{dv['end_age']} tuổi) "
+                f"đang thuận lợi cho bạn."
+            )
+        elif dv_hanh == ky or dv_hanh == cuu:
+            plain_parts.append(
+                f"Giai đoạn vận may hiện tại ({dv['start_age']}-{dv['end_age']} tuổi) "
+                f"không thuận lợi lắm — cần chọn ngày cẩn thận hơn."
+            )
+
+    summary["summary_vi"] = " ".join(plain_parts)
 
     return summary
 
@@ -261,11 +324,17 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
 
             if not filter_result["pass"]:
                 # severity 3 → dates_to_avoid
-                dates_to_avoid.append({
+                avoid_entry: dict = {
                     "date": date_str,
                     "reason_vi": ". ".join(filter_result["reasons"]) + ". Tuyệt đối tránh.",
                     "severity": filter_result["severity"],
-                })
+                }
+                if filter_result["severity"] == 3:
+                    avoid_entry["summary_vi"] = (
+                        "Ngày này xung khắc trực tiếp với tuổi của bạn. "
+                        "Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
+                    )
+                dates_to_avoid.append(avoid_entry)
                 continue
 
             layer2_passed += 1
@@ -281,6 +350,7 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                     "date": date_str,
                     "reason_vi": ". ".join(filter_result["reasons"]),
                     "severity": 2,
+                    "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác.",
                 })
 
             scored_days.append({"day_info": day_info, "score_result": score_result})
@@ -304,6 +374,7 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                 "sao_hung": d["score_result"]["penalty_sao"],
                 "nguhanh_day": d["day_info"]["day_nap_am_hanh"],
                 "reason_vi": ". ".join(d["score_result"]["reasons_vi"]),
+                "summary_vi": d["score_result"]["summary_vi"],
                 "time_slots": [
                         f"{g['start']}-{g['end']}"
                         for g in get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
