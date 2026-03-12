@@ -12,6 +12,20 @@ Special Rules:
 
 from __future__ import annotations
 
+from engine.sao_ngay import (
+    check_dai_hao,
+    check_dich_ma,
+    check_giai_than,
+    check_nguyet_sat,
+    check_sat_chu,
+    check_thien_an,
+    check_thien_cuong,
+    check_thien_nguc_thien_hoa,
+    check_thien_phuc,
+    check_thien_tac,
+    check_tho_tu,
+)
+
 # ─────────────────────────────────────────────────────────────────────────────
 # SPECIAL RULE 2 LOOKUP TABLES
 # ─────────────────────────────────────────────────────────────────────────────
@@ -40,6 +54,7 @@ BONUS = {
     "duong_than_match": 12,
     "intent_bonus": 8,
     "thien_xa_bonus": 8,
+    "truc_preferred": 15,
     # Tứ Trụ bonuses (Phase 3-5)
     "dung_than_match": 15,
     "hi_than_match": 8,
@@ -52,6 +67,7 @@ PENALTY = {
     "ky_than_match": -10,
     "intent_penalty": -15,
     "thien_xa_penalty": -15,
+    "truc_forbidden": -20,
     "layer2_severity2": -5,
     # Tứ Trụ penalties (Phase 3-5)
     "ky_than_v2_match": -12,
@@ -66,6 +82,7 @@ GRADE_THRESHOLDS = {"A": 80, "B": 65, "C": 50}
 # ─────────────────────────────────────────────────────────────────────────────
 
 SAO_DETECTORS: dict[str, callable] = {
+    # Pre-computed in day_info
     "thienDuc": lambda d, u=None: d.get("has_thien_duc", False),
     "thienDucHop": lambda d, u=None: d.get("has_thien_duc_hop", False),
     "nguyetDuc": lambda d, u=None: d.get("has_nguyet_duc", False),
@@ -75,6 +92,18 @@ SAO_DETECTORS: dict[str, callable] = {
     "nguyetKy": lambda d, u=None: d.get("is_nguyet_ky", False),
     "duongCongKy": lambda d, u=None: d.get("is_duong_cong_ky", False),
     "thienXa": lambda d, u=None: d.get("has_thien_xa", False),
+    # Computed on-the-fly from day_info fields — _sme_verified = False
+    "thoTu": lambda d, u=None: check_tho_tu(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+    "giaiThan": lambda d, u=None: check_giai_than(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+    "thienAn": lambda d, u=None: check_thien_an(d.get("day_can_idx", -1), d.get("day_chi_idx", -1)),
+    "thienPhuc": lambda d, u=None: check_thien_phuc(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+    "dichMa": lambda d, u=None: check_dich_ma(d.get("day_chi_idx", -1), (u or {}).get("year_chi_idx", -1)),
+    "nguyetSat": lambda d, u=None: check_nguyet_sat(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+    "thienCuong": lambda d, u=None: check_thien_cuong(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+    "daiHao": lambda d, u=None: check_dai_hao(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+    "satChu": lambda d, u=None: check_sat_chu(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
+    "thienTac": lambda d, u=None: check_thien_tac(d.get("lunar_month", 0), d.get("day_can_idx", -1)),
+    "thienNgucThienHoa": lambda d, u=None: check_thien_nguc_thien_hoa(d.get("lunar_month", 0), d.get("day_chi_idx", -1)),
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -101,6 +130,8 @@ SAO_LABELS: dict[str, str] = {
     "catKhanh": "Cát Khánh", "thienPhuc": "Thiên Phúc",
     "thienQuy": "Thiên Quý", "giaiThan": "Giải Thần",
     "tucThe": "Tục Thế", "yeuYen": "Yếu Yên",
+    "thoTu": "Thọ Tử", "thienAn": "Thiên Ân",
+    "satChu": "Sát Chủ", "thienNgucThienHoa": "Thiên Ngục/Thiên Hỏa",
 }
 
 INTENT_LABELS: dict[str, str] = {
@@ -155,13 +186,32 @@ def compute_score(
     penalty_sao: list[str] = []
     reasons: list[str] = []
 
-    # 1. Trực score
+    # 1. Trực score (generic)
     truc_delta = day_info["truc_score"] * TRUC_SCORE_MULTIPLIER
     score += truc_delta
     if truc_delta > 0:
         reasons.append(f"Trực {day_info['truc_name']} — ngày tốt (+{truc_delta})")
     elif truc_delta < 0:
         reasons.append(f"Trực {day_info['truc_name']} — ngày xấu ({truc_delta})")
+
+    # 1b. Trực intent preference/forbid (from intent-rules.json)
+    truc_idx = day_info.get("truc_idx")
+    preferred_truc = intent_rule.get("preferred_truc", [])
+    forbidden_truc = intent_rule.get("forbidden_truc", [])
+    if truc_idx is not None:
+        if truc_idx in preferred_truc:
+            score += BONUS["truc_preferred"]
+            reasons.append(
+                f"Trực {day_info['truc_name']} — hợp với {_intent_label(intent)} "
+                f"(+{BONUS['truc_preferred']})"
+            )
+        elif truc_idx in forbidden_truc:
+            score += PENALTY["truc_forbidden"]
+            penalty_sao.append(f"Trực {day_info['truc_name']}")
+            reasons.append(
+                f"Trực {day_info['truc_name']} — KỴ {_intent_label(intent)} "
+                f"({PENALTY['truc_forbidden']})"
+            )
 
     # 2. Universal cát tinh
     if day_info.get("has_thien_duc"):
