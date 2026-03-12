@@ -1045,12 +1045,11 @@ def check_than_cach(lunar_month: int, day_chi_idx: int) -> bool:
     return day_chi_idx == THAN_CACH_CHI[lunar_month - 1]
 
 
-# Hoàng Sa (黃沙) — Yellow sand
-# Rule: "reverse by 2 from Ngọ": M1→Ngọ(6), M2→Thìn(4), M3→Dần(2),
-#       M4→Tý(0), M5→Tuất(10), M6→Thân(8), M7→Ngọ(6)... repeats 6-month
-# Formula: (8 - 2 * lunar_month) % 12
-# Source: 《玉匣記》逐月凶星.  _sme_verified = False
-HOANG_SA_CHI: list[int] = [6, 4, 2, 0, 10, 8, 6, 4, 2, 0, 10, 8]
+# Hoàng Sa (皇沙) — Imperial sand
+# Rule: 3-month cycle repeating: [Ngọ(6), Dần(2), Tý(0)]
+# M1→Ngọ(6), M2→Dần(2), M3→Tý(0), M4→Ngọ(6), M5→Dần(2), M6→Tý(0), ...
+# Source: linhthong.com/tinhdauhungtinh.  _sme_verified = True
+HOANG_SA_CHI: list[int] = [6, 2, 0, 6, 2, 0, 6, 2, 0, 6, 2, 0]
 
 
 def check_hoang_sa(lunar_month: int, day_chi_idx: int) -> bool:
