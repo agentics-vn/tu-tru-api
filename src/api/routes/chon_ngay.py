@@ -62,13 +62,41 @@ LUNAR_MONTH_NAMES = [
 # ─────────────────────────────────────────────────────────────────────────────
 
 class IntentEnum(str, Enum):
+    # ── Kinh doanh / Tài chính ──
     KHAI_TRUONG = "KHAI_TRUONG"
-    CUOI_HOI = "CUOI_HOI"
-    DONG_THO = "DONG_THO"
-    XUAT_HANH = "XUAT_HANH"
     KY_HOP_DONG = "KY_HOP_DONG"
-    PHAU_THUAT = "PHAU_THUAT"
+    CAU_TAI = "CAU_TAI"
+    NHAM_CHUC = "NHAM_CHUC"
+    # ── Hôn nhân / Gia đình ──
+    AN_HOI = "AN_HOI"
+    CUOI_HOI = "CUOI_HOI"          # alias → DAM_CUOI
+    DAM_CUOI = "DAM_CUOI"
+    CAU_TU = "CAU_TU"
+    # ── Xây dựng / Nhà đất ──
+    DONG_THO = "DONG_THO"
+    NHAP_TRACH = "NHAP_TRACH"
+    LAM_NHA = "LAM_NHA"
+    MUA_NHA_DAT = "MUA_NHA_DAT"
+    XAY_BEP = "XAY_BEP"
+    LAM_GIUONG = "LAM_GIUONG"
+    DAO_GIENG = "DAO_GIENG"
+    # ── Tang lễ ──
+    AN_TANG = "AN_TANG"
+    CAI_TANG = "CAI_TANG"
+    # ── Di chuyển ──
+    XUAT_HANH = "XUAT_HANH"
+    DI_CHUYEN_NGOAI = "DI_CHUYEN_NGOAI"
+    # ── Tâm linh / Sức khỏe ──
+    TE_TU = "TE_TU"
+    GIAI_HAN = "GIAI_HAN"
     KHAM_BENH = "KHAM_BENH"
+    PHAU_THUAT = "PHAU_THUAT"
+    # ── Học tập / Pháp lý ──
+    NHAP_HOC_THI_CU = "NHAP_HOC_THI_CU"
+    KIEN_TUNG = "KIEN_TUNG"
+    # ── Nông nghiệp ──
+    TRONG_CAY = "TRONG_CAY"
+    # ── Mặc định ──
     MAC_DINH = "MAC_DINH"
 
 
