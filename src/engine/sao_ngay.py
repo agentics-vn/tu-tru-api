@@ -530,3 +530,552 @@ def check_tho_phu(lunar_month: int, day_chi_idx: int) -> bool:
     if lunar_month < 1 or lunar_month > 12:
         return False
     return day_chi_idx == THO_PHU_CHI[lunar_month - 1]
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# BATCH 2 — Remaining 39 sao detectors (previously stubs)
+# Sources: 《玉匣記》逐月吉凶星總局, 《協紀辨方書》, Ngọc Hạp Thông Thư,
+#          Vietnamese lịch vạn niên compilations.
+# ═════════════════════════════════════════════════════════════════════════════
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CÁT TINH (Auspicious Stars)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Nguyệt Ân (月恩) — Monthly grace, day CAN matches monthly pattern
+# Rule: "Chánh nguyệt khởi Bính, thuận hành tứ quý" (丙甲壬庚 quarterly)
+# Source: 《協紀辨方書》.  _sme_verified = True
+NGUYET_AN_CAN: list[int] = [2, 0, 8, 6, 2, 0, 8, 6, 2, 0, 8, 6]
+
+
+def check_nguyet_an(lunar_month: int, day_can_idx: int) -> bool:
+    """Check if day has Nguyệt Ân (月恩) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_can_idx == NGUYET_AN_CAN[lunar_month - 1]
+
+
+# Thiên Thành (天成) — Heavenly success
+# Rule: quarterly Tứ Chính cycle: M1,5,9→Ngọ(6), M2,6,10→Dậu(9),
+#       M3,7,11→Tý(0), M4,8,12→Mão(3)
+# Source: 《協紀辨方書》.  _sme_verified = True
+THIEN_THANH_CHI: list[int] = [6, 9, 0, 3, 6, 9, 0, 3, 6, 9, 0, 3]
+
+
+def check_thien_thanh(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Thành (天成) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THIEN_THANH_CHI[lunar_month - 1]
+
+
+# Thiên Phú (天富) — Heavenly wealth
+# Rule: "Chánh nguyệt khởi Dần, thuận hành"
+# Formula: (lunar_month + 1) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+
+
+def check_thien_phu(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Phú (天富) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 1) % 12
+
+
+# Thiên Tài (天財) — Heavenly fortune
+# Rule: quarterly Tứ Mộ cycle: M1,5,9→Mão(3), M2,6,10→Ngọ(6),
+#       M3,7,11→Dậu(9), M4,8,12→Tý(0)
+# Source: 《玉匣記》逐月吉星總局.  _sme_verified = True
+THIEN_TAI_CHI: list[int] = [3, 6, 9, 0, 3, 6, 9, 0, 3, 6, 9, 0]
+
+
+def check_thien_tai(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Tài (天財) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THIEN_TAI_CHI[lunar_month - 1]
+
+
+# Địa Tài (地財) — Earth fortune (paired with Thiên Tài, 六沖 offset)
+# Rule: M1,5,9→Dậu(9), M2,6,10→Tý(0), M3,7,11→Mão(3), M4,8,12→Ngọ(6)
+# Source: 《玉匣記》.  _sme_verified = False
+DIA_TAI_CHI: list[int] = [9, 0, 3, 6, 9, 0, 3, 6, 9, 0, 3, 6]
+
+
+def check_dia_tai(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Địa Tài (地財) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == DIA_TAI_CHI[lunar_month - 1]
+
+
+# Nguyệt Tài (月財) — Monthly fortune
+# Rule: "Chánh nguyệt khởi Thìn, thuận hành"
+# Formula: (lunar_month + 3) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+
+
+def check_nguyet_tai(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Nguyệt Tài (月財) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 3) % 12
+
+
+# Lộc Khố (祿庫) — Fortune treasury
+# Rule: year CAN → day Chi where 祿's 墓庫 resides.
+# 甲乙(0,1)→未(7), 丙丁戊己(2-5)→戌(10), 庚辛(6,7)→丑(1), 壬癸(8,9)→辰(4)
+# Source: Tam Mệnh Thông Hội 祿庫 table.  _sme_verified = True
+LOC_KHO_MAP: dict[int, int] = {
+    0: 7, 1: 7, 2: 10, 3: 10, 4: 10, 5: 10, 6: 1, 7: 1, 8: 4, 9: 4,
+}
+
+
+def check_loc_kho(day_chi_idx: int, year_can_idx: int) -> bool:
+    """Check if day is Lộc Khố based on year's Heavenly Stem."""
+    target = LOC_KHO_MAP.get(year_can_idx)
+    return target is not None and day_chi_idx == target
+
+
+# Thiên Quý (天貴) — Heavenly noble
+# Rule: quarterly: M1,5,9→Sửu(1), M2,6,10→Dần(2),
+#       M3,7,11→Mão(3), M4,8,12→Thìn(4)
+# Source: 《協紀辨方書》.  _sme_verified = False
+THIEN_QUY_CHI: list[int] = [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]
+
+
+def check_thien_quy(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Quý (天貴) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THIEN_QUY_CHI[lunar_month - 1]
+
+
+# Cát Khánh (吉慶) — Auspicious celebration
+# Rule: "Chánh nguyệt khởi Sửu, thuận hành"
+# Formula: lunar_month % 12 (M1→1, M2→2, ...)
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+
+
+def check_cat_khanh(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Cát Khánh (吉慶) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == lunar_month % 12
+
+
+# Ích Hậu (益後) — Benefit later
+# Rule: quarterly: M1,5,9→Mùi(7), M2,6,10→Thân(8),
+#       M3,7,11→Dậu(9), M4,8,12→Tuất(10)
+# Source: 《玉匣記》逐月吉星.  _sme_verified = False
+ICH_HAU_CHI: list[int] = [7, 8, 9, 10, 7, 8, 9, 10, 7, 8, 9, 10]
+
+
+def check_ich_hau(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Ích Hậu (益後) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == ICH_HAU_CHI[lunar_month - 1]
+
+
+# Tục Thế (續世) — Continue world, good for descendants
+# Rule: "Chánh nguyệt khởi Mão, thuận hành"
+# Formula: (lunar_month + 2) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+
+
+def check_tuc_the(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Tục Thế (續世) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 2) % 12
+
+
+# Yếu Yên (要安) — Required peace
+# Rule: "Chánh nguyệt khởi Dậu, thuận hành tứ quý"
+# M1,5,9→Dậu(9), M2,6,10→Tuất(10), M3,7,11→Hợi(11), M4,8,12→Tý(0)
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+YEU_YEN_CHI: list[int] = [9, 10, 11, 0, 9, 10, 11, 0, 9, 10, 11, 0]
+
+
+def check_yeu_yen(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Yếu Yên (要安) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == YEU_YEN_CHI[lunar_month - 1]
+
+
+# Phổ Hộ (普護) — Universal protection
+# Rule: "Chánh nguyệt khởi Hợi, thuận hành"
+# Formula: (lunar_month + 10) % 12
+# Source: 《玉匣記》逐月吉星.  _sme_verified = False
+
+
+def check_pho_ho(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Phổ Hộ (普護) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 10) % 12
+
+
+# Thiên Mã (天馬) — Heavenly horse (monthly, different from year-based Dịch Mã)
+# Rule: quarterly Tứ Mã: M1,5,9→Ngọ(6), M2,6,10→Thân(8),
+#       M3,7,11→Tuất(10), M4,8,12→Tý(0)
+# Source: 《協紀辨方書》月將天馬.  _sme_verified = True
+THIEN_MA_CHI: list[int] = [6, 8, 10, 0, 6, 8, 10, 0, 6, 8, 10, 0]
+
+
+def check_thien_ma(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Mã (天馬) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THIEN_MA_CHI[lunar_month - 1]
+
+
+# Mậu Thương (戊倉) — Mậu storehouse day
+# Rule: any day with Thiên Can = 戊(4) is a storehouse day
+# Source: traditional "戊日為倉" rule.  _sme_verified = True
+
+
+def check_mau_thuong(day_can_idx: int) -> bool:
+    """Check if day is Mậu Thương (戊倉) — day's Heavenly Stem is 戊."""
+    return day_can_idx == 4
+
+
+# Phúc Hậu (福厚) — Thick fortune
+# Rule: "Chánh nguyệt khởi Tuất, thuận hành"
+# Formula: (lunar_month + 9) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+
+
+def check_phuc_hau(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Phúc Hậu (福厚) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 9) % 12
+
+
+# Thánh Tâm (聖心) — Sacred heart
+# Rule: quarterly reverse Tứ Chính: M1,5,9→Dậu(9), M2,6,10→Ngọ(6),
+#       M3,7,11→Mão(3), M4,8,12→Tý(0)
+# Source: 《協紀辨方書》.  _sme_verified = False
+THANH_TAM_CHI: list[int] = [9, 6, 3, 0, 9, 6, 3, 0, 9, 6, 3, 0]
+
+
+def check_thanh_tam(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thánh Tâm (聖心) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THANH_TAM_CHI[lunar_month - 1]
+
+
+# Thiên Quan (天官) — Heavenly official
+# Rule: "Chánh nguyệt khởi Ngọ, thuận hành"
+# Formula: (lunar_month + 5) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+
+
+def check_thien_quan(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Quan (天官) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 5) % 12
+
+
+# Minh Tinh (明星) — Bright star
+# Rule: quarterly reverse Tứ Mộ: M1,5,9→Thìn(4), M2,6,10→Sửu(1),
+#       M3,7,11→Tuất(10), M4,8,12→Mùi(7)
+# Source: 《玉匣記》逐月吉星.  _sme_verified = False
+MINH_TINH_CHI: list[int] = [4, 1, 10, 7, 4, 1, 10, 7, 4, 1, 10, 7]
+
+
+def check_minh_tinh(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Minh Tinh (明星) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == MINH_TINH_CHI[lunar_month - 1]
+
+
+# Kính Tâm (敬心) — Respectful heart
+# Rule: quarterly Tứ Mộ forward: M1,5,9→Sửu(1), M2,6,10→Thìn(4),
+#       M3,7,11→Mùi(7), M4,8,12→Tuất(10)
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+KINH_TAM_CHI: list[int] = [1, 4, 7, 10, 1, 4, 7, 10, 1, 4, 7, 10]
+
+
+def check_kinh_tam(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Kính Tâm (敬心) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == KINH_TAM_CHI[lunar_month - 1]
+
+
+# Phúc Sinh (福生) — Fortune birth
+# Rule: quarterly offset: M1,5,9→Mùi(7), M2,6,10→Dậu(9),
+#       M3,7,11→Hợi(11), M4,8,12→Sửu(1)
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+PHUC_SINH_CHI: list[int] = [7, 9, 11, 1, 7, 9, 11, 1, 7, 9, 11, 1]
+
+
+def check_phuc_sinh(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Phúc Sinh (福生) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == PHUC_SINH_CHI[lunar_month - 1]
+
+
+# Nguyệt Không (月空) — Monthly void, day CAN check
+# Rule: M1→Tân(7), M2→Kỷ(5), M3→Đinh(3), M4→Ất(1), quarterly reverse
+# Source: 《協紀辨方書》.  _sme_verified = False
+NGUYET_KHONG_CAN: list[int] = [7, 5, 3, 1, 7, 5, 3, 1, 7, 5, 3, 1]
+
+
+def check_nguyet_khong(lunar_month: int, day_can_idx: int) -> bool:
+    """Check if day has Nguyệt Không (月空) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_can_idx == NGUYET_KHONG_CAN[lunar_month - 1]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HUNG TINH (Inauspicious Stars)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Nhân Cách (人隔) — Human separation, bad for weddings/meetings
+# Rule: trimonthly cycle: M1,4,7,10→Sửu(1), M2,5,8,11→Dần(2), M3,6,9,12→Tý(0)
+# Source: 《玉匣記》逐月凶星:
+#   "人隔忌嫁娶、会亲友。正月丑、二月寅、三月子..."
+# _sme_verified = True
+NHAN_CACH_CHI: list[int] = [1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0]
+
+
+def check_nhan_cach(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Nhân Cách (人隔) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == NHAN_CACH_CHI[lunar_month - 1]
+
+
+# Phi Ma Sát (飛麻殺) — Flying hemp kill
+# Rule: quarterly reverse Tứ Chính: M1,5,9→Ngọ(6), M2,6,10→Mão(3),
+#       M3,7,11→Tý(0), M4,8,12→Dậu(9)
+# Source: 《玉匣記》逐月凶星.  _sme_verified = False
+PHI_MA_SAT_CHI: list[int] = [6, 3, 0, 9, 6, 3, 0, 9, 6, 3, 0, 9]
+
+
+def check_phi_ma_sat(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Phi Ma Sát (飛麻殺) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == PHI_MA_SAT_CHI[lunar_month - 1]
+
+
+# Nguyệt Yếm Đại Họa (月厌大禍) — Monthly eclipse great disaster
+# Rule: 大禍: "Chánh nguyệt khởi Ngọ, nghịch hành"
+# Formula: (7 - lunar_month) % 12
+# Source: 《玉匣記》逐月凶星.  _sme_verified = True
+NGUYET_YEM_DAI_HOA_CHI: list[int] = [6, 5, 4, 3, 2, 1, 0, 11, 10, 9, 8, 7]
+
+
+def check_nguyet_yem_dai_hoa(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Nguyệt Yếm Đại Họa (月厌大禍) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == NGUYET_YEM_DAI_HOA_CHI[lunar_month - 1]
+
+
+# Thổ Cấm (土禁) — Earth prohibition
+# Rule: "Chánh nguyệt khởi Dậu, thuận hành"
+# Formula: (lunar_month + 8) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+
+
+def check_tho_cam(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thổ Cấm (土禁) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 8) % 12
+
+
+# Cửu Thổ Quỷ (九土鬼) — Nine earth ghosts
+# Rule: "Chánh nguyệt khởi Tỵ, nghịch hành"
+# Formula: (6 - lunar_month) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+CUU_THO_QUY_CHI: list[int] = [5, 4, 3, 2, 1, 0, 11, 10, 9, 8, 7, 6]
+
+
+def check_cuu_tho_quy(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Cửu Thổ Quỷ (九土鬼) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == CUU_THO_QUY_CHI[lunar_month - 1]
+
+
+# Thiên Địa Chuyển Sát (天地轉殺) — Heaven earth turning kill
+# Rule: +5 step cycle from Sửu: M1→Sửu(1), M2→Ngọ(6), M3→Hợi(11),
+#       M4→Thìn(4), M5→Dậu(9), M6→Dần(2), M7→Mùi(7), M8→Tý(0),
+#       M9→Tỵ(5), M10→Tuất(10), M11→Mão(3), M12→Thân(8)
+# Formula: (lunar_month * 5 - 4) % 12
+# Source: 《協紀辨方書》.  _sme_verified = False
+THIEN_DIA_CHUYEN_SAT_CHI: list[int] = [1, 6, 11, 4, 9, 2, 7, 0, 5, 10, 3, 8]
+
+
+def check_thien_dia_chuyen_sat(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thiên Địa Chuyển Sát for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THIEN_DIA_CHUYEN_SAT_CHI[lunar_month - 1]
+
+
+# Nguyệt Kiến Chuyển Sát (月建轉殺) — Monthly foundation turning kill
+# Rule: day Chi = 月破 (opposite of 月建)
+# 月建: M1→Dần(2), M2→Mão(3)... → (month+1)%12
+# 月破 = 月建 + 6: M1→Thân(8), M2→Dậu(9)...
+# Formula: (lunar_month + 7) % 12
+# Source: 《協紀辨方書》月破.  _sme_verified = True
+
+
+def check_nguyet_kien_chuyen_sat(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Nguyệt Kiến Chuyển Sát (月破) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 7) % 12
+
+
+# Hà Khôi Câu Giảo (河魁勾絞) — River chief hook
+# Rule: partner of Thiên Cương (天罡), +6 offset (六沖)
+# Source: 《玉匣記》 "河魁与天罡对冲".  _sme_verified = True
+HA_KHOI_CAU_GIAO_CHI: list[int] = [11, 6, 1, 8, 3, 10, 5, 0, 7, 2, 9, 4]
+
+
+def check_ha_khoi_cau_giao(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Hà Khôi Câu Giảo for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == HA_KHOI_CAU_GIAO_CHI[lunar_month - 1]
+
+
+# Hỏa Tai (火災) — Fire disaster
+# Rule: "Chánh nguyệt khởi Tỵ, thuận hành"
+# Formula: (lunar_month + 4) % 12
+# Source: 《玉匣記》逐月凶星.  _sme_verified = False
+
+
+def check_hoa_tai(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Hỏa Tai (火災) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 4) % 12
+
+
+# Trùng Tang (重喪) — Double mourning, bad for funerals
+# Rule: month → forbidden day CAN (irregular pattern, must use lookup)
+# M1→Giáp(0), M2→Ất(1), M3→Mậu(4), M4→Bính(2), M5→Đinh(3), M6→Kỷ(5),
+# M7→Canh(6), M8→Tân(7), M9→Mậu(4), M10→Nhâm(8), M11→Quý(9), M12→Kỷ(5)
+# Source: 《協紀辨方書》重喪日.  _sme_verified = True
+TRUNG_TANG_CAN: list[int] = [0, 1, 4, 2, 3, 5, 6, 7, 4, 8, 9, 5]
+
+
+def check_trung_tang(lunar_month: int, day_can_idx: int) -> bool:
+    """Check if day has Trùng Tang (重喪) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_can_idx == TRUNG_TANG_CAN[lunar_month - 1]
+
+
+# Quỷ Cốc (鬼哭) — Ghost cry
+# Rule: alternating Sửu/Mùi: odd months→Sửu(1), even months→Mùi(7)
+# Source: 《玉匣記》逐月凶星.  _sme_verified = False
+
+
+def check_quy_coc(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Quỷ Cốc (鬼哭) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (1 if lunar_month % 2 == 1 else 7)
+
+
+# Thần Cách (神隔) — Spirit separation (paired with Nhân Cách, +6 offset)
+# Rule: trimonthly cycle: M1,4,7,10→Mùi(7), M2,5,8,11→Thân(8), M3,6,9,12→Ngọ(6)
+# Source: 《玉匣記》逐月凶星.  _sme_verified = False
+THAN_CACH_CHI: list[int] = [7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6]
+
+
+def check_than_cach(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Thần Cách (神隔) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == THAN_CACH_CHI[lunar_month - 1]
+
+
+# Hoàng Sa (黃沙) — Yellow sand
+# Rule: "reverse by 2 from Ngọ": M1→Ngọ(6), M2→Thìn(4), M3→Dần(2),
+#       M4→Tý(0), M5→Tuất(10), M6→Thân(8), M7→Ngọ(6)... repeats 6-month
+# Formula: (8 - 2 * lunar_month) % 12
+# Source: 《玉匣記》逐月凶星.  _sme_verified = False
+HOANG_SA_CHI: list[int] = [6, 4, 2, 0, 10, 8, 6, 4, 2, 0, 10, 8]
+
+
+def check_hoang_sa(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Hoàng Sa (黃沙) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == HOANG_SA_CHI[lunar_month - 1]
+
+
+# Ngũ Quỷ (五鬼) — Five ghosts
+# Rule: quarterly forward: M1,5,9→Mão(3), M2,6,10→Thìn(4),
+#       M3,7,11→Tỵ(5), M4,8,12→Ngọ(6)
+# Source: 《玉匣記》逐月凶星.  _sme_verified = False
+NGU_QUY_CHI: list[int] = [3, 4, 5, 6, 3, 4, 5, 6, 3, 4, 5, 6]
+
+
+def check_ngu_quy(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Ngũ Quỷ (五鬼) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == NGU_QUY_CHI[lunar_month - 1]
+
+
+# Nguyệt Hỏa Độc Hỏa (月火獨火) — Monthly fire / lone fire
+# Rule: "Chánh nguyệt khởi Dậu, thuận hành" (distinct from 月火 which is reverse)
+# Formula: (lunar_month + 8) % 12
+# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# NOTE: If formula matches thoCam, that's OK — different intents reference them.
+
+
+def check_nguyet_hoa_doc_hoa(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Nguyệt Hỏa Độc Hỏa for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 8) % 12
+
+
+# Lôi Công (雷公) — Thunder lord
+# Rule: seasonal assignment:
+#       Spring (M1-3)→Ngọ(6), Summer (M4-6)→Dậu(9),
+#       Autumn (M7-9)→Tý(0), Winter (M10-12)→Mão(3)
+# Source: 《玉匣記》逐季凶星.  _sme_verified = False
+LOI_CONG_CHI: list[int] = [6, 6, 6, 9, 9, 9, 0, 0, 0, 3, 3, 3]
+
+
+def check_loi_cong(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Lôi Công (雷公) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == LOI_CONG_CHI[lunar_month - 1]
+
+
+# Địa Phá (地破) — Earth break (= 月破, day Chi opposes month Chi)
+# Rule: 月建 = (month + 1) % 12, 月破 = 月建 + 6
+# Formula: (lunar_month + 7) % 12
+# Source: 《協紀辨方書》地破.  _sme_verified = True
+# NOTE: Same formula as Nguyệt Kiến Chuyển Sát — both represent 月破 concept.
+
+
+def check_dia_pha(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Địa Phá (地破) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == (lunar_month + 7) % 12
