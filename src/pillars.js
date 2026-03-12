@@ -29,8 +29,9 @@ const CHI_NAMES = ['Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','T
 /**
  * Giờ Địa Chi map.
  * Vietnamese time zone (UTC+7).
- * Tý spans 23:00 of DAY-1 to 00:59 of DAY.
- * Important: a birth at 23:30 on Jan 5 is Tý giờ of Jan 6 (next day's pillar).
+ * Tý spans 23:00 to 00:59.
+ * Convention: Tảo Tý phái (早子派) — day boundary at midnight (00:00).
+ * A birth at 23:30 on Jan 5 stays on Jan 5's day pillar.
  *
  * Index = hour 0-23
  */
@@ -40,8 +41,7 @@ const HOUR_TO_CHI = [
 // 12  13  14  15  16  17  18  19  20  21  22  23
     6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11,  0,
 ];
-// Note: hour 23 → Chi Tý (0), but belongs to the NEXT calendar day's hour pillar.
-// Callers must pass adjustedDate (shifted +1 day if hour >= 23) for Ngày/Giờ.
+// Note: hour 23 → Chi Tý (0). Tảo Tý phái — stays on current calendar day.
 
 /**
  * Giờ Can starting index for Chi Tý (chiIdx=0), keyed by dayCanIdx % 5.
@@ -250,22 +250,15 @@ function getMonthPillar(birthDt, yearCanIdx) {
 /**
  * Ngày Trụ (Day Pillar)
  * Uses JDN anchor from calendar-service.js.
- * Handle Tý giờ (23:00-24:00): ngày trụ shifts to NEXT day.
+ * Tảo Tý phái: day boundary at midnight — NO shift at 23:00.
  *
  * @param {{ year,month,day,hour,minute }} birthDt
  * @returns {{ canIdx, chiIdx, canName, chiName }}
  */
 function getDayPillar(birthDt) {
-  let { year, month, day, hour } = birthDt;
+  const { year, month, day } = birthDt;
 
-  // Tý giờ starts at 23:00 — belongs to the NEXT day's pillar
-  if (hour >= 23) {
-    const nextDay = new Date(year, month - 1, day + 1);
-    year  = nextDay.getFullYear();
-    month = nextDay.getMonth() + 1;
-    day   = nextDay.getDate();
-  }
-
+  // Tảo Tý phái: 23:00–23:59 stays on current calendar day
   const { canIdx, chiIdx } = getCanChiDay(year, month, day);
   return {
     canIdx,
