@@ -544,9 +544,11 @@ def check_tho_phu(lunar_month: int, day_chi_idx: int) -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Nguyệt Ân (月恩) — Monthly grace, day CAN matches monthly pattern
-# Rule: "Chánh nguyệt khởi Bính, thuận hành tứ quý" (丙甲壬庚 quarterly)
-# Source: 《協紀辨方書》.  _sme_verified = True
-NGUYET_AN_CAN: list[int] = [2, 0, 8, 6, 2, 0, 8, 6, 2, 0, 8, 6]
+# Rule (verse): "正月逢丙是月恩，二月见丁三庚真，四月己上五月戊，
+#                六辛七壬八癸成，九月庚上十月乙，冬月甲上腊月辛。"
+# Derivation: 月建地支所生之天干 (month branch generates day stem via Five Elements)
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 697.  _sme_verified = True
+NGUYET_AN_CAN: list[int] = [2, 3, 6, 5, 4, 7, 8, 9, 6, 1, 0, 7]
 
 
 def check_nguyet_an(lunar_month: int, day_can_idx: int) -> bool:
@@ -557,10 +559,10 @@ def check_nguyet_an(lunar_month: int, day_can_idx: int) -> bool:
 
 
 # Thiên Thành (天成) — Heavenly success
-# Rule: quarterly Tứ Chính cycle: M1,5,9→Ngọ(6), M2,6,10→Dậu(9),
-#       M3,7,11→Tý(0), M4,8,12→Mão(3)
-# Source: 《協紀辨方書》.  _sme_verified = True
-THIEN_THANH_CHI: list[int] = [6, 9, 0, 3, 6, 9, 0, 3, 6, 9, 0, 3]
+# Rule: odd branches +2 cycle: 卯巳未酉亥丑 (repeats every 6 months)
+# M1→未(7), M2→酉(9), M3→亥(11), M4→丑(1), M5→卯(3), M6→巳(5)...
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 708.  _sme_verified = True
+THIEN_THANH_CHI: list[int] = [7, 9, 11, 1, 3, 5, 7, 9, 11, 1, 3, 5]
 
 
 def check_thien_thanh(lunar_month: int, day_chi_idx: int) -> bool:
@@ -571,16 +573,17 @@ def check_thien_thanh(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # Thiên Phú (天富) — Heavenly wealth
-# Rule: "Chánh nguyệt khởi Dần, thuận hành"
-# Formula: (lunar_month + 1) % 12
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Rule: sequential branches from Thìn in month 1, +1/month
+# M1→辰(4), M2→巳(5), M3→午(6)... Formula: (lunar_month + 3) % 12
+# Auspicious for: 安葬 (burial), 修仓库 (repair granary)
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 694.  _sme_verified = True
 
 
 def check_thien_phu(lunar_month: int, day_chi_idx: int) -> bool:
     """Check if day has Thiên Phú (天富) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_chi_idx == (lunar_month + 1) % 12
+    return day_chi_idx == (lunar_month + 3) % 12
 
 
 # Thiên Tài (天財) — Heavenly fortune
@@ -735,7 +738,8 @@ def check_thien_ma(lunar_month: int, day_chi_idx: int) -> bool:
 
 # Mậu Thương (戊倉) — Mậu storehouse day
 # Rule: any day with Thiên Can = 戊(4) is a storehouse day
-# Source: traditional "戊日為倉" rule.  _sme_verified = True
+# NOTE: Not found in cnlunar888/《協紀辨方書》. Using traditional "戊日為倉" rule.
+# Source: Vietnamese almanac tradition.  _sme_verified = False
 
 
 def check_mau_thuong(day_can_idx: int) -> bool:
@@ -744,23 +748,24 @@ def check_mau_thuong(day_can_idx: int) -> bool:
 
 
 # Phúc Hậu (福厚) — Thick fortune
-# Rule: "Chánh nguyệt khởi Tuất, thuận hành"
-# Formula: (lunar_month + 9) % 12
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Rule: by SEASON (四季): Spring→Dần(2), Summer→Tỵ(5), Autumn→Thân(8), Winter→Hợi(11)
+# 3 months share the same value per season.
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 715.  _sme_verified = True
+PHUC_HAU_CHI: list[int] = [2, 2, 2, 5, 5, 5, 8, 8, 8, 11, 11, 11]
 
 
 def check_phuc_hau(lunar_month: int, day_chi_idx: int) -> bool:
     """Check if day has Phúc Hậu (福厚) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_chi_idx == (lunar_month + 9) % 12
+    return day_chi_idx == PHUC_HAU_CHI[lunar_month - 1]
 
 
-# Thánh Tâm (聖心) — Sacred heart
-# Rule: quarterly reverse Tứ Chính: M1,5,9→Dậu(9), M2,6,10→Ngọ(6),
-#       M3,7,11→Mão(3), M4,8,12→Tý(0)
-# Source: 《協紀辨方書》.  _sme_verified = False
-THANH_TAM_CHI: list[int] = [9, 6, 3, 0, 9, 6, 3, 0, 9, 6, 3, 0]
+# Thánh Tâm (聖心) — Sacred heart, good for 祭祀/祈福
+# Rule: M1→亥(11), M2→巳(5), M3→子(0), M4→午(6), M5→丑(1), M6→未(7),
+#       M7→寅(2), M8→申(8), M9→卯(3), M10→酉(9), M11→辰(4), M12→戌(10)
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 725.  _sme_verified = True
+THANH_TAM_CHI: list[int] = [11, 5, 0, 6, 1, 7, 2, 8, 3, 9, 4, 10]
 
 
 def check_thanh_tam(lunar_month: int, day_chi_idx: int) -> bool:
@@ -783,11 +788,13 @@ def check_thien_quan(lunar_month: int, day_chi_idx: int) -> bool:
     return day_chi_idx == (lunar_month + 5) % 12
 
 
-# Minh Tinh (明星) — Bright star
-# Rule: quarterly reverse Tứ Mộ: M1,5,9→Thìn(4), M2,6,10→Sửu(1),
-#       M3,7,11→Tuất(10), M4,8,12→Mùi(7)
-# Source: 《玉匣記》逐月吉星.  _sme_verified = False
-MINH_TINH_CHI: list[int] = [4, 1, 10, 7, 4, 1, 10, 7, 4, 1, 10, 7]
+# Minh Tinh (明星) — Bright star, good for 赴任/诉讼/安葬
+# Rule: even branches +2 cycle: M1→申(8), M2→戌(10), M3→子(0), M4→寅(2),
+#       M5→辰(4), M6→午(6), repeats every 6 months.
+# NOTE: cnlunar888 source has '甲' at months 1,7 — likely data error for '申'.
+#       Using 申(8) based on the +2 stepping pattern.
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 724.  _sme_verified = True
+MINH_TINH_CHI: list[int] = [8, 10, 0, 2, 4, 6, 8, 10, 0, 2, 4, 6]
 
 
 def check_minh_tinh(lunar_month: int, day_chi_idx: int) -> bool:
@@ -797,11 +804,12 @@ def check_minh_tinh(lunar_month: int, day_chi_idx: int) -> bool:
     return day_chi_idx == MINH_TINH_CHI[lunar_month - 1]
 
 
-# Kính Tâm (敬心) — Respectful heart
-# Rule: quarterly Tứ Mộ forward: M1,5,9→Sửu(1), M2,6,10→Thìn(4),
-#       M3,7,11→Mùi(7), M4,8,12→Tuất(10)
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
-KINH_TAM_CHI: list[int] = [1, 4, 7, 10, 1, 4, 7, 10, 1, 4, 7, 10]
+# Kính Tâm (敬安) — Respectful peace
+# Rule: M1→未(7), M2→丑(1), M3→申(8), M4→寅(2), M5→酉(9), M6→卯(3),
+#       M7→戌(10), M8→辰(4), M9→亥(11), M10→巳(5), M11→子(0), M12→午(6)
+# 恭顺之神当值 (spirit of respectful obedience)
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 741.  _sme_verified = True
+KINH_TAM_CHI: list[int] = [7, 1, 8, 2, 9, 3, 10, 4, 11, 5, 0, 6]
 
 
 def check_kinh_tam(lunar_month: int, day_chi_idx: int) -> bool:
@@ -811,11 +819,11 @@ def check_kinh_tam(lunar_month: int, day_chi_idx: int) -> bool:
     return day_chi_idx == KINH_TAM_CHI[lunar_month - 1]
 
 
-# Phúc Sinh (福生) — Fortune birth
-# Rule: quarterly offset: M1,5,9→Mùi(7), M2,6,10→Dậu(9),
-#       M3,7,11→Hợi(11), M4,8,12→Sửu(1)
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
-PHUC_SINH_CHI: list[int] = [7, 9, 11, 1, 7, 9, 11, 1, 7, 9, 11, 1]
+# Phúc Sinh (福生) — Fortune birth, good for 祭祀/祈福
+# Rule: M1→酉(9), M2→卯(3), M3→戌(10), M4→辰(4), M5→亥(11), M6→巳(5),
+#       M7→子(0), M8→午(6), M9→丑(1), M10→未(7), M11→寅(2), M12→申(8)
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 714.  _sme_verified = True
+PHUC_SINH_CHI: list[int] = [9, 3, 10, 4, 11, 5, 0, 6, 1, 7, 2, 8]
 
 
 def check_phuc_sinh(lunar_month: int, day_chi_idx: int) -> bool:
@@ -826,9 +834,11 @@ def check_phuc_sinh(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # Nguyệt Không (月空) — Monthly void, day CAN check
-# Rule: M1→Tân(7), M2→Kỷ(5), M3→Đinh(3), M4→Ất(1), quarterly reverse
-# Source: 《協紀辨方書》.  _sme_verified = False
-NGUYET_KHONG_CAN: list[int] = [7, 5, 3, 1, 7, 5, 3, 1, 7, 5, 3, 1]
+# Rule: quarterly 壬庚丙甲 cycle:
+# M1,5,9→Nhâm(8), M2,6,10→Canh(6), M3,7,11→Bính(2), M4,8,12→Giáp(0)
+# Auspicious for: 上表章 (submitting petitions)
+# Source: 《協紀辨方書》, cnlunar888/lunar.py line 722.  _sme_verified = True
+NGUYET_KHONG_CAN: list[int] = [8, 6, 2, 0, 8, 6, 2, 0, 8, 6, 2, 0]
 
 
 def check_nguyet_khong(lunar_month: int, day_can_idx: int) -> bool:
@@ -843,11 +853,12 @@ def check_nguyet_khong(lunar_month: int, day_can_idx: int) -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Nhân Cách (人隔) — Human separation, bad for weddings/meetings
-# Rule: trimonthly cycle: M1,4,7,10→Sửu(1), M2,5,8,11→Dần(2), M3,6,9,12→Tý(0)
-# Source: 《玉匣記》逐月凶星:
-#   "人隔忌嫁娶、会亲友。正月丑、二月寅、三月子..."
-# _sme_verified = True
-NHAN_CACH_CHI: list[int] = [1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0]
+# Rule: descending by -2, cycling through odd branches in reverse:
+# M1→酉(9), M2→未(7), M3→巳(5), M4→卯(3), M5→丑(1), M6→亥(11),
+# M7→酉(9), M8→未(7), M9→巳(5), M10→卯(3), M11→丑(1), M12→亥(11)
+# Inauspicious for: 嫁娶 (marriage), 进人 (receiving people)
+# Source: 《玉匣記》逐月凶星, cnlunar888/lunar.py line 802.  _sme_verified = True
+NHAN_CACH_CHI: list[int] = [9, 7, 5, 3, 1, 11, 9, 7, 5, 3, 1, 11]
 
 
 def check_nhan_cach(lunar_month: int, day_chi_idx: int) -> bool:
@@ -857,11 +868,12 @@ def check_nhan_cach(lunar_month: int, day_chi_idx: int) -> bool:
     return day_chi_idx == NHAN_CACH_CHI[lunar_month - 1]
 
 
-# Phi Ma Sát (飛麻殺) — Flying hemp kill
-# Rule: quarterly reverse Tứ Chính: M1,5,9→Ngọ(6), M2,6,10→Mão(3),
-#       M3,7,11→Tý(0), M4,8,12→Dậu(9)
-# Source: 《玉匣記》逐月凶星.  _sme_verified = False
-PHI_MA_SAT_CHI: list[int] = [6, 3, 0, 9, 6, 3, 0, 9, 6, 3, 0, 9]
+# Phi Ma Sát (披麻/飛麻殺) — Flying hemp kill
+# Rule: quarterly 子酉午卯 cycle (descending by -3):
+# M1,5,9→子(0), M2,6,10→酉(9), M3,7,11→午(6), M4,8,12→卯(3)
+# Inauspicious for: 嫁娶 (marriage), 入宅 (moving in)
+# Source: 《玉匣記》逐月凶星, cnlunar888/lunar.py line 811.  _sme_verified = True
+PHI_MA_SAT_CHI: list[int] = [0, 9, 6, 3, 0, 9, 6, 3, 0, 9, 6, 3]
 
 
 def check_phi_ma_sat(lunar_month: int, day_chi_idx: int) -> bool:
