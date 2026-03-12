@@ -67,6 +67,8 @@ class IntentEnum(str, Enum):
     DONG_THO = "DONG_THO"
     XUAT_HANH = "XUAT_HANH"
     KY_HOP_DONG = "KY_HOP_DONG"
+    PHAU_THUAT = "PHAU_THUAT"
+    KHAM_BENH = "KHAM_BENH"
     MAC_DINH = "MAC_DINH"
 
 
