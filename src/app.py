@@ -42,10 +42,8 @@ logger = logging.getLogger("bat_tu_api")
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     logger.info("Starting Bat Tu API")
-    # TODO: init Redis pool, DB connection
     yield
     logger.info("Shutting down Bat Tu API")
-    # TODO: close Redis pool, DB connection
 
 
 # ─────────────────────────────────────────────────────────────────────────────
