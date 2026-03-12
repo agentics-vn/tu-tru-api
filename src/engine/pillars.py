@@ -2,7 +2,11 @@
 pillars.py — Tứ Trụ / Bát Tự (Four Pillars) Engine.
 
 Wraps sxtwl library for astronomical-accurate pillar computation.
-Handles: Lập Xuân boundary, Tiết Khí month boundaries, Tý Muộn day shift.
+Handles: Lập Xuân boundary, Tiết Khí month boundaries.
+
+Convention: Tảo Tý phái (早子派) — day boundary at midnight (00:00).
+Giờ Tý Muộn (23:00–23:59) belongs to the CURRENT calendar day.
+No day-pillar shift at 23h.
 
 Source of truth: docs/algorithm.md §17
 """
@@ -35,7 +39,7 @@ BIRTH_HOUR_TO_CHI: dict[int, int] = {
     18: 9,   # Dậu (17h-18h59)
     20: 10,  # Tuất (19h-20h59)
     22: 11,  # Hợi (21h-22h59)
-    23: 0,   # Tý Muộn (23h-23h59) — shifts Day Pillar to NEXT day
+    23: 0,   # Tý Muộn (23h-23h59) — same calendar day (Tảo Tý phái)
 }
 
 BIRTH_HOUR_LABELS: dict[int, str] = {
@@ -61,7 +65,7 @@ HOUR_CAN_START: list[int] = [0, 2, 4, 6, 8]
 
 
 def is_ty_muon(birth_time: int) -> bool:
-    """Tý Muộn (23h+) — Day Pillar shifts to the next calendar day."""
+    """Tý Muộn (23h–23h59). Under Tảo Tý phái, day pillar does NOT shift."""
     return birth_time == 23
 
 
@@ -98,7 +102,7 @@ def get_tu_tru(birth_date: str, birth_time: int) -> dict:
     Rules:
         - Year Pillar: changes at Lập Xuân (~Feb 4), handled by sxtwl
         - Month Pillar: changes at Tiết Khí boundaries, handled by sxtwl
-        - Day Pillar: Tý Muộn (birth_time=23) shifts to next calendar day
+        - Day Pillar: Tảo Tý phái — NO shift at 23h, day = calendar date
         - Hour Pillar: computed from day Can + hour Chi
     """
     if birth_time not in VALID_BIRTH_HOURS:
@@ -109,33 +113,12 @@ def get_tu_tru(birth_date: str, birth_time: int) -> dict:
     parts = birth_date.split("-")
     year, month, day = int(parts[0]), int(parts[1]), int(parts[2])
 
-    # For Tý Muộn (23h+), the day pillar shifts to the NEXT calendar day
-    if is_ty_muon(birth_time):
-        # Use next day for sxtwl computation
-        from datetime import date as dt_date, timedelta
-        next_day = dt_date(year, month, day) + timedelta(days=1)
-        solar_year, solar_month, solar_day = next_day.year, next_day.month, next_day.day
-    else:
-        solar_year, solar_month, solar_day = year, month, day
+    # Tảo Tý phái: day boundary at midnight (00:00).
+    # 23:00–23:59 stays on the current calendar day — no shift needed.
+    sxtwl_day = sxtwl.fromSolar(year, month, day)
 
-    # Get the sxtwl Day object
-    sxtwl_day = sxtwl.fromSolar(solar_year, solar_month, solar_day)
-
-    # Year pillar (uses Lập Xuân boundary automatically)
-    # BUT for Tý Muộn we need the ORIGINAL date's year pillar, not next day's
-    # Actually: the year pillar is based on the actual birth moment, not shifted day
-    # Since Tý Muộn only shifts the DAY pillar, year should use original date's Lập Xuân
-    if is_ty_muon(birth_time):
-        # Year pillar uses original date context
-        orig_day = sxtwl.fromSolar(year, month, day)
-        year_pillar = _gz_to_dict(orig_day.getYearGZ())
-        # Month pillar also uses original date's solar term context
-        month_pillar = _gz_to_dict(orig_day.getMonthGZ())
-    else:
-        year_pillar = _gz_to_dict(sxtwl_day.getYearGZ())
-        month_pillar = _gz_to_dict(sxtwl_day.getMonthGZ())
-
-    # Day pillar (shifted for Tý Muộn)
+    year_pillar = _gz_to_dict(sxtwl_day.getYearGZ())
+    month_pillar = _gz_to_dict(sxtwl_day.getMonthGZ())
     day_pillar = _gz_to_dict(sxtwl_day.getDayGZ())
 
     # Hour pillar: compute from day Can + birth_time clock hour

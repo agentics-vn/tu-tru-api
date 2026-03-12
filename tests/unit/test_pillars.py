@@ -144,39 +144,45 @@ class TestFullChart:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Ty Muon (late Ty, 23h) — Day Pillar shift
+# Ty Muon (late Ty, 23h) — Tảo Tý phái (NO day shift)
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestTyMuon:
-    """Ty Muon (birth_time=23) shifts Day Pillar to next calendar day."""
+    """Tảo Tý phái: Ty Muon (23h) stays on SAME calendar day — no shift."""
 
-    def test_day_pillar_shifts_to_next_day(self):
-        """For Ty Muon, day pillar should be NEXT day's pillar."""
-        # Get normal day pillar for Jan 6
-        next_day_result = get_tu_tru("1990-01-06", 0)  # Ty Som, Jan 6
-        # Get Ty Muon on Jan 5 — should use Jan 6's day pillar
+    def test_day_pillar_same_as_current_day(self):
+        """For Ty Muon under Tảo Tý, day pillar is the SAME calendar day."""
+        # Ty Som (0h) and Ty Muon (23h) on Jan 5 → same day pillar
+        ty_som_result = get_tu_tru("1990-01-05", 0)
         ty_muon_result = get_tu_tru("1990-01-05", 23)
 
-        assert ty_muon_result["day"]["can_idx"] == next_day_result["day"]["can_idx"]
-        assert ty_muon_result["day"]["chi_idx"] == next_day_result["day"]["chi_idx"]
+        assert ty_muon_result["day"]["can_idx"] == ty_som_result["day"]["can_idx"]
+        assert ty_muon_result["day"]["chi_idx"] == ty_som_result["day"]["chi_idx"]
 
-    def test_year_pillar_uses_original_date(self):
-        """For Ty Muon, year pillar uses the ORIGINAL date, not shifted."""
-        # Dec 31 Ty Muon → day shifts to Jan 1 of next year
-        # But year pillar should still be the original year's
+    def test_day_pillar_differs_from_next_day(self):
+        """Ty Muon on Jan 5 should NOT equal Jan 6's day pillar."""
+        next_day_result = get_tu_tru("1990-01-06", 0)
+        ty_muon_result = get_tu_tru("1990-01-05", 23)
+
+        # Day pillars cycle every 60, consecutive days differ
+        assert (
+            ty_muon_result["day"]["can_idx"] != next_day_result["day"]["can_idx"]
+            or ty_muon_result["day"]["chi_idx"] != next_day_result["day"]["chi_idx"]
+        )
+
+    def test_year_pillar_same_for_all_hours(self):
+        """Year pillar is identical regardless of birth hour."""
         result_ty_muon = get_tu_tru("1990-12-31", 23)
         result_original = get_tu_tru("1990-12-31", 0)
 
-        # Year pillar should be the same regardless of Ty Muon
         assert result_ty_muon["year"]["can_idx"] == result_original["year"]["can_idx"]
         assert result_ty_muon["year"]["chi_idx"] == result_original["year"]["chi_idx"]
 
-    def test_month_pillar_uses_original_date(self):
-        """For Ty Muon, month pillar uses original date's solar term context."""
+    def test_month_pillar_same_for_all_hours(self):
+        """Month pillar is identical regardless of birth hour."""
         result_ty_muon = get_tu_tru("1990-03-21", 23)
         result_original = get_tu_tru("1990-03-21", 0)
 
-        # Month pillar should be the same
         assert result_ty_muon["month"]["can_idx"] == result_original["month"]["can_idx"]
         assert result_ty_muon["month"]["chi_idx"] == result_original["month"]["chi_idx"]
 
@@ -185,6 +191,14 @@ class TestTyMuon:
         result = get_tu_tru("1990-03-21", 23)
         assert result["hour"]["chi_idx"] == 0
         assert result["hour"]["chi_name"] == "Tý"
+
+    def test_hour_can_uses_same_day_can(self):
+        """Hour Can for Tý Muộn uses current day's Day Can (no shift)."""
+        result_noon = get_tu_tru("1990-03-21", 11)   # Ngọ
+        result_ty_muon = get_tu_tru("1990-03-21", 23)  # Tý Muộn
+
+        # Both should use the same Day Can for deriving Hour Can
+        assert result_ty_muon["day"]["can_idx"] == result_noon["day"]["can_idx"]
 
 
 # ─────────────────────────────────────────────────────────────────────────────
