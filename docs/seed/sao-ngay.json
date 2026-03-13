@@ -2277,10 +2277,13 @@
   ],
 
   "nhi_thap_bat_tu": {
-    "_description": "Nhị Thập Bát Tú (28 Lunar Mansions). Cycle repeats every 28 days. Use anchor date to compute: tuIdx = (julianDay - anchorJD) % 28. Element pattern per 7: Mộc, Kim, Thổ, Nhật, Nguyệt, Hỏa, Thủy.",
-    "_anchor": {
-      "_note": "Anchor must be calibrated against a known almanac date. E.g., if 13/03/2026 = sao Trực Tinh (idx 24 = Tinh), compute anchorJD accordingly.",
-      "calibration_needed": true
+    "_description": "Nhị Thập Bát Tú (28 Lunar Mansions). Cycle repeats every 28 days. Formula: tuIdx = (JDN + 11) % 28. Element pattern per 7: Mộc, Kim, Thổ, Nhật, Nguyệt, Hỏa, Thủy.",
+    "_formula": {
+      "method": "tuIdx = (JDN + 11) % 28",
+      "offset": 11,
+      "reference": "Feb 4, 1685 (JDN 2336529) = Tinh (idx 24), per Jōkyō calendar reform (貞享暦). Verified: Mar 14, 2026 = Nữ (idx 9), Mar 15, 2026 (Sun) = Hư (idx 10).",
+      "jdn_note": "JDN = Julian Day Number for the given Gregorian date. Use standard Gregorian-to-JDN conversion.",
+      "calibration_needed": false
     },
     "data": [
       {
