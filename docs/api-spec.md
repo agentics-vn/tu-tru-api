@@ -83,3 +83,128 @@
 - `X-API-Key: <key>` — required on all requests
 - `X-RateLimit-Remaining: 94` — remaining calls today
 - `X-RateLimit-Reset: 1735689600` — Unix timestamp when quota resets
+
+---
+
+# API Spec — POST /v1/tu-tru
+
+Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
+
+## Request
+```json
+{
+  "birth_date": "1990-05-15",
+  "birth_time": 8,
+  "gender": "male"
+}
+```
+
+| Field | Required | Type | Validation |
+|---|---|---|---|
+| birth_date | Yes | string ISO | Past date, year >= 1900 |
+| birth_time | No | int | Dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23 |
+| gender | No | string | `male` \| `female` (required for Đại Vận) |
+
+**Notes:**
+- `birth_time` omitted → chỉ trả về Mệnh Nạp Âm (year-level info)
+- `birth_time` provided → trả đầy đủ Tứ Trụ, Dụng Thần, Thập Thần
+- `gender` provided (+ birth_time) → thêm Đại Vận (10-year luck cycles)
+
+## Response 200 — Full (birth_time + gender)
+```json
+{
+  "status": "success",
+  "birth_date": "1990-05-15",
+  "birth_time": 8,
+  "birth_time_label": "Giờ Thìn (7h-8h59)",
+  "birth_year_can_chi": "Canh Ngọ",
+  "menh": {
+    "nap_am_name": "Lộ Bàng Thổ",
+    "hanh": "Thổ",
+    "duong_than": "Hỏa",
+    "ky_than": "Mộc"
+  },
+  "tu_tru_display": "Canh Ngọ | Tân Tỵ | Đinh Mùi | Giáp Thìn",
+  "pillars": {
+    "year": {
+      "can_chi": "Canh Ngọ",
+      "can": { "idx": 6, "name": "Canh" },
+      "chi": { "idx": 6, "name": "Ngọ" },
+      "nap_am": { "hanh": "Thổ", "name": "Lộ Bàng Thổ" }
+    },
+    "month": { "..." : "..." },
+    "day":   { "..." : "..." },
+    "hour":  { "..." : "..." }
+  },
+  "nhat_chu": {
+    "can_name": "Đinh",
+    "hanh": "Hỏa"
+  },
+  "chart_strength": "weak",
+  "dung_than": {
+    "element": "Mộc",
+    "description": "Nguyên tố hỗ trợ tốt nhất cho lá số"
+  },
+  "hi_than": {
+    "element": "Hỏa",
+    "description": "Nguyên tố hỗ trợ phụ"
+  },
+  "ky_than": {
+    "element": "Thủy",
+    "description": "Nguyên tố bất lợi nhất"
+  },
+  "cuu_than": {
+    "element": "Kim",
+    "description": "Nguyên tố sinh ra Kỵ Thần"
+  },
+  "thap_than": {
+    "year": { "key": "chinh_tai", "name": "Chính Tài", "category": "favorable" },
+    "month": { "key": "thien_tai", "name": "Thiên Tài", "category": "unfavorable" },
+    "hour":  { "key": "chinh_an",  "name": "Chính Ấn",  "category": "favorable" },
+    "dominant": { "key": "chinh_tai", "name": "Chính Tài" }
+  },
+  "gender": "male",
+  "dai_van": {
+    "direction": "thuận",
+    "current": {
+      "display": "Nhâm Thân",
+      "hanh": "Thủy",
+      "nap_am_hanh": "Kim",
+      "age_range": "33-42"
+    },
+    "cycles": [
+      {
+        "cycle_num": 1,
+        "display": "Canh Thìn",
+        "hanh": "Kim",
+        "nap_am_hanh": "Kim",
+        "age_range": "3-12"
+      }
+    ]
+  }
+}
+```
+
+## Response 200 — Basic (no birth_time)
+```json
+{
+  "status": "success",
+  "birth_date": "1990-05-15",
+  "birth_year_can_chi": "Canh Ngọ",
+  "menh": {
+    "nap_am_name": "Lộ Bàng Thổ",
+    "hanh": "Thổ",
+    "duong_than": "Hỏa",
+    "ky_than": "Mộc"
+  },
+  "_note": "Chỉ có thông tin cơ bản (mệnh Nạp Âm). Cung cấp birth_time để xem đầy đủ Tứ Trụ, Dụng Thần, Thập Thần."
+}
+```
+
+## Error Responses
+| HTTP | error_code | When |
+|---|---|---|
+| 400 | INVALID_INPUT | Missing/invalid field |
+| 401 | UNAUTHORIZED | Missing/invalid API key |
+| 429 | RATE_LIMITED | Over quota |
+| 500 | INTERNAL_ERROR | Unexpected server error |
