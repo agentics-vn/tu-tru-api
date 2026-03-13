@@ -286,6 +286,53 @@ class TestLichThang:
         data = r.json()
         assert data["user_menh"]["hanh"] == "Kim"
 
+    def test_day_has_gio_hoang_dao(self):
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        for d in data["days"]:
+            assert "gio_hoang_dao" in d
+            assert len(d["gio_hoang_dao"]) == 6
+            for g in d["gio_hoang_dao"]:
+                assert "chi_name" in g
+                assert "range" in g
+
+    def test_day_has_sao_28(self):
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        for d in data["days"]:
+            assert "sao_28" in d
+            assert "name" in d["sao_28"]
+            assert "hanh" in d["sao_28"]
+            assert d["sao_28"]["tot_xau"] in ("tốt", "xấu", "vừa")
+
+    def test_day_has_summary(self):
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        for d in data["days"]:
+            assert "summary" in d
+            assert isinstance(d["summary"]["tot"], list)
+            assert isinstance(d["summary"]["xau"], list)
+            assert d["summary"]["rating"] in ("tốt", "xấu", "bình thường")
+
+    def test_sao_28_cycles_every_28_days(self):
+        """28 Tú should cycle: day 1 and day 29 should have same star."""
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        # Day 1 (Mar 1) and Day 29 (Mar 29) should have same 28 Tu
+        assert data["days"][0]["sao_28"]["name"] == data["days"][28]["sao_28"]["name"]
+
     def test_invalid_month_format(self):
         r = client.get("/v1/lich-thang", params={
             "birth_date": "1984-03-15",

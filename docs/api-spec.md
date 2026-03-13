@@ -86,6 +86,62 @@
 
 ---
 
+# API Spec — GET /v1/lich-thang
+
+Lịch tháng với Hoàng Đạo/Hắc Đạo, giờ tốt, 28 Tú, tóm tắt tốt/xấu.
+
+## Request (Query params)
+
+| Param | Required | Type | Description |
+|---|---|---|---|
+| birth_date | Yes | string ISO | Ngày sinh YYYY-MM-DD |
+| birth_time | No | int | Giờ sinh dropdown |
+| gender | No | string | `male` \| `female` |
+| month | Yes | string | Tháng cần xem YYYY-MM |
+
+## Response 200
+```json
+{
+  "status": "success",
+  "month": "2026-03",
+  "user_menh": { "hanh": "Kim", "name": "Hải Trung Kim" },
+  "days": [
+    {
+      "date": "2026-03-01",
+      "lunar_day": 13,
+      "lunar_month": 1,
+      "can_chi_name": "Giáp Thìn",
+      "is_hoang_dao": true,
+      "star_name": "Kim Quỹ",
+      "badge": "hoang_dao",
+      "truc_name": "Bình",
+      "truc_score": 1,
+      "is_layer1_pass": true,
+      "gio_hoang_dao": [
+        { "chi_name": "Tý", "range": "23:00-01:00" },
+        { "chi_name": "Sửu", "range": "01:00-03:00" },
+        { "chi_name": "Thìn", "range": "07:00-09:00" },
+        { "chi_name": "Tỵ", "range": "09:00-11:00" },
+        { "chi_name": "Mùi", "range": "13:00-15:00" },
+        { "chi_name": "Tuất", "range": "19:00-21:00" }
+      ],
+      "sao_28": {
+        "name": "Sâm",
+        "hanh": "Thủy",
+        "tot_xau": "tốt"
+      },
+      "summary": {
+        "tot": ["Hoàng Đạo (Kim Quỹ)", "Sao Sâm"],
+        "xau": [],
+        "rating": "tốt"
+      }
+    }
+  ]
+}
+```
+
+---
+
 # API Spec — POST /v1/tu-tru
 
 Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
