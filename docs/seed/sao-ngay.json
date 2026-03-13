@@ -2077,6 +2077,202 @@
         "11": {"name": "Sửu",   "idx": 1},
         "12": null
       }
+    },
+    {
+      "stt": 49,
+      "key": "ngu_hu",
+      "name": "Ngũ Hư",
+      "tinh_chat": "Kỵ khởi tạo, giá thú, an táng",
+      "lookup_type": "chi",
+      "data": {
+        "1":  {"name": "Tỵ",    "idx": 5},
+        "2":  {"name": "Dậu",   "idx": 9},
+        "3":  {"name": "Sửu",   "idx": 1},
+        "4":  {"name": "Thân",  "idx": 8},
+        "5":  {"name": "Tý",    "idx": 0},
+        "6":  {"name": "Thìn",  "idx": 4},
+        "7":  {"name": "Hợi",   "idx": 11},
+        "8":  {"name": "Mão",   "idx": 3},
+        "9":  {"name": "Mùi",   "idx": 7},
+        "10": {"name": "Dần",   "idx": 2},
+        "11": {"name": "Ngọ",   "idx": 6},
+        "12": {"name": "Tuất",  "idx": 10}
+      }
+    },
+    {
+      "stt": 50,
+      "key": "tu_thoi_dai_mo",
+      "name": "Tứ Thời Đại Mộ",
+      "tinh_chat": "Kỵ an táng",
+      "lookup_type": "canchi",
+      "_note": "Quarterly pattern: same value for 3-month seasons",
+      "data": {
+        "1":  {"name": "Ất Mùi",    "canIdx": 1, "chiIdx": 7},
+        "2":  {"name": "Ất Mùi",    "canIdx": 1, "chiIdx": 7},
+        "3":  {"name": "Ất Mùi",    "canIdx": 1, "chiIdx": 7},
+        "4":  {"name": "Bính Tuất",  "canIdx": 2, "chiIdx": 10},
+        "5":  {"name": "Bính Tuất",  "canIdx": 2, "chiIdx": 10},
+        "6":  {"name": "Bính Tuất",  "canIdx": 2, "chiIdx": 10},
+        "7":  {"name": "Tân Sửu",   "canIdx": 7, "chiIdx": 1},
+        "8":  {"name": "Tân Sửu",   "canIdx": 7, "chiIdx": 1},
+        "9":  {"name": "Tân Sửu",   "canIdx": 7, "chiIdx": 1},
+        "10": {"name": "Nhâm Thìn", "canIdx": 8, "chiIdx": 4},
+        "11": {"name": "Nhâm Thìn", "canIdx": 8, "chiIdx": 4},
+        "12": {"name": "Nhâm Thìn", "canIdx": 8, "chiIdx": 4}
+      }
+    },
+    {
+      "stt": 51,
+      "key": "tho_cam",
+      "name": "Thổ Cẩm",
+      "tinh_chat": "Kỵ xây dựng, an táng",
+      "lookup_type": "chi",
+      "_note": "Quarterly pattern",
+      "data": {
+        "1":  {"name": "Hợi",   "idx": 11},
+        "2":  {"name": "Hợi",   "idx": 11},
+        "3":  {"name": "Hợi",   "idx": 11},
+        "4":  {"name": "Dần",   "idx": 2},
+        "5":  {"name": "Dần",   "idx": 2},
+        "6":  {"name": "Dần",   "idx": 2},
+        "7":  {"name": "Tỵ",    "idx": 5},
+        "8":  {"name": "Tỵ",    "idx": 5},
+        "9":  {"name": "Tỵ",    "idx": 5},
+        "10": {"name": "Thân",  "idx": 8},
+        "11": {"name": "Thân",  "idx": 8},
+        "12": {"name": "Thân",  "idx": 8}
+      }
+    },
+    {
+      "stt": 52,
+      "key": "ly_sang",
+      "name": "Ly Sàng",
+      "tinh_chat": "Kỵ giá thú",
+      "lookup_type": "chi",
+      "_note": "Quarterly pattern. Months 4-6 have 2 values (Dần, Ngọ).",
+      "data": {
+        "1":  [{"name": "Dậu",  "idx": 9}],
+        "2":  [{"name": "Dậu",  "idx": 9}],
+        "3":  [{"name": "Dậu",  "idx": 9}],
+        "4":  [{"name": "Dần",  "idx": 2}, {"name": "Ngọ", "idx": 6}],
+        "5":  [{"name": "Dần",  "idx": 2}, {"name": "Ngọ", "idx": 6}],
+        "6":  [{"name": "Dần",  "idx": 2}, {"name": "Ngọ", "idx": 6}],
+        "7":  [{"name": "Tuất", "idx": 10}],
+        "8":  [{"name": "Tuất", "idx": 10}],
+        "9":  [{"name": "Tuất", "idx": 10}],
+        "10": [{"name": "Tỵ",   "idx": 5}],
+        "11": [{"name": "Tỵ",   "idx": 5}],
+        "12": [{"name": "Tỵ",   "idx": 5}]
+      }
+    },
+    {
+      "stt": 53,
+      "key": "tu_thoi_co_qua",
+      "name": "Tứ Thời Cô Quả",
+      "tinh_chat": "Kỵ giá thú",
+      "lookup_type": "chi",
+      "_note": "Quarterly pattern",
+      "data": {
+        "1":  {"name": "Sửu",   "idx": 1},
+        "2":  {"name": "Sửu",   "idx": 1},
+        "3":  {"name": "Sửu",   "idx": 1},
+        "4":  {"name": "Thìn",  "idx": 4},
+        "5":  {"name": "Thìn",  "idx": 4},
+        "6":  {"name": "Thìn",  "idx": 4},
+        "7":  {"name": "Mùi",   "idx": 7},
+        "8":  {"name": "Mùi",   "idx": 7},
+        "9":  {"name": "Mùi",   "idx": 7},
+        "10": {"name": "Tuất",  "idx": 10},
+        "11": {"name": "Tuất",  "idx": 10},
+        "12": {"name": "Tuất",  "idx": 10}
+      }
+    },
+    {
+      "stt": 54,
+      "key": "khong_phong",
+      "name": "Không Phòng",
+      "tinh_chat": "Kỵ giá thú",
+      "lookup_type": "chi",
+      "data": {
+        "1":  {"name": "Thìn",  "idx": 4},
+        "2":  {"name": "Tỵ",    "idx": 5},
+        "3":  {"name": "Tý",    "idx": 0},
+        "4":  {"name": "Tuất",  "idx": 10},
+        "5":  {"name": "Hợi",   "idx": 11},
+        "6":  {"name": "Mùi",   "idx": 7},
+        "7":  {"name": "Dần",   "idx": 2},
+        "8":  {"name": "Mão",   "idx": 3},
+        "9":  {"name": "Ngọ",   "idx": 6},
+        "10": {"name": "Thân",  "idx": 8},
+        "11": {"name": "Dậu",   "idx": 9},
+        "12": {"name": "Sửu",   "idx": 1}
+      }
+    },
+    {
+      "stt": 55,
+      "key": "am_thac",
+      "name": "Âm Thác",
+      "tinh_chat": "Kỵ xuất hành, giá thú, an táng",
+      "lookup_type": "canchi",
+      "_note": "Chi descends sequentially: Tuất→Dậu→Thân→...→Hợi",
+      "data": {
+        "1":  {"name": "Canh Tuất",  "canIdx": 6, "chiIdx": 10},
+        "2":  {"name": "Tân Dậu",   "canIdx": 7, "chiIdx": 9},
+        "3":  {"name": "Canh Thân",  "canIdx": 6, "chiIdx": 8},
+        "4":  {"name": "Đinh Mùi",  "canIdx": 3, "chiIdx": 7},
+        "5":  {"name": "Bính Ngọ",  "canIdx": 2, "chiIdx": 6},
+        "6":  {"name": "Đinh Tỵ",   "canIdx": 3, "chiIdx": 5},
+        "7":  {"name": "Giáp Thìn", "canIdx": 0, "chiIdx": 4},
+        "8":  {"name": "Ất Mão",    "canIdx": 1, "chiIdx": 3},
+        "9":  {"name": "Giáp Dần",  "canIdx": 0, "chiIdx": 2},
+        "10": {"name": "Quý Sửu",   "canIdx": 9, "chiIdx": 1},
+        "11": {"name": "Nhâm Tý",   "canIdx": 8, "chiIdx": 0},
+        "12": {"name": "Quý Hợi",   "canIdx": 9, "chiIdx": 11}
+      }
+    },
+    {
+      "stt": 56,
+      "key": "duong_thac",
+      "name": "Dương Thác",
+      "tinh_chat": "Kỵ xuất hành, giá thú, an táng",
+      "lookup_type": "canchi",
+      "_note": "Chi ascends sequentially: Dần→Mão→Thìn→...→Sửu",
+      "data": {
+        "1":  {"name": "Giáp Dần",  "canIdx": 0, "chiIdx": 2},
+        "2":  {"name": "Ất Mão",    "canIdx": 1, "chiIdx": 3},
+        "3":  {"name": "Giáp Thìn", "canIdx": 0, "chiIdx": 4},
+        "4":  {"name": "Đinh Tỵ",   "canIdx": 3, "chiIdx": 5},
+        "5":  {"name": "Bính Ngọ",  "canIdx": 2, "chiIdx": 6},
+        "6":  {"name": "Đinh Mùi",  "canIdx": 3, "chiIdx": 7},
+        "7":  {"name": "Canh Thân",  "canIdx": 6, "chiIdx": 8},
+        "8":  {"name": "Tân Dậu",   "canIdx": 7, "chiIdx": 9},
+        "9":  {"name": "Canh Tuất",  "canIdx": 6, "chiIdx": 10},
+        "10": {"name": "Quý Hợi",   "canIdx": 9, "chiIdx": 11},
+        "11": {"name": "Nhâm Tý",   "canIdx": 8, "chiIdx": 0},
+        "12": {"name": "Quý Sửu",   "canIdx": 9, "chiIdx": 1}
+      }
+    },
+    {
+      "stt": 57,
+      "key": "quy_khoc",
+      "name": "Quỷ Khốc",
+      "tinh_chat": "Xấu với tế tự, mai táng",
+      "lookup_type": "chi",
+      "_note": "All months = Tuất",
+      "data": {
+        "1":  {"name": "Tuất",  "idx": 10},
+        "2":  {"name": "Tuất",  "idx": 10},
+        "3":  {"name": "Tuất",  "idx": 10},
+        "4":  {"name": "Tuất",  "idx": 10},
+        "5":  {"name": "Tuất",  "idx": 10},
+        "6":  {"name": "Tuất",  "idx": 10},
+        "7":  {"name": "Tuất",  "idx": 10},
+        "8":  {"name": "Tuất",  "idx": 10},
+        "9":  {"name": "Tuất",  "idx": 10},
+        "10": {"name": "Tuất",  "idx": 10},
+        "11": {"name": "Tuất",  "idx": 10},
+        "12": {"name": "Tuất",  "idx": 10}
+      }
     }
   ],
 
