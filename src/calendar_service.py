@@ -208,7 +208,7 @@ def get_month_info(
 def get_user_chart(
     birth_date: str,
     birth_time: Optional[int] = None,
-    gender: Optional[str] = None,
+    gender: Optional[int] = None,
 ) -> dict:
     """
     Derive personal chart from birth date.
@@ -224,7 +224,7 @@ def get_user_chart(
     Args:
         birth_date: 'YYYY-MM-DD'
         birth_time: int from dropdown (0,2,4,...,23) or None
-        gender: 'male' | 'female' or None
+        gender: 1 (male) | -1 (female) or None
 
     Returns:
         dict with keys matching what chon_ngay.py consumes.

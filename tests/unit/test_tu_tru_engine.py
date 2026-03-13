@@ -226,36 +226,36 @@ class TestDaiVan:
 
     def test_direction_male_yang(self):
         """Male + Yang stem (Canh=6) → forward."""
-        assert get_dai_van_direction(6, "male") == 1
+        assert get_dai_van_direction(6, 1) == 1
 
     def test_direction_male_yin(self):
         """Male + Yin stem (Kỷ=5) → backward."""
-        assert get_dai_van_direction(5, "male") == -1
+        assert get_dai_van_direction(5, 1) == -1
 
     def test_direction_female_yang(self):
         """Female + Yang stem → backward (opposite of male)."""
-        assert get_dai_van_direction(6, "female") == -1
+        assert get_dai_van_direction(6, -1) == -1
 
     def test_direction_female_yin(self):
         """Female + Yin stem → forward (opposite of male)."""
-        assert get_dai_van_direction(5, "female") == 1
+        assert get_dai_van_direction(5, -1) == 1
 
     def test_cycles_count(self):
         """Should return the requested number of cycles."""
         tu_tru = get_tu_tru("1990-03-21", 8)
-        cycles = get_dai_van(tu_tru, "male", "1990-03-21", num_cycles=6)
+        cycles = get_dai_van(tu_tru, 1, "1990-03-21", num_cycles=6)
         assert len(cycles) == 6
 
     def test_cycles_10_year_intervals(self):
         """Each cycle should span 10 years."""
         tu_tru = get_tu_tru("1990-03-21", 8)
-        cycles = get_dai_van(tu_tru, "male", "1990-03-21")
+        cycles = get_dai_van(tu_tru, 1, "1990-03-21")
         for c in cycles:
             assert c["end_age"] - c["start_age"] == 9
 
     def test_cycles_have_required_keys(self):
         tu_tru = get_tu_tru("1990-03-21", 8)
-        cycles = get_dai_van(tu_tru, "male", "1990-03-21", num_cycles=2)
+        cycles = get_dai_van(tu_tru, 1, "1990-03-21", num_cycles=2)
         for c in cycles:
             assert "can_name" in c
             assert "chi_name" in c
@@ -267,14 +267,14 @@ class TestDaiVan:
     def test_current_dai_van_found(self):
         """Should find the current cycle for a 36-year-old."""
         tu_tru = get_tu_tru("1990-03-21", 8)
-        current = get_current_dai_van(tu_tru, "male", "1990-03-21", "2026-03-11")
+        current = get_current_dai_van(tu_tru, 1, "1990-03-21", "2026-03-11")
         assert current is not None
         assert current["start_age"] <= 36 <= current["end_age"]
 
     def test_current_dai_van_none_for_infant(self):
         """Very young person might not have entered first cycle yet."""
         tu_tru = get_tu_tru("2025-01-15", 8)
-        current = get_current_dai_van(tu_tru, "male", "2025-01-15", "2025-02-01")
+        current = get_current_dai_van(tu_tru, 1, "2025-01-15", "2025-02-01")
         # For an infant, current cycle might be None (before first cycle start)
         # or could be in first cycle if start_age is low enough
         # Either way, function should not crash
@@ -318,7 +318,7 @@ class TestCalendarServiceTuTru:
     def test_with_gender_includes_dai_van(self):
         """With birth_time + gender, includes Đại Vận."""
         from calendar_service import get_user_chart
-        chart = get_user_chart("1990-03-21", birth_time=8, gender="male")
+        chart = get_user_chart("1990-03-21", birth_time=8, gender=1)
         assert "current_dai_van" in chart
         assert chart["current_dai_van"] is not None
         assert "gender" in chart

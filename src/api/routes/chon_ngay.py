@@ -100,9 +100,9 @@ class IntentEnum(str, Enum):
     MAC_DINH = "MAC_DINH"
 
 
-class GenderEnum(str, Enum):
-    MALE = "male"
-    FEMALE = "female"
+class GenderEnum(int, Enum):
+    MALE = 1
+    FEMALE = -1
 
 
 class ChonNgayRequest(BaseModel):

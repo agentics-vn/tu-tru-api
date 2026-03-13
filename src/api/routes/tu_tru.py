@@ -41,7 +41,7 @@ router = APIRouter()
 class TuTruRequest(BaseModel):
     birth_date: date
     birth_time: Optional[int] = None
-    gender: Optional[str] = None
+    gender: Optional[int] = None
 
     @field_validator("birth_date")
     @classmethod
@@ -63,9 +63,9 @@ class TuTruRequest(BaseModel):
 
     @field_validator("gender")
     @classmethod
-    def gender_must_be_valid(cls, v: Optional[str]) -> Optional[str]:
-        if v is not None and v not in ("male", "female"):
-            raise ValueError("gender phải là 'male' hoặc 'female'")
+    def gender_must_be_valid(cls, v: Optional[int]) -> Optional[int]:
+        if v is not None and v not in (1, -1):
+            raise ValueError("gender phải là 1 (nam) hoặc -1 (nữ)")
         return v
 
 

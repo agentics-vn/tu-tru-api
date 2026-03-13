@@ -177,7 +177,7 @@ _READING_TEMPLATES: dict[str, dict] = {
 async def tieu_van(
     birth_date: str = Query(..., description="Birth date in ISO format YYYY-MM-DD"),
     birth_time: Optional[int] = Query(None, description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
-    gender: Optional[str] = Query(None, description="Gender: male or female"),
+    gender: Optional[int] = Query(None, description="Gender: 1 (nam) or -1 (nữ)"),
     month: str = Query(..., description="Target month in YYYY-MM format"),
 ) -> JSONResponse:
     try:

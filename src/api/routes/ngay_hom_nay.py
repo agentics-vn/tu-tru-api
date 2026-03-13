@@ -170,7 +170,7 @@ def _build_daily_advice(day_info: dict, star_info: dict, good_for: list[str], av
 async def ngay_hom_nay(
     birth_date: str = Query(..., description="Birth date in ISO format YYYY-MM-DD"),
     birth_time: Optional[int] = Query(None, description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
-    gender: Optional[str] = Query(None, description="Gender: male or female"),
+    gender: Optional[int] = Query(None, description="Gender: 1 (nam) or -1 (nữ)"),
     target_date: Optional[str] = Query(None, alias="date", description="Target date YYYY-MM-DD (default: today)"),
 ) -> JSONResponse:
     try:

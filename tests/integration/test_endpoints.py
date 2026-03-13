@@ -486,7 +486,7 @@ class TestTuTru:
         r = client.post("/v1/tu-tru", json={
             "birth_date": "1984-03-15",
             "birth_time": 8,
-            "gender": "male",
+            "gender": 1,
         })
         assert r.status_code == 200
         data = r.json()
@@ -569,7 +569,7 @@ class TestEndpointPurity:
         assert r1.json() == r2.json()
 
     def test_tu_tru_deterministic(self):
-        body = {"birth_date": "1984-03-15", "birth_time": 8, "gender": "male"}
+        body = {"birth_date": "1984-03-15", "birth_time": 8, "gender": 1}
         r1 = client.post("/v1/tu-tru", json=body)
         r2 = client.post("/v1/tu-tru", json=body)
         assert r1.json() == r2.json()
