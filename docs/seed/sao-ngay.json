@@ -2416,9 +2416,9 @@
         "idx": 14,
         "name": "Khuê",
         "hanh": "Mộc",
-        "tot_xau": "xấu",
+        "tot_xau": "vừa",
         "con_vat": "Sói",
-        "tinh_chat": "Nửa tốt nửa xấu, tốt cho phúc lộc và hôn nhân",
+        "tinh_chat": "Các việc xấu, riêng làm nhà, học thi tốt",
         "ky": ["khai trương", "động thổ", "an táng"]
       },
       {
@@ -2434,7 +2434,7 @@
         "idx": 16,
         "name": "Vị",
         "hanh": "Thổ",
-        "tot_xau": "tốt",
+        "tot_xau": "xấu",
         "con_vat": "Chim trĩ",
         "tinh_chat": "Xây dựng cát lợi, vinh hoa phú quý, kinh doanh buôn bán thuận lợi",
         "ky": []
@@ -2443,10 +2443,10 @@
         "idx": 17,
         "name": "Mão",
         "hanh": "Nhật",
-        "tot_xau": "xấu",
+        "tot_xau": "tốt",
         "con_vat": "Gà",
-        "tinh_chat": "Xây dựng, chăn nuôi đều xấu, bất lợi công danh",
-        "ky": ["xây dựng", "hôn thú"]
+        "tinh_chat": "Tốt mọi việc",
+        "ky": []
       },
       {
         "idx": 18,
@@ -2515,18 +2515,18 @@
         "idx": 25,
         "name": "Trương",
         "hanh": "Nguyệt",
-        "tot_xau": "xấu",
+        "tot_xau": "tốt",
         "con_vat": "Hươu",
-        "tinh_chat": "Xấu về xây dựng, tai nạn, quan hệ nam nữ",
-        "ky": ["xây dựng"]
+        "tinh_chat": "Tốt mọi việc",
+        "ky": []
       },
       {
         "idx": 26,
         "name": "Dực",
         "hanh": "Hỏa",
-        "tot_xau": "tốt",
+        "tot_xau": "xấu",
         "con_vat": "Rắn",
-        "tinh_chat": "Vượng tài lộc, con cháu giàu sang, xây dựng, hôn thú cát lợi",
+        "tinh_chat": "Xấu mọi việc",
         "ky": []
       },
       {
