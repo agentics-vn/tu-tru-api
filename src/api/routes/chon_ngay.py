@@ -19,6 +19,8 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from api.parse_date import parse_dmy
+
 # ── Engine imports (Python ports of the JS engine modules) ─────────────────
 from calendar_service import get_day_info, get_user_chart, get_can_chi_year, CAN_NAMES, CHI_NAMES
 from filter import apply_layer2_filter
@@ -100,33 +102,40 @@ class IntentEnum(str, Enum):
     MAC_DINH = "MAC_DINH"
 
 
-class GenderEnum(str, Enum):
-    MALE = "male"
-    FEMALE = "female"
+class GenderEnum(int, Enum):
+    MALE = 1
+    FEMALE = -1
 
 
 class ChonNgayRequest(BaseModel):
-    birth_date: date
+    birth_date: str = Field(..., description="Ngày sinh dd/mm/yyyy")
     birth_time: Optional[int] = Field(
         default=None,
         description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23",
     )
     gender: Optional[GenderEnum] = Field(
         default=None,
-        description="Gender: male or female (required for Đại Vận)",
+        description="Gender: 1 (nam) or -1 (nữ) (required for Đại Vận)",
     )
     intent: IntentEnum
-    range_start: date
-    range_end: date
+    range_start: str = Field(..., description="Ngày bắt đầu dd/mm/yyyy")
+    range_end: str = Field(..., description="Ngày kết thúc dd/mm/yyyy")
     top_n: Optional[int] = Field(default=TOP_N_DEFAULT, ge=1, le=TOP_N_MAX)
 
     @field_validator("birth_date")
     @classmethod
-    def birth_date_must_be_past(cls, v: date) -> date:
-        if v.year < 1900:
+    def birth_date_must_be_past(cls, v: str) -> str:
+        d = parse_dmy(v)
+        if d.year < 1900:
             raise ValueError("birth_date year must be >= 1900")
-        if v >= date.today():
+        if d >= date.today():
             raise ValueError("birth_date must be a past date")
+        return v
+
+    @field_validator("range_start", "range_end")
+    @classmethod
+    def range_dates_must_be_valid(cls, v: str) -> str:
+        parse_dmy(v)  # validates format
         return v
 
     @field_validator("birth_time")
@@ -142,9 +151,11 @@ class ChonNgayRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_range(self) -> "ChonNgayRequest":
-        if self.range_end < self.range_start:
+        start = parse_dmy(self.range_start)
+        end = parse_dmy(self.range_end)
+        if end < start:
             raise ValueError("range_end must be on or after range_start")
-        diff = (self.range_end - self.range_start).days
+        diff = (end - start).days
         if diff > MAX_RANGE_DAYS:
             raise ValueError(
                 f"range_end must be within {MAX_RANGE_DAYS} days of range_start"
@@ -318,7 +329,7 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
     try:
         intent = req.intent.value
         top_n = req.top_n or TOP_N_DEFAULT
-        birth_date_str = req.birth_date.isoformat()
+        birth_date_str = parse_dmy(req.birth_date).isoformat()
 
         # ── Resolve intent key for intent-rules.json ──────────────────────
         rule_key = INTENT_ALIAS.get(intent, intent)
@@ -332,7 +343,7 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
         user_chart = get_user_chart(birth_date_str, req.birth_time, gender_str)
 
         # ── Iterate date range ────────────────────────────────────────────
-        all_dates = _each_day_in_range(req.range_start, req.range_end)
+        all_dates = _each_day_in_range(parse_dmy(req.range_start), parse_dmy(req.range_end))
         total_scanned = len(all_dates)
 
         layer1_passed = 0
@@ -430,8 +441,8 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                 "meta": {
                     "intent": intent,
                     "range_scanned": {
-                        "from": req.range_start.isoformat(),
-                        "to": req.range_end.isoformat(),
+                        "from": req.range_start,
+                        "to": req.range_end,
                     },
                     "total_days_scanned": total_scanned,
                     "days_passed_layer1": layer1_passed,

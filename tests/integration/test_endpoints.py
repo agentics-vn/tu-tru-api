@@ -42,10 +42,10 @@ class TestChonNgay:
 
     def _valid_request(self, **overrides) -> dict:
         body = {
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "intent": "KHAI_TRUONG",
-            "range_start": "2026-04-01",
-            "range_end": "2026-04-30",
+            "range_start": "01/04/2026",
+            "range_end": "30/04/2026",
             "top_n": 3,
         }
         body.update(overrides)
@@ -96,15 +96,15 @@ class TestChonNgay:
 
     def test_invalid_birth_date_future(self):
         r = client.post("/v1/chon-ngay", json=self._valid_request(
-            birth_date="2099-01-01"
+            birth_date="01/01/2099"
         ))
         assert r.status_code == 400
         assert r.json()["error_code"] == "INVALID_INPUT"
 
     def test_range_too_large(self):
         r = client.post("/v1/chon-ngay", json=self._valid_request(
-            range_start="2026-01-01",
-            range_end="2026-12-31",
+            range_start="01/01/2026",
+            range_end="31/12/2026",
         ))
         assert r.status_code == 400
         assert r.json()["error_code"] == "RANGE_TOO_LARGE"
@@ -137,7 +137,7 @@ class TestNgayHomNay:
 
     def test_success_with_date(self):
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "date": "2026-04-01",
         })
         assert r.status_code == 200
@@ -147,7 +147,7 @@ class TestNgayHomNay:
 
     def test_has_can_chi(self):
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "date": "2026-04-01",
         })
         data = r.json()
@@ -158,7 +158,7 @@ class TestNgayHomNay:
 
     def test_has_hoang_dao_badge(self):
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "date": "2026-04-01",
         })
         data = r.json()
@@ -168,7 +168,7 @@ class TestNgayHomNay:
 
     def test_has_gio_tot_xau(self):
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "date": "2026-04-01",
         })
         data = r.json()
@@ -180,7 +180,7 @@ class TestNgayHomNay:
 
     def test_has_good_for_avoid_for(self):
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "date": "2026-04-01",
         })
         data = r.json()
@@ -189,7 +189,7 @@ class TestNgayHomNay:
 
     def test_has_daily_advice(self):
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "date": "2026-04-01",
         })
         data = r.json()
@@ -199,7 +199,7 @@ class TestNgayHomNay:
 
     def test_has_lunar_info(self):
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "date": "2026-04-01",
         })
         data = r.json()
@@ -217,7 +217,7 @@ class TestNgayHomNay:
     def test_defaults_to_today(self):
         """When no 'date' param, should use today."""
         r = client.get("/v1/ngay-hom-nay", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
         })
         assert r.status_code == 200
         data = r.json()
@@ -232,7 +232,7 @@ class TestLichThang:
 
     def test_success(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         assert r.status_code == 200
@@ -242,7 +242,7 @@ class TestLichThang:
 
     def test_correct_day_count_march(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -250,7 +250,7 @@ class TestLichThang:
 
     def test_correct_day_count_february(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-02",
         })
         data = r.json()
@@ -258,7 +258,7 @@ class TestLichThang:
 
     def test_day_has_hoang_dao_badge(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -269,7 +269,7 @@ class TestLichThang:
 
     def test_day_has_truc_and_layer1(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -280,7 +280,7 @@ class TestLichThang:
 
     def test_has_user_menh(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -288,7 +288,7 @@ class TestLichThang:
 
     def test_day_has_gio_hoang_dao(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -301,7 +301,7 @@ class TestLichThang:
 
     def test_day_has_sao_28(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -313,7 +313,7 @@ class TestLichThang:
 
     def test_day_has_summary(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -326,7 +326,7 @@ class TestLichThang:
     def test_sao_28_cycles_every_28_days(self):
         """28 Tú should cycle: day 1 and day 29 should have same star."""
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -335,7 +335,7 @@ class TestLichThang:
 
     def test_invalid_month_format(self):
         r = client.get("/v1/lich-thang", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026",
         })
         assert r.status_code == 400
@@ -349,7 +349,7 @@ class TestTieuVan:
 
     def test_success(self):
         r = client.get("/v1/tieu-van", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         assert r.status_code == 200
@@ -359,7 +359,7 @@ class TestTieuVan:
 
     def test_has_pillar(self):
         r = client.get("/v1/tieu-van", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -371,7 +371,7 @@ class TestTieuVan:
 
     def test_has_user_menh(self):
         r = client.get("/v1/tieu-van", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -380,7 +380,7 @@ class TestTieuVan:
 
     def test_has_element_relation(self):
         r = client.get("/v1/tieu-van", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -390,7 +390,7 @@ class TestTieuVan:
 
     def test_has_reading_and_tags(self):
         r = client.get("/v1/tieu-van", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
@@ -401,7 +401,7 @@ class TestTieuVan:
 
     def test_invalid_month_format(self):
         r = client.get("/v1/tieu-van", params={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "month": "March-2026",
         })
         assert r.status_code == 400
@@ -416,7 +416,7 @@ class TestTuTru:
     def test_basic_no_birth_time(self):
         """Without birth_time, returns year-level Nạp Âm info only."""
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
         })
         assert r.status_code == 200
         data = r.json()
@@ -430,7 +430,7 @@ class TestTuTru:
     def test_full_with_birth_time(self):
         """With birth_time, returns full Tứ Trụ analysis."""
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 8,
         })
         assert r.status_code == 200
@@ -454,7 +454,7 @@ class TestTuTru:
     def test_pillar_structure(self):
         """Each pillar should have can_chi, can, chi, nap_am."""
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 8,
         })
         data = r.json()
@@ -468,7 +468,7 @@ class TestTuTru:
     def test_thap_than_structure(self):
         """Thập Thần should have year/month/hour gods + dominant."""
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 8,
         })
         data = r.json()
@@ -484,9 +484,9 @@ class TestTuTru:
     def test_dai_van_with_gender(self):
         """With birth_time + gender, returns Đại Vận cycles."""
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 8,
-            "gender": "male",
+            "gender": 1,
         })
         assert r.status_code == 200
         data = r.json()
@@ -502,7 +502,7 @@ class TestTuTru:
     def test_no_dai_van_without_gender(self):
         """Without gender, should not include Đại Vận."""
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 8,
         })
         data = r.json()
@@ -510,20 +510,20 @@ class TestTuTru:
 
     def test_invalid_birth_date_future(self):
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "2099-01-01",
+            "birth_date": "01/01/2099",
         })
         assert r.status_code in (400, 422)
 
     def test_invalid_birth_time(self):
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 7,
         })
         assert r.status_code in (400, 422)
 
     def test_invalid_gender(self):
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 8,
             "gender": "other",
         })
@@ -531,7 +531,7 @@ class TestTuTru:
 
     def test_birth_time_label(self):
         r = client.post("/v1/tu-tru", json={
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "birth_time": 23,
         })
         data = r.json()
@@ -546,10 +546,10 @@ class TestEndpointPurity:
 
     def test_chon_ngay_deterministic(self):
         body = {
-            "birth_date": "1984-03-15",
+            "birth_date": "15/03/1984",
             "intent": "KHAI_TRUONG",
-            "range_start": "2026-04-01",
-            "range_end": "2026-04-15",
+            "range_start": "01/04/2026",
+            "range_end": "15/04/2026",
             "top_n": 3,
         }
         r1 = client.post("/v1/chon-ngay", json=body)
@@ -557,19 +557,19 @@ class TestEndpointPurity:
         assert r1.json() == r2.json()
 
     def test_ngay_hom_nay_deterministic(self):
-        params = {"birth_date": "1984-03-15", "date": "2026-04-01"}
+        params = {"birth_date": "15/03/1984", "date": "2026-04-01"}
         r1 = client.get("/v1/ngay-hom-nay", params=params)
         r2 = client.get("/v1/ngay-hom-nay", params=params)
         assert r1.json() == r2.json()
 
     def test_lich_thang_deterministic(self):
-        params = {"birth_date": "1984-03-15", "month": "2026-03"}
+        params = {"birth_date": "15/03/1984", "month": "2026-03"}
         r1 = client.get("/v1/lich-thang", params=params)
         r2 = client.get("/v1/lich-thang", params=params)
         assert r1.json() == r2.json()
 
     def test_tu_tru_deterministic(self):
-        body = {"birth_date": "1984-03-15", "birth_time": 8, "gender": "male"}
+        body = {"birth_date": "15/03/1984", "birth_time": 8, "gender": 1}
         r1 = client.post("/v1/tu-tru", json=body)
         r2 = client.post("/v1/tu-tru", json=body)
         assert r1.json() == r2.json()

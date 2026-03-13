@@ -15,6 +15,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
+from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart, get_month_info
 from engine.hoang_dao import get_day_star, get_gio_hoang_dao
 from engine.nhi_thap_bat_tu import get_nhi_thap_bat_tu
@@ -99,14 +100,14 @@ def _build_day_summary(
 @router.get("")
 @router.get("/")
 async def lich_thang(
-    birth_date: str = Query(..., description="Birth date in ISO format YYYY-MM-DD"),
+    birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
-    gender: Optional[str] = Query(None, description="Gender: male or female"),
+    gender: Optional[int] = Query(None, description="Gender: 1 (nam) or -1 (nữ)"),
     month: str = Query(..., description="Target month in YYYY-MM format"),
 ) -> JSONResponse:
     try:
-        # Parse birth_date
-        bd = date.fromisoformat(birth_date)
+        # Parse birth_date (dd/mm/yyyy)
+        bd = parse_dmy(birth_date)
         if bd.year < 1900 or bd >= date.today():
             return JSONResponse(
                 status_code=400,
@@ -134,8 +135,8 @@ async def lich_thang(
                     f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}"
                 )
 
-        # Get user chart
-        user_chart = get_user_chart(birth_date, birth_time, gender)
+        # Get user chart (internal uses ISO format)
+        user_chart = get_user_chart(bd.isoformat(), birth_time, gender)
 
         # Get all days in the month
         all_days = get_month_info(year, month_num, filter_passed=False)

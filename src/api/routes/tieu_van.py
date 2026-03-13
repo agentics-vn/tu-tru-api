@@ -23,6 +23,7 @@ from engine.can_chi import (
     get_can_chi_year,
     get_nap_am_pair_idx,
 )
+from api.parse_date import parse_dmy
 from calendar_service import get_user_chart
 
 logger = logging.getLogger("tieu_van")
@@ -175,14 +176,14 @@ _READING_TEMPLATES: dict[str, dict] = {
 @router.get("")
 @router.get("/")
 async def tieu_van(
-    birth_date: str = Query(..., description="Birth date in ISO format YYYY-MM-DD"),
+    birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
-    gender: Optional[str] = Query(None, description="Gender: male or female"),
+    gender: Optional[int] = Query(None, description="Gender: 1 (nam) or -1 (nữ)"),
     month: str = Query(..., description="Target month in YYYY-MM format"),
 ) -> JSONResponse:
     try:
         # Parse birth_date
-        bd = date.fromisoformat(birth_date)
+        bd = parse_dmy(birth_date)
         if bd.year < 1900 or bd >= date.today():
             return JSONResponse(
                 status_code=400,
@@ -211,7 +212,7 @@ async def tieu_van(
                 )
 
         # User chart
-        user_chart = get_user_chart(birth_date, birth_time, gender)
+        user_chart = get_user_chart(bd.isoformat(), birth_time, gender)
 
         # Month pillar
         month_pillar = _get_month_pillar(year, month_num)

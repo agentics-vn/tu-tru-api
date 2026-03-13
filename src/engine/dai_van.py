@@ -24,18 +24,22 @@ def _is_yang_stem(can_idx: int) -> bool:
     return can_idx % 2 == 0
 
 
-def get_dai_van_direction(year_can_idx: int, gender: str) -> int:
+def get_dai_van_direction(year_can_idx: int, gender: int) -> int:
     """
     Determine forward (+1) or backward (-1) counting direction.
 
     Rules:
-    - Male (nam) + Dương year stem → forward
+    - Male (1) + Dương year stem → forward
     - Male + Âm year stem → backward
-    - Female (nữ) → opposite of male
+    - Female (-1) → opposite of male
+
+    Args:
+        year_can_idx: 0-9
+        gender: 1 (male) or -1 (female)
     """
     is_yang = _is_yang_stem(year_can_idx)
 
-    if gender == "male":
+    if gender == 1:
         return 1 if is_yang else -1
     else:
         return -1 if is_yang else 1
@@ -125,7 +129,7 @@ def _get_start_age(birth_date: str, direction: int) -> float:
 
 def get_dai_van(
     tu_tru: dict,
-    gender: str,
+    gender: int,
     birth_date: str,
     num_cycles: int = 8,
 ) -> list[dict]:
@@ -137,7 +141,7 @@ def get_dai_van(
 
     Args:
         tu_tru: from get_tu_tru()
-        gender: "male" | "female"
+        gender: 1 (male) | -1 (female)
         birth_date: ISO date string
         num_cycles: how many 10-year cycles to compute (default 8 = 80 years)
 
@@ -182,7 +186,7 @@ def get_dai_van(
 
 def get_current_dai_van(
     tu_tru: dict,
-    gender: str,
+    gender: int,
     birth_date: str,
     current_date: str | None = None,
 ) -> dict | None:
@@ -191,7 +195,7 @@ def get_current_dai_van(
 
     Args:
         tu_tru: from get_tu_tru()
-        gender: "male" | "female"
+        gender: 1 (male) | -1 (female)
         birth_date: ISO date string
         current_date: ISO date string (default: today)
 
