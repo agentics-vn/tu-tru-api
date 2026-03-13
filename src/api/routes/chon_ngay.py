@@ -24,7 +24,7 @@ from api.parse_date import parse_dmy
 # ── Engine imports (Python ports of the JS engine modules) ─────────────────
 from calendar_service import get_day_info, get_user_chart, get_can_chi_year, CAN_NAMES, CHI_NAMES
 from filter import apply_layer2_filter
-from scoring import compute_score
+from scoring import compute_score, compute_score_breakdown
 from engine.hoang_dao import get_gio_hoang_dao
 from engine.pillars import VALID_BIRTH_HOURS, BIRTH_HOUR_LABELS
 
@@ -458,6 +458,264 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
         raise
     except Exception:
         logger.exception("Internal error in chon_ngay")
+        return _error_response(
+            500,
+            "INTERNAL_ERROR",
+            "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
+        )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# POST /v1/chon-ngay/detail — Single-day detailed analysis
+# ─────────────────────────────────────────────────────────────────────────────
+
+class DetailRequest(BaseModel):
+    birth_date: str = Field(..., description="Ngày sinh dd/mm/yyyy")
+    birth_time: Optional[int] = Field(
+        default=None,
+        description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23",
+    )
+    gender: Optional[GenderEnum] = Field(
+        default=None,
+        description="Gender: 1 (nam) or -1 (nữ) (required for Đại Vận)",
+    )
+    intent: IntentEnum
+    date: str = Field(..., description="Ngày cần phân tích dd/mm/yyyy")
+
+    @field_validator("birth_date")
+    @classmethod
+    def birth_date_must_be_past(cls, v: str) -> str:
+        d = parse_dmy(v)
+        if d.year < 1900:
+            raise ValueError("birth_date year must be >= 1900")
+        if d >= date.today():
+            raise ValueError("birth_date must be a past date")
+        return v
+
+    @field_validator("date")
+    @classmethod
+    def date_must_be_valid(cls, v: str) -> str:
+        parse_dmy(v)
+        return v
+
+    @field_validator("birth_time")
+    @classmethod
+    def birth_time_valid_values(cls, v: Optional[int]) -> Optional[int]:
+        if v is None:
+            return v
+        if v not in VALID_BIRTH_HOURS:
+            raise ValueError(
+                f"birth_time must be one of {sorted(VALID_BIRTH_HOURS)}, got {v}"
+            )
+        return v
+
+
+def _ngu_hanh_relation(day_hanh: str, menh_hanh: str) -> str:
+    """Return the Ngũ Hành relationship between day and mệnh."""
+    SINH_MAP = {"Kim": "Thủy", "Thủy": "Mộc", "Mộc": "Hỏa", "Hỏa": "Thổ", "Thổ": "Kim"}
+    KHAC_MAP = {"Kim": "Mộc", "Mộc": "Thổ", "Thổ": "Thủy", "Thủy": "Hỏa", "Hỏa": "Kim"}
+
+    if day_hanh == menh_hanh:
+        return "bình hòa"
+    if SINH_MAP.get(day_hanh) == menh_hanh:
+        return "ngày sinh mệnh (tốt)"
+    if SINH_MAP.get(menh_hanh) == day_hanh:
+        return "mệnh sinh ngày (hao)"
+    if KHAC_MAP.get(day_hanh) == menh_hanh:
+        return "ngày khắc mệnh (xấu)"
+    if KHAC_MAP.get(menh_hanh) == day_hanh:
+        return "mệnh khắc ngày (trung bình)"
+    return "không xác định"
+
+
+@router.post("/detail")
+async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
+    """Return detailed analysis for a single date."""
+    try:
+        intent = req.intent.value
+        target_date = parse_dmy(req.date)
+        birth_date_str = parse_dmy(req.birth_date).isoformat()
+
+        # Resolve intent
+        rule_key = INTENT_ALIAS.get(intent, intent)
+        intent_rule = INTENT_RULES.get(
+            rule_key,
+            INTENT_RULES.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao": []}),
+        )
+
+        # User chart
+        gender_str = req.gender.value if req.gender else None
+        user_chart = get_user_chart(birth_date_str, req.birth_time, gender_str)
+
+        # ── Layer 1 ─────────────────────────────────────────────────────────
+        date_str = target_date.isoformat()
+        day_info = get_day_info(date_str)
+
+        layer1_detail = {
+            "is_pass": day_info["is_layer1_pass"],
+            "truc": {
+                "name": day_info["truc_name"],
+                "idx": day_info["truc_idx"],
+                "score": day_info["truc_score"],
+            },
+            "hung_ngay": {
+                "is_nguyet_ky": day_info["is_nguyet_ky"],
+                "is_tam_nuong": day_info["is_tam_nuong"],
+                "is_duong_cong_ky": day_info["is_duong_cong_ky"],
+            },
+            "is_truc_pha": day_info.get("is_truc_pha", False),
+            "is_truc_nguy": day_info.get("is_truc_nguy", False),
+            "sao_tot": {
+                "thien_duc": day_info.get("has_thien_duc", False),
+                "thien_duc_hop": day_info.get("has_thien_duc_hop", False),
+                "nguyet_duc": day_info.get("has_nguyet_duc", False),
+                "nguyet_duc_hop": day_info.get("has_nguyet_duc_hop", False),
+                "thien_xa": day_info.get("has_thien_xa", False),
+            },
+        }
+
+        # If Layer 1 fails, return early with just layer1 info
+        if not day_info["is_layer1_pass"]:
+            fail_reasons = []
+            if day_info["is_nguyet_ky"]:
+                fail_reasons.append("Nguyệt Kỵ")
+            if day_info["is_tam_nuong"]:
+                fail_reasons.append("Tam Nương")
+            if day_info["is_duong_cong_ky"]:
+                fail_reasons.append("Dương Công Kỵ")
+            if day_info.get("is_truc_pha"):
+                fail_reasons.append("Trực Phá")
+            if day_info.get("is_truc_nguy"):
+                fail_reasons.append("Trực Nguy")
+
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "status": "success",
+                    "date": date_str,
+                    "lunar_date": _format_lunar_date(day_info),
+                    "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
+                    "nguhanh_day": day_info["day_nap_am_hanh"],
+                    "verdict": "avoid",
+                    "verdict_vi": "Ngày xấu — không qua được bộ lọc cơ bản.",
+                    "layer1": layer1_detail,
+                    "layer1_fail_reasons": fail_reasons,
+                    "layer2": None,
+                    "layer3": None,
+                    "time_slots": None,
+                },
+            )
+
+        # ── Layer 2 ─────────────────────────────────────────────────────────
+        filter_result = apply_layer2_filter(day_info, user_chart, rule_key)
+
+        ngu_hanh_rel = _ngu_hanh_relation(
+            day_info["day_nap_am_hanh"], user_chart["menh_hanh"]
+        )
+
+        layer2_detail = {
+            "is_pass": filter_result["pass"],
+            "severity": filter_result["severity"],
+            "reasons": filter_result["reasons"],
+            "ngu_hanh_match": {
+                "day_hanh": day_info["day_nap_am_hanh"],
+                "menh_hanh": user_chart["menh_hanh"],
+                "relation": ngu_hanh_rel,
+            },
+            "dia_chi_clash": not filter_result["pass"] and filter_result["severity"] == 3,
+        }
+
+        # If Layer 2 fails (severity 3), return early
+        if not filter_result["pass"]:
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "status": "success",
+                    "date": date_str,
+                    "lunar_date": _format_lunar_date(day_info),
+                    "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
+                    "nguhanh_day": day_info["day_nap_am_hanh"],
+                    "verdict": "forbidden",
+                    "verdict_vi": (
+                        "Tuyệt đối tránh — ngày xung khắc trực tiếp với tuổi của bạn."
+                        if filter_result["severity"] == 3
+                        else ". ".join(filter_result["reasons"])
+                    ),
+                    "severity": filter_result["severity"],
+                    "layer1": layer1_detail,
+                    "layer2": layer2_detail,
+                    "layer3": None,
+                    "time_slots": None,
+                },
+            )
+
+        # ── Layer 3 — detailed scoring ──────────────────────────────────────
+        score_result = compute_score_breakdown(
+            day_info, user_chart, rule_key, intent_rule, filter_result
+        )
+
+        layer3_detail = {
+            "base_score": 50,
+            "final_score": score_result["score"],
+            "grade": score_result["grade"],
+            "breakdown": score_result["breakdown"],
+            "bonus_sao": score_result["bonus_sao"],
+            "penalty_sao": score_result["penalty_sao"],
+        }
+
+        # ── Time slots ──────────────────────────────────────────────────────
+        gio_list = get_gio_hoang_dao(day_info["day_chi_idx"])
+        time_slots = [
+            {
+                "name": f"Giờ {g['chi_name']}",
+                "range": f"{g['start']}-{g['end']}",
+                "is_hoang_dao": True,
+            }
+            for g in gio_list
+        ]
+
+        # Verdict
+        grade = score_result["grade"]
+        if grade == "A":
+            verdict = "excellent"
+            verdict_vi = "Ngày rất tốt — nên chọn."
+        elif grade == "B":
+            verdict = "good"
+            verdict_vi = "Ngày tốt — có thể chọn."
+        elif grade == "C":
+            verdict = "acceptable"
+            verdict_vi = "Ngày bình thường — chấp nhận được nếu không có lựa chọn khác."
+        else:
+            verdict = "poor"
+            verdict_vi = "Ngày không tốt — nên tránh nếu có thể."
+
+        if filter_result["severity"] == 2:
+            verdict_vi += " (Có cảnh báo — xem chi tiết Layer 2.)"
+
+        return JSONResponse(
+            status_code=200,
+            content={
+                "status": "success",
+                "date": date_str,
+                "lunar_date": _format_lunar_date(day_info),
+                "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
+                "nguhanh_day": day_info["day_nap_am_hanh"],
+                "verdict": verdict,
+                "verdict_vi": verdict_vi,
+                "severity": filter_result["severity"],
+                "score": score_result["score"],
+                "grade": score_result["grade"],
+                "layer1": layer1_detail,
+                "layer2": layer2_detail,
+                "layer3": layer3_detail,
+                "time_slots": time_slots,
+                "reason_vi": ". ".join(score_result["reasons_vi"]),
+                "summary_vi": score_result["summary_vi"],
+            },
+        )
+
+    except Exception:
+        logger.exception("Internal error in chon_ngay_detail")
         return _error_response(
             500,
             "INTERNAL_ERROR",
