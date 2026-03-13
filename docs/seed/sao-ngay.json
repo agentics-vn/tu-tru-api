@@ -2276,6 +2276,268 @@
     }
   ],
 
+  "nhi_thap_bat_tu": {
+    "_description": "Nhị Thập Bát Tú (28 Lunar Mansions). Cycle repeats every 28 days. Use anchor date to compute: tuIdx = (julianDay - anchorJD) % 28. Element pattern per 7: Mộc, Kim, Thổ, Nhật, Nguyệt, Hỏa, Thủy.",
+    "_anchor": {
+      "_note": "Anchor must be calibrated against a known almanac date. E.g., if 13/03/2026 = sao Trực Tinh (idx 24 = Tinh), compute anchorJD accordingly.",
+      "calibration_needed": true
+    },
+    "data": [
+      {
+        "idx": 0,
+        "name": "Giác",
+        "hanh": "Mộc",
+        "tot_xau": "tốt",
+        "con_vat": "Giao (Cá sấu)",
+        "tinh_chat": "Thi cử đỗ đạt, gặp quý nhân, con cháu tốt lành, vinh hiển, lợi hôn thú",
+        "ky": ["mai táng", "xây cất mộ phần"]
+      },
+      {
+        "idx": 1,
+        "name": "Cang",
+        "hanh": "Kim",
+        "tot_xau": "xấu",
+        "con_vat": "Long (Rồng)",
+        "tinh_chat": "Phải thận trọng, mọi việc phải giữ gìn, không được tùy tiện làm liều",
+        "ky": ["hôn thú"]
+      },
+      {
+        "idx": 2,
+        "name": "Đê",
+        "hanh": "Thổ",
+        "tot_xau": "xấu",
+        "con_vat": "Lạc (Cầy hương)",
+        "tinh_chat": "Xấu phải đề phòng",
+        "ky": ["động thổ", "kinh doanh", "xuất hành"]
+      },
+      {
+        "idx": 3,
+        "name": "Phòng",
+        "hanh": "Nhật",
+        "tot_xau": "tốt",
+        "con_vat": "Thỏ",
+        "tinh_chat": "Vượng tài sản ruộng đất, giàu sang, xây cất, cưới xin, hài hòa vui vẻ",
+        "ky": []
+      },
+      {
+        "idx": 4,
+        "name": "Tâm",
+        "hanh": "Nguyệt",
+        "tot_xau": "xấu",
+        "con_vat": "Hồ (Cáo)",
+        "tinh_chat": "Kinh doanh làm ăn thua lỗ, hôn nhân bất lợi, thị phi kiện tụng",
+        "ky": ["kinh doanh", "hôn thú"]
+      },
+      {
+        "idx": 5,
+        "name": "Vĩ",
+        "hanh": "Hỏa",
+        "tot_xau": "tốt",
+        "con_vat": "Hổ",
+        "tinh_chat": "Giá thú, xuất ngoại, kinh doanh tốt, thăng quan tiến chức, xây cất nhà cửa",
+        "ky": []
+      },
+      {
+        "idx": 6,
+        "name": "Cơ",
+        "hanh": "Thủy",
+        "tot_xau": "tốt",
+        "con_vat": "Báo",
+        "tinh_chat": "Tương lai sáng sủa, nhà cửa khang trang, giàu sang thịnh vượng",
+        "ky": []
+      },
+      {
+        "idx": 7,
+        "name": "Đẩu",
+        "hanh": "Mộc",
+        "tot_xau": "tốt",
+        "con_vat": "Giải",
+        "tinh_chat": "Hôn nhân sinh nở tốt đẹp, xây dựng nhà cửa tốt, chăn nuôi trồng trọt tốt",
+        "ky": []
+      },
+      {
+        "idx": 8,
+        "name": "Ngưu",
+        "hanh": "Kim",
+        "tot_xau": "xấu",
+        "con_vat": "Ngưu (Trâu)",
+        "tinh_chat": "Cưới xin, kinh doanh bất lợi, hao tổn sức lực tài sản",
+        "ky": ["hôn thú", "kinh doanh"]
+      },
+      {
+        "idx": 9,
+        "name": "Nữ",
+        "hanh": "Thổ",
+        "tot_xau": "xấu",
+        "con_vat": "Bức (Dơi)",
+        "tinh_chat": "Hao tiền tốn của, bất lợi sinh đẻ, dễ bị lừa lọc",
+        "ky": ["sinh đẻ"]
+      },
+      {
+        "idx": 10,
+        "name": "Hư",
+        "hanh": "Nhật",
+        "tot_xau": "xấu",
+        "con_vat": "Thử (Chuột)",
+        "tinh_chat": "Xấu về hôn nhân, vợ chồng ly tán",
+        "ky": ["hôn thú"]
+      },
+      {
+        "idx": 11,
+        "name": "Nguy",
+        "hanh": "Nguyệt",
+        "tot_xau": "xấu",
+        "con_vat": "Én",
+        "tinh_chat": "Tán gia bại sản, kinh doanh bất lợi",
+        "ky": ["kinh doanh", "xây cất nhà cửa"]
+      },
+      {
+        "idx": 12,
+        "name": "Thất",
+        "hanh": "Hỏa",
+        "tot_xau": "tốt",
+        "con_vat": "Lợn",
+        "tinh_chat": "Công danh sự nghiệp tốt, xây dựng buôn bán kinh doanh đều thuận lợi",
+        "ky": []
+      },
+      {
+        "idx": 13,
+        "name": "Bích",
+        "hanh": "Thủy",
+        "tot_xau": "tốt",
+        "con_vat": "Rái",
+        "tinh_chat": "Tốt cho mai táng, hôn nhân, kinh doanh buôn bán thuận lợi, xây cất tốt",
+        "ky": []
+      },
+      {
+        "idx": 14,
+        "name": "Khuê",
+        "hanh": "Mộc",
+        "tot_xau": "xấu",
+        "con_vat": "Sói",
+        "tinh_chat": "Nửa tốt nửa xấu, tốt cho phúc lộc và hôn nhân",
+        "ky": ["khai trương", "động thổ", "an táng"]
+      },
+      {
+        "idx": 15,
+        "name": "Lâu",
+        "hanh": "Kim",
+        "tot_xau": "tốt",
+        "con_vat": "Chó",
+        "tinh_chat": "Người của đều hưng thịnh, thăng quan tiến chức, hôn thú, sinh đẻ thuận, con cái tốt",
+        "ky": []
+      },
+      {
+        "idx": 16,
+        "name": "Vị",
+        "hanh": "Thổ",
+        "tot_xau": "tốt",
+        "con_vat": "Chim trĩ",
+        "tinh_chat": "Xây dựng cát lợi, vinh hoa phú quý, kinh doanh buôn bán thuận lợi",
+        "ky": []
+      },
+      {
+        "idx": 17,
+        "name": "Mão",
+        "hanh": "Nhật",
+        "tot_xau": "xấu",
+        "con_vat": "Gà",
+        "tinh_chat": "Xây dựng, chăn nuôi đều xấu, bất lợi công danh",
+        "ky": ["xây dựng", "hôn thú"]
+      },
+      {
+        "idx": 18,
+        "name": "Tất",
+        "hanh": "Nguyệt",
+        "tot_xau": "tốt",
+        "con_vat": "Quạ",
+        "tinh_chat": "Nhà cửa khang trang, chăn nuôi phát đạt, hôn thú, sinh đẻ thuận lợi",
+        "ky": []
+      },
+      {
+        "idx": 19,
+        "name": "Chủy",
+        "hanh": "Hỏa",
+        "tot_xau": "xấu",
+        "con_vat": "Khỉ",
+        "tinh_chat": "Bất lợi công danh, thị phi kiện tụng, mất mát của cải",
+        "ky": ["công danh"]
+      },
+      {
+        "idx": 20,
+        "name": "Sâm",
+        "hanh": "Thủy",
+        "tot_xau": "tốt",
+        "con_vat": "Vượn",
+        "tinh_chat": "Vinh hoa phú quý, an táng cát lợi, kinh doanh buôn bán phát tài, hôn thú cát lợi",
+        "ky": []
+      },
+      {
+        "idx": 21,
+        "name": "Tỉnh",
+        "hanh": "Mộc",
+        "tot_xau": "tốt",
+        "con_vat": "Hươu",
+        "tinh_chat": "Xây dựng nhà cửa, thi cử đỗ đạt, công thành danh toại, hôn thú cát lợi",
+        "ky": ["an táng"]
+      },
+      {
+        "idx": 22,
+        "name": "Quỷ",
+        "hanh": "Kim",
+        "tot_xau": "xấu",
+        "con_vat": "Dê",
+        "tinh_chat": "Bất lợi xây dựng nhà cửa, hôn thú. Riêng mai táng tốt",
+        "ky": ["xây dựng", "hôn thú"]
+      },
+      {
+        "idx": 23,
+        "name": "Liễu",
+        "hanh": "Thổ",
+        "tot_xau": "xấu",
+        "con_vat": "Hoẵng",
+        "tinh_chat": "Hao tài tốn của, tai nạn, bất ổn",
+        "ky": []
+      },
+      {
+        "idx": 24,
+        "name": "Tinh",
+        "hanh": "Nhật",
+        "tot_xau": "xấu",
+        "con_vat": "Ngựa",
+        "tinh_chat": "Hôn thú xấu, riêng xây dựng tốt",
+        "ky": ["hôn thú"]
+      },
+      {
+        "idx": 25,
+        "name": "Trương",
+        "hanh": "Nguyệt",
+        "tot_xau": "xấu",
+        "con_vat": "Hươu",
+        "tinh_chat": "Xấu về xây dựng, tai nạn, quan hệ nam nữ",
+        "ky": ["xây dựng"]
+      },
+      {
+        "idx": 26,
+        "name": "Dực",
+        "hanh": "Hỏa",
+        "tot_xau": "tốt",
+        "con_vat": "Rắn",
+        "tinh_chat": "Vượng tài lộc, con cháu giàu sang, xây dựng, hôn thú cát lợi",
+        "ky": []
+      },
+      {
+        "idx": 27,
+        "name": "Chẩn",
+        "hanh": "Thủy",
+        "tot_xau": "tốt",
+        "con_vat": "Giun",
+        "tinh_chat": "Thăng quan tiến chức, tăng tài lộc, kinh doanh phát tài, hôn thú và an táng đều tốt",
+        "ky": []
+      }
+    ]
+  },
+
   "duong_cong_ky": {
     "_description": "13 Dương Công Kỵ Nhật — universal bad days by lunar month and day",
     "data": [
