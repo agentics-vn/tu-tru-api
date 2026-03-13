@@ -31,6 +31,7 @@ from engine.sao_ngay import (
     check_nguyet_duc_hop,
     check_thien_duc,
     check_thien_duc_hop,
+    check_thien_xa,
 )
 from engine.hung_ngay import (
     is_cohon,
@@ -42,6 +43,12 @@ from engine.pillars import get_tu_tru_optional
 from engine.dung_than import find_dung_than
 from engine.thap_than import analyze_thap_than
 from engine.dai_van import get_current_dai_van
+from cache.redis import (
+    get_day_info_cached,
+    set_day_info_cached,
+    get_month_info_cached,
+    set_month_info_cached,
+)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -59,6 +66,11 @@ def get_day_info(iso_date: str) -> dict:
         Plain dict — safe to serialize to JSON.
         Keys use snake_case to match Python route expectations.
     """
+    # Check cache first
+    cached = get_day_info_cached(iso_date)
+    if cached is not None:
+        return cached
+
     y, m, d = (int(x) for x in iso_date.split("-"))
 
     # Lunar
@@ -84,6 +96,7 @@ def get_day_info(iso_date: str) -> dict:
     has_thien_duc_hop = check_thien_duc_hop(lm, can_idx)
     has_nguyet_duc = check_nguyet_duc(lm, can_idx)
     has_nguyet_duc_hop = check_nguyet_duc_hop(lm, can_idx)
+    has_thien_xa = check_thien_xa(lm, can_idx, chi_idx)
 
     # Hung ngày
     _is_nguyet_ky = is_nguyet_ky(ld)
@@ -101,7 +114,7 @@ def get_day_info(iso_date: str) -> dict:
         and not is_truc_nguy
     )
 
-    return {
+    result = {
         "date": iso_date,
         # Solar
         "solar_day": d,
@@ -129,6 +142,7 @@ def get_day_info(iso_date: str) -> dict:
         "has_thien_duc_hop": has_thien_duc_hop,
         "has_nguyet_duc": has_nguyet_duc,
         "has_nguyet_duc_hop": has_nguyet_duc_hop,
+        "has_thien_xa": has_thien_xa,
         # Hung ngày flags
         "is_nguyet_ky": _is_nguyet_ky,
         "is_tam_nuong": _is_tam_nuong,
@@ -140,6 +154,11 @@ def get_day_info(iso_date: str) -> dict:
         # Cô Hồn
         "is_cohon": is_cohon(lm),
     }
+
+    # Cache result
+    set_day_info_cached(iso_date, result)
+
+    return result
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -160,6 +179,12 @@ def get_month_info(
     Returns:
         list of day_info dicts
     """
+    # Check cache (only for unfiltered results)
+    if not filter_passed:
+        cached = get_month_info_cached(year, month)
+        if cached is not None:
+            return cached
+
     days_in_month = calendar.monthrange(year, month)[1]
     results: list[dict] = []
 
@@ -168,6 +193,10 @@ def get_month_info(
         info = get_day_info(iso)
         if not filter_passed or info["is_layer1_pass"]:
             results.append(info)
+
+    # Cache unfiltered month results
+    if not filter_passed:
+        set_month_info_cached(year, month, results)
 
     return results
 

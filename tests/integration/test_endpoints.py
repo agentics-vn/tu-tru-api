@@ -16,7 +16,10 @@ from fastapi.testclient import TestClient
 
 from app import app
 
-client = TestClient(app)
+# Set dev API key for testing
+os.environ.setdefault("NODE_ENV", "development")
+
+client = TestClient(app, headers={"X-API-Key": "test-key-dev"})
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -283,6 +286,53 @@ class TestLichThang:
         data = r.json()
         assert data["user_menh"]["hanh"] == "Kim"
 
+    def test_day_has_gio_hoang_dao(self):
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        for d in data["days"]:
+            assert "gio_hoang_dao" in d
+            assert len(d["gio_hoang_dao"]) == 6
+            for g in d["gio_hoang_dao"]:
+                assert "chi_name" in g
+                assert "range" in g
+
+    def test_day_has_sao_28(self):
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        for d in data["days"]:
+            assert "sao_28" in d
+            assert "name" in d["sao_28"]
+            assert "hanh" in d["sao_28"]
+            assert d["sao_28"]["tot_xau"] in ("tốt", "xấu", "vừa")
+
+    def test_day_has_summary(self):
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        for d in data["days"]:
+            assert "summary" in d
+            assert isinstance(d["summary"]["tot"], list)
+            assert isinstance(d["summary"]["xau"], list)
+            assert d["summary"]["rating"] in ("tốt", "xấu", "bình thường")
+
+    def test_sao_28_cycles_every_28_days(self):
+        """28 Tú should cycle: day 1 and day 29 should have same star."""
+        r = client.get("/v1/lich-thang", params={
+            "birth_date": "1984-03-15",
+            "month": "2026-03",
+        })
+        data = r.json()
+        # Day 1 (Mar 1) and Day 29 (Mar 29) should have same 28 Tu
+        assert data["days"][0]["sao_28"]["name"] == data["days"][28]["sao_28"]["name"]
+
     def test_invalid_month_format(self):
         r = client.get("/v1/lich-thang", params={
             "birth_date": "1984-03-15",
@@ -358,6 +408,137 @@ class TestTieuVan:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# POST /v1/tu-tru
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestTuTru:
+
+    def test_basic_no_birth_time(self):
+        """Without birth_time, returns year-level Nạp Âm info only."""
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+        })
+        assert r.status_code == 200
+        data = r.json()
+        assert data["status"] == "success"
+        assert data["birth_year_can_chi"] == "Giáp Tý"
+        assert data["menh"]["hanh"] == "Kim"
+        assert data["menh"]["nap_am_name"] == "Hải Trung Kim"
+        assert "_note" in data
+        assert "pillars" not in data
+
+    def test_full_with_birth_time(self):
+        """With birth_time, returns full Tứ Trụ analysis."""
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 8,
+        })
+        assert r.status_code == 200
+        data = r.json()
+        assert data["status"] == "success"
+        assert "pillars" in data
+        assert "year" in data["pillars"]
+        assert "month" in data["pillars"]
+        assert "day" in data["pillars"]
+        assert "hour" in data["pillars"]
+        assert "tu_tru_display" in data
+        assert "nhat_chu" in data
+        assert "chart_strength" in data
+        assert data["chart_strength"] in ("strong", "weak", "balanced")
+        assert "dung_than" in data
+        assert "hi_than" in data
+        assert "ky_than" in data
+        assert "cuu_than" in data
+        assert "thap_than" in data
+
+    def test_pillar_structure(self):
+        """Each pillar should have can_chi, can, chi, nap_am."""
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 8,
+        })
+        data = r.json()
+        for key in ("year", "month", "day", "hour"):
+            p = data["pillars"][key]
+            assert "can_chi" in p
+            assert "can" in p and "idx" in p["can"] and "name" in p["can"]
+            assert "chi" in p and "idx" in p["chi"] and "name" in p["chi"]
+            assert "nap_am" in p and "hanh" in p["nap_am"] and "name" in p["nap_am"]
+
+    def test_thap_than_structure(self):
+        """Thập Thần should have year/month/hour gods + dominant."""
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 8,
+        })
+        data = r.json()
+        tt = data["thap_than"]
+        for key in ("year", "month", "hour"):
+            assert "key" in tt[key]
+            assert "name" in tt[key]
+            assert "category" in tt[key]
+        assert "dominant" in tt
+        assert "key" in tt["dominant"]
+        assert "name" in tt["dominant"]
+
+    def test_dai_van_with_gender(self):
+        """With birth_time + gender, returns Đại Vận cycles."""
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 8,
+            "gender": "male",
+        })
+        assert r.status_code == 200
+        data = r.json()
+        assert "dai_van" in data
+        assert "current" in data["dai_van"]
+        assert "cycles" in data["dai_van"]
+        assert len(data["dai_van"]["cycles"]) == 8  # default 8 cycles
+        for c in data["dai_van"]["cycles"]:
+            assert "display" in c
+            assert "hanh" in c
+            assert "age_range" in c
+
+    def test_no_dai_van_without_gender(self):
+        """Without gender, should not include Đại Vận."""
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 8,
+        })
+        data = r.json()
+        assert "dai_van" not in data
+
+    def test_invalid_birth_date_future(self):
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "2099-01-01",
+        })
+        assert r.status_code in (400, 422)
+
+    def test_invalid_birth_time(self):
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 7,
+        })
+        assert r.status_code in (400, 422)
+
+    def test_invalid_gender(self):
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 8,
+            "gender": "other",
+        })
+        assert r.status_code in (400, 422)
+
+    def test_birth_time_label(self):
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "1984-03-15",
+            "birth_time": 23,
+        })
+        data = r.json()
+        assert data["birth_time_label"] == "Giờ Tý Muộn (23h-23h59)"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Purity: same input → same output across all endpoints
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -385,4 +566,10 @@ class TestEndpointPurity:
         params = {"birth_date": "1984-03-15", "month": "2026-03"}
         r1 = client.get("/v1/lich-thang", params=params)
         r2 = client.get("/v1/lich-thang", params=params)
+        assert r1.json() == r2.json()
+
+    def test_tu_tru_deterministic(self):
+        body = {"birth_date": "1984-03-15", "birth_time": 8, "gender": "male"}
+        r1 = client.post("/v1/tu-tru", json=body)
+        r2 = client.post("/v1/tu-tru", json=body)
         assert r1.json() == r2.json()

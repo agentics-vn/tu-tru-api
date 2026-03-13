@@ -1,0 +1,247 @@
+{
+  "_description": "24 Tiết Khí (節氣 / Solar Terms). Mỗi năm có 24 tiết khí, chia thành 12 Tiết (odd) và 12 Khí (even). Chỉ 12 Tiết mới là điểm khởi đầu chu kỳ Trực Kiến. Cột 'truc_kien_chi' cho biết ngày Địa Chi nào trong khoảng tiết đó bắt đầu Trực Kiến.",
+  "_note_truc": "Trong mỗi khoảng Tiết, ngày có Địa Chi = truc_kien_chi sẽ nhận Trực Kiến. Từ đó tính thuận 12 Trực: Kiến→Trừ→Mãn→Bình→Định→Chấp→Phá→Nguy→Thành→Thu→Khai→Bế.",
+  "_note_order": "Bắt đầu từ Lập Xuân (tháng 2 DL). Mỗi tiết khí cách nhau ~15 ngày.",
+  "data": [
+    {
+      "stt": 1,
+      "key": "lap_xuan",
+      "name": "Lập Xuân",
+      "han_tu": "立春",
+      "type": "tiet",
+      "approx_date": "4-5 tháng 2",
+      "lunar_month": 1,
+      "truc_kien_chi": {"name": "Dần", "idx": 2}
+    },
+    {
+      "stt": 2,
+      "key": "vu_thuy",
+      "name": "Vũ Thủy",
+      "han_tu": "雨水",
+      "type": "khi",
+      "approx_date": "19-20 tháng 2",
+      "lunar_month": 1,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 3,
+      "key": "kinh_trap",
+      "name": "Kinh Trập",
+      "han_tu": "惊蛰",
+      "type": "tiet",
+      "approx_date": "6-7 tháng 3",
+      "lunar_month": 2,
+      "truc_kien_chi": {"name": "Mão", "idx": 3}
+    },
+    {
+      "stt": 4,
+      "key": "xuan_phan",
+      "name": "Xuân Phân",
+      "han_tu": "春分",
+      "type": "khi",
+      "approx_date": "21-22 tháng 3",
+      "lunar_month": 2,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 5,
+      "key": "thanh_minh",
+      "name": "Thanh Minh",
+      "han_tu": "清明",
+      "type": "tiet",
+      "approx_date": "5-6 tháng 4",
+      "lunar_month": 3,
+      "truc_kien_chi": {"name": "Thìn", "idx": 4}
+    },
+    {
+      "stt": 6,
+      "key": "coc_vu",
+      "name": "Cốc Vũ",
+      "han_tu": "谷雨",
+      "type": "khi",
+      "approx_date": "20-21 tháng 4",
+      "lunar_month": 3,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 7,
+      "key": "lap_ha",
+      "name": "Lập Hạ",
+      "han_tu": "立夏",
+      "type": "tiet",
+      "approx_date": "6-7 tháng 5",
+      "lunar_month": 4,
+      "truc_kien_chi": {"name": "Tỵ", "idx": 5}
+    },
+    {
+      "stt": 8,
+      "key": "tieu_man",
+      "name": "Tiểu Mãn",
+      "han_tu": "小满",
+      "type": "khi",
+      "approx_date": "21-22 tháng 5",
+      "lunar_month": 4,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 9,
+      "key": "mang_chung",
+      "name": "Mang Chủng",
+      "han_tu": "芒种",
+      "type": "tiet",
+      "approx_date": "6-7 tháng 6",
+      "lunar_month": 5,
+      "truc_kien_chi": {"name": "Ngọ", "idx": 6}
+    },
+    {
+      "stt": 10,
+      "key": "ha_chi",
+      "name": "Hạ Chí",
+      "han_tu": "夏至",
+      "type": "khi",
+      "approx_date": "21-22 tháng 6",
+      "lunar_month": 5,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 11,
+      "key": "tieu_thu",
+      "name": "Tiểu Thử",
+      "han_tu": "小暑",
+      "type": "tiet",
+      "approx_date": "7-8 tháng 7",
+      "lunar_month": 6,
+      "truc_kien_chi": {"name": "Mùi", "idx": 7}
+    },
+    {
+      "stt": 12,
+      "key": "dai_thu",
+      "name": "Đại Thử",
+      "han_tu": "大暑",
+      "type": "khi",
+      "approx_date": "23-24 tháng 7",
+      "lunar_month": 6,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 13,
+      "key": "lap_thu",
+      "name": "Lập Thu",
+      "han_tu": "立秋",
+      "type": "tiet",
+      "approx_date": "8-9 tháng 8",
+      "lunar_month": 7,
+      "truc_kien_chi": {"name": "Thân", "idx": 8}
+    },
+    {
+      "stt": 14,
+      "key": "xu_thu",
+      "name": "Xử Thử",
+      "han_tu": "处暑",
+      "type": "khi",
+      "approx_date": "23-24 tháng 8",
+      "lunar_month": 7,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 15,
+      "key": "bach_lo",
+      "name": "Bạch Lộ",
+      "han_tu": "白露",
+      "type": "tiet",
+      "approx_date": "8-9 tháng 9",
+      "lunar_month": 8,
+      "truc_kien_chi": {"name": "Dậu", "idx": 9}
+    },
+    {
+      "stt": 16,
+      "key": "thu_phan",
+      "name": "Thu Phân",
+      "han_tu": "秋分",
+      "type": "khi",
+      "approx_date": "23-24 tháng 9",
+      "lunar_month": 8,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 17,
+      "key": "han_lo",
+      "name": "Hàn Lộ",
+      "han_tu": "寒露",
+      "type": "tiet",
+      "approx_date": "8-9 tháng 10",
+      "lunar_month": 9,
+      "truc_kien_chi": {"name": "Tuất", "idx": 10}
+    },
+    {
+      "stt": 18,
+      "key": "suong_giang",
+      "name": "Sương Giáng",
+      "han_tu": "霜降",
+      "type": "khi",
+      "approx_date": "23-24 tháng 10",
+      "lunar_month": 9,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 19,
+      "key": "lap_dong",
+      "name": "Lập Đông",
+      "han_tu": "立冬",
+      "type": "tiet",
+      "approx_date": "8-9 tháng 11",
+      "lunar_month": 10,
+      "truc_kien_chi": {"name": "Hợi", "idx": 11}
+    },
+    {
+      "stt": 20,
+      "key": "tieu_tuyet",
+      "name": "Tiểu Tuyết",
+      "han_tu": "小雪",
+      "type": "khi",
+      "approx_date": "22-23 tháng 11",
+      "lunar_month": 10,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 21,
+      "key": "dai_tuyet",
+      "name": "Đại Tuyết",
+      "han_tu": "大雪",
+      "type": "tiet",
+      "approx_date": "7-8 tháng 12",
+      "lunar_month": 11,
+      "truc_kien_chi": {"name": "Tý", "idx": 0}
+    },
+    {
+      "stt": 22,
+      "key": "dong_chi",
+      "name": "Đông Chí",
+      "han_tu": "冬至",
+      "type": "khi",
+      "approx_date": "22-23 tháng 12",
+      "lunar_month": 11,
+      "truc_kien_chi": null
+    },
+    {
+      "stt": 23,
+      "key": "tieu_han",
+      "name": "Tiểu Hàn",
+      "han_tu": "小寒",
+      "type": "tiet",
+      "approx_date": "6-7 tháng 1",
+      "lunar_month": 12,
+      "truc_kien_chi": {"name": "Sửu", "idx": 1}
+    },
+    {
+      "stt": 24,
+      "key": "dai_han",
+      "name": "Đại Hàn",
+      "han_tu": "大寒",
+      "type": "khi",
+      "approx_date": "20-21 tháng 1",
+      "lunar_month": 12,
+      "truc_kien_chi": null
+    }
+  ]
+}

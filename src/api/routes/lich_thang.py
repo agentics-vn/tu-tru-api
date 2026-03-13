@@ -2,6 +2,7 @@
 GET /v1/lich-thang — Calendar month view endpoint.
 
 Returns all days in a month with hoàng đạo/hắc đạo badges,
+giờ hoàng đạo, nhị thập bát tú, tốt/xấu summary,
 layer-1 pass status, and basic astrology info for calendar rendering.
 """
 
@@ -15,11 +16,80 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from calendar_service import get_day_info, get_user_chart, get_month_info
-from engine.hoang_dao import get_day_star
+from engine.hoang_dao import get_day_star, get_gio_hoang_dao
+from engine.nhi_thap_bat_tu import get_nhi_thap_bat_tu
+from filter import apply_layer2_filter
 
 logger = logging.getLogger("lich_thang")
 
 router = APIRouter()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _build_day_summary(
+    day_info: dict,
+    star_info: dict,
+    tu_28: dict,
+    user_chart: dict,
+) -> dict:
+    """Build a concise tốt/xấu summary for a single day."""
+    tot: list[str] = []
+    xau: list[str] = []
+
+    # Hoàng Đạo / Hắc Đạo
+    if star_info["is_hoang_dao"]:
+        tot.append(f"Hoàng Đạo ({star_info['star_name']})")
+    else:
+        xau.append(f"Hắc Đạo ({star_info['star_name']})")
+
+    # Trực score
+    truc_score = day_info["truc_score"]
+    if truc_score >= 2:
+        tot.append(f"Trực {day_info['truc_name']}")
+    elif truc_score < 0:
+        xau.append(f"Trực {day_info['truc_name']}")
+
+    # Sao cát ngày
+    if day_info.get("has_thien_duc"):
+        tot.append("Thiên Đức")
+    if day_info.get("has_nguyet_duc"):
+        tot.append("Nguyệt Đức")
+    if day_info.get("has_thien_duc_hop"):
+        tot.append("Thiên Đức Hợp")
+    if day_info.get("has_nguyet_duc_hop"):
+        tot.append("Nguyệt Đức Hợp")
+
+    # Hung ngày
+    if day_info.get("is_nguyet_ky"):
+        xau.append("Nguyệt Kỵ")
+    if day_info.get("is_tam_nuong"):
+        xau.append("Tam Nương")
+    if day_info.get("is_duong_cong_ky"):
+        xau.append("Dương Công Kỵ")
+
+    # 28 Tú
+    if tu_28["tot_xau"] == "tốt":
+        tot.append(f"Sao {tu_28['name']}")
+    elif tu_28["tot_xau"] == "xấu":
+        xau.append(f"Sao {tu_28['name']}")
+
+    # Layer 2: personal xung/khac check
+    l2 = apply_layer2_filter(day_info, user_chart, "MAC_DINH")
+    if l2["severity"] == 3:
+        xau.append("Xung tuổi")
+    elif l2["severity"] == 2:
+        xau.append("Khắc mệnh")
+
+    return {
+        "tot": tot,
+        "xau": xau,
+        "rating": "xấu" if not day_info["is_layer1_pass"] or l2["severity"] == 3
+                  else "tốt" if len(tot) > len(xau)
+                  else "bình thường",
+    }
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -74,6 +144,17 @@ async def lich_thang(
         for d in all_days:
             star_info = get_day_star(d["lunar_month"], d["day_chi_idx"])
 
+            # Giờ Hoàng Đạo
+            gio_tot = get_gio_hoang_dao(d["day_chi_idx"])
+
+            # Nhị Thập Bát Tú
+            tu_28 = get_nhi_thap_bat_tu(
+                d["solar_year"], d["solar_month"], d["solar_day"]
+            )
+
+            # Tốt/xấu summary
+            tot_xau = _build_day_summary(d, star_info, tu_28, user_chart)
+
             days_response.append({
                 "date": d["date"],
                 "lunar_day": d["lunar_day"],
@@ -85,6 +166,16 @@ async def lich_thang(
                 "truc_score": d["truc_score"],
                 "is_layer1_pass": d["is_layer1_pass"],
                 "badge": "hoang_dao" if star_info["is_hoang_dao"] else "hac_dao",
+                "gio_hoang_dao": [
+                    {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
+                    for g in gio_tot
+                ],
+                "sao_28": {
+                    "name": tu_28["name"],
+                    "hanh": tu_28["hanh"],
+                    "tot_xau": tu_28["tot_xau"],
+                },
+                "summary": tot_xau,
             })
 
         return JSONResponse(

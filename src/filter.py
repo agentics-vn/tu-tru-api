@@ -13,9 +13,11 @@ from engine.can_chi import is_can_khac, is_xung
 # Tháng Cô Hồn blocked intents
 # ─────────────────────────────────────────────────────────────────────────────
 
+# Only intents with _special_rules.avoid_lunar_month_7 in intent-rules.json.
+# Algorithm.md §5.4 specifies CUOI_HOI (→ DAM_CUOI via alias).
+# Intent-rules.json extends to DONG_THO and NHAP_TRACH.
 COHON_BLOCKED_INTENTS: frozenset[str] = frozenset({
-    "DAM_CUOI", "AN_HOI", "DONG_THO", "NHAP_TRACH",
-    "LAM_NHA", "MUA_NHA_DAT", "KHAI_TRUONG",
+    "DAM_CUOI", "DONG_THO", "NHAP_TRACH",
 })
 
 # ─────────────────────────────────────────────────────────────────────────────
