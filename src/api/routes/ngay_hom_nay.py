@@ -17,6 +17,7 @@ from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart, get_can_chi_year
 from engine.hoang_dao import get_day_star, get_gio_hoang_dao, get_gio_hac_dao
 from engine.can_chi import CAN_NAMES, CHI_NAMES, NAP_AM_NAMES, get_can_chi_day, get_nap_am_pair_idx
@@ -168,14 +169,14 @@ def _build_daily_advice(day_info: dict, star_info: dict, good_for: list[str], av
 @router.get("")
 @router.get("/")
 async def ngay_hom_nay(
-    birth_date: str = Query(..., description="Birth date in ISO format YYYY-MM-DD"),
+    birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
     gender: Optional[int] = Query(None, description="Gender: 1 (nam) or -1 (nữ)"),
     target_date: Optional[str] = Query(None, alias="date", description="Target date YYYY-MM-DD (default: today)"),
 ) -> JSONResponse:
     try:
-        # Parse and validate birth_date
-        bd = date.fromisoformat(birth_date)
+        # Parse and validate birth_date (dd/mm/yyyy)
+        bd = parse_dmy(birth_date)
         if bd.year < 1900 or bd >= date.today():
             return JSONResponse(
                 status_code=400,
@@ -205,7 +206,7 @@ async def ngay_hom_nay(
 
         # ── Engine calls ────────────────────────────────────────────────
         day_info = get_day_info(td_str)
-        user_chart = get_user_chart(birth_date, birth_time, gender)
+        user_chart = get_user_chart(bd.isoformat(), birth_time, gender)
         star_info = get_day_star(day_info["lunar_month"], day_info["day_chi_idx"])
 
         # Giờ tốt / xấu

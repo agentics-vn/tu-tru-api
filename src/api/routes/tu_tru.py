@@ -15,6 +15,8 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 
+from api.parse_date import parse_dmy
+
 from engine.pillars import get_tu_tru, VALID_BIRTH_HOURS, BIRTH_HOUR_LABELS
 from engine.can_chi import (
     CAN_NAMES,
@@ -39,16 +41,17 @@ router = APIRouter()
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TuTruRequest(BaseModel):
-    birth_date: date
+    birth_date: str
     birth_time: Optional[int] = None
     gender: Optional[int] = None
 
     @field_validator("birth_date")
     @classmethod
-    def birth_date_must_be_past(cls, v: date) -> date:
-        if v.year < 1900:
+    def birth_date_must_be_past(cls, v: str) -> str:
+        d = parse_dmy(v)
+        if d.year < 1900:
             raise ValueError("birth_date phải có năm >= 1900")
-        if v >= date.today():
+        if d >= date.today():
             raise ValueError("birth_date phải là ngày quá khứ")
         return v
 
@@ -97,8 +100,9 @@ def _build_pillar_display(pillar: dict) -> dict:
 @router.post("/")
 async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
     try:
-        birth_date_str = req.birth_date.isoformat()
-        birth_year = req.birth_date.year
+        bd = parse_dmy(req.birth_date)
+        birth_date_str = bd.isoformat()
+        birth_year = bd.year
 
         # ── Year-level info (always available) ──────────────────────────
         year_cc = get_can_chi_year(birth_year)
