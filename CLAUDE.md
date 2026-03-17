@@ -65,3 +65,15 @@ PORT=3000
 - Max date range per request: 90 days
 - Max response time: 1 second (p95)
 - `top_n` default: 3, max: 10
+
+## gstack
+- For all web browsing, use the `/browse` skill from gstack. Never use `mcp__claude-in-chrome__*` tools.
+- Available skills:
+  - `/plan-ceo-review`
+  - `/plan-eng-review`
+  - `/review`
+  - `/ship`
+  - `/browse`
+  - `/qa`
+  - `/setup-browser-cookies`
+  - `/retro`
