@@ -34,3 +34,6 @@ htmlcov/
 # Node (legacy)
 node_modules/
 package-lock.json
+
+# Webapp (separate repo: tad-agentics/Bazi)
+webapp/
