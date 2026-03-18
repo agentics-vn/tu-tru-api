@@ -1,56 +1,86 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { useProfile } from "@/lib/profile-context";
-import { mockSavedEvents, type SavedEvent } from "@/lib/mock-data";
+import { useState } from "react";
+import Link from "next/link";
+import { useRequireProfile } from "@/lib/use-require-profile";
+import { type SavedEvent } from "@/lib/mock-data";
 import { BracketText } from "@/components/bracket-text";
+import { formatDate, daysUntil } from "@/lib/utils";
 
-function daysUntil(dateStr: string): number {
-  const target = new Date(dateStr);
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  target.setHours(0, 0, 0, 0);
-  return Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-}
-
-function formatDate(d: string) {
-  const dt = new Date(d);
-  const wd = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-  return `${wd[dt.getDay()]}, ${String(dt.getDate()).padStart(2, "0")}/${String(dt.getMonth() + 1).padStart(2, "0")}/${dt.getFullYear()}`;
-}
-
-const GRADE_COLORS = {
+const GRADE_COLORS: Record<string, string> = {
   A: "text-good",
   B: "text-accent",
   C: "text-fg-muted",
   D: "text-bad",
 };
 
+const INITIAL_EVENTS: SavedEvent[] = [
+  {
+    id: "1",
+    title: "Khai truong quan cafe",
+    date: "2026-04-15",
+    intent: "Khai Truong",
+    note: "Dia chi: 123 Nguyen Hue, Q1",
+    score: 92,
+    grade: "A",
+    goodHours: ["7h-9h", "11h-13h"],
+  },
+  {
+    id: "2",
+    title: "Le dinh hon",
+    date: "2026-05-22",
+    intent: "Cuoi Hoi",
+    score: 87,
+    grade: "B",
+    goodHours: ["7h-9h", "9h-11h"],
+  },
+  {
+    id: "3",
+    title: "Ky hop dong thue mat bang",
+    date: "2026-04-10",
+    intent: "Ky Hop Dong",
+    score: 85,
+    grade: "B",
+    goodHours: ["11h-13h"],
+  },
+];
+
 export default function SuKienPage() {
-  const { profile, isLoaded } = useProfile();
-  const router = useRouter();
+  const { isReady } = useRequireProfile();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [events, setEvents] = useState<SavedEvent[]>(INITIAL_EVENTS);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDate, setNewDate] = useState("");
   const [newIntent, setNewIntent] = useState("");
 
-  const events = useMemo(() => {
-    const e = mockSavedEvents();
-    return e.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-  }, []);
+  if (!isReady) return null;
 
-  if (isLoaded && !profile) {
-    router.replace("/");
-    return null;
-  }
-  if (!isLoaded) return null;
+  const sorted = [...events].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+  const upcoming = sorted.filter((e) => daysUntil(e.date) >= 0);
+  const past = sorted.filter((e) => daysUntil(e.date) < 0);
 
-  const upcoming = events.filter((e) => daysUntil(e.date) >= 0);
-  const past = events.filter((e) => daysUntil(e.date) < 0);
+  const handleAddEvent = () => {
+    if (!newTitle.trim() || !newDate) return;
+    const newEvent: SavedEvent = {
+      id: Date.now().toString(),
+      title: newTitle.trim(),
+      date: newDate,
+      intent: newIntent.trim() || "Khac",
+    };
+    setEvents([...events, newEvent]);
+    setNewTitle("");
+    setNewDate("");
+    setNewIntent("");
+    setShowAddForm(false);
+  };
+
+  const handleDeleteEvent = (id: string) => {
+    setEvents(events.filter((e) => e.id !== id));
+    if (expandedId === id) setExpandedId(null);
+  };
 
   return (
     <div className="px-6 py-6 page-enter">
@@ -80,6 +110,7 @@ export default function SuKienPage() {
 
       {/* Add button */}
       <button
+        type="button"
         onClick={() => setShowAddForm(!showAddForm)}
         className="btn-outline w-full mb-6"
       >
@@ -90,8 +121,11 @@ export default function SuKienPage() {
       {showAddForm && (
         <div className="border border-border p-4 mb-6 space-y-4 page-enter">
           <div>
-            <label className="mono-label block mb-2">Ten su kien</label>
+            <label htmlFor="evt-title" className="mono-label block mb-2">
+              Ten su kien
+            </label>
             <input
+              id="evt-title"
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
@@ -100,8 +134,11 @@ export default function SuKienPage() {
             />
           </div>
           <div>
-            <label className="mono-label block mb-2">Ngay</label>
+            <label htmlFor="evt-date" className="mono-label block mb-2">
+              Ngay
+            </label>
             <input
+              id="evt-date"
               type="date"
               value={newDate}
               onChange={(e) => setNewDate(e.target.value)}
@@ -109,8 +146,11 @@ export default function SuKienPage() {
             />
           </div>
           <div>
-            <label className="mono-label block mb-2">Loai viec</label>
+            <label htmlFor="evt-intent" className="mono-label block mb-2">
+              Loai viec
+            </label>
             <input
+              id="evt-intent"
               type="text"
               value={newIntent}
               onChange={(e) => setNewIntent(e.target.value)}
@@ -118,11 +158,18 @@ export default function SuKienPage() {
               className="w-full bg-transparent border-b border-border py-2 text-sm focus:outline-none focus:border-fg placeholder:text-border"
             />
           </div>
-          <button className="btn-primary w-full">Luu su kien</button>
+          <button
+            type="button"
+            onClick={handleAddEvent}
+            className={`btn-primary w-full ${!newTitle.trim() || !newDate ? "opacity-30 cursor-not-allowed" : ""}`}
+            disabled={!newTitle.trim() || !newDate}
+          >
+            Luu su kien
+          </button>
         </div>
       )}
 
-      {/* Upcoming events */}
+      {/* Upcoming */}
       {upcoming.length > 0 && (
         <div className="mb-8">
           <div className="mono-label text-accent mb-4">Sap toi</div>
@@ -134,12 +181,13 @@ export default function SuKienPage() {
               onToggle={() =>
                 setExpandedId(expandedId === evt.id ? null : evt.id)
               }
+              onDelete={() => handleDeleteEvent(evt.id)}
             />
           ))}
         </div>
       )}
 
-      {/* Past events */}
+      {/* Past */}
       {past.length > 0 && (
         <div className="mb-8">
           <div className="mono-label text-fg-muted mb-4">Da qua</div>
@@ -151,6 +199,7 @@ export default function SuKienPage() {
               onToggle={() =>
                 setExpandedId(expandedId === evt.id ? null : evt.id)
               }
+              onDelete={() => handleDeleteEvent(evt.id)}
               isPast
             />
           ))}
@@ -163,12 +212,9 @@ export default function SuKienPage() {
           <p className="text-xs text-fg-muted mb-6">
             Hay chon ngay tot, sau do luu lai de theo doi.
           </p>
-          <button
-            onClick={() => router.push("/chon-ngay")}
-            className="btn-primary"
-          >
+          <Link href="/chon-ngay" className="btn-primary inline-block">
             Chon ngay tot
-          </button>
+          </Link>
         </div>
       )}
     </div>
@@ -179,19 +225,30 @@ function EventCard({
   event,
   expanded,
   onToggle,
+  onDelete,
   isPast,
 }: {
   event: SavedEvent;
   expanded: boolean;
   onToggle: () => void;
+  onDelete: () => void;
   isPast?: boolean;
 }) {
   const remaining = daysUntil(event.date);
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-expanded={expanded}
       className={`border-t border-border py-4 cursor-pointer ${isPast ? "opacity-50" : ""}`}
       onClick={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggle();
+        }
+      }}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
@@ -208,21 +265,19 @@ function EventCard({
         </div>
       </div>
 
-      {/* Tags */}
       <div className="flex gap-2 mt-2">
         <span className="mono-label px-1.5 py-0.5 bg-bg-card">
           {event.intent}
         </span>
         {event.grade && (
           <span
-            className={`mono-label px-1.5 py-0.5 ${GRADE_COLORS[event.grade]}`}
+            className={`mono-label px-1.5 py-0.5 ${GRADE_COLORS[event.grade] || "text-fg-muted"}`}
           >
             Hang {event.grade} — {event.score}/100
           </span>
         )}
       </div>
 
-      {/* Expanded */}
       {expanded && (
         <div className="mt-4 space-y-3 page-enter">
           {event.note && (
@@ -244,8 +299,16 @@ function EventCard({
             </div>
           )}
           <div className="flex gap-2 mt-3">
-            <button className="mono-label text-accent">Chia se</button>
-            <button className="mono-label text-bad ml-auto">Xoa</button>
+            <button
+              type="button"
+              className="mono-label text-bad ml-auto"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+            >
+              Xoa
+            </button>
           </div>
         </div>
       )}

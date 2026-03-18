@@ -1,30 +1,20 @@
 "use client";
 
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { useProfile } from "@/lib/profile-context";
-import { mockPhongThuyResult } from "@/lib/mock-data";
+import { useRequireProfile } from "@/lib/use-require-profile";
+import { mockPhongThuyResult, resetMockSeed } from "@/lib/mock-data";
 import { BracketText } from "@/components/bracket-text";
-
-const HANH_COLORS: Record<string, string> = {
-  Kim: "text-fg",
-  Moc: "text-good",
-  Thuy: "text-[#2B6CB0]",
-  Hoa: "text-bad",
-  Tho: "text-warn",
-};
+import { HANH_COLORS } from "@/lib/utils";
 
 export default function PhongThuyPage() {
-  const { profile, isLoaded } = useProfile();
-  const router = useRouter();
+  const { profile, isReady } = useRequireProfile();
 
-  const data = useMemo(() => mockPhongThuyResult(), []);
+  const data = useMemo(() => {
+    resetMockSeed(77);
+    return mockPhongThuyResult();
+  }, []);
 
-  if (isLoaded && !profile) {
-    router.replace("/");
-    return null;
-  }
-  if (!isLoaded) return null;
+  if (!isReady || !profile) return null;
 
   return (
     <div className="px-6 py-6 page-enter">
@@ -33,7 +23,6 @@ export default function PhongThuyPage() {
         <div className="mono-label">Phong thuy</div>
       </header>
 
-      {/* Title */}
       <div className="flex items-start justify-between mb-10">
         <div>
           <h1 className="heading-display text-[2rem] leading-tight">
@@ -115,6 +104,8 @@ export default function PhongThuyPage() {
               <div
                 className="w-full aspect-square mb-2"
                 style={{ backgroundColor: m.hex }}
+                role="img"
+                aria-label={`Mau ${m.color}`}
               />
               <div className="text-xs font-bold">{m.color}</div>
               <div className="mono-label">{m.element}</div>
@@ -129,6 +120,8 @@ export default function PhongThuyPage() {
               <div
                 className="w-full aspect-square mb-2 opacity-50"
                 style={{ backgroundColor: m.hex }}
+                role="img"
+                aria-label={`Mau ${m.color}`}
               />
               <div className="text-xs font-bold">{m.color}</div>
               <div className="mono-label">{m.element}</div>
@@ -143,9 +136,9 @@ export default function PhongThuyPage() {
           <div>
             <div className="mono-label text-good mb-3">So may man</div>
             <div className="flex gap-2">
-              {data.soMayMan.map((s) => (
+              {data.soMayMan.map((s, i) => (
                 <span
-                  key={s}
+                  key={`good-${i}`}
                   className="w-10 h-10 flex items-center justify-center border border-good text-good font-bold"
                 >
                   {s}
@@ -156,9 +149,9 @@ export default function PhongThuyPage() {
           <div>
             <div className="mono-label text-bad mb-3">So nen tranh</div>
             <div className="flex gap-2">
-              {data.soKy.map((s) => (
+              {data.soKy.map((s, i) => (
                 <span
-                  key={s}
+                  key={`bad-${i}`}
                   className="w-10 h-10 flex items-center justify-center border border-bad text-bad font-bold"
                 >
                   {s}
@@ -173,10 +166,7 @@ export default function PhongThuyPage() {
       <div className="border-t border-border pt-5 mb-8">
         <div className="mono-label text-accent mb-4">Vat pham phong thuy</div>
         {data.vatPham.map((v) => (
-          <div
-            key={v.item}
-            className="bg-bg-card p-3 mb-2"
-          >
+          <div key={v.item} className="bg-bg-card p-3 mb-2">
             <div className="flex justify-between items-start mb-1">
               <div className="text-sm font-bold">{v.item}</div>
               <span className={`mono-label ${HANH_COLORS[v.element]}`}>
@@ -194,7 +184,9 @@ export default function PhongThuyPage() {
         <h3 className="text-sm font-bold mb-2">
           Phan tich phong thuy chi tiet cho nha / van phong
         </h3>
-        <button className="btn-primary px-8 mt-2">Nang cap</button>
+        <button type="button" className="btn-primary px-8 mt-2">
+          Sap ra mat
+        </button>
       </div>
     </div>
   );

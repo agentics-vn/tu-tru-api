@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const TABS = [
   { href: "/hom-nay", label: "Hom nay" },
@@ -23,6 +23,16 @@ export function BottomNav() {
   const pathname = usePathname();
   const [showMore, setShowMore] = useState(false);
 
+  // Close menu on Escape key
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape" && showMore) setShowMore(false);
+  }, [showMore]);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
   // Hide on landing page
   if (pathname === "/") return null;
 
@@ -35,11 +45,12 @@ export function BottomNav() {
       {/* More menu overlay */}
       {showMore && (
         <div
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-40 bg-fg/10"
           onClick={() => setShowMore(false)}
         >
           <div
-            className="absolute bottom-[49px] left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-bg border-t border-border"
+            className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-bg border-t border-border"
+            role="menu"
             onClick={(e) => e.stopPropagation()}
           >
             {MORE_LINKS.map((link) => {
@@ -48,6 +59,7 @@ export function BottomNav() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  role="menuitem"
                   onClick={() => setShowMore(false)}
                   className={`
                     block py-3 px-6 text-[0.65rem] uppercase tracking-[0.15em]
@@ -64,7 +76,7 @@ export function BottomNav() {
         </div>
       )}
 
-      <nav className="bottom-nav">
+      <nav className="bottom-nav" aria-label="Dieu huong chinh">
         <div className="flex items-stretch">
           {TABS.map((tab) => {
             const isActive =
@@ -73,6 +85,7 @@ export function BottomNav() {
               <Link
                 key={tab.href}
                 href={tab.href}
+                aria-current={isActive ? "page" : undefined}
                 className={`
                   flex-1 py-3 text-center transition-colors
                   text-[0.65rem] uppercase tracking-[0.15em]
@@ -84,9 +97,11 @@ export function BottomNav() {
               </Link>
             );
           })}
-          {/* More button */}
           <button
+            type="button"
             onClick={() => setShowMore(!showMore)}
+            aria-expanded={showMore}
+            aria-haspopup="menu"
             className={`
               flex-1 py-3 text-center transition-colors
               text-[0.65rem] uppercase tracking-[0.15em]

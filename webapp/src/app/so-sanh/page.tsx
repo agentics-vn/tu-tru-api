@@ -1,44 +1,36 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { useProfile } from "@/lib/profile-context";
-import { mockDayDetail } from "@/lib/mock-data";
+import { useRequireProfile } from "@/lib/use-require-profile";
+import { mockDayDetail, resetMockSeed } from "@/lib/mock-data";
 import { BracketText } from "@/components/bracket-text";
 import { ScoreBadge } from "@/components/score-badge";
+import { formatDateShort } from "@/lib/utils";
 
 export default function SoSanhPage() {
-  const { profile, isLoaded } = useProfile();
-  const router = useRouter();
+  const { isReady } = useRequireProfile();
 
   const [date1, setDate1] = useState("");
   const [date2, setDate2] = useState("");
   const [comparing, setComparing] = useState(false);
 
-  const day1 = useMemo(
-    () => (comparing && date1 ? mockDayDetail(date1) : null),
-    [comparing, date1]
-  );
-  const day2 = useMemo(
-    () => (comparing && date2 ? mockDayDetail(date2) : null),
-    [comparing, date2]
-  );
+  const day1 = useMemo(() => {
+    if (!comparing || !date1) return null;
+    resetMockSeed(new Date(date1).getTime() % 100000);
+    return mockDayDetail(date1);
+  }, [comparing, date1]);
 
-  if (isLoaded && !profile) {
-    router.replace("/");
-    return null;
-  }
-  if (!isLoaded) return null;
+  const day2 = useMemo(() => {
+    if (!comparing || !date2) return null;
+    resetMockSeed(new Date(date2).getTime() % 100000);
+    return mockDayDetail(date2);
+  }, [comparing, date2]);
+
+  if (!isReady) return null;
 
   const handleCompare = () => {
     if (date1 && date2) setComparing(true);
   };
-
-  function formatDate(d: string) {
-    const dt = new Date(d);
-    const wd = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-    return `${wd[dt.getDay()]}, ${String(dt.getDate()).padStart(2, "0")}/${String(dt.getMonth() + 1).padStart(2, "0")}`;
-  }
 
   return (
     <div className="px-6 py-6 page-enter">
@@ -55,7 +47,8 @@ export default function SoSanhPage() {
             hai ngay
           </h1>
           <p className="text-xs text-fg-muted mt-2 max-w-[220px] leading-relaxed">
-            Dang phan van giua 2 ngay? So sanh chi tiet de chon ngay phu hop nhat.
+            Dang phan van giua 2 ngay? So sanh chi tiet de chon ngay phu hop
+            nhat.
           </p>
         </div>
         <BracketText className="mt-1">
@@ -70,8 +63,11 @@ export default function SoSanhPage() {
       {!comparing && (
         <div className="space-y-6">
           <div>
-            <label className="mono-label block mb-3">Ngay thu nhat</label>
+            <label htmlFor="compare-d1" className="mono-label block mb-3">
+              Ngay thu nhat
+            </label>
             <input
+              id="compare-d1"
               type="date"
               value={date1}
               onChange={(e) => setDate1(e.target.value)}
@@ -79,8 +75,11 @@ export default function SoSanhPage() {
             />
           </div>
           <div>
-            <label className="mono-label block mb-3">Ngay thu hai</label>
+            <label htmlFor="compare-d2" className="mono-label block mb-3">
+              Ngay thu hai
+            </label>
             <input
+              id="compare-d2"
               type="date"
               value={date2}
               onChange={(e) => setDate2(e.target.value)}
@@ -88,9 +87,11 @@ export default function SoSanhPage() {
             />
           </div>
           <button
+            type="button"
             onClick={handleCompare}
             className={`btn-primary w-full ${!date1 || !date2 ? "opacity-30 cursor-not-allowed" : ""}`}
             disabled={!date1 || !date2}
+            aria-disabled={!date1 || !date2}
           >
             So sanh
           </button>
@@ -101,6 +102,7 @@ export default function SoSanhPage() {
       {comparing && day1 && day2 && (
         <div className="page-enter">
           <button
+            type="button"
             onClick={() => setComparing(false)}
             className="mono-label mb-6 flex items-center gap-1"
           >
@@ -109,12 +111,20 @@ export default function SoSanhPage() {
 
           {/* Side-by-side header */}
           <div className="grid grid-cols-2 gap-3 mb-6">
-            <div className={`text-center p-3 ${day1.score >= day2.score ? "border border-accent" : "border border-border"}`}>
-              <div className="text-sm font-bold">{formatDate(date1)}</div>
+            <div
+              className={`text-center p-3 ${day1.score > day2.score ? "border border-accent" : day1.score === day2.score ? "border border-accent" : "border border-border"}`}
+            >
+              <div className="text-sm font-bold">
+                {formatDateShort(date1)}
+              </div>
               <div className="mono-label">{day1.canChi}</div>
             </div>
-            <div className={`text-center p-3 ${day2.score >= day1.score ? "border border-accent" : "border border-border"}`}>
-              <div className="text-sm font-bold">{formatDate(date2)}</div>
+            <div
+              className={`text-center p-3 ${day2.score > day1.score ? "border border-accent" : day2.score === day1.score ? "border border-accent" : "border border-border"}`}
+            >
+              <div className="text-sm font-bold">
+                {formatDateShort(date2)}
+              </div>
               <div className="mono-label">{day2.canChi}</div>
             </div>
           </div>
@@ -123,19 +133,21 @@ export default function SoSanhPage() {
           <div className="border-t border-b border-border py-5 mb-6">
             <div className="mono-label mb-3 text-center">Diem tong</div>
             <div className="grid grid-cols-2 gap-3 text-center">
-              <div>
-                <ScoreBadge score={day1.score} grade={day1.grade} size="md" />
-              </div>
-              <div>
-                <ScoreBadge score={day2.score} grade={day2.grade} size="md" />
-              </div>
+              <ScoreBadge score={day1.score} grade={day1.grade} size="md" />
+              <ScoreBadge score={day2.score} grade={day2.grade} size="md" />
             </div>
             <div className="grid grid-cols-2 gap-3 mt-3">
               <div className="score-bar">
-                <div className="score-bar-fill" style={{ width: `${day1.score}%` }} />
+                <div
+                  className="score-bar-fill"
+                  style={{ width: `${day1.score}%` }}
+                />
               </div>
               <div className="score-bar">
-                <div className="score-bar-fill" style={{ width: `${day2.score}%` }} />
+                <div
+                  className="score-bar-fill"
+                  style={{ width: `${day2.score}%` }}
+                />
               </div>
             </div>
           </div>
@@ -165,18 +177,33 @@ export default function SoSanhPage() {
             },
             {
               label: "Hung ngay",
-              v1: day1.hungNgay.length === 0 ? "Khong" : day1.hungNgay.join(", "),
-              v2: day2.hungNgay.length === 0 ? "Khong" : day2.hungNgay.join(", "),
+              v1:
+                day1.hungNgay.length === 0
+                  ? "Khong"
+                  : day1.hungNgay.join(", "),
+              v2:
+                day2.hungNgay.length === 0
+                  ? "Khong"
+                  : day2.hungNgay.join(", "),
               w1: day1.hungNgay.length === 0,
               w2: day2.hungNgay.length === 0,
             },
           ].map((row) => (
-            <div key={row.label} className="grid grid-cols-[1fr_auto_1fr] gap-2 mb-3 items-center">
-              <div className={`text-xs text-center p-2 ${row.w1 && !row.w2 ? "bg-good/10" : ""}`}>
+            <div
+              key={row.label}
+              className="grid grid-cols-[1fr_auto_1fr] gap-2 mb-3 items-center"
+            >
+              <div
+                className={`text-xs text-center p-2 ${row.w1 && !row.w2 ? "bg-good/10" : ""}`}
+              >
                 {row.v1}
               </div>
-              <div className="mono-label text-center min-w-[70px]">{row.label}</div>
-              <div className={`text-xs text-center p-2 ${row.w2 && !row.w1 ? "bg-good/10" : ""}`}>
+              <div className="mono-label text-center min-w-[70px]">
+                {row.label}
+              </div>
+              <div
+                className={`text-xs text-center p-2 ${row.w2 && !row.w1 ? "bg-good/10" : ""}`}
+              >
                 {row.v2}
               </div>
             </div>
@@ -188,13 +215,17 @@ export default function SoSanhPage() {
               <div>
                 <div className="mono-label text-good mb-2">Nen lam</div>
                 {day1.goodFor.map((g) => (
-                  <div key={g} className="text-xs mb-1">{g}</div>
+                  <div key={g} className="text-xs mb-1">
+                    {g}
+                  </div>
                 ))}
               </div>
               <div>
                 <div className="mono-label text-good mb-2">Nen lam</div>
                 {day2.goodFor.map((g) => (
-                  <div key={g} className="text-xs mb-1">{g}</div>
+                  <div key={g} className="text-xs mb-1">
+                    {g}
+                  </div>
                 ))}
               </div>
             </div>
@@ -207,7 +238,10 @@ export default function SoSanhPage() {
                 <div className="mono-label mb-2">Gio tot</div>
                 <div className="flex flex-wrap gap-1">
                   {day1.goodHours.map((h) => (
-                    <span key={h} className="mono-label px-2 py-1 bg-good/10 text-good">
+                    <span
+                      key={h}
+                      className="mono-label px-2 py-1 bg-good/10 text-good"
+                    >
                       {h}
                     </span>
                   ))}
@@ -217,7 +251,10 @@ export default function SoSanhPage() {
                 <div className="mono-label mb-2">Gio tot</div>
                 <div className="flex flex-wrap gap-1">
                   {day2.goodHours.map((h) => (
-                    <span key={h} className="mono-label px-2 py-1 bg-good/10 text-good">
+                    <span
+                      key={h}
+                      className="mono-label px-2 py-1 bg-good/10 text-good"
+                    >
                       {h}
                     </span>
                   ))}
@@ -231,9 +268,9 @@ export default function SoSanhPage() {
             <div className="mono-label text-accent mb-2">Ket luan</div>
             <p className="text-xs leading-relaxed">
               {day1.score > day2.score
-                ? `Ngay ${formatDate(date1)} tot hon voi diem ${day1.score}/100. ${day1.reason}`
+                ? `Ngay ${formatDateShort(date1)} tot hon voi diem ${day1.score}/100. ${day1.reason}`
                 : day2.score > day1.score
-                  ? `Ngay ${formatDate(date2)} tot hon voi diem ${day2.score}/100. ${day2.reason}`
+                  ? `Ngay ${formatDateShort(date2)} tot hon voi diem ${day2.score}/100. ${day2.reason}`
                   : "Hai ngay tuong duong — chon ngay nao tien hon cho ban."}
             </p>
           </div>

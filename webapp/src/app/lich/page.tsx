@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useProfile } from "@/lib/profile-context";
-import { mockMonthOverview } from "@/lib/mock-data";
+import { useRequireProfile } from "@/lib/use-require-profile";
+import { mockMonthOverview, resetMockSeed } from "@/lib/mock-data";
 
 const WEEKDAY_LABELS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
@@ -14,23 +13,18 @@ const BADGE_STYLES = {
 };
 
 export default function LichPage() {
-  const { profile, isLoaded } = useProfile();
-  const router = useRouter();
+  const { isReady } = useRequireProfile();
   const now = new Date();
   const [viewYear, setViewYear] = useState(now.getFullYear());
   const [viewMonth, setViewMonth] = useState(now.getMonth() + 1);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
-  const data = useMemo(
-    () => mockMonthOverview(viewYear, viewMonth),
-    [viewYear, viewMonth]
-  );
+  const data = useMemo(() => {
+    resetMockSeed(viewYear * 100 + viewMonth);
+    return mockMonthOverview(viewYear, viewMonth);
+  }, [viewYear, viewMonth]);
 
-  if (isLoaded && !profile) {
-    router.replace("/");
-    return null;
-  }
-  if (!isLoaded) return null;
+  if (!isReady) return null;
 
   // First day of month (0=Sun), adjust for Monday start
   const firstDayOfWeek = new Date(viewYear, viewMonth - 1, 1).getDay();
@@ -62,7 +56,6 @@ export default function LichPage() {
 
   return (
     <div className="px-6 py-6 page-enter">
-      {/* Header */}
       <header className="flex justify-between items-start mb-8">
         <div className="mono-label">Tu Tru</div>
         <div className="mono-label">Lich</div>
@@ -70,13 +63,23 @@ export default function LichPage() {
 
       {/* Month nav */}
       <div className="flex items-center justify-between mb-8">
-        <button onClick={prevMonth} className="mono-label p-2">
+        <button
+          type="button"
+          onClick={prevMonth}
+          className="mono-label p-2"
+          aria-label="Thang truoc"
+        >
           &larr;
         </button>
         <h2 className="heading-display text-2xl">
           Thang {viewMonth}/{viewYear}
         </h2>
-        <button onClick={nextMonth} className="mono-label p-2">
+        <button
+          type="button"
+          onClick={nextMonth}
+          className="mono-label p-2"
+          aria-label="Thang sau"
+        >
           &rarr;
         </button>
       </div>
@@ -91,13 +94,11 @@ export default function LichPage() {
       </div>
 
       {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-0 mb-6">
-        {/* Empty cells for offset */}
+      <div className="grid grid-cols-7 gap-0 mb-6" role="grid">
         {Array.from({ length: offset }).map((_, i) => (
           <div key={`empty-${i}`} className="aspect-square" />
         ))}
 
-        {/* Day cells */}
         {data.days.map((d) => {
           const isToday =
             d.day === now.getDate() &&
@@ -107,8 +108,13 @@ export default function LichPage() {
 
           return (
             <button
+              type="button"
               key={d.day}
-              onClick={() => setSelectedDay(d.day === selectedDay ? null : d.day)}
+              onClick={() =>
+                setSelectedDay(d.day === selectedDay ? null : d.day)
+              }
+              aria-label={`Ngay ${d.day}, ${d.badge === "good" ? "tot" : d.badge === "bad" ? "xau" : "binh thuong"}`}
+              aria-pressed={isSelected}
               className={`
                 aspect-square flex flex-col items-center justify-center
                 text-sm transition-colors relative
@@ -116,19 +122,13 @@ export default function LichPage() {
               `}
             >
               <span
-                className={`
-                  text-xs font-medium
-                  ${isSelected ? "" : isToday ? "font-bold" : ""}
-                `}
+                className={`text-xs font-medium ${isSelected ? "" : isToday ? "font-bold" : ""}`}
               >
                 {d.day}
               </span>
               {!isSelected && (
                 <span
-                  className={`
-                    w-1.5 h-1.5 mt-0.5
-                    ${d.badge === "good" ? "bg-good" : d.badge === "bad" ? "bg-bad" : "bg-border"}
-                  `}
+                  className={`w-1.5 h-1.5 mt-0.5 ${d.badge === "good" ? "bg-good" : d.badge === "bad" ? "bg-bad" : "bg-border"}`}
                 />
               )}
               {isToday && !isSelected && (
@@ -177,9 +177,6 @@ export default function LichPage() {
               {selected.summary}
             </p>
           )}
-          <button className="btn-outline w-full text-[0.6rem]">
-            Xem chi tiet
-          </button>
         </div>
       )}
     </div>

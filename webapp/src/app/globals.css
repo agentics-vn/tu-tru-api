@@ -34,8 +34,13 @@
   --color-border: var(--border);
 }
 
-* {
-  box-shadow: none !important;
+/* Remove decorative shadows but preserve focus rings */
+*:not(:focus-visible) {
+  box-shadow: none;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 body {

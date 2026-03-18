@@ -74,7 +74,7 @@ const CHI = [
   "Dan",
   "Mao",
   "Thin",
-  "Ty",
+  "Ti",
   "Ngo",
   "Mui",
   "Than",
@@ -119,12 +119,31 @@ const INTENTS = [
   "Kham Benh",
 ];
 
+// Seeded PRNG for deterministic mock data (avoids hydration mismatches)
+function seededRandom(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+}
+
+let rng = seededRandom(42);
+
+export function resetMockSeed(seed: number = 42) {
+  rng = seededRandom(seed);
+}
+
 function pick<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
+  return arr[Math.floor(rng() * arr.length)];
+}
+
+function mockRandom() {
+  return rng();
 }
 
 export function mockTodayInfo(): DayInfo {
-  const score = 75 + Math.floor(Math.random() * 20);
+  const score = 75 + Math.floor(mockRandom() * 20);
   return {
     date: "2026-03-18",
     lunarDate: "29 thang Hai",
@@ -167,7 +186,7 @@ export function mockMonthOverview(
   const daysInMonth = new Date(year, month, 0).getDate();
   const days = [];
   for (let d = 1; d <= daysInMonth; d++) {
-    const r = Math.random();
+    const r = mockRandom();
     days.push({
       date: `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`,
       day: d,
@@ -263,7 +282,7 @@ export function mockHopTuoiResult(
   date1: string,
   date2: string
 ): HopTuoiResult {
-  const score = 60 + Math.floor(Math.random() * 35);
+  const score = 60 + Math.floor(mockRandom() * 35);
   return {
     person1: {
       birthDate: date1,
@@ -283,23 +302,23 @@ export function mockHopTuoiResult(
     details: [
       {
         category: "Ngu Hanh Nap Am",
-        score: 60 + Math.floor(Math.random() * 35),
+        score: 60 + Math.floor(mockRandom() * 35),
         description:
           "Kim sinh Thuy, Thuy sinh Moc — vong tuong sinh thuan chieu.",
       },
       {
         category: "Thien Can",
-        score: 50 + Math.floor(Math.random() * 40),
+        score: 50 + Math.floor(mockRandom() * 40),
         description: "Canh Kim va Mau Tho — Tho sinh Kim, tuong sinh.",
       },
       {
         category: "Dia Chi",
-        score: 55 + Math.floor(Math.random() * 35),
+        score: 55 + Math.floor(mockRandom() * 35),
         description: "Ngo va Thin — khong xung khong hop, binh hoa.",
       },
       {
         category: "Nhat Chu tuong tac",
-        score: 65 + Math.floor(Math.random() * 30),
+        score: 65 + Math.floor(mockRandom() * 30),
         description:
           "Hai nhat chu khong xung dot — moi quan he on dinh.",
       },
@@ -439,14 +458,14 @@ export function mockSavedEvents(): SavedEvent[] {
 
 export function mockDayDetail(dateStr: string): DayInfo {
   const d = new Date(dateStr);
-  const score = 55 + Math.floor(Math.random() * 40);
+  const score = 55 + Math.floor(mockRandom() * 40);
   return {
     date: dateStr,
     lunarDate: `${d.getDate()} thang ${d.getMonth() + 1}`,
     canChi: `${pick(CAN)} ${pick(CHI)}`,
-    hoangDao: Math.random() > 0.4,
+    hoangDao: mockRandom() > 0.4,
     trucName: pick(TRUC),
-    trucScore: Math.random() > 0.5 ? 2 : -1,
+    trucScore: mockRandom() > 0.5 ? 2 : -1,
     sao28: pick(SAO28),
     saoElement: pick(["Kim", "Moc", "Thuy", "Hoa", "Tho"]),
     score,
@@ -455,13 +474,13 @@ export function mockDayDetail(dateStr: string): DayInfo {
     badFor: [pick(INTENTS)],
     goodHours: ["7h-9h", "11h-13h", "15h-17h"].slice(
       0,
-      1 + Math.floor(Math.random() * 3)
+      1 + Math.floor(mockRandom() * 3)
     ),
     badHours: ["9h-11h", "13h-15h"].slice(
       0,
-      1 + Math.floor(Math.random() * 2)
+      1 + Math.floor(mockRandom() * 2)
     ),
     reason: `Ngay ${pick(["Hoang Dao", "Hac Dao"])} — truc ${pick(TRUC)} ket hop sao ${pick(SAO28)}.`,
-    hungNgay: Math.random() > 0.7 ? [pick(["Nguyet Ky", "Tam Nuong", "Tu Ly"])] : [],
+    hungNgay: mockRandom() > 0.7 ? [pick(["Nguyet Ky", "Tam Nuong", "Tu Ly"])] : [],
   };
 }

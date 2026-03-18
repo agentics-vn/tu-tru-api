@@ -2,38 +2,45 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useProfile } from "@/lib/profile-context";
-import { mockTuTruChart } from "@/lib/mock-data";
+import { useRequireProfile } from "@/lib/use-require-profile";
+import { mockTuTruChart, resetMockSeed } from "@/lib/mock-data";
 import { BracketText } from "@/components/bracket-text";
-
-const HANH_COLORS: Record<string, string> = {
-  Kim: "text-fg",
-  Moc: "text-good",
-  Thuy: "text-[#2B6CB0]",
-  Hoa: "text-bad",
-  Tho: "text-warn",
-};
+import { useProfile } from "@/lib/profile-context";
+import { HANH_COLORS } from "@/lib/utils";
 
 const DAI_VAN = [
-  { age: "3-12", can: "Canh", chi: "Thin", active: false },
-  { age: "13-22", can: "Tan", chi: "Ty", active: false },
-  { age: "23-32", can: "Nham", chi: "Ngo", active: false },
-  { age: "33-42", can: "Quy", chi: "Mui", active: true },
-  { age: "43-52", can: "Giap", chi: "Than", active: false },
+  { age: "3-12", can: "Canh", chi: "Thin" },
+  { age: "13-22", can: "Tan", chi: "Ty" },
+  { age: "23-32", can: "Nham", chi: "Ngo" },
+  { age: "33-42", can: "Quy", chi: "Mui" },
+  { age: "43-52", can: "Giap", chi: "Than" },
 ];
 
+function getActiveVanIndex(birthYear: number): number {
+  const age = new Date().getFullYear() - birthYear;
+  return DAI_VAN.findIndex((dv) => {
+    const [from, to] = dv.age.split("-").map(Number);
+    return age >= from && age <= to;
+  });
+}
+
 export default function ToiPage() {
-  const { profile, isLoaded, clearProfile } = useProfile();
+  const { profile, isReady } = useRequireProfile();
+  const { clearProfile } = useProfile();
   const router = useRouter();
   const [showDaiVan, setShowDaiVan] = useState(false);
 
-  const chart = useMemo(() => mockTuTruChart(), []);
+  const chart = useMemo(() => {
+    resetMockSeed(99);
+    return mockTuTruChart();
+  }, []);
 
-  if (isLoaded && !profile) {
-    router.replace("/");
-    return null;
-  }
-  if (!isLoaded || !profile) return null;
+  if (!isReady || !profile) return null;
+
+  const birthYear = parseInt(profile.birthDate.split("-")[0]);
+  const activeVanIdx = getActiveVanIndex(birthYear);
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
 
   const pillars = [
     { label: "Gio", ...chart.gio },
@@ -44,7 +51,6 @@ export default function ToiPage() {
 
   return (
     <div className="px-6 py-6 page-enter">
-      {/* Header */}
       <header className="flex justify-between items-start mb-8">
         <div className="mono-label">Tu Tru</div>
         <div className="mono-label">Toi</div>
@@ -58,7 +64,10 @@ export default function ToiPage() {
             {profile.birthDate} — {profile.gender === "nam" ? "Nam" : "Nu"}
           </div>
           <div className="mono-label mt-0.5">
-            Gio sinh: {profile.birthHour === "unknown" ? "Khong ro" : profile.birthHour}
+            Gio sinh:{" "}
+            {profile.birthHour === "unknown"
+              ? "Khong ro"
+              : profile.birthHour}
           </div>
         </div>
         <BracketText>
@@ -69,7 +78,7 @@ export default function ToiPage() {
         </BracketText>
       </div>
 
-      {/* Tu Tru Chart — 4 pillars */}
+      {/* Tu Tru Chart */}
       <div className="border-t border-b border-border py-6 mb-6">
         <div className="mono-label mb-4 text-accent">La So Tu Tru</div>
         <div className="grid grid-cols-4 gap-0">
@@ -115,13 +124,17 @@ export default function ToiPage() {
         </div>
         <div>
           <div className="mono-label mb-1">Dung Than</div>
-          <div className={`text-sm font-bold ${HANH_COLORS[chart.dungThan]}`}>
+          <div
+            className={`text-sm font-bold ${HANH_COLORS[chart.dungThan]}`}
+          >
             {chart.dungThan}
           </div>
         </div>
         <div>
           <div className="mono-label mb-1">Ky Than</div>
-          <div className={`text-sm font-bold ${HANH_COLORS[chart.kyThan]}`}>
+          <div
+            className={`text-sm font-bold ${HANH_COLORS[chart.kyThan]}`}
+          >
             {chart.kyThan}
           </div>
         </div>
@@ -130,13 +143,13 @@ export default function ToiPage() {
       {/* Tieu Van */}
       <div className="border-t border-border pt-5 mb-6">
         <div className="mono-label text-accent mb-3">
-          Van thang 3/2026
+          Van thang {currentMonth}/{currentYear}
         </div>
         <div className="bg-bg-card p-4">
           <div className="text-sm font-bold mb-2">Canh Dan (Moc)</div>
           <p className="text-xs text-fg-muted leading-relaxed">
-            &ldquo;Thang nay can dac biet can trong voi tai chinh. Moc
-            khac menh Tho — nen tap trung giu suc khoe va han che rui
+            &ldquo;Thang nay can dac biet can trong voi tai chinh. Moc khac
+            menh Tho — nen tap trung giu suc khoe va han che rui
             ro.&rdquo;
           </p>
           <div className="flex gap-2 mt-3">
@@ -153,24 +166,31 @@ export default function ToiPage() {
       {/* Dai Van */}
       <div className="border-t border-border pt-5 mb-8">
         <button
+          type="button"
           onClick={() => setShowDaiVan(!showDaiVan)}
+          aria-expanded={showDaiVan}
           className="mono-label flex items-center gap-2 mb-4 cursor-pointer"
         >
           Dai Van (chu ky 10 nam)
-          <span className="text-[0.5rem]">{showDaiVan ? "▲" : "▼"}</span>
+          <span className="text-[0.5rem]">
+            {showDaiVan ? "\u25B2" : "\u25BC"}
+          </span>
         </button>
 
         {showDaiVan && (
           <div className="flex gap-0 page-enter">
-            {DAI_VAN.map((dv) => (
+            {DAI_VAN.map((dv, idx) => (
               <div
                 key={dv.age}
-                className={`
-                  flex-1 text-center py-3 border
-                  ${dv.active ? "bg-fg text-bg border-fg" : "border-border"}
-                `}
+                className={`flex-1 text-center py-3 border ${
+                  idx === activeVanIdx
+                    ? "bg-fg text-bg border-fg"
+                    : "border-border"
+                }`}
               >
-                <div className="mono-label text-[0.5rem] mb-1">{dv.age}</div>
+                <div className="mono-label text-[0.5rem] mb-1">
+                  {dv.age}
+                </div>
                 <div className="text-xs font-bold">{dv.can}</div>
                 <div className="text-xs">{dv.chi}</div>
               </div>
@@ -188,15 +208,18 @@ export default function ToiPage() {
         <p className="text-xs text-fg-muted mb-4">
           Thay the tu van 20 trieu — chi 79K/thang
         </p>
-        <button className="btn-primary px-8">Nang cap</button>
+        <button type="button" className="btn-primary px-8">
+          Sap ra mat
+        </button>
       </div>
 
       {/* Actions */}
       <div className="space-y-3">
-        <button className="btn-outline w-full">
-          Them nguoi than
+        <button type="button" className="btn-outline w-full">
+          Them nguoi than — sap ra mat
         </button>
         <button
+          type="button"
           onClick={() => {
             clearProfile();
             router.replace("/");

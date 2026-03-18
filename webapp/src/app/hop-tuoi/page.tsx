@@ -2,15 +2,16 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useProfile } from "@/lib/profile-context";
-import { BIRTH_HOURS, mockHopTuoiResult } from "@/lib/mock-data";
+import { useRequireProfile } from "@/lib/use-require-profile";
+import { BIRTH_HOURS, mockHopTuoiResult, resetMockSeed } from "@/lib/mock-data";
 import { BracketText } from "@/components/bracket-text";
 import { ScoreBadge } from "@/components/score-badge";
+import { DateInput, validateDateInput } from "@/components/date-input";
 
 type Step = "input" | "result";
 
 export default function HopTuoiPage() {
-  const { profile, isLoaded } = useProfile();
+  const { profile, isReady } = useRequireProfile();
   const router = useRouter();
 
   const [step, setStep] = useState<Step>("input");
@@ -19,24 +20,24 @@ export default function HopTuoiPage() {
   const [year2, setYear2] = useState("");
   const [hour2, setHour2] = useState("unknown");
   const [gender2, setGender2] = useState<"nam" | "nu">("nu");
+  const [error, setError] = useState("");
 
   const result = useMemo(() => {
     if (step !== "result" || !profile) return null;
     const d2 = `${year2}-${month2.padStart(2, "0")}-${day2.padStart(2, "0")}`;
+    resetMockSeed(parseInt(year2) + parseInt(month2) * 100);
     return mockHopTuoiResult(profile.birthDate, d2);
   }, [step, profile, year2, month2, day2]);
 
-  if (isLoaded && !profile) {
-    router.replace("/");
-    return null;
-  }
-  if (!isLoaded) return null;
+  if (!isReady || !profile) return null;
 
   const handleSubmit = () => {
-    const d = parseInt(day2);
-    const m = parseInt(month2);
-    const y = parseInt(year2);
-    if (!d || !m || !y || y < 1920 || y > 2020) return;
+    const validationError = validateDateInput(day2, month2, year2);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    setError("");
     setStep("result");
   };
 
@@ -63,8 +64,8 @@ export default function HopTuoiPage() {
                 doi lua
               </h1>
               <p className="text-xs text-fg-muted mt-2 max-w-[240px] leading-relaxed">
-                So sanh tuong hop giua hai la so Tu Tru. Xem ngu hanh, thien can,
-                dia chi va loi khuyen phong thuy.
+                So sanh tuong hop giua hai la so Tu Tru. Xem ngu hanh, thien
+                can, dia chi va loi khuyen phong thuy.
               </p>
             </div>
             <BracketText className="mt-1">
@@ -75,63 +76,46 @@ export default function HopTuoiPage() {
             </BracketText>
           </div>
 
-          {/* Person 1 — from profile */}
+          {/* Person 1 */}
           <div className="border border-border p-4 mb-6">
             <div className="mono-label text-accent mb-2">Nguoi 1 (ban)</div>
-            <div className="text-sm font-bold">{profile!.birthDate}</div>
+            <div className="text-sm font-bold">{profile.birthDate}</div>
             <div className="mono-label mt-1">
-              {profile!.gender === "nam" ? "Nam" : "Nu"} —{" "}
-              {profile!.birthHour === "unknown"
+              {profile.gender === "nam" ? "Nam" : "Nu"} —{" "}
+              {profile.birthHour === "unknown"
                 ? "Khong ro gio sinh"
-                : `Gio ${profile!.birthHour}`}
+                : `Gio ${profile.birthHour}`}
             </div>
           </div>
 
-          {/* Person 2 — input */}
+          {/* Person 2 */}
           <div className="space-y-6">
-            <div className="mono-label text-accent">Nguoi 2 (doi phuong)</div>
-
-            <div>
-              <label className="mono-label block mb-3">Ngay sinh</label>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={2}
-                  placeholder="DD"
-                  value={day2}
-                  onChange={(e) => setDay2(e.target.value.replace(/\D/g, ""))}
-                  className="flex-1 bg-transparent border-b border-border py-3 text-center text-lg font-bold focus:outline-none focus:border-fg transition-colors placeholder:text-border"
-                />
-                <span className="text-border self-end pb-3">/</span>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={2}
-                  placeholder="MM"
-                  value={month2}
-                  onChange={(e) => setMonth2(e.target.value.replace(/\D/g, ""))}
-                  className="flex-1 bg-transparent border-b border-border py-3 text-center text-lg font-bold focus:outline-none focus:border-fg transition-colors placeholder:text-border"
-                />
-                <span className="text-border self-end pb-3">/</span>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={4}
-                  placeholder="YYYY"
-                  value={year2}
-                  onChange={(e) => setYear2(e.target.value.replace(/\D/g, ""))}
-                  className="flex-[1.5] bg-transparent border-b border-border py-3 text-center text-lg font-bold focus:outline-none focus:border-fg transition-colors placeholder:text-border"
-                />
-              </div>
+            <div className="mono-label text-accent">
+              Nguoi 2 (doi phuong)
             </div>
 
             <div>
-              <label className="mono-label block mb-3">Gio sinh</label>
+              <label className="mono-label block mb-3">Ngay sinh</label>
+              <DateInput
+                day={day2}
+                month={month2}
+                year={year2}
+                onDayChange={(v) => { setDay2(v); setError(""); }}
+                onMonthChange={(v) => { setMonth2(v); setError(""); }}
+                onYearChange={(v) => { setYear2(v); setError(""); }}
+                error={error}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="hop-tuoi-hour" className="mono-label block mb-3">
+                Gio sinh
+              </label>
               <select
+                id="hop-tuoi-hour"
                 value={hour2}
                 onChange={(e) => setHour2(e.target.value)}
-                className="w-full bg-transparent border-b border-border py-3 text-sm focus:outline-none focus:border-fg transition-colors appearance-none cursor-pointer"
+                className="w-full bg-transparent border-b border-border py-3 text-sm focus:outline-none focus:border-fg transition-colors cursor-pointer"
               >
                 {BIRTH_HOURS.map((h) => (
                   <option key={h.value} value={h.value}>
@@ -141,10 +125,13 @@ export default function HopTuoiPage() {
               </select>
             </div>
 
-            <div>
-              <label className="mono-label block mb-3">Gioi tinh</label>
-              <div className="flex gap-0">
+            <fieldset>
+              <legend className="mono-label mb-3">Gioi tinh</legend>
+              <div className="flex gap-0" role="radiogroup">
                 <button
+                  type="button"
+                  role="radio"
+                  aria-checked={gender2 === "nam"}
                   onClick={() => setGender2("nam")}
                   className={`flex-1 py-3 text-xs uppercase tracking-widest border transition-colors ${
                     gender2 === "nam"
@@ -155,6 +142,9 @@ export default function HopTuoiPage() {
                   Nam
                 </button>
                 <button
+                  type="button"
+                  role="radio"
+                  aria-checked={gender2 === "nu"}
                   onClick={() => setGender2("nu")}
                   className={`flex-1 py-3 text-xs uppercase tracking-widest border border-l-0 transition-colors ${
                     gender2 === "nu"
@@ -165,9 +155,13 @@ export default function HopTuoiPage() {
                   Nu
                 </button>
               </div>
-            </div>
+            </fieldset>
 
-            <button onClick={handleSubmit} className="btn-primary w-full">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="btn-primary w-full"
+            >
               Xem ket qua hop tuoi
             </button>
           </div>
@@ -177,6 +171,7 @@ export default function HopTuoiPage() {
       {step === "result" && result && (
         <div className="page-enter">
           <button
+            type="button"
             onClick={() => setStep("input")}
             className="mono-label mb-6 flex items-center gap-1"
           >
@@ -187,15 +182,27 @@ export default function HopTuoiPage() {
           <div className="grid grid-cols-2 gap-4 mb-8">
             <div className="border border-border p-3">
               <div className="mono-label mb-1">Nguoi 1</div>
-              <div className="text-xs font-bold">{result.person1.nhatChu}</div>
-              <div className="mono-label mt-0.5">{result.person1.menh}</div>
-              <div className="mono-label text-accent">{result.person1.hanh}</div>
+              <div className="text-xs font-bold">
+                {result.person1.nhatChu}
+              </div>
+              <div className="mono-label mt-0.5">
+                {result.person1.menh}
+              </div>
+              <div className="mono-label text-accent">
+                {result.person1.hanh}
+              </div>
             </div>
             <div className="border border-border p-3">
               <div className="mono-label mb-1">Nguoi 2</div>
-              <div className="text-xs font-bold">{result.person2.nhatChu}</div>
-              <div className="mono-label mt-0.5">{result.person2.menh}</div>
-              <div className="mono-label text-accent">{result.person2.hanh}</div>
+              <div className="text-xs font-bold">
+                {result.person2.nhatChu}
+              </div>
+              <div className="mono-label mt-0.5">
+                {result.person2.menh}
+              </div>
+              <div className="mono-label text-accent">
+                {result.person2.hanh}
+              </div>
             </div>
           </div>
 
@@ -260,13 +267,11 @@ export default function HopTuoiPage() {
           {/* CTAs */}
           <div className="space-y-3">
             <button
+              type="button"
               onClick={() => router.push("/chon-ngay")}
               className="btn-primary w-full"
             >
               Chon ngay cuoi tot nhat
-            </button>
-            <button className="mono-label w-full py-3 text-center text-accent">
-              Chia se ket qua
             </button>
           </div>
         </div>

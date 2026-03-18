@@ -1,34 +1,41 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useProfile } from "@/lib/profile-context";
-import { mockTodayInfo, mockTuTruChart } from "@/lib/mock-data";
+import { useMemo } from "react";
+import { useRequireProfile } from "@/lib/use-require-profile";
+import { mockTodayInfo, mockTuTruChart, resetMockSeed } from "@/lib/mock-data";
 
 export default function ChiaSePage() {
-  const { profile, isLoaded } = useProfile();
-  const router = useRouter();
-  const cardRef = useRef<HTMLDivElement>(null);
+  const { isReady } = useRequireProfile();
 
-  const today = useMemo(() => mockTodayInfo(), []);
+  const today = useMemo(() => {
+    resetMockSeed(42);
+    return mockTodayInfo();
+  }, []);
   const chart = useMemo(() => mockTuTruChart(), []);
 
-  if (isLoaded && !profile) {
-    router.replace("/");
-    return null;
-  }
-  if (!isLoaded) return null;
+  if (!isReady) return null;
 
   const now = new Date();
   const dateStr = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`;
 
+  const shareText = `Ngay ${dateStr}: ${today.score}/100 diem — ${today.hoangDao ? "Hoang Dao" : "Hac Dao"}. Xem ngay cua ban tai Tu Tru!`;
+
   const handleShare = async () => {
-    if (navigator.share) {
-      await navigator.share({
-        title: `Tu Tru — Ngay ${dateStr}`,
-        text: `Ngay ${dateStr}: ${today.score}/100 diem — ${today.hoangDao ? "Hoang Dao" : "Hac Dao"}. Xem ngay cua ban tai Tu Tru!`,
-        url: window.location.origin,
-      });
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `Tu Tru — Ngay ${dateStr}`,
+          text: shareText,
+          url: window.location.origin,
+        });
+      } else {
+        // Fallback: copy to clipboard
+        await navigator.clipboard.writeText(shareText);
+        alert("Da copy noi dung vao clipboard!");
+      }
+    } catch (err) {
+      // User cancelled share dialog — ignore AbortError
+      if (err instanceof DOMException && err.name === "AbortError") return;
     }
   };
 
@@ -41,16 +48,14 @@ export default function ChiaSePage() {
 
       <h1 className="heading-display text-xl mb-2">Chia se ngay hom nay</h1>
       <p className="text-xs text-fg-muted mb-8">
-        Card nay se duoc render thanh anh de chia se qua Zalo, Facebook, Instagram.
+        Card de chia se qua Zalo, Facebook, Instagram.
       </p>
 
       {/* Share Card Preview */}
       <div
-        ref={cardRef}
         className="bg-bg-dark text-bg p-6 mb-8"
         style={{ aspectRatio: "9/16", maxHeight: "560px" }}
       >
-        {/* Card content */}
         <div className="h-full flex flex-col justify-between">
           {/* Top */}
           <div className="flex justify-between items-start">
@@ -68,9 +73,8 @@ export default function ChiaSePage() {
             </span>
           </div>
 
-          {/* Center — date + score */}
+          {/* Center */}
           <div className="flex flex-col items-center text-center">
-            {/* Bracket CJK */}
             <span className="text-accent text-xl leading-none mb-1">
               {"\u300C"}
             </span>
@@ -97,7 +101,6 @@ export default function ChiaSePage() {
               /100 — Hang {today.grade}
             </div>
 
-            {/* Badge */}
             <span
               className="inline-block text-[0.55rem] uppercase tracking-[0.15em] px-3 py-1"
               style={{
@@ -110,7 +113,7 @@ export default function ChiaSePage() {
             </span>
           </div>
 
-          {/* Bottom — info grid */}
+          {/* Bottom */}
           <div>
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div className="text-center">
@@ -142,7 +145,6 @@ export default function ChiaSePage() {
               </div>
             </div>
 
-            {/* Nen lam */}
             <div
               className="text-[0.5rem] uppercase tracking-[0.15em] opacity-40 mb-1"
               style={{ fontFamily: "var(--font-mono)" }}
@@ -153,16 +155,12 @@ export default function ChiaSePage() {
               {today.goodFor.join(" — ")}
             </div>
 
-            {/* QR placeholder */}
             <div className="flex items-center justify-between">
               <div
                 className="text-[0.5rem] uppercase tracking-[0.15em] opacity-30"
                 style={{ fontFamily: "var(--font-mono)" }}
               >
-                Scan de xem ngay cua ban
-              </div>
-              <div className="w-10 h-10 border border-white/20 flex items-center justify-center">
-                <span className="text-[0.45rem] opacity-30">QR</span>
+                tutru.app — Xem ngay cua ban
               </div>
             </div>
           </div>
@@ -171,17 +169,13 @@ export default function ChiaSePage() {
 
       {/* Actions */}
       <div className="space-y-3">
-        <button onClick={handleShare} className="btn-primary w-full">
+        <button type="button" onClick={handleShare} className="btn-primary w-full">
           Chia se
-        </button>
-        <button className="btn-outline w-full">
-          Tai anh ve
         </button>
       </div>
 
-      {/* Note */}
       <p className="mono-label text-center mt-6">
-        Ban be scan qr → nhap ngay sinh → xem ngay cua ho
+        Ban be truy cap tutru.app → nhap ngay sinh → xem ngay cua ho
       </p>
     </div>
   );

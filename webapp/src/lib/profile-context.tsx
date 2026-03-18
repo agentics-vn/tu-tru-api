@@ -31,6 +31,16 @@ const ProfileContext = createContext<ProfileContextType>({
 
 const STORAGE_KEY = "tutru_profile";
 
+function isValidProfile(obj: unknown): obj is Profile {
+  if (typeof obj !== "object" || obj === null) return false;
+  const p = obj as Record<string, unknown>;
+  return (
+    typeof p.birthDate === "string" &&
+    typeof p.birthHour === "string" &&
+    (p.gender === "nam" || p.gender === "nu")
+  );
+}
+
 export function ProfileProvider({ children }: { children: ReactNode }) {
   const [profile, setProfileState] = useState<Profile | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -38,21 +48,36 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) setProfileState(JSON.parse(stored));
+      if (stored) {
+        const parsed: unknown = JSON.parse(stored);
+        if (isValidProfile(parsed)) {
+          setProfileState(parsed);
+        } else {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
     } catch {
-      /* ignore */
+      localStorage.removeItem(STORAGE_KEY);
     }
     setIsLoaded(true);
   }, []);
 
   const setProfile = (p: Profile) => {
     setProfileState(p);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+    } catch {
+      /* storage full or disabled — profile still works in memory */
+    }
   };
 
   const clearProfile = () => {
     setProfileState(null);
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
   };
 
   return (
