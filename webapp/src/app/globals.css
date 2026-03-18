@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #E8E4DF;
+  --bg-card: #DEDACE;
+  --bg-dark: #1A1A1A;
+  --fg: #1A1A1A;
+  --fg-muted: #7A7A7A;
+  --accent: #8B7D3C;
+  --accent-light: #A89A5A;
+  --good: #3A6B35;
+  --warn: #B8860B;
+  --bad: #8B3A3A;
+  --border: #D0CCC5;
+  --font-body: "Inter", "Noto Sans", system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-display: "Inter", "Helvetica Neue", "Arial Black", system-ui,
+    sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", "Cascadia Code",
+    ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-card: var(--bg-card);
+  --color-bg-dark: var(--bg-dark);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --color-border: var(--border);
+}
+
+* {
+  box-shadow: none !important;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Monospace label style */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* Condensed bold heading */
+.heading-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* Score bar */
+.score-bar {
+  height: 3px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.6s ease-out;
+}
+
+/* Bottom nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  z-index: 50;
+}
+
+/* Blur paywall overlay */
+.blur-paywall {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Flat button */
+.btn-primary {
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover {
+  opacity: 0.85;
+}
+.btn-primary:active {
+  opacity: 0.7;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.btn-outline:hover {
+  border-color: var(--fg);
+}
+
+/* Page transition fade */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-enter {
+  animation: fade-in 0.3s ease-out;
+}
