@@ -1,0 +1,22 @@
+{
+  "name": "Tu Tru — Biet Menh, Song Chu Dong",
+  "short_name": "Tu Tru",
+  "description": "Chon ngay tot dua tren la so Tu Tru ca nhan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#E8E4DF",
+  "theme_color": "#E8E4DF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
