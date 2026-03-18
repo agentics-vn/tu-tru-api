@@ -119,6 +119,24 @@ const INTENTS = [
   "Kham Benh",
 ];
 
+// API intent enum values
+export const API_INTENTS = [
+  { value: "KHAI_TRUONG", label: "Khai Truong" },
+  { value: "CUOI_HOI", label: "Cuoi Hoi" },
+  { value: "DONG_THO", label: "Dong Tho" },
+  { value: "NHAP_TRACH", label: "Nhap Trach" },
+  { value: "XUAT_HANH", label: "Xuat Hanh" },
+  { value: "KY_HOP_DONG", label: "Ky Hop Dong" },
+  { value: "TE_TU", label: "Te Tu" },
+  { value: "KHAM_BENH", label: "Kham Benh" },
+  { value: "AN_HOI", label: "An Hoi" },
+  { value: "LAM_NHA", label: "Lam Nha" },
+  { value: "MUA_NHA_DAT", label: "Mua Nha Dat" },
+  { value: "CAU_TAI", label: "Cau Tai" },
+  { value: "PHAU_THUAT", label: "Phau Thuat" },
+  { value: "NHAP_HOC_THI_CU", label: "Nhap Hoc / Thi Cu" },
+];
+
 // Seeded PRNG for deterministic mock data (avoids hydration mismatches)
 function seededRandom(seed: number): () => number {
   let s = seed;

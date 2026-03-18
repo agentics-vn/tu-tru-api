@@ -1,42 +1,44 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useRequireProfile } from "@/lib/use-require-profile";
-import {
-  INTENT_OPTIONS,
-  mockChonNgayResult,
-  resetMockSeed,
-} from "@/lib/mock-data";
+import { API_INTENTS } from "@/lib/mock-data";
+import { useApi } from "@/lib/use-api";
+import { fetchChonNgay } from "@/lib/api";
 import { DayCard } from "@/components/day-card";
 import { BracketText } from "@/components/bracket-text";
 
 type Step = "select" | "result";
 
 export default function ChonNgayPage() {
-  const { isReady } = useRequireProfile();
+  const { profile, isReady } = useRequireProfile();
 
   const [step, setStep] = useState<Step>("select");
   const [intent, setIntent] = useState("");
   const now = new Date();
   const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
   const threeMonths = new Date(now.getFullYear(), now.getMonth() + 3, 0);
-  const [dateFrom, setDateFrom] = useState(
-    nextMonth.toISOString().slice(0, 10)
-  );
-  const [dateTo, setDateTo] = useState(
-    threeMonths.toISOString().slice(0, 10)
-  );
+  const [dateFrom, setDateFrom] = useState(nextMonth.toISOString().slice(0, 10));
+  const [dateTo, setDateTo] = useState(threeMonths.toISOString().slice(0, 10));
   const [rangeError, setRangeError] = useState("");
   const [expandedIdx, setExpandedIdx] = useState<number | null>(0);
+  const [submitted, setSubmitted] = useState(false);
 
-  // Only generate top 1 for free — premium data not in DOM at all
-  const result = useMemo(() => {
-    if (step !== "result" || !intent) return null;
-    resetMockSeed(intent.length * 1000 + 7);
-    return mockChonNgayResult(
-      INTENT_OPTIONS.find((i) => i.value === intent)?.label || intent
-    );
-  }, [step, intent]);
+  const { data: result, loading, error } = useApi(
+    submitted && step === "result" && profile
+      ? () =>
+          fetchChonNgay({
+            birthDate: profile.birthDate,
+            birthHour: profile.birthHour,
+            gender: profile.gender,
+            intent,
+            rangeStart: dateFrom,
+            rangeEnd: dateTo,
+            topN: 5,
+          })
+      : null,
+    [submitted, intent, dateFrom, dateTo]
+  );
 
   if (!isReady) return null;
 
@@ -48,20 +50,45 @@ export default function ChonNgayPage() {
       setRangeError("Ngay bat dau phai truoc ngay ket thuc.");
       return;
     }
-    const diffDays = Math.ceil(
-      (to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)
-    );
+    const diffDays = Math.ceil((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24));
     if (diffDays > 90) {
       setRangeError("Khoang thoi gian toi da la 90 ngay.");
       return;
     }
     setRangeError("");
+    setSubmitted(true);
     setStep("result");
   };
 
-  // Separate free and premium data — premium not rendered in DOM
-  const freeResult = result?.recommended.slice(0, 1) ?? [];
-  const premiumCount = (result?.recommended.length ?? 0) - 1;
+  const handleBack = () => {
+    setStep("select");
+    setSubmitted(false);
+  };
+
+  const intentLabel = API_INTENTS.find((i) => i.value === intent)?.label || intent;
+
+  // Map API response to DayCard format
+  const recommended = result?.recommended_dates.map((d) => ({
+    date: d.date,
+    lunarDate: d.lunar_date,
+    canChi: "",
+    hoangDao: true,
+    trucName: d.truc,
+    trucScore: 2,
+    sao28: d.sao_cat.join(", "),
+    saoElement: d.nguhanh_day,
+    score: d.score,
+    grade: d.grade as "A" | "B" | "C" | "D",
+    goodFor: d.sao_cat,
+    badFor: d.sao_hung,
+    goodHours: d.time_slots,
+    badHours: [] as string[],
+    reason: d.reason_vi || d.summary_vi,
+    hungNgay: [] as string[],
+  })) ?? [];
+
+  const freeResult = recommended.slice(0, 1);
+  const premiumCount = recommended.length - 1;
 
   return (
     <div className="px-6 py-6 page-enter">
@@ -86,11 +113,10 @@ export default function ChonNgayPage() {
             </BracketText>
           </div>
 
-          {/* Intent selection */}
           <div className="mb-8">
             <label className="mono-label block mb-4">Ban muon lam gi?</label>
             <div className="grid grid-cols-3 gap-0" role="radiogroup">
-              {INTENT_OPTIONS.map((opt) => (
+              {API_INTENTS.map((opt) => (
                 <button
                   type="button"
                   key={opt.value}
@@ -109,17 +135,13 @@ export default function ChonNgayPage() {
             </div>
           </div>
 
-          {/* Date range */}
           <div className="mb-8">
             <label className="mono-label block mb-3">Khoang thoi gian</label>
             <div className="flex items-center gap-3">
               <input
                 type="date"
                 value={dateFrom}
-                onChange={(e) => {
-                  setDateFrom(e.target.value);
-                  setRangeError("");
-                }}
+                onChange={(e) => { setDateFrom(e.target.value); setRangeError(""); }}
                 aria-label="Ngay bat dau"
                 className="flex-1 bg-transparent border-b border-border py-3 text-sm focus:outline-none focus:border-fg"
               />
@@ -127,18 +149,13 @@ export default function ChonNgayPage() {
               <input
                 type="date"
                 value={dateTo}
-                onChange={(e) => {
-                  setDateTo(e.target.value);
-                  setRangeError("");
-                }}
+                onChange={(e) => { setDateTo(e.target.value); setRangeError(""); }}
                 aria-label="Ngay ket thuc"
                 className="flex-1 bg-transparent border-b border-border py-3 text-sm focus:outline-none focus:border-fg"
               />
             </div>
             {rangeError && (
-              <p className="mono-label text-bad mt-2" role="alert">
-                {rangeError}
-              </p>
+              <p className="mono-label text-bad mt-2" role="alert">{rangeError}</p>
             )}
           </div>
 
@@ -154,51 +171,60 @@ export default function ChonNgayPage() {
         </>
       )}
 
-      {step === "result" && result && (
+      {step === "result" && loading && (
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="mono-label text-accent">Dang phan tich...</div>
+        </div>
+      )}
+
+      {step === "result" && error && (
         <div className="page-enter">
-          <button
-            type="button"
-            onClick={() => setStep("select")}
-            className="mono-label mb-6 flex items-center gap-1"
-          >
+          <button type="button" onClick={handleBack} className="mono-label mb-6 flex items-center gap-1">
+            &larr; Chon lai
+          </button>
+          <div className="flex flex-col items-center py-20 gap-2">
+            <div className="mono-label text-bad">Khong the phan tich</div>
+            <p className="text-xs text-fg-muted text-center">{error}</p>
+          </div>
+        </div>
+      )}
+
+      {step === "result" && result && !loading && (
+        <div className="page-enter">
+          <button type="button" onClick={handleBack} className="mono-label mb-6 flex items-center gap-1">
             &larr; Chon lai
           </button>
 
-          <h2 className="heading-display text-xl mb-2">{result.intent}</h2>
+          <h2 className="heading-display text-xl mb-2">{intentLabel}</h2>
           <div className="mono-label mb-6">
-            {result.range.from} &rarr; {result.range.to} — {result.totalDays}{" "}
-            ngay
+            {result.meta.range_scanned.from} &rarr; {result.meta.range_scanned.to} — {result.meta.total_days_scanned} ngay
           </div>
 
-          {/* Funnel stats */}
           <div className="border-t border-b border-border py-4 mb-6 space-y-2">
             <div className="flex justify-between">
               <span className="mono-label">Da phan tich</span>
-              <span className="mono-label font-medium text-fg">
-                {result.totalDays} ngay
-              </span>
+              <span className="mono-label font-medium text-fg">{result.meta.total_days_scanned} ngay</span>
             </div>
             <div className="flex justify-between">
               <span className="mono-label">Qua vong 1 (lich)</span>
-              <span className="mono-label font-medium text-fg">
-                {result.layer1Pass} ngay
-              </span>
+              <span className="mono-label font-medium text-fg">{result.meta.days_passed_layer1} ngay</span>
             </div>
             <div className="flex justify-between">
               <span className="mono-label">Qua vong 2 (hop menh)</span>
-              <span className="mono-label font-medium text-fg">
-                {result.layer2Pass} ngay
-              </span>
+              <span className="mono-label font-medium text-fg">{result.meta.days_passed_layer2} ngay</span>
             </div>
             <div className="flex justify-between">
               <span className="mono-label">Xep hang vong 3</span>
-              <span className="mono-label font-medium text-accent">
-                Top {result.recommended.length}
-              </span>
+              <span className="mono-label font-medium text-accent">Top {recommended.length}</span>
             </div>
           </div>
 
-          {/* Free result — top 1 only */}
+          {result.meta.bat_tu_summary && (
+            <div className="mono-label mb-6">
+              Menh {result.meta.bat_tu_summary.ngu_hanh_menh} — Dung Than {result.meta.bat_tu_summary.duong_than}
+            </div>
+          )}
+
           <div className="mb-4">
             {freeResult.map((day, idx) => (
               <DayCard
@@ -206,46 +232,28 @@ export default function ChonNgayPage() {
                 day={day}
                 rank={idx + 1}
                 expanded={expandedIdx === idx}
-                onToggle={() =>
-                  setExpandedIdx(expandedIdx === idx ? null : idx)
-                }
+                onToggle={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
               />
             ))}
           </div>
 
-          {/* Premium paywall — data NOT in DOM */}
           {premiumCount > 0 && (
             <div className="border border-accent p-5 text-center mb-6">
               <div className="mono-label text-accent mb-2">Premium</div>
-              <p className="text-sm mb-3">
-                Con {premiumCount} ngay tot nua trong top{" "}
-                {result.recommended.length}
-              </p>
-              <button type="button" className="btn-primary">
-                Mo khoa tat ca — 79K/thang
-              </button>
+              <p className="text-sm mb-3">Con {premiumCount} ngay tot nua trong top {recommended.length}</p>
+              <button type="button" className="btn-primary">Mo khoa tat ca — 79K/thang</button>
             </div>
           )}
 
-          {/* Days to avoid */}
-          {result.avoid.length > 0 && (
+          {result.dates_to_avoid.length > 0 && (
             <div className="mb-8">
               <div className="mono-label text-bad mb-3">Ngay can tranh</div>
-              {result.avoid.map((a) => (
-                <div
-                  key={a.date}
-                  className="flex justify-between items-center py-2 border-t border-border"
-                >
+              {result.dates_to_avoid.map((a) => (
+                <div key={a.date} className="flex justify-between items-center py-2 border-t border-border">
                   <span className="text-sm">{a.date}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-fg-muted">{a.reason}</span>
-                    <span
-                      className={`mono-label px-1.5 py-0.5 ${
-                        a.severity === 3
-                          ? "bg-bad text-bg"
-                          : "bg-warn/20 text-warn"
-                      }`}
-                    >
+                    <span className="text-xs text-fg-muted">{a.reason_vi}</span>
+                    <span className={`mono-label px-1.5 py-0.5 ${a.severity === 3 ? "bg-bad text-bg" : "bg-warn/20 text-warn"}`}>
                       {a.severity === 3 ? "Tuyet doi" : "Canh bao"}
                     </span>
                   </div>

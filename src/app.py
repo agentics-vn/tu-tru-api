@@ -24,6 +24,9 @@ from api.routes.ngay_hom_nay import router as ngay_hom_nay_router
 from api.routes.lich_thang import router as lich_thang_router
 from api.routes.tieu_van import router as tieu_van_router
 from api.routes.tu_tru import router as tu_tru_router
+from api.routes.hop_tuoi import router as hop_tuoi_router
+from api.routes.phong_thuy import router as phong_thuy_router
+from api.routes.day_detail import router as day_detail_router
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Logging
@@ -128,6 +131,9 @@ app.include_router(ngay_hom_nay_router, prefix="/v1/ngay-hom-nay")
 app.include_router(lich_thang_router, prefix="/v1/lich-thang")
 app.include_router(tieu_van_router, prefix="/v1/tieu-van")
 app.include_router(tu_tru_router, prefix="/v1/tu-tru")
+app.include_router(hop_tuoi_router, prefix="/v1/hop-tuoi")
+app.include_router(phong_thuy_router, prefix="/v1/phong-thuy")
+app.include_router(day_detail_router, prefix="/v1/day-detail")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
