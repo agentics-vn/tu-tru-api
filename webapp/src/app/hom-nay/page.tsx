@@ -191,9 +191,33 @@ export default function HomNayPage() {
         </button>
       </div>
 
+      {/* Quick links */}
+      <div className="border-t border-border pt-5 mb-8">
+        <div className="mono-label mb-3">Kham pha them</div>
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { href: "/hop-tuoi", label: "Hop tuoi doi lua" },
+            { href: "/phong-thuy", label: "Phong thuy ca nhan" },
+            { href: "/so-sanh", label: "So sanh 2 ngay" },
+            { href: "/su-kien", label: "Su kien cua ban" },
+          ].map((link) => (
+            <button
+              key={link.href}
+              onClick={() => router.push(link.href)}
+              className="text-left py-3 px-3 border border-border text-xs transition-colors hover:border-fg"
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Share */}
       <div className="text-center">
-        <button className="mono-label text-accent">
+        <button
+          onClick={() => router.push("/chia-se")}
+          className="mono-label text-accent"
+        >
           Chia se ngay hom nay
         </button>
       </div>

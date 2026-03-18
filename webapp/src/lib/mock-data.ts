@@ -241,3 +241,227 @@ export const INTENT_OPTIONS = INTENTS.map((i) => ({
   value: i.toLowerCase().replace(/\s/g, "-"),
   label: i,
 }));
+
+// --- Hop Tuoi (Compatibility) ---
+
+export interface HopTuoiResult {
+  person1: { birthDate: string; menh: string; nhatChu: string; hanh: string };
+  person2: { birthDate: string; menh: string; nhatChu: string; hanh: string };
+  overallScore: number;
+  grade: "A" | "B" | "C" | "D";
+  nguHanhRelation: string; // "tuong sinh" | "tuong khac" | "binh hoa"
+  details: {
+    category: string;
+    score: number;
+    description: string;
+  }[];
+  summary: string;
+  advice: string;
+}
+
+export function mockHopTuoiResult(
+  date1: string,
+  date2: string
+): HopTuoiResult {
+  const score = 60 + Math.floor(Math.random() * 35);
+  return {
+    person1: {
+      birthDate: date1,
+      menh: "Lo Bang Tho",
+      nhatChu: "Canh Kim",
+      hanh: "Kim",
+    },
+    person2: {
+      birthDate: date2,
+      menh: "Dai Lam Moc",
+      nhatChu: "Mau Tho",
+      hanh: "Moc",
+    },
+    overallScore: score,
+    grade: score >= 85 ? "A" : score >= 70 ? "B" : score >= 50 ? "C" : "D",
+    nguHanhRelation: score >= 70 ? "Tuong Sinh" : "Tuong Khac",
+    details: [
+      {
+        category: "Ngu Hanh Nap Am",
+        score: 60 + Math.floor(Math.random() * 35),
+        description:
+          "Kim sinh Thuy, Thuy sinh Moc — vong tuong sinh thuan chieu.",
+      },
+      {
+        category: "Thien Can",
+        score: 50 + Math.floor(Math.random() * 40),
+        description: "Canh Kim va Mau Tho — Tho sinh Kim, tuong sinh.",
+      },
+      {
+        category: "Dia Chi",
+        score: 55 + Math.floor(Math.random() * 35),
+        description: "Ngo va Thin — khong xung khong hop, binh hoa.",
+      },
+      {
+        category: "Nhat Chu tuong tac",
+        score: 65 + Math.floor(Math.random() * 30),
+        description:
+          "Hai nhat chu khong xung dot — moi quan he on dinh.",
+      },
+    ],
+    summary:
+      "Hai la so co moi quan he Tuong Sinh, ngu hanh ho tro lan nhau. Tho sinh Kim la cuc tot — ben vung va on dinh.",
+    advice:
+      "Nen chon ngay co hanh Tho hoac Kim de to chuc le cuoi se tang them phuc khi cho ca hai.",
+  };
+}
+
+// --- Phong Thuy ---
+
+export interface PhongThuyResult {
+  dungThan: string;
+  kyThan: string;
+  huongTot: { direction: string; element: string; reason: string }[];
+  huongXau: { direction: string; element: string; reason: string }[];
+  mauMayMan: { color: string; hex: string; element: string }[];
+  mauKy: { color: string; hex: string; element: string }[];
+  soMayMan: number[];
+  soKy: number[];
+  vatPham: { item: string; element: string; reason: string }[];
+}
+
+export function mockPhongThuyResult(): PhongThuyResult {
+  return {
+    dungThan: "Moc",
+    kyThan: "Tho",
+    huongTot: [
+      {
+        direction: "Dong",
+        element: "Moc",
+        reason: "Chinh Dong thuoc Moc — dung than cua ban.",
+      },
+      {
+        direction: "Dong Nam",
+        element: "Moc",
+        reason: "Dong Nam thuoc Moc — ho tro su nghiep.",
+      },
+      {
+        direction: "Bac",
+        element: "Thuy",
+        reason: "Thuy sinh Moc — gian tiep ho tro dung than.",
+      },
+    ],
+    huongXau: [
+      {
+        direction: "Trung Tam",
+        element: "Tho",
+        reason: "Tho la ky than — tranh dat ban lam viec o giua nha.",
+      },
+      {
+        direction: "Tay Nam",
+        element: "Tho",
+        reason: "Tay Nam thuoc Tho — khong nen ngu huong nay.",
+      },
+    ],
+    mauMayMan: [
+      { color: "Xanh la", hex: "#3A6B35", element: "Moc" },
+      { color: "Xanh duong", hex: "#2B6CB0", element: "Thuy" },
+      { color: "Den", hex: "#1A1A1A", element: "Thuy" },
+    ],
+    mauKy: [
+      { color: "Vang dat", hex: "#B8860B", element: "Tho" },
+      { color: "Nau", hex: "#8B6914", element: "Tho" },
+    ],
+    soMayMan: [1, 2, 6],
+    soKy: [5, 0],
+    vatPham: [
+      {
+        item: "Cay xanh de ban",
+        element: "Moc",
+        reason: "Tang cuong Moc khi — tot cho tai loc va suc khoe.",
+      },
+      {
+        item: "Be ca nho",
+        element: "Thuy",
+        reason: "Thuy sinh Moc — kich hoat dong tien luu thong.",
+      },
+      {
+        item: "Tranh phong canh rung",
+        element: "Moc",
+        reason: "Tang Moc khi trong khong gian lam viec.",
+      },
+    ],
+  };
+}
+
+// --- Su Kien (Events) ---
+
+export interface SavedEvent {
+  id: string;
+  title: string;
+  date: string;
+  intent: string;
+  note?: string;
+  score?: number;
+  grade?: "A" | "B" | "C" | "D";
+  goodHours?: string[];
+}
+
+export function mockSavedEvents(): SavedEvent[] {
+  return [
+    {
+      id: "1",
+      title: "Khai truong quan cafe",
+      date: "2026-04-15",
+      intent: "Khai Truong",
+      note: "Dia chi: 123 Nguyen Hue, Q1",
+      score: 92,
+      grade: "A",
+      goodHours: ["7h-9h", "11h-13h"],
+    },
+    {
+      id: "2",
+      title: "Le dinh hon",
+      date: "2026-05-22",
+      intent: "Cuoi Hoi",
+      score: 87,
+      grade: "B",
+      goodHours: ["7h-9h", "9h-11h"],
+    },
+    {
+      id: "3",
+      title: "Ky hop dong thue mat bang",
+      date: "2026-04-10",
+      intent: "Ky Hop Dong",
+      score: 85,
+      grade: "B",
+      goodHours: ["11h-13h"],
+    },
+  ];
+}
+
+// --- So Sanh Ngay (Compare 2 Days) ---
+
+export function mockDayDetail(dateStr: string): DayInfo {
+  const d = new Date(dateStr);
+  const score = 55 + Math.floor(Math.random() * 40);
+  return {
+    date: dateStr,
+    lunarDate: `${d.getDate()} thang ${d.getMonth() + 1}`,
+    canChi: `${pick(CAN)} ${pick(CHI)}`,
+    hoangDao: Math.random() > 0.4,
+    trucName: pick(TRUC),
+    trucScore: Math.random() > 0.5 ? 2 : -1,
+    sao28: pick(SAO28),
+    saoElement: pick(["Kim", "Moc", "Thuy", "Hoa", "Tho"]),
+    score,
+    grade: score >= 85 ? "A" : score >= 70 ? "B" : score >= 55 ? "C" : "D",
+    goodFor: [pick(INTENTS), pick(INTENTS)],
+    badFor: [pick(INTENTS)],
+    goodHours: ["7h-9h", "11h-13h", "15h-17h"].slice(
+      0,
+      1 + Math.floor(Math.random() * 3)
+    ),
+    badHours: ["9h-11h", "13h-15h"].slice(
+      0,
+      1 + Math.floor(Math.random() * 2)
+    ),
+    reason: `Ngay ${pick(["Hoang Dao", "Hac Dao"])} — truc ${pick(TRUC)} ket hop sao ${pick(SAO28)}.`,
+    hungNgay: Math.random() > 0.7 ? [pick(["Nguyet Ky", "Tam Nuong", "Tu Ly"])] : [],
+  };
+}
