@@ -12,7 +12,7 @@ import logging
 from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from api.parse_date import parse_dmy
@@ -201,6 +201,8 @@ async def lich_thang(
                 "message": str(e),
             },
         )
+    except HTTPException:
+        raise
     except Exception:
         logger.exception("Internal error in lich_thang")
         return JSONResponse(

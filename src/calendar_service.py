@@ -63,7 +63,7 @@ def get_day_info(iso_date: str) -> dict:
         iso_date: 'YYYY-MM-DD'
 
     Returns:
-        Plain dict — safe to serialize to JSON / Redis.
+        Plain dict — safe to serialize to JSON.
         Keys use snake_case to match Python route expectations.
     """
     # Check cache first

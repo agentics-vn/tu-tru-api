@@ -13,7 +13,7 @@ from datetime import date
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -72,9 +72,11 @@ def _build_tu_tru_section(day_info: dict, user_chart: dict) -> dict:
                 "can_name": tu_tru["nhat_chu"]["can_name"],
                 "hanh": tu_tru["nhat_chu"]["hanh"],
             },
-            "dung_than": user_chart.get("dung_than"),
-            "chart_strength": user_chart.get("chart_strength"),
         }
+        if user_chart.get("dung_than"):
+            result["bat_tu"]["dung_than"] = user_chart["dung_than"]
+        if user_chart.get("chart_strength"):
+            result["bat_tu"]["chart_strength"] = user_chart["chart_strength"]
 
         # Show the day's Ten God relationship to user's Day Master
         if user_chart.get("nhat_chu"):
@@ -272,6 +274,8 @@ async def ngay_hom_nay(
                 "message": str(e),
             },
         )
+    except HTTPException:
+        raise
     except Exception:
         logger.exception("Internal error in ngay_hom_nay")
         return JSONResponse(

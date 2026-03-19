@@ -11,7 +11,7 @@ import logging
 from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from engine.can_chi import (
@@ -250,8 +250,10 @@ async def tieu_van(
                 "can_name": tu_tru["nhat_chu"]["can_name"],
                 "hanh": tu_tru["nhat_chu"]["hanh"],
             }
-            content["dung_than"] = user_chart.get("dung_than")
-            content["chart_strength"] = user_chart.get("chart_strength")
+            if user_chart.get("dung_than"):
+                content["dung_than"] = user_chart["dung_than"]
+            if user_chart.get("chart_strength"):
+                content["chart_strength"] = user_chart["chart_strength"]
 
             # Thập Thần of the month pillar against Day Master
             if user_chart.get("thap_than"):
@@ -285,6 +287,8 @@ async def tieu_van(
                 "message": str(e),
             },
         )
+    except HTTPException:
+        raise
     except Exception:
         logger.exception("Internal error in tieu_van")
         return JSONResponse(
