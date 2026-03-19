@@ -1,22 +1,31 @@
+# ── Stage 1: install dependencies ────────────────────────────────────────────
+FROM python:3.11-slim AS builder
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
+WORKDIR /app
+
+# Install only dependencies (cached layer — re-runs only when lock changes)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project --no-dev
+
+# ── Stage 2: runtime (no uv) ────────────────────────────────────────────────
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy virtualenv from builder
+COPY --from=builder /app/.venv /app/.venv
 
-# Copy source
-COPY src/ src/
-COPY docs/ docs/
+# Copy application code and static data
+COPY src/ ./src/
+COPY docs/seed/ ./docs/seed/
 
-# Set Python path so imports resolve from src/
+ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH=/app/src
-ENV PYTHONUNBUFFERED=1
 
-EXPOSE 3000
+EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:3000/health')" || exit 1
-
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "3000", "--workers", "2"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
