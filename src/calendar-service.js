@@ -94,8 +94,21 @@ const THIEN_DUC = [
   {type:'can',idx:6},  // month 12: Canh
 ];
 
-// Thiên Đức Hợp: can index, null = tháng tứ trọng (không có)
-const THIEN_DUC_HOP = [8, null, 3, 2, null, 5, 4, null, 7, 6, null, 1]; // index = lm-1
+// Thiên Đức Hợp: {type, idx} — can or chi lookup per month
+const THIEN_DUC_HOP = [
+  {type:'can',idx:8},  // M1:  Nhâm
+  {type:'chi',idx:0},  // M2:  Tý
+  {type:'can',idx:3},  // M3:  Đinh
+  {type:'can',idx:2},  // M4:  Bính
+  {type:'chi',idx:2},  // M5:  Dần
+  {type:'can',idx:5},  // M6:  Kỷ
+  {type:'can',idx:4},  // M7:  Mậu
+  {type:'chi',idx:11}, // M8:  Hợi
+  {type:'can',idx:7},  // M9:  Tân
+  {type:'can',idx:6},  // M10: Canh
+  {type:'chi',idx:8},  // M11: Thân
+  {type:'can',idx:1},  // M12: Ất
+]; // index = lm-1
 
 // Nguyệt Đức: Can index of Nguyệt Đức per month
 const NGUYET_DUC_CAN     = [2, 0, 8, 6,  2, 0, 8, 6,  2, 0, 8, 6]; // index = lm-1
@@ -105,7 +118,7 @@ const NGUYET_DUC_HOP_CAN = [7, 5, 3, 1,  7, 5, 3, 1,  7, 5, 3, 1]; // index = lm
 // Dương Công Kỵ Nhật — 13 dates total
 const DUONG_CONG_KY = {
   1:[13], 2:[11], 3:[9],  4:[7],
-  5:[5],  6:[3],  7:[8,29], 8:[27],
+  5:[5],  6:[3],  7:[1,29], 8:[27],
   9:[25], 10:[23], 11:[21], 12:[19],
 };
 
@@ -246,9 +259,9 @@ function checkThienDuc(lunarMonth, dayCanIdx, dayChiIdx) {
   return td.type === 'can' ? dayCanIdx === td.idx : dayChiIdx === td.idx;
 }
 
-function checkThienDucHop(lunarMonth, dayCanIdx) {
+function checkThienDucHop(lunarMonth, dayCanIdx, dayChiIdx) {
   const tdh = THIEN_DUC_HOP[lunarMonth - 1];
-  return tdh !== null && dayCanIdx === tdh;
+  return tdh.type === 'can' ? dayCanIdx === tdh.idx : dayChiIdx === tdh.idx;
 }
 
 function checkNguyetDuc(lunarMonth, dayCanIdx) {
@@ -315,7 +328,7 @@ function getDayInfo(isoDate) {
 
   // Sao ngày
   const hasThienDuc    = checkThienDuc(lm, canIdx, chiIdx);
-  const hasThienDucHop = checkThienDucHop(lm, canIdx);
+  const hasThienDucHop = checkThienDucHop(lm, canIdx, chiIdx);
   const hasNguyetDuc   = checkNguyetDuc(lm, canIdx);
   const hasNguyetDucHop= checkNguyetDucHop(lm, canIdx);
 

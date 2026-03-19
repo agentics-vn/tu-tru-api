@@ -94,10 +94,11 @@ function applyLayer2Filter(dayInfo, userChart, intent) {
   }
 
   // ── R3: Ngày có hành Kỵ Thần (severity 2 → AVOID) ────────────────────────
-  if (dayInfo.dayNapAmHanh === userChart.kyThan) {
+  // Per algorithm.md: compare Can's element (dayCanHanh), not Nạp Âm element
+  if (dayInfo.dayCanHanh === userChart.kyThan) {
     maxSeverity = Math.max(maxSeverity, 2);
     reasons.push(
-      `Nạp Âm ngày (${dayInfo.dayNapAmHanh}) là Kỵ Thần của mệnh ${userChart.menhName}`
+      `Hành Thiên Can ngày (${dayInfo.dayCanHanh}) là Kỵ Thần của mệnh ${userChart.menhName}`
     );
   }
 

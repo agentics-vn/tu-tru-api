@@ -77,6 +77,7 @@ const BONUS = {
   duongThanMatch: 12,   // dayNapAmHanh === user.duongThan
   intentBonus  :  8,    // per matching bonus_sao in intent rule
   thienXaBonus :  8,    // Thiên Xá bonus for eligible intents (Rule 2)
+  trucPreferred: 15,    // intent preferred_truc match
 };
 
 const PENALTY = {
@@ -85,6 +86,7 @@ const PENALTY = {
   intentPenalty: -15,   // per matching forbidden_sao
   thienXaPenalty: -15,  // Thiên Xá penalty for ineligible intents (Rule 2)
   layer2Severity2: -5,  // additional general penalty when filter.severity === 2
+  trucForbidden: -20,   // intent forbidden_truc match
 };
 
 const GRADE_THRESHOLDS = { A: 80, B: 65, C: 50 };
@@ -155,6 +157,7 @@ const SAO_DETECTORS = {
   nguyetHoa      : (d) => d.hasNguyetHoa      || false,
   thoOn          : (d) => d.hasThoOn          || false,
   thoPhu         : (d) => d.hasThoPhu         || false,
+  thoPhU         : (d) => d.hasThoPhu         || false,  // alias — intent-rules.json uses "thoPhU"
   thoCam         : (d) => d.hasThoCam         || false,
   cuuThoQuy      : (d) => d.hasCuuThoQuy      || false,
   thoTu          : (d) => d.hasThoTu          || false,
@@ -173,6 +176,20 @@ const SAO_DETECTORS = {
   haKhoiCauGiao  : (d) => d.hasHaKhoiCauGiao  || false,
   loiCong        : (d) => d.hasLoiCong        || false,
   thienNgucThienHoa: (d) => d.hasThienNgucThienHoa || false,
+
+  // Additional detectors referenced in intent-rules.json
+  diaPha         : (d) => d.hasDiaPha         || false,
+  kinhTam        : (d) => d.hasKinhTam        || false,
+  lucHop         : (d) => d.hasLucHop         || false,
+  minhTinh       : (d) => d.hasMinhTinh       || false,
+  nguyetAn       : (d) => d.hasNguyetAn       || false,
+  nguyetHoaDockHoa: (d) => d.hasNguyetHoaDockHoa || false,
+  nguyetKienChuyenSat: (d) => d.hasNguyetKienChuyenSat || false,
+  phucSinh       : (d) => d.hasPhucSinh       || false,
+  quyCoc         : (d) => d.hasQuyCoc         || false,
+  tamHop         : (d) => d.hasTamHop         || false,
+  thienDiaChuyenSat: (d) => d.hasThienDiaChuyenSat || false,
+  thienThanh     : (d) => d.hasThienThanh     || false,
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -218,6 +235,24 @@ function computeScore(dayInfo, userChart, intent, intentRule, filterResult) {
     reasons.push(`Trực ${dayInfo.trucName} — ngày tốt (+${trucDelta})`);
   } else if (trucDelta < 0) {
     reasons.push(`Trực ${dayInfo.trucName} — ngày xấu (${trucDelta})`);
+  }
+
+  // ── 1b. Trực intent preference ───────────────────────────────────────────
+  const preferredTruc = intentRule.preferred_truc || [];
+  const forbiddenTruc = intentRule.forbidden_truc || [];
+  const trucIdx = dayInfo.trucIdx;
+  if (trucIdx !== undefined) {
+    if (preferredTruc.includes(trucIdx)) {
+      score += BONUS.trucPreferred;
+      reasons.push(
+        `Trực ${dayInfo.trucName} — hợp cho ${_intentLabel(intent)} (+${BONUS.trucPreferred})`
+      );
+    } else if (forbiddenTruc.includes(trucIdx)) {
+      score += PENALTY.trucForbidden;
+      reasons.push(
+        `Trực ${dayInfo.trucName} — kỵ ${_intentLabel(intent)} (${PENALTY.trucForbidden})`
+      );
+    }
   }
 
   // ── 2. Universal cát tinh ─────────────────────────────────────────────────
@@ -405,6 +440,18 @@ const SAO_LABELS = {
   loiCong    : 'Lôi Công',    thienNgucThienHoa: 'Thiên Ngục Thiên Hỏa',
   nguyetYemDaiHoa: 'Nguyệt Yếm Đại Họa',
   nguNguyQuiet: 'Ngũ Quỷ',
+  diaPha     : 'Địa Phá',
+  kinhTam    : 'Kinh Tâm',
+  lucHop     : 'Lục Hợp',
+  minhTinh   : 'Minh Tinh',
+  nguyetAn   : 'Nguyệt Ân',
+  nguyetHoaDockHoa: 'Nguyệt Hỏa Độc Hỏa',
+  nguyetKienChuyenSat: 'Nguyệt Kiến Chuyển Sát',
+  phucSinh   : 'Phục Sinh',
+  quyCoc     : 'Quỷ Cốc',
+  tamHop     : 'Tam Hợp',
+  thienDiaChuyenSat: 'Thiên Địa Chuyển Sát',
+  thienThanh : 'Thiên Thành',
 };
 
 function _intentLabel(intent) {
