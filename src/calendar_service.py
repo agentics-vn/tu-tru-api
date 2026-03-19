@@ -93,7 +93,7 @@ def get_day_info(iso_date: str) -> dict:
 
     # Sao ngày
     has_thien_duc = check_thien_duc(lm, can_idx, chi_idx)
-    has_thien_duc_hop = check_thien_duc_hop(lm, can_idx)
+    has_thien_duc_hop = check_thien_duc_hop(lm, can_idx, chi_idx)
     has_nguyet_duc = check_nguyet_duc(lm, can_idx)
     has_nguyet_duc_hop = check_nguyet_duc_hop(lm, can_idx)
     has_thien_xa = check_thien_xa(lm, can_idx, chi_idx)

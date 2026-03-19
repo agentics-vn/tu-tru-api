@@ -2581,7 +2581,7 @@
       {"idx": 16, "can": "Bính Thân", "can2": "Đinh Dậu",  "name": "Sơn Hạ Hỏa",       "hanh": "Hỏa"},
       {"idx": 17, "can": "Mậu Tuất",  "can2": "Kỷ Hợi",    "name": "Bình Địa Mộc",     "hanh": "Mộc"},
       {"idx": 18, "can": "Canh Tý",   "can2": "Tân Sửu",   "name": "Bích Thượng Thổ",  "hanh": "Thổ"},
-      {"idx": 19, "can": "Nhâm Dần",  "can2": "Quý Mão",   "name": "Kim Phú Thủy",     "hanh": "Thủy"},
+      {"idx": 19, "can": "Nhâm Dần",  "can2": "Quý Mão",   "name": "Kim Bạch Kim",      "hanh": "Kim"},
       {"idx": 20, "can": "Giáp Thìn", "can2": "Ất Tỵ",     "name": "Phú Đăng Hỏa",     "hanh": "Hỏa"},
       {"idx": 21, "can": "Bính Ngọ",  "can2": "Đinh Mùi",  "name": "Thiên Hà Thủy",    "hanh": "Thủy"},
       {"idx": 22, "can": "Mậu Thân",  "can2": "Kỷ Dậu",    "name": "Đại Dịch Thổ",     "hanh": "Thổ"},

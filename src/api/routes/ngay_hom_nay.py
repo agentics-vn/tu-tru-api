@@ -172,9 +172,9 @@ def _build_daily_advice(day_info: dict, star_info: dict, good_for: list[str], av
 @router.get("/")
 async def ngay_hom_nay(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
-    birth_time: Optional[int] = Query(None, description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
-    gender: Optional[int] = Query(None, description="Gender: 1 (nam) or -1 (nữ)"),
-    target_date: Optional[str] = Query(None, alias="date", description="Target date YYYY-MM-DD (default: today)"),
+    birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
+    gender: Optional[int] = Query(None, description="Giới tính: 1 (nam) hoặc -1 (nữ)"),
+    target_date: Optional[str] = Query(None, alias="date", description="Ngày mục tiêu YYYY-MM-DD (mặc định: hôm nay)"),
 ) -> JSONResponse:
     try:
         # Parse and validate birth_date (dd/mm/yyyy)

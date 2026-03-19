@@ -107,7 +107,7 @@ def get_tu_tru(birth_date: str, birth_time: int) -> dict:
     """
     if birth_time not in VALID_BIRTH_HOURS:
         raise ValueError(
-            f"birth_time must be one of {sorted(VALID_BIRTH_HOURS)}, got {birth_time}"
+            f"Giờ sinh phải là một trong {sorted(VALID_BIRTH_HOURS)}, nhận được {birth_time}"
         )
 
     parts = birth_date.split("-")

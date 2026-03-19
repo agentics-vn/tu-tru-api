@@ -11,12 +11,16 @@ import os
 # Ensure src is importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
+# Configure auth for tests: set a known API key
+os.environ["BATTU_API_KEYS"] = "test-key:BASIC"
+
 import pytest
 from fastapi.testclient import TestClient
 
 from app import app
 
-client = TestClient(app)
+# All requests include the test API key
+client = TestClient(app, headers={"X-API-Key": "test-key"})
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -441,7 +445,7 @@ class TestTuTru:
         assert "tu_tru_display" in data
         assert "nhat_chu" in data
         assert "chart_strength" in data
-        assert data["chart_strength"] in ("strong", "weak", "balanced")
+        assert data["chart_strength"] in ("vượng", "nhược", "cân bằng")
         assert "dung_than" in data
         assert "hi_than" in data
         assert "ky_than" in data

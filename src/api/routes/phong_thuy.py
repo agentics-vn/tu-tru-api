@@ -125,8 +125,8 @@ VAT_PHAM_BY_HANH: dict[str, list[dict]] = {
 @router.get("/")
 async def phong_thuy_endpoint(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
-    birth_time: Optional[int] = Query(None, description="Birth hour"),
-    gender: Optional[int] = Query(None, description="Gender: 1 (nam) or -1 (nữ)"),
+    birth_time: Optional[int] = Query(None, description="Giờ sinh"),
+    gender: Optional[int] = Query(None, description="Giới tính: 1 (nam) hoặc -1 (nữ)"),
 ) -> JSONResponse:
     try:
         bd = parse_dmy(birth_date)

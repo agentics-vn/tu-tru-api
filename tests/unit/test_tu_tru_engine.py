@@ -83,7 +83,7 @@ class TestCuongNhuoc:
         """Strength must be strong, weak, or balanced."""
         tu_tru = get_tu_tru("1990-03-21", 8)
         result = analyze_chart_strength(tu_tru)
-        assert result["strength"] in ("strong", "weak", "balanced")
+        assert result["strength"] in ("vượng", "nhược", "cân bằng")
 
     def test_seasonal_element_spring(self):
         """Spring months (Dần=2, Mão=3) → Mộc."""
@@ -138,7 +138,7 @@ class TestDungThan:
     def test_strength_included(self):
         tu_tru = get_tu_tru("1990-03-21", 8)
         result = find_dung_than(tu_tru)
-        assert result["strength"] in ("strong", "weak", "balanced")
+        assert result["strength"] in ("vượng", "nhược", "cân bằng")
         assert "analysis" in result
 
 

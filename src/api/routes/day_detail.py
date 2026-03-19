@@ -20,8 +20,9 @@ from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart
 from engine.hoang_dao import get_day_star, get_gio_hoang_dao, get_gio_hac_dao
 from engine.can_chi import get_can_chi_year
-from engine.nhi_thap_bat_tu import get_sao_28
+from engine.nhi_thap_bat_tu import get_nhi_thap_bat_tu
 from filter import apply_layer2_filter
+from scoring import compute_score_breakdown, GRADE_THRESHOLDS
 
 logger = logging.getLogger("day_detail")
 
@@ -80,7 +81,7 @@ async def day_detail_endpoint(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None),
     gender: Optional[int] = Query(None),
-    target_date: str = Query(..., alias="date", description="Target date YYYY-MM-DD"),
+    target_date: str = Query(..., alias="date", description="Ngày mục tiêu YYYY-MM-DD"),
 ) -> JSONResponse:
     try:
         bd = parse_dmy(birth_date)
@@ -110,30 +111,21 @@ async def day_detail_endpoint(
 
         good_for, avoid_for = _get_good_and_avoid(day_info, user_chart)
 
-        # Sao 28 Tú
-        sao_28 = day_info.get("sao_28", {})
+        # Sao 28 Tú — compute from solar date
+        sao_28 = get_nhi_thap_bat_tu(td.year, td.month, td.day)
         sao_name = sao_28.get("name", "")
         sao_element = sao_28.get("hanh", "")
 
         # Hung ngay
         hung_ngay = day_info.get("hung_ngay", [])
 
-        # Compute score
-        score = 50
-        if star_info["is_hoang_dao"]:
-            score += 20
-        if day_info["truc_score"] >= 2:
-            score += 15
-        elif day_info["truc_score"] >= 1:
-            score += 8
-        elif day_info["truc_score"] < 0:
-            score -= 10
-        if not hung_ngay:
-            score += 5
-        else:
-            score -= len(hung_ngay) * 8
-        score = max(10, min(100, score))
-        grade = "A" if score >= 85 else "B" if score >= 70 else "C" if score >= 55 else "D"
+        # Compute score using standard engine (MAC_DINH intent for general overview)
+        intent = "MAC_DINH"
+        intent_rule = INTENT_RULES.get(intent, {})
+        l2 = apply_layer2_filter(day_info, user_chart, intent)
+        scoring_result = compute_score_breakdown(day_info, user_chart, intent, intent_rule, l2)
+        score = scoring_result["score"]
+        grade = scoring_result["grade"]
 
         reason_parts = []
         if star_info["is_hoang_dao"]:
@@ -161,10 +153,11 @@ async def day_detail_endpoint(
                 "score": score,
                 "grade": grade,
                 "good_for": good_for,
-                "bad_for": avoid_for,
-                "good_hours": [f"{g['chi_name']} ({g['start']}-{g['end']})" for g in gio_tot],
-                "bad_hours": [f"{g['chi_name']} ({g['start']}-{g['end']})" for g in gio_xau],
-                "reason": reason,
+                "avoid_for": avoid_for,
+                "gio_tot": [f"{g['chi_name']} ({g['start']}-{g['end']})" for g in gio_tot],
+                "gio_xau": [f"{g['chi_name']} ({g['start']}-{g['end']})" for g in gio_xau],
+                "reason_vi": reason,
+                "breakdown": scoring_result.get("breakdown", []),
                 "hung_ngay": [h["name"] if isinstance(h, dict) else str(h) for h in hung_ngay],
             },
         )

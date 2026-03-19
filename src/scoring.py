@@ -193,8 +193,8 @@ SAO_DETECTORS: dict[str, callable] = {
     "thienTai": lambda d, u=None: check_thien_tai(_lm(d), _dci(d)),
     "diaTai": lambda d, u=None: check_dia_tai(_lm(d), _dci(d)),
     "nguyetTai": lambda d, u=None: check_nguyet_tai(_lm(d), _dci(d)),
-    "locKho": lambda d, u=None: check_loc_kho(_dci(d), (u or {}).get("year_can_idx", -1)),
-    "thienQuy": lambda d, u=None: check_thien_quy(_lm(d), _dci(d)),
+    "locKho": lambda d, u=None: check_loc_kho(_lm(d), _dci(d)),
+    "thienQuy": lambda d, u=None: check_thien_quy(_lm(d), _dcani(d)),
     "catKhanh": lambda d, u=None: check_cat_khanh(_lm(d), _dci(d)),
     "ichHau": lambda d, u=None: check_ich_hau(_lm(d), _dci(d)),
     "tucThe": lambda d, u=None: check_tuc_the(_lm(d), _dci(d)),
@@ -279,21 +279,7 @@ SAO_LABELS: dict[str, str] = {
     "loiCong": "Lôi Công", "diaPha": "Địa Phá",
 }
 
-INTENT_LABELS: dict[str, str] = {
-    "KHAI_TRUONG": "Khai trương", "KY_HOP_DONG": "Ký kết hợp đồng",
-    "AN_HOI": "Lễ ăn hỏi", "DAM_CUOI": "Đám cưới",
-    "DONG_THO": "Động thổ", "NHAP_TRACH": "Nhập trạch",
-    "LAM_NHA": "Làm nhà", "AN_TANG": "An táng",
-    "CAI_TANG": "Cải táng", "XUAT_HANH": "Xuất hành",
-    "CAU_TAI": "Cầu tài lộc", "TE_TU": "Tế tự",
-    "KHAM_BENH": "Khám bệnh", "PHAU_THUAT": "Phẫu thuật",
-    "NHAP_HOC_THI_CU": "Nhập học / Thi cử", "NHAM_CHUC": "Nhậm chức",
-    "MUA_NHA_DAT": "Mua nhà đất", "DAO_GIENG": "Đào giếng",
-    "TRONG_CAY": "Trồng cây", "CAU_TU": "Cầu tự",
-    "XAY_BEP": "Xây bếp", "LAM_GIUONG": "Làm giường",
-    "KIEN_TUNG": "Kiện tụng", "DI_CHUYEN_NGOAI": "Xuất ngoại",
-    "GIAI_HAN": "Giải hạn", "MAC_DINH": "Sự kiện chung",
-}
+from filter import INTENT_LABELS  # single source of truth
 
 
 def _intent_label(intent: str) -> str:
@@ -518,6 +504,10 @@ def compute_score(
             bonus_sao.append("Nguyệt Đức Hợp")
             reasons.append(f"Ngày có Nguyệt Đức Hợp (+{BONUS['nguyet_duc_hop']})")
             plain_pros.append(SAO_PLAIN["nguyetDucHop"])
+        else:
+            reasons.append(
+                f"Nguyệt Đức Hợp — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
+            )
 
     # 3. Element matching: Dụng Thần (advanced) or Dương Thần (simplified)
     day_hanh = day_info.get("day_nap_am_hanh")
@@ -680,7 +670,9 @@ def compute_score(
             )
             plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
 
-    # 10. Grade
+    # 10. Clamp + Grade
+    score = max(0, min(100, score))
+
     if score >= GRADE_THRESHOLDS["A"]:
         grade = "A"
     elif score >= GRADE_THRESHOLDS["B"]:
@@ -802,6 +794,10 @@ def compute_score_breakdown(
             reasons.append(f"Ngày có Nguyệt Đức Hợp (+{pts})")
             plain_pros.append(SAO_PLAIN["nguyetDucHop"])
             breakdown.append({"source": "Nguyệt Đức Hợp", "points": pts, "reason_vi": "Ngày có Nguyệt Đức Hợp", "type": "bonus"})
+        else:
+            reason = f"Nguyệt Đức Hợp — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
+            reasons.append(reason)
+            breakdown.append({"source": "Nguyệt Đức Hợp", "points": 0, "reason_vi": reason, "type": "neutral"})
 
     # 3. Element matching
     day_hanh = day_info.get("day_nap_am_hanh")
@@ -953,7 +949,9 @@ def compute_score_breakdown(
             plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
             breakdown.append({"source": "Đại Vận", "points": pts, "reason_vi": reason, "type": "penalty"})
 
-    # 10. Grade
+    # 10. Clamp + Grade
+    score = max(0, min(100, score))
+
     if score >= GRADE_THRESHOLDS["A"]:
         grade = "A"
     elif score >= GRADE_THRESHOLDS["B"]:
