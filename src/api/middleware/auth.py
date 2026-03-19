@@ -62,9 +62,9 @@ def _validate_key(api_key: str) -> Optional[str]:
     if not _KEY_STORE:
         _load_keys_from_env()
 
-    # Dev mode: if no keys configured, accept any non-empty key
+    # Dev mode: skip auth only if explicitly opted in via BATTU_AUTH_SKIP=1
     if not _KEY_STORE:
-        if os.environ.get("NODE_ENV", "development") == "development":
+        if os.environ.get("BATTU_AUTH_SKIP") == "1":
             return "BASIC"
         return None
 
@@ -72,24 +72,52 @@ def _validate_key(api_key: str) -> Optional[str]:
     return _KEY_STORE.get(key_hash)
 
 
-def _check_rate_limit(key_hash: str) -> tuple[bool, int, int]:
-    """
-    Check in-memory rate limit for a key.
-
-    Returns: (allowed, remaining, reset_at_unix)
-    """
-    now = time.time()
-    # Calculate next midnight UTC
+def _get_reset_at() -> int:
+    """Calculate next midnight UTC as unix timestamp."""
     import calendar
     from datetime import datetime, timezone
     today = datetime.now(timezone.utc).date()
     tomorrow = datetime(today.year, today.month, today.day, tzinfo=timezone.utc)
-    tomorrow_ts = int(calendar.timegm(tomorrow.timetuple())) + 86400
+    return int(calendar.timegm(tomorrow.timetuple())) + 86400
+
+
+def _check_rate_limit_redis(key_hash: str) -> tuple[bool, int, int] | None:
+    """Try Redis-based rate limiting. Returns None if Redis unavailable."""
+    try:
+        from cache.redis import _get_client
+        client = _get_client()
+        if client is None:
+            return None
+
+        redis_key = f"ratelimit:{key_hash}"
+        count = client.get(redis_key)
+        reset_at = _get_reset_at()
+
+        if count is None:
+            # First request today — set with TTL until midnight
+            ttl = max(1, reset_at - int(time.time()))
+            client.setex(redis_key, ttl, 1)
+            return True, RATE_LIMIT_DAILY - 1, reset_at
+
+        count = int(count)
+        if count >= RATE_LIMIT_DAILY:
+            return False, 0, reset_at
+
+        client.incr(redis_key)
+        return True, RATE_LIMIT_DAILY - count - 1, reset_at
+    except Exception:
+        return None
+
+
+def _check_rate_limit_memory(key_hash: str) -> tuple[bool, int, int]:
+    """Fallback in-memory rate limiting (per-process only)."""
+    now = time.time()
+    reset_at = _get_reset_at()
 
     counter = _RATE_COUNTERS.get(key_hash)
     if counter is None or now >= counter["reset_at"]:
-        _RATE_COUNTERS[key_hash] = {"count": 1, "reset_at": tomorrow_ts}
-        return True, RATE_LIMIT_DAILY - 1, tomorrow_ts
+        _RATE_COUNTERS[key_hash] = {"count": 1, "reset_at": reset_at}
+        return True, RATE_LIMIT_DAILY - 1, reset_at
 
     if counter["count"] >= RATE_LIMIT_DAILY:
         return False, 0, int(counter["reset_at"])
@@ -97,6 +125,18 @@ def _check_rate_limit(key_hash: str) -> tuple[bool, int, int]:
     counter["count"] += 1
     remaining = RATE_LIMIT_DAILY - counter["count"]
     return True, remaining, int(counter["reset_at"])
+
+
+def _check_rate_limit(key_hash: str) -> tuple[bool, int, int]:
+    """
+    Check rate limit — Redis first, in-memory fallback.
+
+    Returns: (allowed, remaining, reset_at_unix)
+    """
+    result = _check_rate_limit_redis(key_hash)
+    if result is not None:
+        return result
+    return _check_rate_limit_memory(key_hash)
 
 
 class AuthMiddleware(BaseHTTPMiddleware):

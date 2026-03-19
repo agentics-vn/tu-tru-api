@@ -56,7 +56,7 @@ class TestBirthHourMapping:
         assert is_ty_muon(11) is False
 
     def test_invalid_birth_hour_raises(self):
-        with pytest.raises(ValueError, match="birth_time must be one of"):
+        with pytest.raises(ValueError, match="Giờ sinh phải là một trong"):
             get_tu_tru("1990-03-21", 5)  # 5 is not a valid dropdown value
 
     def test_invalid_birth_hour_13(self):

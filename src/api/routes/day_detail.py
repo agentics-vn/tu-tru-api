@@ -20,7 +20,7 @@ from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart
 from engine.hoang_dao import get_day_star, get_gio_hoang_dao, get_gio_hac_dao
 from engine.can_chi import get_can_chi_year
-from engine.nhi_thap_bat_tu import get_sao_28
+from engine.nhi_thap_bat_tu import get_nhi_thap_bat_tu
 from filter import apply_layer2_filter
 from scoring import compute_score_breakdown, GRADE_THRESHOLDS
 
@@ -111,8 +111,8 @@ async def day_detail_endpoint(
 
         good_for, avoid_for = _get_good_and_avoid(day_info, user_chart)
 
-        # Sao 28 Tú
-        sao_28 = day_info.get("sao_28", {})
+        # Sao 28 Tú — compute from solar date
+        sao_28 = get_nhi_thap_bat_tu(td.year, td.month, td.day)
         sao_name = sao_28.get("name", "")
         sao_element = sao_28.get("hanh", "")
 

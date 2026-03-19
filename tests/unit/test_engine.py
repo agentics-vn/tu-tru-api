@@ -213,7 +213,8 @@ class TestThienDuc:
         assert check_thien_duc(1, 0, 0) is False
 
     def test_month2_chi_than(self):
-        assert check_thien_duc(2, 0, 7) is True
+        # Month 2: chi idx = 8 (Thân), not 7 (Mùi) — fixed per sao-ngay.json
+        assert check_thien_duc(2, 0, 8) is True
 
     def test_month2_chi_dan_no(self):
         assert check_thien_duc(2, 0, 2) is False
@@ -336,8 +337,9 @@ class TestDuongCongKy:
     def test_month1_day13(self):
         assert is_duong_cong_ky(1, 13) is True
 
-    def test_month7_day8(self):
-        assert is_duong_cong_ky(7, 8) is True
+    def test_month7_day1(self):
+        # Month 7: day 1 (not 8) — fixed per hung-ngay.json and algorithm.md §5
+        assert is_duong_cong_ky(7, 1) is True
 
     def test_month7_day29(self):
         assert is_duong_cong_ky(7, 29) is True

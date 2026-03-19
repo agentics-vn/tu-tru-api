@@ -121,13 +121,17 @@ def set_month_info_cached(year: int, month: int, month_info: list[dict]) -> None
 
 
 def invalidate_cache() -> None:
-    """Flush all layer1 cache keys."""
+    """Flush all layer1 cache keys using SCAN (O(1) per iteration, non-blocking)."""
     client = _get_client()
     if client is None:
         return
     try:
-        keys = client.keys("layer1:*")
-        if keys:
-            client.delete(*keys)
+        cursor = 0
+        while True:
+            cursor, keys = client.scan(cursor, match="layer1:*", count=100)
+            if keys:
+                client.delete(*keys)
+            if cursor == 0:
+                break
     except Exception:
         logger.debug("Redis invalidate failed")

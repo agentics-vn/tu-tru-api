@@ -11,14 +11,17 @@ Or run directly:
 from __future__ import annotations
 
 import logging
+import os
 import sys
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from api.middleware.auth import AuthMiddleware
 from api.routes.chon_ngay import router as chon_ngay_router
 from api.routes.ngay_hom_nay import router as ngay_hom_nay_router
 from api.routes.lich_thang import router as lich_thang_router
@@ -61,6 +64,23 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Middleware
+# ─────────────────────────────────────────────────────────────────────────────
+
+# CORS — allow configured origins (default: all for dev, restrict in production)
+_cors_origins = os.environ.get("CORS_ORIGINS", "*").split(",")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in _cors_origins],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["X-API-Key", "Content-Type"],
+)
+
+# Auth + rate limiting
+app.add_middleware(AuthMiddleware)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
