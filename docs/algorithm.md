@@ -585,7 +585,7 @@ Tháng 2,5,8,11 → dùng Địa Chi.
 | Lunar Month | Thiên Đức | type | index |
 |-------------|-----------|------|-------|
 | 1  | Đinh | can | 3 |
-| 2  | Thân | chi | 7 |
+| 2  | Thân | chi | 8 |
 | 3  | Nhâm | can | 8 |
 | 4  | Tân  | can | 7 |
 | 5  | Hợi  | chi | 11 |
@@ -600,7 +600,7 @@ Tháng 2,5,8,11 → dùng Địa Chi.
 ```javascript
 // [{ type:'can'|'chi', idx:number }] — index = lunarMonth - 1
 const THIEN_DUC = [
-  {type:'can',idx:3},{type:'chi',idx:7},{type:'can',idx:8},{type:'can',idx:7},
+  {type:'can',idx:3},{type:'chi',idx:8},{type:'can',idx:8},{type:'can',idx:7},
   {type:'chi',idx:11},{type:'can',idx:0},{type:'can',idx:9},{type:'chi',idx:2},
   {type:'can',idx:2},{type:'can',idx:1},{type:'chi',idx:5},{type:'can',idx:6}
 ];
@@ -690,7 +690,7 @@ Ngày âm lịch 3, 7, 13, 18, 22, 27. Severity 3 cho CUOI_HOI.
 | 4 | 7  |
 | 5 | 5  |
 | 6 | 3  |
-| 7 | **8 và 29** |
+| 7 | **1 và 29** |
 | 8 | 27 |
 | 9 | 25 |
 | 10 | 23 |
@@ -700,7 +700,7 @@ Ngày âm lịch 3, 7, 13, 18, 22, 27. Severity 3 cho CUOI_HOI.
 ```javascript
 const DUONG_CONG_KY = {
   1:[13],2:[11],3:[9],4:[7],5:[5],6:[3],
-  7:[8,29],8:[27],9:[25],10:[23],11:[21],12:[19]
+  7:[1,29],8:[27],9:[25],10:[23],11:[21],12:[19]
 };
 ```
 

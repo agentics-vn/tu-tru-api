@@ -111,11 +111,11 @@ class ChonNgayRequest(BaseModel):
     birth_date: str = Field(..., description="Ngày sinh dd/mm/yyyy")
     birth_time: Optional[int] = Field(
         default=None,
-        description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23",
+        description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23",
     )
     gender: Optional[GenderEnum] = Field(
         default=None,
-        description="Gender: 1 (nam) or -1 (nữ) (required for Đại Vận)",
+        description="Giới tính: 1 (nam) hoặc -1 (nữ) (bắt buộc cho Đại Vận)",
     )
     intent: IntentEnum
     range_start: str = Field(..., description="Ngày bắt đầu dd/mm/yyyy")
@@ -127,9 +127,9 @@ class ChonNgayRequest(BaseModel):
     def birth_date_must_be_past(cls, v: str) -> str:
         d = parse_dmy(v)
         if d.year < 1900:
-            raise ValueError("birth_date year must be >= 1900")
+            raise ValueError("Năm sinh phải >= 1900")
         if d >= date.today():
-            raise ValueError("birth_date must be a past date")
+            raise ValueError("Ngày sinh phải là ngày trong quá khứ")
         return v
 
     @field_validator("range_start", "range_end")
@@ -145,7 +145,7 @@ class ChonNgayRequest(BaseModel):
             return v
         if v not in VALID_BIRTH_HOURS:
             raise ValueError(
-                f"birth_time must be one of {sorted(VALID_BIRTH_HOURS)}, got {v}"
+                f"Giờ sinh phải là một trong {sorted(VALID_BIRTH_HOURS)}, nhận được {v}"
             )
         return v
 
@@ -154,11 +154,11 @@ class ChonNgayRequest(BaseModel):
         start = parse_dmy(self.range_start)
         end = parse_dmy(self.range_end)
         if end < start:
-            raise ValueError("range_end must be on or after range_start")
+            raise ValueError("Ngày kết thúc phải bằng hoặc sau ngày bắt đầu")
         diff = (end - start).days
         if diff > MAX_RANGE_DAYS:
             raise ValueError(
-                f"range_end must be within {MAX_RANGE_DAYS} days of range_start"
+                f"Khoảng cách không được vượt quá {MAX_RANGE_DAYS} ngày"
             )
         return self
 
@@ -209,8 +209,8 @@ ELEMENT_PLAIN_VI: dict[str, str] = {
 }
 
 STRENGTH_PLAIN_VI: dict[str, str] = {
-    "weak": "thân nhược — cần bổ trợ thêm năng lượng phù hợp",
-    "strong": "thân vượng — cần cân bằng, tránh thừa năng lượng",
+    "nhược": "thân nhược — cần bổ trợ thêm năng lượng phù hợp",
+    "vượng": "thân vượng — cần cân bằng, tránh thừa năng lượng",
 }
 
 
@@ -469,11 +469,11 @@ class DetailRequest(BaseModel):
     birth_date: str = Field(..., description="Ngày sinh dd/mm/yyyy")
     birth_time: Optional[int] = Field(
         default=None,
-        description="Birth hour from dropdown: 0,2,4,6,8,10,11,14,16,18,20,22,23",
+        description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23",
     )
     gender: Optional[GenderEnum] = Field(
         default=None,
-        description="Gender: 1 (nam) or -1 (nữ) (required for Đại Vận)",
+        description="Giới tính: 1 (nam) hoặc -1 (nữ) (bắt buộc cho Đại Vận)",
     )
     intent: IntentEnum
     date: str = Field(..., description="Ngày cần phân tích dd/mm/yyyy")
@@ -483,9 +483,9 @@ class DetailRequest(BaseModel):
     def birth_date_must_be_past(cls, v: str) -> str:
         d = parse_dmy(v)
         if d.year < 1900:
-            raise ValueError("birth_date year must be >= 1900")
+            raise ValueError("Năm sinh phải >= 1900")
         if d >= date.today():
-            raise ValueError("birth_date must be a past date")
+            raise ValueError("Ngày sinh phải là ngày trong quá khứ")
         return v
 
     @field_validator("date")
@@ -501,7 +501,7 @@ class DetailRequest(BaseModel):
             return v
         if v not in VALID_BIRTH_HOURS:
             raise ValueError(
-                f"birth_time must be one of {sorted(VALID_BIRTH_HOURS)}, got {v}"
+                f"Giờ sinh phải là một trong {sorted(VALID_BIRTH_HOURS)}, nhận được {v}"
             )
         return v
 
@@ -592,7 +592,7 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
                     "lunar_date": _format_lunar_date(day_info),
                     "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
                     "nguhanh_day": day_info["day_nap_am_hanh"],
-                    "verdict": "avoid",
+                    "verdict": "Nên tránh",
                     "verdict_vi": "Ngày xấu — không qua được bộ lọc cơ bản.",
                     "layer1": layer1_detail,
                     "layer1_fail_reasons": fail_reasons,
@@ -631,7 +631,7 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
                     "lunar_date": _format_lunar_date(day_info),
                     "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
                     "nguhanh_day": day_info["day_nap_am_hanh"],
-                    "verdict": "forbidden",
+                    "verdict": "Cấm",
                     "verdict_vi": (
                         "Tuyệt đối tránh — ngày xung khắc trực tiếp với tuổi của bạn."
                         if filter_result["severity"] == 3
@@ -673,20 +673,20 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
         # Verdict
         grade = score_result["grade"]
         if grade == "A":
-            verdict = "excellent"
+            verdict = "Rất tốt"
             verdict_vi = "Ngày rất tốt — nên chọn."
         elif grade == "B":
-            verdict = "good"
+            verdict = "Tốt"
             verdict_vi = "Ngày tốt — có thể chọn."
         elif grade == "C":
-            verdict = "acceptable"
+            verdict = "Chấp nhận được"
             verdict_vi = "Ngày bình thường — chấp nhận được nếu không có lựa chọn khác."
         else:
-            verdict = "poor"
+            verdict = "Không tốt"
             verdict_vi = "Ngày không tốt — nên tránh nếu có thể."
 
         if filter_result["severity"] == 2:
-            verdict_vi += " (Có cảnh báo — xem chi tiết Layer 2.)"
+            verdict_vi += " (Có cảnh báo — xem chi tiết lớp lọc 2.)"
 
         return JSONResponse(
             status_code=200,

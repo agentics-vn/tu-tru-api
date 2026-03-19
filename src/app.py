@@ -57,7 +57,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title="Bat Tu Date Selection API",
+    title="API Chọn Ngày Bát Tự",
     version="0.1.0",
     lifespan=lifespan,
 )
@@ -74,11 +74,11 @@ async def validation_exception_handler(
     """Map Pydantic / FastAPI validation errors to the API error contract."""
     errors = exc.errors()
     first = errors[0] if errors else {}
-    msg = first.get("msg", "Invalid input")
+    msg = first.get("msg", "Dữ liệu không hợp lệ")
     field = " → ".join(str(loc) for loc in first.get("loc", []))
 
     # Detect RANGE_TOO_LARGE from our model_validator message
-    if "within" in msg and "days" in msg:
+    if ("within" in msg and "days" in msg) or ("vượt quá" in msg and "ngày" in msg):
         return JSONResponse(
             status_code=400,
             content={

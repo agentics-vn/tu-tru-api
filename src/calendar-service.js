@@ -51,7 +51,7 @@ const NAP_AM_HANH = [
   'Hỏa',  // 16 Bính Thân / Đinh Dậu  Sơn Hạ Hỏa
   'Mộc',  // 17 Mậu Tuất / Kỷ Hợi     Bình Địa Mộc
   'Thổ',  // 18 Canh Tý / Tân Sửu     Bích Thượng Thổ
-  'Thủy', // 19 Nhâm Dần / Quý Mão    Kim Phú Thủy
+  'Kim',  // 19 Nhâm Dần / Quý Mão    Kim Bạch Kim
   'Hỏa',  // 20 Giáp Thìn / Ất Tỵ    Phú Đăng Hỏa
   'Thủy', // 21 Bính Ngọ / Đinh Mùi   Thiên Hà Thủy
   'Thổ',  // 22 Mậu Thân / Kỷ Dậu     Đại Dịch Thổ
@@ -68,7 +68,7 @@ const NAP_AM_NAMES = [
   'Hải Trung Kim','Lò Trung Hỏa','Đại Lâm Mộc','Lộ Bàng Thổ','Kiếm Phong Kim','Sơn Đầu Hỏa',
   'Giản Hạ Thủy','Thành Đầu Thổ','Bạch Lạp Kim','Dương Liễu Mộc','Tuyền Trung Thủy','Ốc Thượng Thổ',
   'Tích Lịch Hỏa','Tùng Bách Mộc','Trường Lưu Thủy','Sa Trung Kim','Sơn Hạ Hỏa','Bình Địa Mộc',
-  'Bích Thượng Thổ','Kim Phú Thủy','Phú Đăng Hỏa','Thiên Hà Thủy','Đại Dịch Thổ','Thoa Xuyến Kim',
+  'Bích Thượng Thổ','Kim Bạch Kim','Phú Đăng Hỏa','Thiên Hà Thủy','Đại Dịch Thổ','Thoa Xuyến Kim',
   'Tang Đố Mộc','Đại Khê Thủy','Sa Trung Thổ','Thiên Thượng Hỏa','Thạch Lựu Mộc','Đại Hải Thủy',
 ];
 
@@ -81,7 +81,7 @@ const MONTH_CHI_IDX = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1]; // index = lm-1
 // Thiên Đức: type 'can'|'chi', idx = can/chi index
 const THIEN_DUC = [
   {type:'can',idx:3},  // month 1:  Đinh
-  {type:'chi',idx:7},  // month 2:  Thân
+  {type:'chi',idx:8},  // month 2:  Thân
   {type:'can',idx:8},  // month 3:  Nhâm
   {type:'can',idx:7},  // month 4:  Tân
   {type:'chi',idx:11}, // month 5:  Hợi

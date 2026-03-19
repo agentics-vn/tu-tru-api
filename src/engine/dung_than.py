@@ -68,7 +68,7 @@ def find_dung_than(tu_tru: dict) -> dict:
             hi_than: str
             ky_than: str
             cuu_than: str
-            strength: str ("strong" | "weak" | "balanced")
+            strength: str ("vượng" | "nhược" | "cân bằng")
             analysis: dict (full strength analysis)
     """
     analysis = analyze_chart_strength(tu_tru)
@@ -76,7 +76,7 @@ def find_dung_than(tu_tru: dict) -> dict:
     dm_hanh = analysis["day_master_hanh"]
     element_counts = analysis["element_counts"]
 
-    if strength == "weak":
+    if strength == "nhược":
         # Weak Day Master needs support
         # Primary Dụng Thần: Ấn Tinh (parent element that generates DM)
         # Secondary: Tỷ Kiên (same element)
@@ -88,7 +88,7 @@ def find_dung_than(tu_tru: dict) -> dict:
         # Cừu Thần: element that generates Kỵ Thần
         cuu_than = SINH_BY[ky_than]
 
-    elif strength == "strong":
+    elif strength == "vượng":
         # Strong Day Master needs draining
         # Primary Dụng Thần: Thực Thương (element DM generates = drain energy)
         # Or Quan Sát (element that controls DM)

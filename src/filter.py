@@ -18,6 +18,7 @@ from engine.can_chi import is_can_khac, is_xung
 # Intent-rules.json extends to DONG_THO and NHAP_TRACH.
 COHON_BLOCKED_INTENTS: frozenset[str] = frozenset({
     "DAM_CUOI", "DONG_THO", "NHAP_TRACH",
+    "AN_HOI", "LAM_NHA", "MUA_NHA_DAT", "KHAI_TRUONG",
 })
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -107,17 +108,19 @@ def apply_layer2_filter(day_info: dict, user_chart: dict, intent: str) -> dict:
     # R3: Ngày có hành Kỵ Thần (severity 2)
     # Use chart-aware ky_than_v2 (Dụng Thần system) when available,
     # otherwise fall back to simplified ky_than (Nạp Âm system)
+    # Algorithm.md: compare the CAN's element (day_can_hanh), not Nạp Âm
     effective_ky_than = user_chart.get("ky_than_v2") or user_chart["ky_than"]
-    if day_info["day_nap_am_hanh"] == effective_ky_than:
+    day_can_hanh = day_info["day_can_hanh"]
+    if day_can_hanh == effective_ky_than:
         max_severity = max(max_severity, 2)
         if user_chart.get("ky_than_v2"):
             reasons.append(
-                f"Nạp Âm ngày ({day_info['day_nap_am_hanh']}) là Kỵ Thần "
+                f"Thiên Can ngày ({day_can_hanh}) là Kỵ Thần "
                 f"của Nhật Chủ {user_chart['nhat_chu']['can_name']} ({user_chart['chart_strength']})"
             )
         else:
             reasons.append(
-                f"Nạp Âm ngày ({day_info['day_nap_am_hanh']}) là Kỵ Thần của mệnh {user_chart['menh_name']}"
+                f"Thiên Can ngày ({day_can_hanh}) là Kỵ Thần của mệnh {user_chart['menh_name']}"
             )
 
     return {

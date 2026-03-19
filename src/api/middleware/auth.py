@@ -115,7 +115,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 content={
                     "status": "error",
                     "error_code": "UNAUTHORIZED",
-                    "message": "Missing X-API-Key header",
+                    "message": "Thiếu header X-API-Key",
                 },
             )
 
@@ -127,7 +127,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 content={
                     "status": "error",
                     "error_code": "UNAUTHORIZED",
-                    "message": "Invalid API key",
+                    "message": "API key không hợp lệ",
                 },
             )
 
@@ -140,7 +140,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 content={
                     "status": "error",
                     "error_code": "RATE_LIMITED",
-                    "message": f"Rate limit exceeded. Resets at {reset_at}.",
+                    "message": f"Đã vượt giới hạn truy cập. Đặt lại lúc {reset_at}.",
                 },
                 headers={
                     "X-RateLimit-Remaining": "0",

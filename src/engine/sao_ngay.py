@@ -13,7 +13,7 @@ from __future__ import annotations
 
 THIEN_DUC: list[dict] = [
     {"type": "can", "idx": 3},   # month 1:  Đinh
-    {"type": "chi", "idx": 7},   # month 2:  Thân
+    {"type": "chi", "idx": 8},   # month 2:  Thân
     {"type": "can", "idx": 8},   # month 3:  Nhâm
     {"type": "can", "idx": 7},   # month 4:  Tân
     {"type": "chi", "idx": 11},  # month 5:  Hợi
@@ -26,8 +26,22 @@ THIEN_DUC: list[dict] = [
     {"type": "can", "idx": 6},   # month 12: Canh
 ]
 
-# Thiên Đức Hợp — Can index, None = tháng tứ trọng
-THIEN_DUC_HOP: list[int | None] = [8, None, 3, 2, None, 5, 4, None, 7, 6, None, 1]
+# Thiên Đức Hợp — mixed type (can or chi), matching sao-ngay.json
+# Months 2,5,8,11 use chi; others use can
+THIEN_DUC_HOP: list[dict] = [
+    {"type": "can", "idx": 8},   # month 1:  Nhâm
+    {"type": "chi", "idx": 0},   # month 2:  Tý
+    {"type": "can", "idx": 3},   # month 3:  Đinh
+    {"type": "can", "idx": 2},   # month 4:  Bính
+    {"type": "chi", "idx": 2},   # month 5:  Dần
+    {"type": "can", "idx": 5},   # month 6:  Kỷ
+    {"type": "can", "idx": 4},   # month 7:  Mậu
+    {"type": "chi", "idx": 11},  # month 8:  Hợi
+    {"type": "can", "idx": 7},   # month 9:  Tân
+    {"type": "can", "idx": 6},   # month 10: Canh
+    {"type": "chi", "idx": 8},   # month 11: Thân
+    {"type": "can", "idx": 1},   # month 12: Ất
+]
 
 # Nguyệt Đức — Can index per month
 NGUYET_DUC_CAN: list[int] = [2, 0, 8, 6, 2, 0, 8, 6, 2, 0, 8, 6]
@@ -44,10 +58,12 @@ def check_thien_duc(lunar_month: int, day_can_idx: int, day_chi_idx: int) -> boo
     return day_chi_idx == td["idx"]
 
 
-def check_thien_duc_hop(lunar_month: int, day_can_idx: int) -> bool:
+def check_thien_duc_hop(lunar_month: int, day_can_idx: int, day_chi_idx: int = -1) -> bool:
     """Check if day has Thiên Đức Hợp for the given lunar month."""
     tdh = THIEN_DUC_HOP[lunar_month - 1]
-    return tdh is not None and day_can_idx == tdh
+    if tdh["type"] == "can":
+        return day_can_idx == tdh["idx"]
+    return day_chi_idx != -1 and day_chi_idx == tdh["idx"]
 
 
 def check_nguyet_duc(lunar_month: int, day_can_idx: int) -> bool:
@@ -306,19 +322,19 @@ def check_thien_nguc_thien_hoa(lunar_month: int, day_chi_idx: int) -> bool:
 # Cross-ref: lichngaytot.com, xemvm.com.  _sme_verified = True
 # ─────────────────────────────────────────────────────────────────────────────
 
-THIEN_XA_RULES: list[tuple[int, int]] = [
-    (4, 2),   # Spring (months 1-3): Mậu Dần
-    (4, 2),
-    (4, 2),
-    (0, 6),   # Summer (months 4-6): Giáp Ngọ
-    (0, 6),
-    (0, 6),
-    (4, 8),   # Autumn (months 7-9): Mậu Thân
-    (4, 8),
-    (4, 8),
-    (0, 0),   # Winter (months 10-12): Giáp Tý
-    (0, 0),
-    (0, 0),
+THIEN_XA_RULES: list[tuple[int, int] | None] = [
+    (4, 2),   # month 1:  Mậu Dần
+    (4, 2),   # month 2:  Mậu Dần
+    (4, 2),   # month 3:  Mậu Dần
+    (0, 6),   # month 4:  Giáp Ngọ
+    None,     # month 5:  (no Thiên Xá)
+    (0, 6),   # month 6:  Giáp Ngọ
+    (4, 8),   # month 7:  Mậu Thân
+    (4, 8),   # month 8:  Mậu Thân
+    (0, 0),   # month 9:  Giáp Tý
+    None,     # month 10: (no Thiên Xá)
+    None,     # month 11: (no Thiên Xá)
+    (0, 0),   # month 12: Giáp Tý
 ]
 
 
@@ -326,7 +342,10 @@ def check_thien_xa(lunar_month: int, day_can_idx: int, day_chi_idx: int) -> bool
     """Check if day is Thiên Xá (天赦日) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    expected_can, expected_chi = THIEN_XA_RULES[lunar_month - 1]
+    rule = THIEN_XA_RULES[lunar_month - 1]
+    if rule is None:
+        return False
+    expected_can, expected_chi = rule
     return day_can_idx == expected_can and day_chi_idx == expected_chi
 
 
@@ -587,10 +606,10 @@ def check_thien_phu(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # Thiên Tài (天財) — Heavenly fortune
-# Rule: quarterly Tứ Mộ cycle: M1,5,9→Mão(3), M2,6,10→Ngọ(6),
-#       M3,7,11→Dậu(9), M4,8,12→Tý(0)
-# Source: 《玉匣記》逐月吉星總局.  _sme_verified = True
-THIEN_TAI_CHI: list[int] = [3, 6, 9, 0, 3, 6, 9, 0, 3, 6, 9, 0]
+# Rule: M1→Thìn(4), M2→Ngọ(6), M3→Thân(8), M4→Tuất(10), M5→Tý(0), M6→Dần(2),
+#       repeating every 6 months.
+# Source: docs/seed/sao-ngay.json.  _sme_verified = True
+THIEN_TAI_CHI: list[int] = [4, 6, 8, 10, 0, 2, 4, 6, 8, 10, 0, 2]
 
 
 def check_thien_tai(lunar_month: int, day_chi_idx: int) -> bool:
@@ -600,10 +619,11 @@ def check_thien_tai(lunar_month: int, day_chi_idx: int) -> bool:
     return day_chi_idx == THIEN_TAI_CHI[lunar_month - 1]
 
 
-# Địa Tài (地財) — Earth fortune (paired with Thiên Tài, 六沖 offset)
-# Rule: M1,5,9→Dậu(9), M2,6,10→Tý(0), M3,7,11→Mão(3), M4,8,12→Ngọ(6)
-# Source: 《玉匣記》.  _sme_verified = False
-DIA_TAI_CHI: list[int] = [9, 0, 3, 6, 9, 0, 3, 6, 9, 0, 3, 6]
+# Địa Tài (地財) — Earth fortune (paired with Thiên Tài)
+# Rule: M1→Tỵ(5), M2→Mùi(7), M3→Dậu(9), M4→Hợi(11), M5→Sửu(1), M6→Mão(3),
+#       repeating every 6 months.
+# Source: docs/seed/sao-ngay.json.  _sme_verified = True
+DIA_TAI_CHI: list[int] = [5, 7, 9, 11, 1, 3, 5, 7, 9, 11, 1, 3]
 
 
 def check_dia_tai(lunar_month: int, day_chi_idx: int) -> bool:
@@ -614,58 +634,67 @@ def check_dia_tai(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # Nguyệt Tài (月財) — Monthly fortune
-# Rule: "Chánh nguyệt khởi Thìn, thuận hành"
-# Formula: (lunar_month + 3) % 12
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Rule: non-formula lookup from sao-ngay.json.
+# M1→Ngọ(6), M2→Tỵ(5), M3→Tỵ(5), M4→Mùi(7), M5→Dậu(9), M6→Hợi(11),
+# M7→Ngọ(6), M8→Tỵ(5), M9→Tỵ(5), M10→Mùi(7), M11→Dậu(9), M12→Hợi(11)
+# Source: docs/seed/sao-ngay.json.  _sme_verified = True
+NGUYET_TAI_CHI: list[int] = [6, 5, 5, 7, 9, 11, 6, 5, 5, 7, 9, 11]
 
 
 def check_nguyet_tai(lunar_month: int, day_chi_idx: int) -> bool:
     """Check if day has Nguyệt Tài (月財) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_chi_idx == (lunar_month + 3) % 12
+    return day_chi_idx == NGUYET_TAI_CHI[lunar_month - 1]
 
 
 # Lộc Khố (祿庫) — Fortune treasury
-# Rule: year CAN → day Chi where 祿's 墓庫 resides.
-# 甲乙(0,1)→未(7), 丙丁戊己(2-5)→戌(10), 庚辛(6,7)→丑(1), 壬癸(8,9)→辰(4)
-# Source: Tam Mệnh Thông Hội 祿庫 table.  _sme_verified = True
-LOC_KHO_MAP: dict[int, int] = {
-    0: 7, 1: 7, 2: 10, 3: 10, 4: 10, 5: 10, 6: 1, 7: 1, 8: 4, 9: 4,
-}
+# Rule: monthly chi lookup from sao-ngay.json.
+# M1→Thìn(4), M2→Tỵ(5), M3→Ngọ(6), M4→Mùi(7), M5→Thân(8), M6→Dậu(9),
+# M7→Tuất(10), M8→Hợi(11), M9→Tý(0), M10→Sửu(1), M11→Dần(2), M12→Mão(3)
+# Formula: (lunar_month + 3) % 12
+# Source: docs/seed/sao-ngay.json.  _sme_verified = True
+LOC_KHO_CHI: list[int] = [4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3]
 
 
-def check_loc_kho(day_chi_idx: int, year_can_idx: int) -> bool:
-    """Check if day is Lộc Khố based on year's Heavenly Stem."""
-    target = LOC_KHO_MAP.get(year_can_idx)
-    return target is not None and day_chi_idx == target
+def check_loc_kho(lunar_month: int, day_chi_idx: int) -> bool:
+    """Check if day has Lộc Khố (祿庫) for the given lunar month."""
+    if lunar_month < 1 or lunar_month > 12:
+        return False
+    return day_chi_idx == LOC_KHO_CHI[lunar_month - 1]
 
 
 # Thiên Quý (天貴) — Heavenly noble
-# Rule: quarterly: M1,5,9→Sửu(1), M2,6,10→Dần(2),
-#       M3,7,11→Mão(3), M4,8,12→Thìn(4)
-# Source: 《協紀辨方書》.  _sme_verified = False
-THIEN_QUY_CHI: list[int] = [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]
+# Rule: CAN-based with 2 values per quarter from sao-ngay.json:
+# M1-3→[Giáp(0),Ất(1)], M4-6→[Bính(2),Đinh(3)],
+# M7-9→[Canh(6),Tân(7)], M10-12→[Nhâm(8),Quý(9)]
+# Source: docs/seed/sao-ngay.json.  _sme_verified = True
+THIEN_QUY_CAN_PAIRS: list[tuple[int, int]] = [
+    (0, 1), (0, 1), (0, 1), (2, 3), (2, 3), (2, 3),
+    (6, 7), (6, 7), (6, 7), (8, 9), (8, 9), (8, 9),
+]
 
 
-def check_thien_quy(lunar_month: int, day_chi_idx: int) -> bool:
+def check_thien_quy(lunar_month: int, day_can_idx: int) -> bool:
     """Check if day has Thiên Quý (天貴) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_chi_idx == THIEN_QUY_CHI[lunar_month - 1]
+    return day_can_idx in THIEN_QUY_CAN_PAIRS[lunar_month - 1]
 
 
 # Cát Khánh (吉慶) — Auspicious celebration
-# Rule: "Chánh nguyệt khởi Sửu, thuận hành"
-# Formula: lunar_month % 12 (M1→1, M2→2, ...)
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Rule: non-formula lookup from sao-ngay.json.
+# M1→Dậu(9), M2→Dần(2), M3→Hợi(11), M4→Thìn(4), M5→Sửu(1), M6→Ngọ(6),
+# M7→Mão(3), M8→Thân(8), M9→Tỵ(5), M10→Tuất(10), M11→Mùi(7), M12→Tý(0)
+# Source: docs/seed/sao-ngay.json.  _sme_verified = True
+CAT_KHANH_CHI: list[int] = [9, 2, 11, 4, 1, 6, 3, 8, 5, 10, 7, 0]
 
 
 def check_cat_khanh(lunar_month: int, day_chi_idx: int) -> bool:
     """Check if day has Cát Khánh (吉慶) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_chi_idx == lunar_month % 12
+    return day_chi_idx == CAT_KHANH_CHI[lunar_month - 1]
 
 
 # Ích Hậu (益後) — Benefit later
@@ -776,16 +805,19 @@ def check_thanh_tam(lunar_month: int, day_chi_idx: int) -> bool:
 
 
 # Thiên Quan (天官) — Heavenly official
-# Rule: "Chánh nguyệt khởi Ngọ, thuận hành"
-# Formula: (lunar_month + 5) % 12
-# Source: Ngọc Hạp Thông Thư.  _sme_verified = False
+# Rule: lookup from sao-ngay.json.
+# M1→Tuất(10), M2→Tý(0), M3→Dần(2), M4→Thìn(4), M5→Ngọ(6), M6→Thân(8),
+# M7→Tuất(10), M8→Tý(0), M9→Dần(2), M10→Thìn(4), M11→Ngọ(6), M12→Thân(8)
+# Formula: (lunar_month * 2 + 8) % 12
+# Source: docs/seed/sao-ngay.json.  _sme_verified = True
+THIEN_QUAN_CHI: list[int] = [10, 0, 2, 4, 6, 8, 10, 0, 2, 4, 6, 8]
 
 
 def check_thien_quan(lunar_month: int, day_chi_idx: int) -> bool:
     """Check if day has Thiên Quan (天官) for the given lunar month."""
     if lunar_month < 1 or lunar_month > 12:
         return False
-    return day_chi_idx == (lunar_month + 5) % 12
+    return day_chi_idx == THIEN_QUAN_CHI[lunar_month - 1]
 
 
 # Minh Tinh (明星) — Bright star, good for 赴任/诉讼/安葬

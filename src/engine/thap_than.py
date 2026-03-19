@@ -125,7 +125,7 @@ def get_thap_than(day_master_can: int, target_can: int) -> dict:
 
     # Categorize as favorable/unfavorable for general reference
     favorable = {"ty_kien", "chinh_an", "thien_an", "thuc_than", "chinh_tai"}
-    category = "favorable" if key in favorable else "unfavorable"
+    category = "thuận lợi" if key in favorable else "bất lợi"
 
     return {
         "key": key,

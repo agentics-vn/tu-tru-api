@@ -441,7 +441,7 @@ class TestTuTru:
         assert "tu_tru_display" in data
         assert "nhat_chu" in data
         assert "chart_strength" in data
-        assert data["chart_strength"] in ("strong", "weak", "balanced")
+        assert data["chart_strength"] in ("vượng", "nhược", "cân bằng")
         assert "dung_than" in data
         assert "hi_than" in data
         assert "ky_than" in data

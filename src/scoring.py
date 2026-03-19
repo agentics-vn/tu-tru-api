@@ -193,8 +193,8 @@ SAO_DETECTORS: dict[str, callable] = {
     "thienTai": lambda d, u=None: check_thien_tai(_lm(d), _dci(d)),
     "diaTai": lambda d, u=None: check_dia_tai(_lm(d), _dci(d)),
     "nguyetTai": lambda d, u=None: check_nguyet_tai(_lm(d), _dci(d)),
-    "locKho": lambda d, u=None: check_loc_kho(_dci(d), (u or {}).get("year_can_idx", -1)),
-    "thienQuy": lambda d, u=None: check_thien_quy(_lm(d), _dci(d)),
+    "locKho": lambda d, u=None: check_loc_kho(_lm(d), _dci(d)),
+    "thienQuy": lambda d, u=None: check_thien_quy(_lm(d), _dcani(d)),
     "catKhanh": lambda d, u=None: check_cat_khanh(_lm(d), _dci(d)),
     "ichHau": lambda d, u=None: check_ich_hau(_lm(d), _dci(d)),
     "tucThe": lambda d, u=None: check_tuc_the(_lm(d), _dci(d)),
@@ -518,6 +518,10 @@ def compute_score(
             bonus_sao.append("Nguyệt Đức Hợp")
             reasons.append(f"Ngày có Nguyệt Đức Hợp (+{BONUS['nguyet_duc_hop']})")
             plain_pros.append(SAO_PLAIN["nguyetDucHop"])
+        else:
+            reasons.append(
+                f"Nguyệt Đức Hợp — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
+            )
 
     # 3. Element matching: Dụng Thần (advanced) or Dương Thần (simplified)
     day_hanh = day_info.get("day_nap_am_hanh")
@@ -802,6 +806,10 @@ def compute_score_breakdown(
             reasons.append(f"Ngày có Nguyệt Đức Hợp (+{pts})")
             plain_pros.append(SAO_PLAIN["nguyetDucHop"])
             breakdown.append({"source": "Nguyệt Đức Hợp", "points": pts, "reason_vi": "Ngày có Nguyệt Đức Hợp", "type": "bonus"})
+        else:
+            reason = f"Nguyệt Đức Hợp — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
+            reasons.append(reason)
+            breakdown.append({"source": "Nguyệt Đức Hợp", "points": 0, "reason_vi": reason, "type": "neutral"})
 
     # 3. Element matching
     day_hanh = day_info.get("day_nap_am_hanh")

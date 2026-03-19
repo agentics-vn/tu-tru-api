@@ -249,6 +249,8 @@ function computeScore(dayInfo, userChart, intent, intentRule, filterResult) {
       score += BONUS.nguyetDucHop;
       bonusSao.push('Nguyệt Đức Hợp');
       reasons.push(`Ngày có Nguyệt Đức Hợp (+${BONUS.nguyetDucHop})`);
+    } else {
+      reasons.push(`Nguyệt Đức Hợp — không tính điểm cho ${_intentLabel(intent)} (theo Ngọc Hạp Thông Thư)`);
     }
   }
 
@@ -399,7 +401,7 @@ const SAO_LABELS = {
   cuuKhong   : 'Cửu Không',   lucBatThanh : 'Lục Bất Thành',
   nhanCach   : 'Nhân Cách',   phiMaSat    : 'Phi Ma Sát',
   hoangSa    : 'Hoàng Sa',    thanCach    : 'Thần Cách',
-  trungTang  : 'Trùng Tang',  haKhoiCauGiao: 'Hà Khôi Cấu Giảo',
+  trungTang  : 'Trùng Tang',  haKhoiCauGiao: 'Hà Khôi Câu Giảo',
   loiCong    : 'Lôi Công',    thienNgucThienHoa: 'Thiên Ngục Thiên Hỏa',
   nguyetYemDaiHoa: 'Nguyệt Yếm Đại Họa',
   nguNguyQuiet: 'Ngũ Quỷ',

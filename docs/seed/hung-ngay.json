@@ -3,12 +3,12 @@
   { "type": "NGUYET_KY", "month": null, "day": 14, "severity": 3, "reason_vi": "Nguyệt Kỵ — ngày xấu chung cả tháng" },
   { "type": "NGUYET_KY", "month": null, "day": 23, "severity": 3, "reason_vi": "Nguyệt Kỵ — ngày xấu chung cả tháng" },
 
-  { "type": "TAM_NUONG", "month": null, "day": 3,  "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
-  { "type": "TAM_NUONG", "month": null, "day": 7,  "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
-  { "type": "TAM_NUONG", "month": null, "day": 13, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
-  { "type": "TAM_NUONG", "month": null, "day": 18, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
-  { "type": "TAM_NUONG", "month": null, "day": 22, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
-  { "type": "TAM_NUONG", "month": null, "day": 27, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "CUOI_HOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 3,  "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "DAM_CUOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 7,  "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "DAM_CUOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 13, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "DAM_CUOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 18, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "DAM_CUOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 22, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "DAM_CUOI": 3 } },
+  { "type": "TAM_NUONG", "month": null, "day": 27, "severity": 2, "reason_vi": "Tam Nương — đặc biệt kỵ hôn nhân", "intent_severity_override": { "DAM_CUOI": 3 } },
 
   { "type": "DUONG_CONG_KY", "month": 1,  "day": 13, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 1" },
   { "type": "DUONG_CONG_KY", "month": 2,  "day": 11, "severity": 3, "reason_vi": "Dương Công Kỵ Nhật tháng 2" },

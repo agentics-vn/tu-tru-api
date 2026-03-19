@@ -92,7 +92,7 @@ def analyze_chart_strength(tu_tru: dict) -> dict:
 
     Returns:
         dict with keys:
-            strength: "strong" | "weak" | "balanced"
+            strength: "vượng" | "nhược" | "cân bằng"
             element_counts: {element: weight}
             seasonal_element: str
             is_in_season: bool
@@ -122,11 +122,11 @@ def analyze_chart_strength(tu_tru: dict) -> dict:
     # 5. Determine strength
     # Thresholds: >55% support → strong, <40% → weak, else balanced
     if support_ratio >= 0.55:
-        strength = "strong"
+        strength = "vượng"
     elif support_ratio <= 0.40:
-        strength = "weak"
+        strength = "nhược"
     else:
-        strength = "balanced"
+        strength = "cân bằng"
 
     return {
         "strength": strength,

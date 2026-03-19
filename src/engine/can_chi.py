@@ -54,7 +54,7 @@ NAP_AM_HANH: list[str] = [
     "Hỏa",  # 16 Bính Thân / Đinh Dậu   Sơn Hạ Hỏa
     "Mộc",  # 17 Mậu Tuất / Kỷ Hợi     Bình Địa Mộc
     "Thổ",  # 18 Canh Tý / Tân Sửu     Bích Thượng Thổ
-    "Thủy", # 19 Nhâm Dần / Quý Mão    Kim Phú Thủy
+    "Kim",  # 19 Nhâm Dần / Quý Mão    Kim Bạch Kim
     "Hỏa",  # 20 Giáp Thìn / Ất Tỵ     Phú Đăng Hỏa
     "Thủy", # 21 Bính Ngọ / Đinh Mùi    Thiên Hà Thủy
     "Thổ",  # 22 Mậu Thân / Kỷ Dậu     Đại Dịch Thổ
@@ -72,7 +72,7 @@ NAP_AM_NAMES: list[str] = [
     "Kiếm Phong Kim", "Sơn Đầu Hỏa", "Giản Hạ Thủy", "Thành Đầu Thổ",
     "Bạch Lạp Kim", "Dương Liễu Mộc", "Tuyền Trung Thủy", "Ốc Thượng Thổ",
     "Tích Lịch Hỏa", "Tùng Bách Mộc", "Trường Lưu Thủy", "Sa Trung Kim",
-    "Sơn Hạ Hỏa", "Bình Địa Mộc", "Bích Thượng Thổ", "Kim Phú Thủy",
+    "Sơn Hạ Hỏa", "Bình Địa Mộc", "Bích Thượng Thổ", "Kim Bạch Kim",
     "Phú Đăng Hỏa", "Thiên Hà Thủy", "Đại Dịch Thổ", "Thoa Xuyến Kim",
     "Tang Đố Mộc", "Đại Khê Thủy", "Sa Trung Thổ", "Thiên Thượng Hỏa",
     "Thạch Lựu Mộc", "Đại Hải Thủy",
