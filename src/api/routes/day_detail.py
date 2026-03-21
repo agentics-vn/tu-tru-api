@@ -8,6 +8,8 @@ personalized to the user's birth chart. Used by the So Sanh (compare) feature.
 from __future__ import annotations
 
 import json
+
+from api.errors import error_response
 import logging
 from datetime import date
 from pathlib import Path
@@ -82,22 +84,20 @@ async def day_detail_endpoint(
     birth_time: Optional[int] = Query(None),
     gender: Optional[int] = Query(None),
     target_date: str = Query(..., alias="date", description="Ngày mục tiêu YYYY-MM-DD"),
+    tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)"),
 ) -> JSONResponse:
     try:
+        from api.tz import today_in_tz
+
+        _today = today_in_tz(tz)
         bd = parse_dmy(birth_date)
-        if bd.year < 1900 or bd >= date.today():
-            return JSONResponse(
-                status_code=400,
-                content={"status": "error", "error_code": "INVALID_INPUT", "message": "birth_date phải là ngày quá khứ."},
-            )
+        if bd.year < 1900 or bd >= _today:
+            return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ.")
 
         if birth_time is not None:
             from engine.pillars import VALID_BIRTH_HOURS
             if birth_time not in VALID_BIRTH_HOURS:
-                return JSONResponse(
-                    status_code=400,
-                    content={"status": "error", "error_code": "INVALID_INPUT", "message": f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}"},
-                )
+                return error_response(400, "INVALID_INPUT", message_vi=f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}")
 
         td = date.fromisoformat(target_date)
         td_str = td.isoformat()
@@ -154,8 +154,8 @@ async def day_detail_endpoint(
                 "grade": grade,
                 "good_for": good_for,
                 "avoid_for": avoid_for,
-                "gio_tot": [f"{g['chi_name']} ({g['start']}-{g['end']})" for g in gio_tot],
-                "gio_xau": [f"{g['chi_name']} ({g['start']}-{g['end']})" for g in gio_xau],
+                "gio_tot": [{"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"} for g in gio_tot],
+                "gio_xau": [{"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"} for g in gio_xau],
                 "reason_vi": reason,
                 "breakdown": scoring_result.get("breakdown", []),
                 "hung_ngay": [h["name"] if isinstance(h, dict) else str(h) for h in hung_ngay],
@@ -163,13 +163,7 @@ async def day_detail_endpoint(
         )
 
     except ValueError as e:
-        return JSONResponse(
-            status_code=400,
-            content={"status": "error", "error_code": "INVALID_INPUT", "message": str(e)},
-        )
+        return error_response(400, "INVALID_INPUT", message_vi=str(e))
     except Exception:
         logger.exception("Internal error in day_detail")
-        return JSONResponse(
-            status_code=500,
-            content={"status": "error", "error_code": "INTERNAL_ERROR", "message": "Đã có lỗi xảy ra."},
-        )
+        return error_response(500, "INTERNAL_ERROR")

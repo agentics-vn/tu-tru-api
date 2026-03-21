@@ -8,6 +8,8 @@ including hoàng đạo/hắc đạo badge, giờ tốt/xấu, and daily advice.
 from __future__ import annotations
 
 import json
+
+from api.errors import error_response
 import logging
 from datetime import date
 from pathlib import Path
@@ -175,36 +177,27 @@ async def ngay_hom_nay(
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
     gender: Optional[int] = Query(None, description="Giới tính: 1 (nam) hoặc -1 (nữ)"),
     target_date: Optional[str] = Query(None, alias="date", description="Ngày mục tiêu YYYY-MM-DD (mặc định: hôm nay)"),
+    tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)"),
 ) -> JSONResponse:
     try:
+        from api.tz import today_in_tz
+
+        _today = today_in_tz(tz)
+
         # Parse and validate birth_date (dd/mm/yyyy)
         bd = parse_dmy(birth_date)
-        if bd.year < 1900 or bd >= date.today():
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "status": "error",
-                    "error_code": "INVALID_INPUT",
-                    "message": "birth_date phải là ngày quá khứ (năm >= 1900).",
-                },
-            )
+        if bd.year < 1900 or bd >= _today:
+            return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ (năm >= 1900).")
 
         # Target date
-        td = date.fromisoformat(target_date) if target_date else date.today()
+        td = date.fromisoformat(target_date) if target_date else _today
         td_str = td.isoformat()
 
         # Validate birth_time if provided
         if birth_time is not None:
             from engine.pillars import VALID_BIRTH_HOURS
             if birth_time not in VALID_BIRTH_HOURS:
-                return JSONResponse(
-                    status_code=400,
-                    content={
-                        "status": "error",
-                        "error_code": "INVALID_INPUT",
-                        "message": f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}",
-                    },
-                )
+                return error_response(400, "INVALID_INPUT", message_vi=f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}")
 
         # ── Engine calls ────────────────────────────────────────────────
         day_info = get_day_info(td_str)
@@ -266,23 +259,9 @@ async def ngay_hom_nay(
         )
 
     except ValueError as e:
-        return JSONResponse(
-            status_code=400,
-            content={
-                "status": "error",
-                "error_code": "INVALID_INPUT",
-                "message": str(e),
-            },
-        )
+        return error_response(400, "INVALID_INPUT", message_vi=str(e))
     except HTTPException:
         raise
     except Exception:
         logger.exception("Internal error in ngay_hom_nay")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "error_code": "INTERNAL_ERROR",
-                "message": "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
-            },
-        )
+        return error_response(500, "INTERNAL_ERROR")

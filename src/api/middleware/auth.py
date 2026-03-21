@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import hashlib
 import logging
+
+from api.errors import error_response
 import os
 import time
 from typing import Optional
@@ -144,44 +146,35 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         # Skip auth for public paths
-        if request.url.path in _PUBLIC_PATHS:
+        if request.url.path in _PUBLIC_PATHS or request.url.path.startswith("/v1/share/"):
             return await call_next(request)
 
         # Extract API key
         api_key = request.headers.get("X-API-Key", "").strip()
         if not api_key:
-            return JSONResponse(
-                status_code=401,
-                content={
-                    "status": "error",
-                    "error_code": "UNAUTHORIZED",
-                    "message": "Thiếu header X-API-Key",
-                },
+            return error_response(
+                401, "UNAUTHORIZED",
+                message_vi="Thiếu header X-API-Key",
+                message_en="Missing X-API-Key header",
             )
 
         # Validate key
         plan = _validate_key(api_key)
         if plan is None:
-            return JSONResponse(
-                status_code=401,
-                content={
-                    "status": "error",
-                    "error_code": "UNAUTHORIZED",
-                    "message": "API key không hợp lệ",
-                },
+            return error_response(
+                401, "UNAUTHORIZED",
+                message_vi="API key không hợp lệ",
+                message_en="Invalid API key",
             )
 
         # Rate limiting
         key_hash = _hash_key(api_key)
         allowed, remaining, reset_at = _check_rate_limit(key_hash)
         if not allowed:
-            return JSONResponse(
-                status_code=429,
-                content={
-                    "status": "error",
-                    "error_code": "RATE_LIMITED",
-                    "message": f"Đã vượt giới hạn truy cập. Đặt lại lúc {reset_at}.",
-                },
+            return error_response(
+                429, "RATE_LIMITED",
+                message_vi=f"Đã vượt giới hạn truy cập. Đặt lại lúc {reset_at}.",
+                message_en=f"Rate limit exceeded. Resets at {reset_at}.",
                 headers={
                     "X-RateLimit-Remaining": "0",
                     "X-RateLimit-Reset": str(reset_at),

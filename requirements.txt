@@ -10,5 +10,8 @@ sxtwl>=1.1.0,<2.0
 # Cache & database
 redis>=5.0,<6.0
 
+# Error tracking
+sentry-sdk[fastapi]>=2.0,<3.0
+
 # Production server
 gunicorn>=22.0,<23.0

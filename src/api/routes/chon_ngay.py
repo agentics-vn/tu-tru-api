@@ -40,6 +40,38 @@ _INTENT_RULES_PATH = Path(__file__).resolve().parent.parent.parent.parent / "doc
 with open(_INTENT_RULES_PATH, encoding="utf-8") as f:
     INTENT_RULES: dict = json.load(f)
 
+# ── T1-08: Validate intent-rules.json schema at startup ──────────────────────
+_REQUIRED_FIELDS = {"preferred_truc", "forbidden_truc", "bonus_sao", "forbidden_sao"}
+_VALID_TRUC = set(range(12))
+for _key, _rule in INTENT_RULES.items():
+    if _key.startswith("_"):
+        continue
+    _missing = _REQUIRED_FIELDS - set(_rule.keys())
+    if _missing:
+        raise RuntimeError(
+            f"intent-rules.json: intent '{_key}' missing fields: {_missing}"
+        )
+    for _field in ("preferred_truc", "forbidden_truc"):
+        if not isinstance(_rule[_field], list):
+            raise RuntimeError(
+                f"intent-rules.json: intent '{_key}'.{_field} must be a list"
+            )
+        for _idx in _rule[_field]:
+            if not isinstance(_idx, int) or _idx not in _VALID_TRUC:
+                raise RuntimeError(
+                    f"intent-rules.json: intent '{_key}'.{_field} has invalid index {_idx}"
+                )
+    for _field in ("bonus_sao", "forbidden_sao"):
+        if not isinstance(_rule[_field], list):
+            raise RuntimeError(
+                f"intent-rules.json: intent '{_key}'.{_field} must be a list"
+            )
+        for _sao in _rule[_field]:
+            if not isinstance(_sao, str) or not _sao:
+                raise RuntimeError(
+                    f"intent-rules.json: intent '{_key}'.{_field} has invalid entry '{_sao}'"
+                )
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants
 # ─────────────────────────────────────────────────────────────────────────────
@@ -108,7 +140,7 @@ class GenderEnum(int, Enum):
 
 
 class ChonNgayRequest(BaseModel):
-    birth_date: str = Field(..., description="Ngày sinh dd/mm/yyyy")
+    birth_date: Optional[str] = Field(None, description="Ngày sinh dd/mm/yyyy (or use profile_id)")
     birth_time: Optional[int] = Field(
         default=None,
         description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23",
@@ -117,10 +149,12 @@ class ChonNgayRequest(BaseModel):
         default=None,
         description="Giới tính: 1 (nam) hoặc -1 (nữ) (bắt buộc cho Đại Vận)",
     )
+    profile_id: Optional[str] = Field(None, description="T5-03: Saved birth profile ID (alternative to birth_date)")
     intent: IntentEnum
     range_start: str = Field(..., description="Ngày bắt đầu dd/mm/yyyy")
     range_end: str = Field(..., description="Ngày kết thúc dd/mm/yyyy")
     top_n: Optional[int] = Field(default=TOP_N_DEFAULT, ge=1, le=TOP_N_MAX)
+    tz: Optional[str] = Field(default=None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)")
 
     @field_validator("birth_date")
     @classmethod
@@ -128,8 +162,7 @@ class ChonNgayRequest(BaseModel):
         d = parse_dmy(v)
         if d.year < 1900:
             raise ValueError("Năm sinh phải >= 1900")
-        if d >= date.today():
-            raise ValueError("Ngày sinh phải là ngày trong quá khứ")
+        # Note: tz-aware check done in the endpoint handler
         return v
 
     @field_validator("range_start", "range_end")
@@ -168,14 +201,8 @@ class ChonNgayRequest(BaseModel):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _error_response(status_code: int, error_code: str, message: str) -> JSONResponse:
-    return JSONResponse(
-        status_code=status_code,
-        content={
-            "status": "error",
-            "error_code": error_code,
-            "message": message,
-        },
-    )
+    from api.errors import error_response
+    return error_response(status_code, error_code, message_vi=message)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -327,9 +354,33 @@ def _build_bat_tu_summary(user_chart: dict) -> dict:
 @router.post("/")
 async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
     try:
+        from api.tz import today_in_tz
+
+        _today = today_in_tz(req.tz)
+
+        # T5-03: Resolve profile_id if provided
+        if req.profile_id and not req.birth_date:
+            from api.routes.profile import get_profile
+            profile = get_profile(req.profile_id)
+            if profile is None:
+                return _error_response(400, "INVALID_INPUT", "Không tìm thấy hồ sơ (profile_id).")
+            req.birth_date = profile["birth_date"]
+            if req.birth_time is None:
+                req.birth_time = profile["birth_time"]
+            if req.gender is None and profile["gender"] is not None:
+                req.gender = GenderEnum(profile["gender"])
+
+        if not req.birth_date:
+            return _error_response(400, "INVALID_INPUT", "Phải truyền birth_date hoặc profile_id.")
+
+        # tz-aware birth date check (validator can't access tz field)
+        bd = parse_dmy(req.birth_date)
+        if bd >= _today:
+            return _error_response(400, "INVALID_INPUT", "Ngày sinh phải là ngày trong quá khứ")
+
         intent = req.intent.value
         top_n = req.top_n or TOP_N_DEFAULT
-        birth_date_str = parse_dmy(req.birth_date).isoformat()
+        birth_date_str = bd.isoformat()
 
         # ── Resolve intent key for intent-rules.json ──────────────────────
         rule_key = INTENT_ALIAS.get(intent, intent)
@@ -417,9 +468,25 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                 "reason_vi": ". ".join(d["score_result"]["reasons_vi"]),
                 "summary_vi": d["score_result"]["summary_vi"],
                 "time_slots": [
-                        f"{g['start']}-{g['end']}"
+                        {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
                         for g in get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
                     ],
+                # T5-02: Structured card data for shareable card / PDF rendering
+                "render_card": {
+                    "headline": f"Ngày {d['day_info']['date']}",
+                    "lunar_line": _format_lunar_date(d["day_info"]),
+                    "badge": d["score_result"]["grade"],
+                    "score_pct": min(round(d["score_result"]["score"] / 100 * 100), 100),
+                    "intent_vi": intent,
+                    "element": d["day_info"]["day_nap_am_hanh"],
+                    "truc": d["day_info"]["truc_name"],
+                    "stars": d["score_result"]["bonus_sao"][:3],
+                    "one_liner": d["score_result"]["summary_vi"],
+                    "best_hours": [
+                        f"{g['start']}-{g['end']}"
+                        for g in get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
+                    ][:3],
+                },
             }
             for d in top_days
             if d["day_info"]["date"] not in avoid_sev3_dates
@@ -432,6 +499,19 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                 "NO_DATES_FOUND",
                 "Không tìm được ngày tốt nào trong khoảng thời gian đã chọn.",
             )
+
+        # ── Share token (T5-01) ──────────────────────────────────────────
+        from api.share import create_share_token
+
+        share_token = create_share_token(
+            endpoint="chon-ngay",
+            birth_date=req.birth_date,
+            birth_time=req.birth_time,
+            gender=req.gender.value if req.gender else None,
+            intent=intent,
+            range_start=req.range_start,
+            range_end=req.range_end,
+        )
 
         # ── Build response ────────────────────────────────────────────────
         return JSONResponse(
@@ -448,6 +528,7 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                     "days_passed_layer1": layer1_passed,
                     "days_passed_layer2": layer2_passed,
                     "bat_tu_summary": _build_bat_tu_summary(user_chart),
+                    "share_token": share_token,
                 },
                 "recommended_dates": recommended_dates,
                 "dates_to_avoid": dates_to_avoid,
@@ -481,6 +562,7 @@ class DetailRequest(BaseModel):
     )
     intent: IntentEnum
     date: str = Field(..., description="Ngày cần phân tích dd/mm/yyyy")
+    tz: Optional[str] = Field(default=None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)")
 
     @field_validator("birth_date")
     @classmethod
@@ -488,8 +570,7 @@ class DetailRequest(BaseModel):
         d = parse_dmy(v)
         if d.year < 1900:
             raise ValueError("Năm sinh phải >= 1900")
-        if d >= date.today():
-            raise ValueError("Ngày sinh phải là ngày trong quá khứ")
+        # tz-aware check done in handler
         return v
 
     @field_validator("date")
@@ -532,9 +613,16 @@ def _ngu_hanh_relation(day_hanh: str, menh_hanh: str) -> str:
 async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
     """Return detailed analysis for a single date."""
     try:
+        from api.tz import today_in_tz
+
+        _today = today_in_tz(req.tz)
+        bd = parse_dmy(req.birth_date)
+        if bd >= _today:
+            return _error_response(400, "INVALID_INPUT", "Ngày sinh phải là ngày trong quá khứ")
+
         intent = req.intent.value
         target_date = parse_dmy(req.date)
-        birth_date_str = parse_dmy(req.birth_date).isoformat()
+        birth_date_str = bd.isoformat()
 
         # Resolve intent
         rule_key = INTENT_ALIAS.get(intent, intent)
@@ -667,9 +755,8 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
         gio_list = get_gio_hoang_dao(day_info["day_chi_idx"])
         time_slots = [
             {
-                "name": f"Giờ {g['chi_name']}",
+                "chi_name": g["chi_name"],
                 "range": f"{g['start']}-{g['end']}",
-                "is_hoang_dao": True,
             }
             for g in gio_list
         ]

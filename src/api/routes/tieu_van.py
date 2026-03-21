@@ -8,6 +8,8 @@ mệnh, and a stub reading. ⚠️ Full reading text needs SME input.
 from __future__ import annotations
 
 import logging
+
+from api.errors import error_response
 from datetime import date
 from typing import Optional
 
@@ -180,19 +182,17 @@ async def tieu_van(
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
     gender: Optional[int] = Query(None, description="Giới tính: 1 (nam) hoặc -1 (nữ)"),
     month: str = Query(..., description="Tháng mục tiêu, định dạng YYYY-MM"),
+    tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)"),
 ) -> JSONResponse:
     try:
+        from api.tz import today_in_tz
+
+        _today = today_in_tz(tz)
+
         # Parse birth_date
         bd = parse_dmy(birth_date)
-        if bd.year < 1900 or bd >= date.today():
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "status": "error",
-                    "error_code": "INVALID_INPUT",
-                    "message": "birth_date phải là ngày quá khứ (năm >= 1900).",
-                },
-            )
+        if bd.year < 1900 or bd >= _today:
+            return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ (năm >= 1900).")
 
         # Parse month
         parts = month.split("-")
@@ -279,23 +279,9 @@ async def tieu_van(
         return JSONResponse(status_code=200, content=content)
 
     except ValueError as e:
-        return JSONResponse(
-            status_code=400,
-            content={
-                "status": "error",
-                "error_code": "INVALID_INPUT",
-                "message": str(e),
-            },
-        )
+        return error_response(400, "INVALID_INPUT", message_vi=str(e))
     except HTTPException:
         raise
     except Exception:
         logger.exception("Internal error in tieu_van")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "error_code": "INTERNAL_ERROR",
-                "message": "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
-            },
-        )
+        return error_response(500, "INTERNAL_ERROR")
