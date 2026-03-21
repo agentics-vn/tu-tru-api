@@ -22,6 +22,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from api.errors import error_response
 from api.middleware.auth import AuthMiddleware
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -110,23 +111,10 @@ async def validation_exception_handler(
 
     # Detect RANGE_TOO_LARGE from our model_validator message
     if ("within" in msg and "days" in msg) or ("vượt quá" in msg and "ngày" in msg):
-        return JSONResponse(
-            status_code=400,
-            content={
-                "status": "error",
-                "error_code": "RANGE_TOO_LARGE",
-                "message": msg,
-            },
-        )
+        return error_response(400, "RANGE_TOO_LARGE", message_vi=msg)
 
-    return JSONResponse(
-        status_code=400,
-        content={
-            "status": "error",
-            "error_code": "INVALID_INPUT",
-            "message": f"{field}: {msg}" if field else msg,
-        },
-    )
+    detail_vi = f"{field}: {msg}" if field else msg
+    return error_response(400, "INVALID_INPUT", message_vi=detail_vi)
 
 
 @app.exception_handler(Exception)
@@ -134,14 +122,7 @@ async def generic_exception_handler(
     _request: Request, exc: Exception
 ) -> JSONResponse:
     logger.exception("Unhandled error: %s", exc)
-    return JSONResponse(
-        status_code=500,
-        content={
-            "status": "error",
-            "error_code": "INTERNAL_ERROR",
-            "message": "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
-        },
-    )
+    return error_response(500, "INTERNAL_ERROR")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

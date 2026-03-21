@@ -8,6 +8,8 @@ including hoàng đạo/hắc đạo badge, giờ tốt/xấu, and daily advice.
 from __future__ import annotations
 
 import json
+
+from api.errors import error_response
 import logging
 from datetime import date
 from pathlib import Path
@@ -180,14 +182,7 @@ async def ngay_hom_nay(
         # Parse and validate birth_date (dd/mm/yyyy)
         bd = parse_dmy(birth_date)
         if bd.year < 1900 or bd >= date.today():
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "status": "error",
-                    "error_code": "INVALID_INPUT",
-                    "message": "birth_date phải là ngày quá khứ (năm >= 1900).",
-                },
-            )
+            return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ (năm >= 1900).")
 
         # Target date
         td = date.fromisoformat(target_date) if target_date else date.today()
@@ -197,14 +192,7 @@ async def ngay_hom_nay(
         if birth_time is not None:
             from engine.pillars import VALID_BIRTH_HOURS
             if birth_time not in VALID_BIRTH_HOURS:
-                return JSONResponse(
-                    status_code=400,
-                    content={
-                        "status": "error",
-                        "error_code": "INVALID_INPUT",
-                        "message": f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}",
-                    },
-                )
+                return error_response(400, "INVALID_INPUT", message_vi=f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}")
 
         # ── Engine calls ────────────────────────────────────────────────
         day_info = get_day_info(td_str)
@@ -266,23 +254,9 @@ async def ngay_hom_nay(
         )
 
     except ValueError as e:
-        return JSONResponse(
-            status_code=400,
-            content={
-                "status": "error",
-                "error_code": "INVALID_INPUT",
-                "message": str(e),
-            },
-        )
+        return error_response(400, "INVALID_INPUT", message_vi=str(e))
     except HTTPException:
         raise
     except Exception:
         logger.exception("Internal error in ngay_hom_nay")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "error_code": "INTERNAL_ERROR",
-                "message": "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
-            },
-        )
+        return error_response(500, "INTERNAL_ERROR")

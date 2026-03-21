@@ -8,6 +8,8 @@ layer-1 pass status, and basic astrology info for calendar rendering.
 
 from __future__ import annotations
 
+from api.errors import error_response
+
 import logging
 from datetime import date
 from typing import Optional
@@ -109,14 +111,7 @@ async def lich_thang(
         # Parse birth_date (dd/mm/yyyy)
         bd = parse_dmy(birth_date)
         if bd.year < 1900 or bd >= date.today():
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "status": "error",
-                    "error_code": "INVALID_INPUT",
-                    "message": "birth_date phải là ngày quá khứ (năm >= 1900).",
-                },
-            )
+            return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ (năm >= 1900).")
 
         # Parse month
         parts = month.split("-")
@@ -193,23 +188,9 @@ async def lich_thang(
         )
 
     except ValueError as e:
-        return JSONResponse(
-            status_code=400,
-            content={
-                "status": "error",
-                "error_code": "INVALID_INPUT",
-                "message": str(e),
-            },
-        )
+        return error_response(400, "INVALID_INPUT", message_vi=str(e))
     except HTTPException:
         raise
     except Exception:
         logger.exception("Internal error in lich_thang")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "error_code": "INTERNAL_ERROR",
-                "message": "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
-            },
-        )
+        return error_response(500, "INTERNAL_ERROR")

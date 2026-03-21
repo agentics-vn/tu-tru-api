@@ -8,6 +8,8 @@ and Nhật Chủ interactions to produce a compatibility score.
 from __future__ import annotations
 
 import logging
+
+from api.errors import error_response
 from datetime import date
 from typing import Optional
 
@@ -222,13 +224,7 @@ async def hop_tuoi_endpoint(req: HopTuoiRequest) -> JSONResponse:
         )
 
     except ValueError as e:
-        return JSONResponse(
-            status_code=400,
-            content={"status": "error", "error_code": "INVALID_INPUT", "message": str(e)},
-        )
+        return error_response(400, "INVALID_INPUT", message_vi=str(e))
     except Exception:
         logger.exception("Internal error in hop_tuoi")
-        return JSONResponse(
-            status_code=500,
-            content={"status": "error", "error_code": "INTERNAL_ERROR", "message": "Đã có lỗi xảy ra."},
-        )
+        return error_response(500, "INTERNAL_ERROR")

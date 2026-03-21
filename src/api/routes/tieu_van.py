@@ -8,6 +8,8 @@ mệnh, and a stub reading. ⚠️ Full reading text needs SME input.
 from __future__ import annotations
 
 import logging
+
+from api.errors import error_response
 from datetime import date
 from typing import Optional
 
@@ -185,14 +187,7 @@ async def tieu_van(
         # Parse birth_date
         bd = parse_dmy(birth_date)
         if bd.year < 1900 or bd >= date.today():
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "status": "error",
-                    "error_code": "INVALID_INPUT",
-                    "message": "birth_date phải là ngày quá khứ (năm >= 1900).",
-                },
-            )
+            return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ (năm >= 1900).")
 
         # Parse month
         parts = month.split("-")
@@ -279,23 +274,9 @@ async def tieu_van(
         return JSONResponse(status_code=200, content=content)
 
     except ValueError as e:
-        return JSONResponse(
-            status_code=400,
-            content={
-                "status": "error",
-                "error_code": "INVALID_INPUT",
-                "message": str(e),
-            },
-        )
+        return error_response(400, "INVALID_INPUT", message_vi=str(e))
     except HTTPException:
         raise
     except Exception:
         logger.exception("Internal error in tieu_van")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "error_code": "INTERNAL_ERROR",
-                "message": "Đã có lỗi xảy ra. Vui lòng thử lại sau.",
-            },
-        )
+        return error_response(500, "INTERNAL_ERROR")

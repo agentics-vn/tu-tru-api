@@ -200,14 +200,8 @@ class ChonNgayRequest(BaseModel):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _error_response(status_code: int, error_code: str, message: str) -> JSONResponse:
-    return JSONResponse(
-        status_code=status_code,
-        content={
-            "status": "error",
-            "error_code": error_code,
-            "message": message,
-        },
-    )
+    from api.errors import error_response
+    return error_response(status_code, error_code, message_vi=message)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
