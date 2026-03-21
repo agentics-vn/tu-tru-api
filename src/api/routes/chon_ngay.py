@@ -40,6 +40,38 @@ _INTENT_RULES_PATH = Path(__file__).resolve().parent.parent.parent.parent / "doc
 with open(_INTENT_RULES_PATH, encoding="utf-8") as f:
     INTENT_RULES: dict = json.load(f)
 
+# ── T1-08: Validate intent-rules.json schema at startup ──────────────────────
+_REQUIRED_FIELDS = {"preferred_truc", "forbidden_truc", "bonus_sao", "forbidden_sao"}
+_VALID_TRUC = set(range(12))
+for _key, _rule in INTENT_RULES.items():
+    if _key.startswith("_"):
+        continue
+    _missing = _REQUIRED_FIELDS - set(_rule.keys())
+    if _missing:
+        raise RuntimeError(
+            f"intent-rules.json: intent '{_key}' missing fields: {_missing}"
+        )
+    for _field in ("preferred_truc", "forbidden_truc"):
+        if not isinstance(_rule[_field], list):
+            raise RuntimeError(
+                f"intent-rules.json: intent '{_key}'.{_field} must be a list"
+            )
+        for _idx in _rule[_field]:
+            if not isinstance(_idx, int) or _idx not in _VALID_TRUC:
+                raise RuntimeError(
+                    f"intent-rules.json: intent '{_key}'.{_field} has invalid index {_idx}"
+                )
+    for _field in ("bonus_sao", "forbidden_sao"):
+        if not isinstance(_rule[_field], list):
+            raise RuntimeError(
+                f"intent-rules.json: intent '{_key}'.{_field} must be a list"
+            )
+        for _sao in _rule[_field]:
+            if not isinstance(_sao, str) or not _sao:
+                raise RuntimeError(
+                    f"intent-rules.json: intent '{_key}'.{_field} has invalid entry '{_sao}'"
+                )
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants
 # ─────────────────────────────────────────────────────────────────────────────
