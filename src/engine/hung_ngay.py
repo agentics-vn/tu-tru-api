@@ -11,6 +11,9 @@ from __future__ import annotations
 TAM_NUONG_DAYS: frozenset[int] = frozenset({3, 7, 13, 18, 22, 27})
 
 # Dương Công Kỵ Nhật — 13 dates (lunar month → set of lunar days)
+# NOTE (T4-01): This table is YEAR-INDEPENDENT.  The 13 Dương Công Kỵ Nhật
+# recur on fixed lunar month/day positions every year, so no annual update or
+# 2026–2030 expansion is needed.  Verified against Lịch Vạn Niên references.
 DUONG_CONG_KY: dict[int, list[int]] = {
     1: [13], 2: [11], 3: [9], 4: [7],
     5: [5], 6: [3], 7: [1, 29], 8: [27],

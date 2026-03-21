@@ -44,6 +44,10 @@ from api.routes.tu_tru import router as tu_tru_router
 from api.routes.hop_tuoi import router as hop_tuoi_router
 from api.routes.phong_thuy import router as phong_thuy_router
 from api.routes.day_detail import router as day_detail_router
+from api.routes.convert_date import router as convert_date_router
+from api.routes.share import router as share_router
+from api.routes.profile import router as profile_router
+from api.routes.weekly_summary import router as weekly_summary_router
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Logging
@@ -146,6 +150,10 @@ app.include_router(tu_tru_router, prefix="/v1/tu-tru")
 app.include_router(hop_tuoi_router, prefix="/v1/hop-tuoi")
 app.include_router(phong_thuy_router, prefix="/v1/phong-thuy")
 app.include_router(day_detail_router, prefix="/v1/day-detail")
+app.include_router(convert_date_router, prefix="/v1/convert-date")
+app.include_router(share_router, prefix="/v1/share")
+app.include_router(profile_router, prefix="/v1/profile")
+app.include_router(weekly_summary_router, prefix="/v1/weekly-summary")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

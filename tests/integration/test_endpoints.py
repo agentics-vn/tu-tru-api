@@ -69,9 +69,10 @@ class TestChonNgay:
             assert isinstance(d["time_slots"], list)
             # Should have 6 good hours per day
             assert len(d["time_slots"]) == 6
-            # Each slot should be "HH:MM-HH:MM" format
+            # Each slot should be {"chi_name": "...", "range": "HH:MM-HH:MM"}
             for slot in d["time_slots"]:
-                assert "-" in slot
+                assert "chi_name" in slot
+                assert "-" in slot["range"]
 
     def test_safety_invariant_severity3_not_in_recommended(self):
         """Severity=3 dates must NEVER appear in recommended_dates (TC-10)."""

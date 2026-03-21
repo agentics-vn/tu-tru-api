@@ -106,11 +106,16 @@ async def lich_thang(
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
     gender: Optional[int] = Query(None, description="Giới tính: 1 (nam) hoặc -1 (nữ)"),
     month: str = Query(..., description="Tháng mục tiêu, định dạng YYYY-MM"),
+    tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)"),
 ) -> JSONResponse:
     try:
+        from api.tz import today_in_tz
+
+        _today = today_in_tz(tz)
+
         # Parse birth_date (dd/mm/yyyy)
         bd = parse_dmy(birth_date)
-        if bd.year < 1900 or bd >= date.today():
+        if bd.year < 1900 or bd >= _today:
             return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ (năm >= 1900).")
 
         # Parse month
