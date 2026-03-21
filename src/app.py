@@ -16,12 +16,25 @@ import sys
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
+import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from api.middleware.auth import AuthMiddleware
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Sentry — error tracking (no-op when SENTRY_DSN is unset)
+# ─────────────────────────────────────────────────────────────────────────────
+
+_sentry_dsn = os.environ.get("SENTRY_DSN", "")
+if _sentry_dsn:
+    sentry_sdk.init(
+        dsn=_sentry_dsn,
+        traces_sample_rate=float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", "0.1")),
+        environment=os.environ.get("SENTRY_ENVIRONMENT", "production"),
+    )
 from api.routes.chon_ngay import router as chon_ngay_router
 from api.routes.ngay_hom_nay import router as ngay_hom_nay_router
 from api.routes.lich_thang import router as lich_thang_router
