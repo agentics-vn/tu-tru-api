@@ -26,6 +26,6 @@ COPY docs/seed/ ./docs/seed/
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH=/app/src
 
-EXPOSE 8000
+EXPOSE 3000
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "3000"]
