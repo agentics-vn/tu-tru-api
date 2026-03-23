@@ -112,7 +112,7 @@ class TestFullChart:
         # Month: Ky Mao
         assert r["month"]["can_name"] == "Kỷ"
         assert r["month"]["chi_name"] == "Mão"
-        # Day: At Dau (verify against sxtwl)
+        # Day: At Dau (JDN anchor Giáp Tý 1900-01-31)
         assert r["day"]["can_name"] is not None
         assert r["day"]["chi_name"] is not None
         # Hour pillar should be Canh Thin (dayCanIdx=1 Ất → HOUR_CAN_START[1%5]=2 Bính, chi=4 Thìn → can=(2+4)%10=6 Canh)

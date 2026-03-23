@@ -9,7 +9,7 @@ REST API that scans a date range and returns auspicious dates (ngày tốt) base
 ## Tech Stack
 - **Runtime:** Python 3.11+
 - **Framework:** FastAPI
-- **Lunar calendar:** `sxtwl` (C extension for solar↔lunar conversion)
+- **Solar terms / Bazi boundaries:** `engine/lich_hnd.py` (Ho Ngoc Duc / Meeus); **lunar in API:** `lunardate`
 
 ## Project Structure
 ```

@@ -38,3 +38,4 @@ package-lock.json
 
 # Webapp (separate repo: tad-agentics/Bazi)
 webapp/
+.local/

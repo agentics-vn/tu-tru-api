@@ -10,9 +10,9 @@ Source of truth: docs/algorithm.md §21
 from __future__ import annotations
 
 from datetime import date as dt_date
+from datetime import timedelta
 
-import sxtwl
-
+from engine.bazi_solar import DEFAULT_TZ, has_jie_qi
 from engine.can_chi import CAN_NAMES, CHI_NAMES, CAN_HANH, NAP_AM_HANH, get_nap_am_pair_idx
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -59,37 +59,24 @@ def _get_start_age(birth_date: str, direction: int) -> float:
     - Divide by 3 = starting age (in years)
     - Round to nearest integer, minimum 1
 
-    Uses sxtwl to get exact solar term dates.
+    Uses lich_hnd-based solar longitude (24 tiết, 15° steps).
     """
     parts = birth_date.split("-")
     y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
 
     birth = dt_date(y, m, d)
+    tz = DEFAULT_TZ
 
-    # Get the sxtwl day to find surrounding solar terms
-    sxtwl_day = sxtwl.fromSolar(y, m, d)
-
-    # Search for the nearest solar terms
-    # We need to scan the year's Jie Qi list
-    # sxtwl provides getJieQi() per year — but we need to search around the birth date
-
-    # Strategy: check a range of dates around birth to find the nearest Jie Qi
-    # Solar terms happen roughly every 15 days, so check ±40 days
     prev_jq_date = None
     next_jq_date = None
 
     for delta in range(-45, 46):
-        check_date = dt_date(y, m, d)
         try:
-            from datetime import timedelta
             check_date = birth + timedelta(days=delta)
         except OverflowError:
             continue
 
-        check_day = sxtwl.fromSolar(check_date.year, check_date.month, check_date.day)
-
-        # hasJieQi() returns True if this date has a Jie Qi
-        if check_day.hasJieQi():
+        if has_jie_qi(check_date.year, check_date.month, check_date.day, tz):
             jq_date = check_date
             if jq_date < birth:
                 prev_jq_date = jq_date

@@ -312,26 +312,6 @@ wheels = [
 ]
 
 [[package]]
-name = "sxtwl"
-version = "2.0.7"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f6/e3/ee4e81d6759ccbc5718308108f94edc7fd962024bd9bb042169c542febf4/sxtwl-2.0.7.tar.gz", hash = "sha256:38b24472389f7f6f3521c2c99e4b5e86c0184c7d6eb02e5409c239d21f0a6512", size = 163780, upload-time = "2024-09-05T16:04:41.89Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/86/aa/5aa2bd4556bd904eff23ce55cec6501ffe0fad90e7c274f0ac9954572ef7/sxtwl-2.0.7-cp311-cp311-macosx_12_0_x86_64.whl", hash = "sha256:9b53aa9ad2f93143ef4cf07c378e87fd3320f5cea1d4ae1d25169d7f09abf44a", size = 233540, upload-time = "2024-09-06T02:48:17.721Z" },
-    { url = "https://files.pythonhosted.org/packages/34/05/3f895421788799cd36fc11535a5ce69144251a944f7db8328eee639f4c36/sxtwl-2.0.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:083d1ae0b38069e8a688ea7416cdc23d02193aa266320a88976e71509d9caa7a", size = 1164804, upload-time = "2024-09-06T02:39:44.103Z" },
-    { url = "https://files.pythonhosted.org/packages/ae/ec/aac6465ebe6bfc661ec30cfc7eaa9a956e358454ab1a76107c95f09f9d73/sxtwl-2.0.7-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:57d0e1b616270e84b864067458481396c43025299000fb4cca0965d90118402a", size = 1117934, upload-time = "2024-09-06T02:39:45.518Z" },
-    { url = "https://files.pythonhosted.org/packages/c1/b7/712427a123a4d306bdff8d80379884a17be17fb5a20fb9672b4e5c955538/sxtwl-2.0.7-cp311-cp311-win32.whl", hash = "sha256:a8a49a45fba761898578af7403bd403b3d8375e34ff8113dec37790d694ce075", size = 172036, upload-time = "2024-09-05T16:50:37.253Z" },
-    { url = "https://files.pythonhosted.org/packages/ac/6a/61eea689e14fe4cb1f79e23463b245573e9fcb85a3faab81d6ca279fe936/sxtwl-2.0.7-cp311-cp311-win_amd64.whl", hash = "sha256:78405ee906adf7b36b07c8942da764646cf8a13b6ae4319f62cbb2aa1b765dd7", size = 189404, upload-time = "2024-09-05T16:50:38.85Z" },
-    { url = "https://files.pythonhosted.org/packages/0b/c5/b83f9e279b0c874a74436ffbc4017dbb5ec2febe622b7c7d0eee979184a9/sxtwl-2.0.7-cp312-cp312-macosx_12_0_x86_64.whl", hash = "sha256:812251071821c35ea7c9539d0fe5c036a016da309bc0f49406d8deb8a3959d4a", size = 234117, upload-time = "2024-09-06T02:48:19.389Z" },
-    { url = "https://files.pythonhosted.org/packages/20/bd/4facf4c01f8337a8961992d2bd88783bbce34cd82396da70c8d95cd5f17a/sxtwl-2.0.7-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2091687ded7c7312830e1ac862d986cebaaf72115f07ce791ac0142601d13732", size = 1169922, upload-time = "2024-09-06T02:39:47.002Z" },
-    { url = "https://files.pythonhosted.org/packages/62/e7/57ba5316857ad8bc2b9897b8a783651a26390248aff14ae145cb3c585361/sxtwl-2.0.7-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6a3c853579c5bdb1c5d0e75b085df0d980ab355ecb98034e04290af831fa3ace", size = 1119056, upload-time = "2024-09-06T02:39:48.707Z" },
-    { url = "https://files.pythonhosted.org/packages/25/e9/9dcd837900b4aa2abcb2c55b507925639ee9ef5f02e6fa8ef20d67c56586/sxtwl-2.0.7-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8d1143cca29c7e635fcd9877b54f9f07057c99275ebf547586e4e1c572513cef", size = 1170059, upload-time = "2024-09-06T02:39:50.37Z" },
-    { url = "https://files.pythonhosted.org/packages/65/34/367d19786a14aa1e0a78b9091ff17376b3dfa6eb1c738ac460d65f41955c/sxtwl-2.0.7-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2e9e1596b7c943d31d411d987d2231d461e83eb24b0d317de3cd8d43faea8609", size = 1118834, upload-time = "2024-09-06T02:39:52.327Z" },
-    { url = "https://files.pythonhosted.org/packages/bc/02/7d8736b89768c4f2361e96a13fd3e2c6e28590558f70b39de0b43ea67c4b/sxtwl-2.0.7-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:75e022c1601b321a93592d0b2464c1139dafe2bc86c42136eb3837905afd231f", size = 1176969, upload-time = "2024-09-06T02:39:53.864Z" },
-    { url = "https://files.pythonhosted.org/packages/fc/4a/bbc4e45255001353cf52967698e37cefa81b03ad46d728f5b42e9e575f63/sxtwl-2.0.7-cp313-cp313t-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ef8db940b98583e3916486c0d5433f987500f1331bfb027753416a9de33f9487", size = 1129606, upload-time = "2024-09-06T02:39:55.377Z" },
-]
-
-[[package]]
 name = "tu-tru-api"
 version = "0.1.0"
 source = { editable = "." }
@@ -339,7 +319,6 @@ dependencies = [
     { name = "fastapi" },
     { name = "lunardate" },
     { name = "pydantic" },
-    { name = "sxtwl" },
     { name = "uvicorn" },
 ]
 
@@ -354,7 +333,6 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.109,<1" },
     { name = "lunardate", specifier = ">=0.2" },
     { name = "pydantic", specifier = ">=2,<3" },
-    { name = "sxtwl", specifier = ">=2.0.7" },
     { name = "uvicorn", specifier = ">=0.27,<1" },
 ]
 

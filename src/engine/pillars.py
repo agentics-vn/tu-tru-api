@@ -1,8 +1,8 @@
 """
 pillars.py — Tứ Trụ / Bát Tự (Four Pillars) Engine.
 
-Wraps sxtwl library for astronomical-accurate pillar computation.
-Handles: Lập Xuân boundary, Tiết Khí month boundaries.
+Year/month from solar terms (Lập Xuân, Tiết) via engine.lich_hnd + bazi_solar.
+Day pillar: docs/algorithm.md §2 (same anchor as get_can_chi_day).
 
 Convention: Tảo Tý phái (早子派) — day boundary at midnight (00:00).
 Giờ Tý Muộn (23:00–23:59) belongs to the CURRENT calendar day.
@@ -15,9 +15,14 @@ from __future__ import annotations
 
 from typing import Optional
 
-import sxtwl
-
-from engine.can_chi import CAN_NAMES, CHI_NAMES, CAN_HANH
+from engine.bazi_solar import (
+    DEFAULT_TZ,
+    bazi_cycle_year,
+    bazi_month_can_idx,
+    bazi_month_chi_idx,
+)
+from engine.can_chi import CAN_NAMES, CHI_NAMES, CAN_HANH, get_can_chi_day, get_can_chi_year
+from engine.lich_hnd import solar_apparent_longitude_deg
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Birth time dropdown → Chi mapping
@@ -70,16 +75,17 @@ def is_ty_muon(birth_time: int) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Helper to format a GZ object from sxtwl
+# Helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _gz_to_dict(gz) -> dict:
-    """Convert sxtwl GZ object to our standard pillar dict."""
+def _pillar_from_can_chi(cc: dict) -> dict:
+    """Normalize get_can_chi_day/year dict to pillar dict."""
+    ci, zi = cc["can_idx"], cc["chi_idx"]
     return {
-        "can_idx": gz.tg,
-        "chi_idx": gz.dz,
-        "can_name": CAN_NAMES[gz.tg],
-        "chi_name": CHI_NAMES[gz.dz],
+        "can_idx": ci,
+        "chi_idx": zi,
+        "can_name": CAN_NAMES[ci],
+        "chi_name": CHI_NAMES[zi],
     }
 
 
@@ -100,10 +106,10 @@ def get_tu_tru(birth_date: str, birth_time: int) -> dict:
         plus nhat_chu (Day Master info)
 
     Rules:
-        - Year Pillar: changes at Lập Xuân (~Feb 4), handled by sxtwl
-        - Month Pillar: changes at Tiết Khí boundaries, handled by sxtwl
-        - Day Pillar: Tảo Tý phái — NO shift at 23h, day = calendar date
-        - Hour Pillar: computed from day Can + hour Chi
+        - Year Pillar: from Lập Xuân boundary (lich_hnd solar longitude)
+        - Month Pillar: from Tiết (节) month; stems via 五虎遁
+        - Day Pillar: Tảo Tý phái — calendar date, docs/algorithm.md §2
+        - Hour Pillar: from day Can + hour Chi
     """
     if birth_time not in VALID_BIRTH_HOURS:
         raise ValueError(
@@ -113,15 +119,23 @@ def get_tu_tru(birth_date: str, birth_time: int) -> dict:
     parts = birth_date.split("-")
     year, month, day = int(parts[0]), int(parts[1]), int(parts[2])
 
-    # Tảo Tý phái: day boundary at midnight (00:00).
-    # 23:00–23:59 stays on the current calendar day — no shift needed.
-    sxtwl_day = sxtwl.fromSolar(year, month, day)
+    tz = DEFAULT_TZ
+    cycle_y = bazi_cycle_year(year, month, day, tz)
+    year_pillar = _pillar_from_can_chi(get_can_chi_year(cycle_y))
 
-    year_pillar = _gz_to_dict(sxtwl_day.getYearGZ())
-    month_pillar = _gz_to_dict(sxtwl_day.getMonthGZ())
-    day_pillar = _gz_to_dict(sxtwl_day.getDayGZ())
+    lam = solar_apparent_longitude_deg(day, month, year, tz)
+    m_chi = bazi_month_chi_idx(lam)
+    m_can = bazi_month_can_idx(year_pillar["can_idx"], m_chi)
+    month_pillar = {
+        "can_idx": m_can,
+        "chi_idx": m_chi,
+        "can_name": CAN_NAMES[m_can],
+        "chi_name": CHI_NAMES[m_chi],
+    }
 
-    # Hour pillar: compute from day Can + birth_time clock hour
+    day_cc = get_can_chi_day(year, month, day)
+    day_pillar = _pillar_from_can_chi(day_cc)
+
     hour_chi_idx = BIRTH_HOUR_TO_CHI[birth_time]
     hour_can_start = HOUR_CAN_START[day_pillar["can_idx"] % 5]
     hour_can_idx = (hour_can_start + hour_chi_idx) % 10
@@ -132,7 +146,6 @@ def get_tu_tru(birth_date: str, birth_time: int) -> dict:
         "chi_name": CHI_NAMES[hour_chi_idx],
     }
 
-    # Nhật Chủ (Day Master)
     dm_can = day_pillar["can_idx"]
     nhat_chu = {
         "can_idx": dm_can,
