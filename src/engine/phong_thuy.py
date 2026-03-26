@@ -110,6 +110,17 @@ PURPOSE_CODES = frozenset({"NHA_O", "VAN_PHONG", "CUA_HANG", "PHONG_KHACH"})
 DEFAULT_PURPOSE = "NHA_O"
 
 
+class PhongThuySeedError(Exception):
+    """Thiếu hoặc hỏng seed phong thủy (mục đích / hóa giải cặp đôi)."""
+
+    def __init__(self, message_vi: str, *, message_en: str | None = None) -> None:
+        super().__init__(message_vi)
+        self.message_vi = message_vi
+        self.message_en = message_en or (
+            "Feng shui seed data is missing or invalid."
+        )
+
+
 def _seed_root() -> Path:
     return Path(__file__).resolve().parent.parent.parent / "docs" / "seed"
 
@@ -117,15 +128,43 @@ def _seed_root() -> Path:
 @lru_cache(maxsize=1)
 def _load_purposes() -> dict[str, Any]:
     p = _seed_root() / "phong-thuy-purposes.json"
-    with open(p, encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(p, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError as e:
+        raise PhongThuySeedError(
+            "Thiếu file seed docs/seed/phong-thuy-purposes.json — không thể tải mục đích phong thủy.",
+        ) from e
+    except json.JSONDecodeError as e:
+        raise PhongThuySeedError(
+            f"File phong-thuy-purposes.json không hợp lệ (JSON): {e}",
+        ) from e
+    if not isinstance(data, dict):
+        raise PhongThuySeedError(
+            "phong-thuy-purposes.json phải là object JSON.",
+        )
+    return data
 
 
 @lru_cache(maxsize=1)
 def _load_couple_remedies() -> dict[str, Any]:
     p = _seed_root() / "phong-thuy-couple-remedies.json"
-    with open(p, encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(p, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError as e:
+        raise PhongThuySeedError(
+            "Thiếu file seed docs/seed/phong-thuy-couple-remedies.json — không thể tải hóa giải cặp đôi.",
+        ) from e
+    except json.JSONDecodeError as e:
+        raise PhongThuySeedError(
+            f"File phong-thuy-couple-remedies.json không hợp lệ (JSON): {e}",
+        ) from e
+    if not isinstance(data, dict):
+        raise PhongThuySeedError(
+            "phong-thuy-couple-remedies.json phải là object JSON.",
+        )
+    return data
 
 
 def huong_xau_labeled(ky_than: str) -> list[dict]:

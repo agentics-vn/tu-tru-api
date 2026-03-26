@@ -5,13 +5,16 @@ from __future__ import annotations
 import os
 import sys
 
+import pytest
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 from engine.phong_thuy import (
+    DEFAULT_PURPOSE,
+    PhongThuySeedError,
     build_couple_harmony,
     build_personalization,
     build_purpose_payload,
-    DEFAULT_PURPOSE,
 )
 
 
@@ -61,3 +64,36 @@ def test_couple_same_hanh_returns_none():
 def test_couple_sinh_not_direct_ke():
     """Hai hành tương sinh — không có khắc trực tiếp → None."""
     assert build_couple_harmony("Mộc", "Hỏa") is None
+
+
+def test_load_purposes_missing_file_raises_phong_thuy_seed_error(
+    monkeypatch, tmp_path,
+):
+    import engine.phong_thuy as pt
+
+    pt._load_purposes.cache_clear()
+    monkeypatch.setattr(pt, "_seed_root", lambda: tmp_path)
+    with pytest.raises(PhongThuySeedError) as exc:
+        pt._load_purposes()
+    assert "phong-thuy-purposes" in exc.value.message_vi
+
+
+def test_load_purposes_invalid_json_raises(monkeypatch, tmp_path):
+    import engine.phong_thuy as pt
+
+    pt._load_purposes.cache_clear()
+    (tmp_path / "phong-thuy-purposes.json").write_text("not json", encoding="utf-8")
+    monkeypatch.setattr(pt, "_seed_root", lambda: tmp_path)
+    with pytest.raises(PhongThuySeedError) as exc:
+        pt._load_purposes()
+    assert "phong-thuy-purposes" in exc.value.message_vi
+
+
+def test_load_couple_remedies_missing_file_raises(monkeypatch, tmp_path):
+    import engine.phong_thuy as pt
+
+    pt._load_couple_remedies.cache_clear()
+    monkeypatch.setattr(pt, "_seed_root", lambda: tmp_path)
+    with pytest.raises(PhongThuySeedError) as exc:
+        pt._load_couple_remedies()
+    assert "couple-remedies" in exc.value.message_vi

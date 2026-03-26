@@ -24,6 +24,7 @@ from engine.phong_thuy import (
     DEFAULT_PURPOSE,
     HUONG_BY_HANH,
     MAU_BY_HANH,
+    PhongThuySeedError,
     PURPOSE_CODES,
     SO_BY_HANH,
     build_couple_harmony,
@@ -139,15 +140,7 @@ async def phong_thuy_endpoint(
             payload["personalization"] = pers
 
         if year is not None:
-            try:
-                payload.update(build_phi_tinh_payload(year))
-            except PhiTinhSeedError as e:
-                return error_response(
-                    500,
-                    "INTERNAL_ERROR",
-                    message_vi=e.message_vi,
-                    message_en=e.message_en,
-                )
+            payload.update(build_phi_tinh_payload(year))
 
         if partner_birth_date and partner_birth_date.strip():
             pbd = parse_dmy(partner_birth_date.strip())
@@ -171,6 +164,13 @@ async def phong_thuy_endpoint(
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))
+    except (PhiTinhSeedError, PhongThuySeedError) as e:
+        return error_response(
+            500,
+            "INTERNAL_ERROR",
+            message_vi=e.message_vi,
+            message_en=e.message_en,
+        )
     except Exception:
         logger.exception("Internal error in phong_thuy")
         return error_response(500, "INTERNAL_ERROR")
