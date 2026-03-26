@@ -887,3 +887,13 @@ Xác định 节 trên lịch: dùng kinh độ Mặt Trời (24 tiết, mỗi 1
 So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật trong năm dương) với khoảng `[start_age, end_age]` của từng đại vận (`start_age` của vận 1 = tuổi khởi vận; mỗi vận 10 năm).
 
 **Ghi chú:** Hiện tại tuổi khởi vận chỉ theo **ngày** sinh (không tinh chỉnh theo **giờ** sinh); một số phái lịch tính theo giờ — có thể mở rộng sau.
+
+## 18. Phong thủy API và Phi Tinh (GET /v1/phong-thuy, version 2)
+
+**Dụng Thần / Kỵ Thần / hướng–màu–số:** Khi không có `birth_time`, lấy Dương Thần / Kỵ Thần từ **Nạp Âm năm sinh** (`get_menh_nap_am`). Khi có `birth_time`, dùng `find_dung_than` trên Tứ Trụ. Gợi ý vật phẩm theo mục đích đọc từ `docs/seed/phong-thuy-purposes.json`; hóa giải cặp đôi (Nạp Âm tương khắc trực tiếp) từ `phong-thuy-couple-remedies.json`.
+
+**Phi Tinh (Cửu cung lưu niên):** Tính theo **năm dương lịch** tham số `year`. **Nhập trung:** mặc định neo năm 2024 = sao 3, mỗi năm giảm 1 (mod 9, 0 → 9); có thể ghi đè từng năm trong `docs/seed/phi-tinh-year-center.json` (chỉ số nhập trung 1–9). **Thuận / nghịch phi:** theo **can năm Gregorian** `(year - 4) % 10` chẵn → Dương can (thuận phi), lẻ → Âm can (nghịch phi) — **không** dùng tiết Lập Xuân hay năm âm lịch. Do đó có thể lệch một số bảng sách hoặc phần mềm khác.
+
+**Hướng tốt / xấu năm (`huong_tot_nam_nay` / `huong_xau_nam_nay`):** Phân loại theo trường `nature` của từng sao trong `phi-tinh-stars.json` — **không** lọc theo Dụng Thần cá nhân. Ghi chú giải thích thêm nằm trong `phi_tinh_note_vi` của response.
+
+**Override nhập trung:** Nếu JSON override khác với công thức mà vẫn giữ cùng quy ước thuận/nghịch theo can dương lịch, có thể xảy ra tổ hợp không trùng mọi tài liệu truyền thống — client nên đọc `docs/seed/phi-tinh-year-center.json` (`_comment`) và phần mô tả API.

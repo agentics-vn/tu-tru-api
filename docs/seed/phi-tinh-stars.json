@@ -1,0 +1,65 @@
+{
+  "1": {
+    "star_name": "Nhất Bạch Tham Lang",
+    "hanh": "Thủy",
+    "nature": "tốt",
+    "meaning": "Tham Lang chiếu — tốt cho danh tiếng, giao tế, tài lộc nhẹ.",
+    "remedy_template": "Tránh động thổ khu vực này nếu sao xấu đồng cung; với Nhất Bạch nên giữ gọn, thêm ánh sáng ấm."
+  },
+  "2": {
+    "star_name": "Nhị Hắc Cự Môn",
+    "hanh": "Thổ",
+    "nature": "xấu",
+    "meaning": "Cự Môn — dễ bệnh tật, tiểu nhân; nên ít động, ít ồn.",
+    "remedy_template": "Đặt hồ lô đồng, chuông gió 6 ống kim loại hoặc vật Kim để hóa giải Thổ hung."
+  },
+  "3": {
+    "star_name": "Tam Bích Lộc Tồn",
+    "hanh": "Mộc",
+    "nature": "xấu",
+    "meaning": "Lộc Tồn — tranh chấp, thị phi; cần giữ hòa khí.",
+    "remedy_template": "Thêm đèn đỏ nhỏ hoặc tông Hỏa vừa phải để chế Mộc quá vượng."
+  },
+  "4": {
+    "star_name": "Tứ Lục Văn Xương",
+    "hanh": "Mộc",
+    "nature": "tốt",
+    "meaning": "Văn Xương chiếu — tốt cho học hành, thi cử, sáng tạo.",
+    "remedy_template": "Bàn học hoặc góc làm việc quay về hướng này (nếu hợp Dụng Thần)."
+  },
+  "5": {
+    "star_name": "Ngũ Hoàng Liêm Trinh",
+    "hanh": "Thổ",
+    "nature": "rất xấu",
+    "meaning": "Ngũ Hoàng đại sát — tránh động thổ, sửa chữa lớn khu vực trung tâm hoặc cung này.",
+    "remedy_template": "Dùng âm thanh Kim (chuông đồng), màu trắng/bạc vừa phải; không kích hoạt bằng lửa mạnh."
+  },
+  "6": {
+    "star_name": "Lục Bạch Vũ Khúc",
+    "hanh": "Kim",
+    "nature": "tốt",
+    "meaning": "Vũ Khúc — tốt cho quyền uy, sự nghiệp, tài chính.",
+    "remedy_template": "Phù hợp bàn làm việc, két sắt nếu hợp mệnh."
+  },
+  "7": {
+    "star_name": "Thất Xích Phá Quân",
+    "hanh": "Kim",
+    "nature": "xấu",
+    "meaning": "Phá Quân — hao tán, thị phi; cẩn thận tranh chấp.",
+    "remedy_template": "Tránh kích động; có thể dùng nước nhỏ (Thủy) hóa Kim hung vừa phải theo chỉ dẫn thầy."
+  },
+  "8": {
+    "star_name": "Bát Bạch Tả Phụ",
+    "hanh": "Thổ",
+    "nature": "tốt",
+    "meaning": "Tả Phụ — tốt cho tài lộc, quý nhân phụ trợ.",
+    "remedy_template": "Giữ góc sạch sáng, thêm ánh sáng để thừa cát khí."
+  },
+  "9": {
+    "star_name": "Cửu Tử Hữu Bật",
+    "hanh": "Hỏa",
+    "nature": "tốt",
+    "meaning": "Hữu Bật — vui mừng, hỷ sự, danh tiếng.",
+    "remedy_template": "Phù hợp đèn, tranh tông ấm; tránh quá nóng nếu Hỏa vượng mệnh."
+  }
+}

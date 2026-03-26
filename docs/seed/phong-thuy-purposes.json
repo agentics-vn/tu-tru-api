@@ -1,0 +1,145 @@
+{
+  "NHA_O": {
+    "Kim": {
+      "vat_pham": [
+        {"item": "Chuông gió kim loại 6 ống", "vi_tri": "Cửa sổ phòng khách", "reason": "Kim khí thanh sát — tốt cho tài vận nhà ở."},
+        {"item": "Tượng rùa đồng", "vi_tri": "Kệ thấp phòng khách", "reason": "Kim ổn định — hỗ trợ trường khí."}
+      ]
+    },
+    "Mộc": {
+      "vat_pham": [
+        {"item": "Cây lớn ban công", "vi_tri": "Hướng sáng, tránh chắn cửa chính", "reason": "Mộc sinh khí — nhà ở cần sinh động có chừng."},
+        {"item": "Tranh rừng cây", "vi_tri": "Hành lang", "reason": "Mộc khí nhẹ — không gian sống dễ chịu."}
+      ]
+    },
+    "Thủy": {
+      "vat_pham": [
+        {"item": "Bể cá phong thủy", "vi_tri": "Phòng khách (góc tài)", "reason": "Thủy lưu tài — hợp nhà ở lâu dài."},
+        {"item": "Thác nước mini", "vi_tri": "Hướng Bắc hoặc Tây", "reason": "Thủy động kích hoạt tài lộc."}
+      ]
+    },
+    "Hỏa": {
+      "vat_pham": [
+        {"item": "Đèn chùm ấm", "vi_tri": "Phòng ăn", "reason": "Hỏa sinh khí sum họp gia đình."},
+        {"item": "Nến hoặc đèn muối", "vi_tri": "Phòng khách", "reason": "Hỏa vừa phải — tăng ấm áp."}
+      ]
+    },
+    "Thổ": {
+      "vat_pham": [
+        {"item": "Chậu đá cảnh", "vi_tri": "Sảnh vào", "reason": "Thổ trấn cửa — ổn định trường khí."},
+        {"item": "Bình gốm sứ", "vi_tri": "Bếp hoặc phòng khách", "reason": "Thổ nâng sức khỏe nền."}
+      ]
+    }
+  },
+  "VAN_PHONG": {
+    "Kim": {
+      "vat_pham": [
+        {"item": "Khay kim loại gọn", "vi_tri": "Góc phải bàn", "reason": "Kim tăng trật tự, hợp công việc hành chính."},
+        {"item": "Đồng hồ mặt kim loại", "vi_tri": "Tường đối diện", "reason": "Kim khí nhịp nhàng — tập trung deadline."}
+      ],
+      "huong_ngoi": {"tot": "Quay mặt hướng Tây hoặc Tây Bắc", "reason": "Kim thuộc Tây/Tây Bắc — hợp Dụng Thần Kim."}
+    },
+    "Mộc": {
+      "vat_pham": [
+        {"item": "Cây lưỡi hổ để bàn", "vi_tri": "Góc trái bàn làm việc", "reason": "Mộc khí tăng sáng tạo và tập trung."},
+        {"item": "Bể cá mini", "vi_tri": "Bên phải bàn", "reason": "Thủy sinh Mộc — kích hoạt dòng công việc."}
+      ],
+      "huong_ngoi": {"tot": "Quay mặt hướng Đông hoặc Đông Nam", "reason": "Đông/Đông Nam thuộc Mộc — hành Dụng Thần, tăng năng suất."}
+    },
+    "Thủy": {
+      "vat_pham": [
+        {"item": "Bình thủy tinh", "vi_tri": "Góc bàn", "reason": "Thủy thanh tâm — giảm căng thẳng công sở."},
+        {"item": "Ảnh nước biển nhỏ", "vi_tri": "Tường sau lưng", "reason": "Thủy tĩnh — hợp tư duy chiến lược."}
+      ],
+      "huong_ngoi": {"tot": "Quay mặt hướng Bắc", "reason": "Bắc thuộc Thủy — hợp Dụng Thần Thủy."}
+    },
+    "Hỏa": {
+      "vat_pham": [
+        {"item": "Đèn bàn LED ấm", "vi_tri": "Phía trái bàn", "reason": "Hỏa nhẹ — năng lượng họp và pitch."},
+        {"item": "Chậu cây lá đỏ tía", "vi_tri": "Kệ sách", "reason": "Mộc sinh Hỏa — cân bằng khi Dụng Thần Hỏa."}
+      ],
+      "huong_ngoi": {"tot": "Quay mặt hướng Nam", "reason": "Nam thuộc Hỏa — hợp Dụng Thần Hỏa."}
+    },
+    "Thổ": {
+      "vat_pham": [
+        {"item": "Đế đá hoặc gốm dưới màn hình", "vi_tri": "Chân màn hình", "reason": "Thổ nền tảng — ổn định công việc."},
+        {"item": "Khay gỗ dày", "vi_tri": "Giữa bàn", "reason": "Thổ/Mộc kết hợp — tổ chức tài liệu."}
+      ],
+      "huong_ngoi": {"tot": "Quay mặt hướng Đông Bắc hoặc Trung tâm vùng", "reason": "Đông Bắc thuộc Thổ — bổ trợ Dụng Thần Thổ."}
+    }
+  },
+  "CUA_HANG": {
+    "Kim": {
+      "vat_pham": [
+        {"item": "Biển hiệu kim loại sáng", "vi_tri": "Phía trên cửa", "reason": "Kim thu hút — hợp kinh doanh Kim."},
+        {"item": "Tủ trưng bày kim loại", "vi_tri": "Sát tường phải vào", "reason": "Kim khí trật tự hàng hóa."}
+      ],
+      "quay_thu_ngan": {"huong": "Đặt quầy thu ngân hướng Tây hoặc Tây Bắc", "reason": "Kim vượng tài — hợp Dụng Thần Kim."}
+    },
+    "Mộc": {
+      "vat_pham": [
+        {"item": "Cây phát tài", "vi_tri": "Cạnh cửa ra vào", "reason": "Mộc đón khách — thu hút tài lộc."},
+        {"item": "Thác nước nhỏ", "vi_tri": "Góc Bắc cửa hàng", "reason": "Thủy sinh Mộc — tiền bạc lưu thông."}
+      ],
+      "quay_thu_ngan": {"huong": "Đặt ở hướng Đông Nam", "reason": "Đông Nam thuộc Mộc — hỗ trợ thu tài."}
+    },
+    "Thủy": {
+      "vat_pham": [
+        {"item": "Bể cá cửa hàng", "vi_tri": "Góc trái vào", "reason": "Thủy tài lộc — khách vào ra."},
+        {"item": "Máy phun sương mini", "vi_tri": "Quầy hàng", "reason": "Thủy động — sinh khí mua sắm."}
+      ],
+      "quay_thu_ngan": {"huong": "Đặt gần hướng Bắc", "reason": "Thủy tụ tài."}
+    },
+    "Hỏa": {
+      "vat_pham": [
+        {"item": "Đèn LED ấm toàn quầy", "vi_tri": "Trần khu trưng bày", "reason": "Hỏa nổi bật sản phẩm."},
+        {"item": "Biển đèn neon tông ấm", "vi_tri": "Mặt tiền", "reason": "Hỏa chiêu tài — thu hút nhìn."}
+      ],
+      "quay_thu_ngan": {"huong": "Đặt hướng Nam", "reason": "Hỏa vượng danh và tài."}
+    },
+    "Thổ": {
+      "vat_pham": [
+        {"item": "Kệ gốm sứ trưng bày", "vi_tri": "Trung tâm cửa hàng", "reason": "Thổ giữ khách lâu trong shop."},
+        {"item": "Thảm màu đất", "vi_tri": "Lối vào", "reason": "Thổ nền — ổn định luồng khách."}
+      ],
+      "quay_thu_ngan": {"huong": "Đặt góc Đông Bắc", "reason": "Thổ tích lũy tài."}
+    }
+  },
+  "PHONG_KHACH": {
+    "Kim": {
+      "vat_pham": [
+        {"item": "Đèn bàn kim loại", "vi_tri": "Bàn trà", "reason": "Kim thanh nhã — tiếp khách trang trọng."},
+        {"item": "Khay đồ uống inox", "vi_tri": "Kệ sofa", "reason": "Kim gọn gàng — hình ảnh chuyên nghiệp."}
+      ],
+      "phong_khach": {"sofa": "Ưu tiên sofa tông xám bạc hoặc trắng ngà", "tranh": "Tranh trừu tượng tông kim loại nhẹ", "den": "Đèn đọc sách chao kim"}
+    },
+    "Mộc": {
+      "vat_pham": [
+        {"item": "Cây cảnh lớn", "vi_tri": "Góc phòng", "reason": "Mộc sinh khí tiếp đãi."},
+        {"item": "Thảm họa tiết lá", "vi_tri": "Dưới bàn trà", "reason": "Mộc mềm — không gian thân thiện."}
+      ],
+      "phong_khach": {"sofa": "Sofa bọc vải xanh lá hoặc gỗ sáng", "tranh": "Tranh rừng cây hoặc tre", "den": "Đèn gỗ ấm"}
+    },
+    "Thủy": {
+      "vat_pham": [
+        {"item": "Bình hoa thủy tinh", "vi_tri": "Bàn trà giữa", "reason": "Thủy trong — lưu đãi hòa khí."},
+        {"item": "Tranh sông nước", "vi_tri": "Tường sau sofa", "reason": "Thủy tĩnh — khách thư thái."}
+      ],
+      "phong_khach": {"sofa": "Tông xanh dương nhạt", "tranh": "Thủy mặc hoặc phong cảnh nước", "den": "Đèn chao thủy tinh"}
+    },
+    "Hỏa": {
+      "vat_pham": [
+        {"item": "Đèn sàn ấm", "vi_tri": "Góc sofa", "reason": "Hỏa hiếu khách — ấm cúng."},
+        {"item": "Nến trang trí", "vi_tri": "Bàn trà", "reason": "Hỏa nhẹ — tăng giao lưu."}
+      ],
+      "phong_khach": {"sofa": "Tông đỏ gạch hoặc cam đất", "tranh": "Hoàng hôn hoặc ánh lửa nhẹ", "den": "Đèn vàng ấm"}
+    },
+    "Thổ": {
+      "vat_pham": [
+        {"item": "Bàn trà gỗ dày", "vi_tri": "Giữa sofa", "reason": "Thổ trung tâm — tiếp khách vững."},
+        {"item": "Gốm trang trí", "vi_tri": "Kệ tường", "reason": "Thổ sang trọng."}
+      ],
+      "phong_khach": {"sofa": "Nâu đất hoàng thổ", "tranh": "Núi non hoặc đồng quê", "den": "Đèn gốm"}
+    }
+  }
+}

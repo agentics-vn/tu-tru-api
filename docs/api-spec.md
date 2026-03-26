@@ -419,3 +419,93 @@ Các tiêu chí sau xuất hiện theo đúng thứ tự và trọng số trong 
 | 401 | UNAUTHORIZED | Thiếu / sai API key |
 | 429 | RATE_LIMITED | Vượt hạn mức |
 | 500 | INTERNAL_ERROR | Lỗi máy chủ |
+
+---
+
+# API Spec — GET /v1/phong-thuy
+
+Gợi ý phong thủy theo Dụng Thần / Kỵ Thần (hướng, màu, số, vật phẩm), tùy **mục đích** không gian; **version 2** thêm Phi Tinh năm, cá nhân hóa lá số (khi có giờ sinh), và hóa giải cặp đôi (khi có `partner_birth_date`).
+
+**Định dạng ngày:** `dd/mm/yyyy` (giống Hợp Tuổi), qua `parse_dmy`.
+
+## Request (query)
+
+| Param | Required | Type | Description |
+|---|---|---|---|
+| birth_date | Yes | string | Ngày sinh chủ `dd/mm/yyyy`, quá khứ, năm ≥ 1900 |
+| birth_time | No | int | Một trong giờ dropdown engine (xem Tứ Trụ); có → Dụng/Kỵ từ Tứ Trụ + block `personalization` nếu khớp điều kiện |
+| gender | No | int | `1` (nam) hoặc `-1` (nữ) — dự phòng, chưa dùng trong logic phong thủy |
+| tz | No | string | IANA, mặc định `Asia/Ho_Chi_Minh` — so sánh “quá khứ” với “hôm nay” |
+| purpose | No | string | `NHA_O` \| `VAN_PHONG` \| `CUA_HANG` \| `PHONG_KHACH` (mặc định `NHA_O`) |
+| year | No | int | 1900–2100; nếu có → thêm block **Phi Tinh** lưu niên cho năm dương lịch đó |
+| partner_birth_date | No | string | `dd/mm/yyyy` quá khứ; nếu có (và không chỉ khoảng trắng) → có thể thêm `couple_harmony` khi hai Nạp Âm **tương khắc trực tiếp** |
+
+## Response 200 — version 2 (rút gọn)
+
+```json
+{
+  "status": "success",
+  "version": 2,
+  "purpose": "NHA_O",
+  "user_menh": { "hanh": "Kim", "name": "Hải Trung Kim" },
+  "dung_than": "Thổ",
+  "ky_than": "Hỏa",
+  "huong_tot": ["Đông Bắc", "Tây Nam"],
+  "huong_xau": [{ "huong": "Nam", "ly_do": "..." }],
+  "mau_may_man": ["Vàng đất", "Nâu"],
+  "mau_ky": ["Đỏ"],
+  "so_may_man": [2, 5, 8],
+  "so_ky": [7],
+  "vat_pham": [{ "item": "...", "element": "...", "placement": "...", "reason": "..." }],
+  "purpose_specific": { "huong_giuong": { "tot": "...", "ly_do": "..." } },
+  "personalization": { "chart_strength": "nhược", "intensity": "vừa", "note": "...", "extra_items": [] },
+  "phi_tinh_year": 2026,
+  "phi_tinh": [
+    {
+      "direction": "Đông Nam",
+      "star": 4,
+      "star_name": "Tứ Lục Văn Xương",
+      "hanh": "Mộc",
+      "nature": "tốt",
+      "meaning": "..."
+    }
+  ],
+  "huong_tot_nam_nay": ["Đông Nam"],
+  "huong_xau_nam_nay": ["Tây"],
+  "hoa_giai": [{ "direction": "Tây", "star": 3, "remedy": "..." }],
+  "phi_tinh_note_vi": "...",
+  "couple_harmony": {
+    "person1_hanh": "Mộc",
+    "person2_hanh": "Thổ",
+    "person1_menh_name": "Đại Lâm Mộc",
+    "person2_menh_name": "Lộ Bàng Thổ",
+    "relation": "Tương Khắc (Mộc khắc Thổ)",
+    "remedy_element": "Hỏa",
+    "explanation": "...",
+    "remedies": ["..."],
+    "colors_for_shared_space": ["..."]
+  }
+}
+```
+
+| Field | Mô tả |
+|---|---|
+| version | Luôn `2` cho contract hiện tại |
+| purpose_specific | Chỉ khi seed mục đích có thêm khóa (ví dụ hướng giường, quầy) |
+| personalization | Chỉ khi có `birth_time` và engine tính được cường nhược |
+| phi_tinh* / hoa_giai | Chỉ khi gửi `year` |
+| couple_harmony | Chỉ khi có `partner_birth_date` hợp lệ **và** hai người có quan hệ khắc trực tiếp theo ngũ hành Nạp Âm |
+
+### Phi Tinh — giả định API (quan trọng cho client)
+
+- **Năm & nhập trung:** Dùng **năm dương lịch** `year`. Nhập trung mặc định: neo 2024 = 3, bước −1/năm (mod 9); có thể ghi đè trong `docs/seed/phi-tinh-year-center.json` (chỉ số 1–9). Override **chỉ** đổi trung tinh; thuận/nghịch phi vẫn theo can **Gregorian** của `year`.
+- **Thuận / nghịch:** `(year - 4) % 10` chẵn → Dương can (phi thuận), lẻ → Âm can (phi nghịch). **Không** theo Lập Xuân hay đổi năm âm lịch — có thể không khớp mọi sách.
+- **huong_tot_nam_nay / huong_xau_nam_nay:** Theo `nature` sao trong `phi-tinh-stars.json`, **không** lọc theo Dụng Thần người dùng. Chi tiết trong `phi_tinh_note_vi`.
+- **Override vs thuận/nghịch:** Nếu JSON override lệch so với bảng bạn tin, có thể ra lưới khác tài liệu — xem `_comment` trong `phi-tinh-year-center.json`.
+
+## Error Responses (Phong thủy)
+
+| HTTP | error_code | When |
+|---|---|---|
+| 400 | INVALID_INPUT | Ngày/giờ/giới/purpose không hợp lệ |
+| 500 | INTERNAL_ERROR | Lỗi máy chủ; nếu thiếu/hỏng `phi-tinh-stars.json` khi gọi kèm `year`, có thể trả `message`/`message_en` mô tả lỗi seed Phi Tinh |

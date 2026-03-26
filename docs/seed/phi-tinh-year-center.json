@@ -1,0 +1,6 @@
+{
+  "_comment": "Ghi đè số sao nhập trung (1–9) theo năm dương lịch (key string). Giá trị phải từ 1 đến 9; sai bị bỏ qua. Nếu không có key năm → engine dùng công thức neo 2024=3, mỗi năm giảm 1 (mod 9, 0→9). Lưu ý: override chỉ đổi trung tinh; hướng thuận/nghịch phi vẫn theo Dương/Âm can của năm Gregorian (year-4)%10 — có thể không trùng mọi sách nếu sách dùng Lập Xuân hoặc bảng khác.",
+  "overrides": {
+    "2026": 5
+  }
+}
