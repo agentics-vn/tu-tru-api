@@ -38,7 +38,10 @@ async def resolve_share_token(token: str) -> JSONResponse:
 
     try:
         if endpoint == "chon-ngay":
+            from datetime import timedelta
+
             from api.parse_date import parse_dmy
+            from api.routes.chon_ngay import INTENT_ALIAS, INTENT_RULES
             from calendar_service import get_day_info, get_user_chart
             from engine.hoang_dao import get_gio_hoang_dao
             from filter import apply_layer2_filter
@@ -51,22 +54,15 @@ async def resolve_share_token(token: str) -> JSONResponse:
             if not all([birth_date, range_start, range_end]):
                 return error_response(400, "INVALID_INPUT", message_vi="Token thiếu dữ liệu.")
 
-            # Reuse the chon-ngay engine inline (read-only replay)
-            from datetime import date, timedelta
-            import json
-            from pathlib import Path
-
             birth_date_str = parse_dmy(birth_date).isoformat()
-            gender_str = str(gender) if gender is not None else None
-            user_chart = get_user_chart(birth_date_str, birth_time, gender_str)
+            gender_val = int(gender) if gender is not None else None
+            user_chart = get_user_chart(birth_date_str, birth_time, gender_val)
 
-            rules_path = Path(__file__).resolve().parent.parent.parent.parent / "docs" / "seed" / "intent-rules.json"
-            with open(rules_path) as f:
-                intent_rules = json.load(f)
-
-            from api.routes.chon_ngay import INTENT_ALIAS
             rule_key = INTENT_ALIAS.get(intent, intent)
-            intent_rule = intent_rules.get(rule_key, intent_rules.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao": []}))
+            intent_rule = INTENT_RULES.get(
+                rule_key,
+                INTENT_RULES.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao": []}),
+            )
 
             start = parse_dmy(range_start)
             end = parse_dmy(range_end)

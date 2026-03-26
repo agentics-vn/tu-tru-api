@@ -455,8 +455,12 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
         avoid_sev3_dates = {
             d["date"] for d in dates_to_avoid if d["severity"] == 3
         }
-        recommended_dates = [
-            {
+        recommended_dates = []
+        for d in top_days:
+            if d["day_info"]["date"] in avoid_sev3_dates:
+                continue
+            gio = get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
+            recommended_dates.append({
                 "date": d["day_info"]["date"],
                 "lunar_date": _format_lunar_date(d["day_info"]),
                 "score": d["score_result"]["score"],
@@ -468,10 +472,9 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                 "reason_vi": ". ".join(d["score_result"]["reasons_vi"]),
                 "summary_vi": d["score_result"]["summary_vi"],
                 "time_slots": [
-                        {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
-                        for g in get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
-                    ],
-                # T5-02: Structured card data for shareable card / PDF rendering
+                    {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
+                    for g in gio
+                ],
                 "render_card": {
                     "headline": f"Ngày {d['day_info']['date']}",
                     "lunar_line": _format_lunar_date(d["day_info"]),
@@ -484,13 +487,10 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
                     "one_liner": d["score_result"]["summary_vi"],
                     "best_hours": [
                         f"{g['start']}-{g['end']}"
-                        for g in get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
+                        for g in gio
                     ][:3],
                 },
-            }
-            for d in top_days
-            if d["day_info"]["date"] not in avoid_sev3_dates
-        ]
+            })
 
         # ── 422 if nothing survived ───────────────────────────────────────
         if not recommended_dates:
