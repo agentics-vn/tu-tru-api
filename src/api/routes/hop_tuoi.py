@@ -1,15 +1,13 @@
 """
-POST /v1/hop-tuoi — Two-person compatibility analysis.
+POST /v1/hop-tuoi — Two-person compatibility.
 
-Compares two birth charts based on Ngũ Hành Nạp Âm, Thiên Can, Địa Chi,
-and Nhật Chủ interactions to produce a compatibility score.
+v1 (default): numeric score + grade (omit relationship_type).
+v2: qualitative analysis by relationship_type (see engine.hop_tuoi).
 """
 
 from __future__ import annotations
 
 import logging
-
-from api.errors import error_response
 from datetime import date
 from typing import Optional
 
@@ -17,17 +15,12 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 
+from api.errors import error_response
 from api.parse_date import parse_dmy
-from engine.can_chi import (
-    CAN_HANH,
-    CHI_HANH,
-    get_can_chi_year,
-    get_menh_nap_am,
-    get_nap_am_pair_idx,
-    is_xung,
-)
-from engine.pillars import get_tu_tru, VALID_BIRTH_HOURS, BIRTH_HOUR_LABELS
-from engine.dung_than import find_dung_than, SINH_BY, SINH_TARGET, KHAC_BY, KHAC_TARGET
+from engine.can_chi import CAN_HANH, get_can_chi_year, get_menh_nap_am
+from engine.dung_than import KHAC_BY, KHAC_TARGET, SINH_BY, SINH_TARGET
+from engine.hop_tuoi import RELATIONSHIP_TYPES, analyze_compatibility
+from engine.pillars import VALID_BIRTH_HOURS, get_tu_tru
 
 logger = logging.getLogger("hop_tuoi")
 
@@ -35,13 +28,10 @@ router = APIRouter()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Ngũ Hành relationship helpers
+# Ngũ Hành relationship helpers (v1)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _ngu_hanh_relation(hanh_a: str, hanh_b: str) -> tuple[str, int]:
-    """
-    Return (relationship_name, score_bonus) for two elements.
-    """
     if hanh_a == hanh_b:
         return ("Tỷ Hòa", 75)
     if SINH_BY.get(hanh_a) == hanh_b or SINH_TARGET.get(hanh_a) == hanh_b:
@@ -70,6 +60,7 @@ class HopTuoiRequest(BaseModel):
     person2_birth_date: str
     person2_birth_time: Optional[int] = None
     person2_gender: Optional[int] = None
+    relationship_type: Optional[str] = None
 
     @field_validator("person1_birth_date", "person2_birth_date")
     @classmethod
@@ -95,18 +86,28 @@ class HopTuoiRequest(BaseModel):
             raise ValueError("gender phải là 1 (nam) hoặc -1 (nữ)")
         return v
 
+    @field_validator("relationship_type")
+    @classmethod
+    def relationship_type_valid(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return None
+        if v not in RELATIONSHIP_TYPES:
+            allowed = ", ".join(sorted(RELATIONSHIP_TYPES))
+            raise ValueError(f"relationship_type phải là một trong: {allowed}")
+        return v
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _build_person_info(bd_str: str, birth_time: Optional[int], gender: Optional[int]) -> dict:
-    """Build person summary dict."""
+    """Internal dict for v1 + v2 (includes indices and optional tu_tru)."""
     bd = parse_dmy(bd_str)
     year_cc = get_can_chi_year(bd.year)
     menh = get_menh_nap_am(bd.year)
 
-    result = {
+    result: dict = {
         "birth_date": bd.isoformat(),
         "menh": menh["name"],
         "hanh": menh["hanh"],
@@ -117,22 +118,32 @@ def _build_person_info(bd_str: str, birth_time: Optional[int], gender: Optional[
         nhat_chu = tu_tru["nhat_chu"]
         result["nhatChu"] = f"{nhat_chu['can_name']} {nhat_chu['hanh']}"
         result["nhat_chu_hanh"] = nhat_chu["hanh"]
-        result["year_chi_idx"] = year_cc["chi_idx"]
+        result["year_chi_idx"] = tu_tru["year"]["chi_idx"]
         result["day_can_idx"] = tu_tru["day"]["can_idx"]
+        result["tu_tru"] = tu_tru
     else:
         result["nhatChu"] = f"{year_cc['can_name']} {CAN_HANH[year_cc['can_idx']]}"
         result["nhat_chu_hanh"] = CAN_HANH[year_cc["can_idx"]]
         result["year_chi_idx"] = year_cc["chi_idx"]
         result["day_can_idx"] = year_cc["can_idx"]
+        result["tu_tru"] = None
 
+    result["gender"] = gender
     return result
 
 
-def _compute_compatibility(p1: dict, p2: dict) -> dict:
-    """Compute detailed compatibility scores."""
+def _strip_internal(p: dict) -> dict:
+    out = {k: v for k, v in p.items() if k not in (
+        "nhat_chu_hanh", "year_chi_idx", "day_can_idx", "tu_tru",
+    )}
+    return out
+
+
+def _compute_compatibility_v1(p1: dict, p2: dict) -> dict:
+    from engine.can_chi import is_xung
+
     details = []
 
-    # 1. Ngũ Hành Nạp Âm
     rel_name, rel_score = _ngu_hanh_relation(p1["hanh"], p2["hanh"])
     details.append({
         "category": "Ngũ Hành Nạp Âm",
@@ -140,7 +151,6 @@ def _compute_compatibility(p1: dict, p2: dict) -> dict:
         "description": f"{p1['hanh']} và {p2['hanh']} — {rel_name}.",
     })
 
-    # 2. Nhật Chủ interaction
     nc_rel, nc_score = _ngu_hanh_relation(p1["nhat_chu_hanh"], p2["nhat_chu_hanh"])
     details.append({
         "category": "Nhật Chủ tương tác",
@@ -148,7 +158,6 @@ def _compute_compatibility(p1: dict, p2: dict) -> dict:
         "description": f"{p1['nhat_chu_hanh']} và {p2['nhat_chu_hanh']} — {nc_rel}.",
     })
 
-    # 3. Địa Chi (year branch)
     chi_xung = is_xung(p1["year_chi_idx"], p2["year_chi_idx"])
     chi_score = 35 if chi_xung else 80
     details.append({
@@ -157,7 +166,6 @@ def _compute_compatibility(p1: dict, p2: dict) -> dict:
         "description": "Địa Chi tương xung — bất lợi." if chi_xung else "Địa Chi không xung — ổn định.",
     })
 
-    # 4. Thiên Can
     tc_rel, tc_score = _ngu_hanh_relation(
         CAN_HANH[p1["day_can_idx"]], CAN_HANH[p2["day_can_idx"]]
     )
@@ -167,21 +175,25 @@ def _compute_compatibility(p1: dict, p2: dict) -> dict:
         "description": f"Thiên Can {CAN_HANH[p1['day_can_idx']]} và {CAN_HANH[p2['day_can_idx']]} — {tc_rel}.",
     })
 
-    # Overall
     overall = round(sum(d["score"] for d in details) / len(details))
     grade = "A" if overall >= 85 else "B" if overall >= 70 else "C" if overall >= 50 else "D"
 
-    # Summary
     dominant_rel = _RELATION_LABEL.get(rel_name, "Bình Hòa")
 
     if overall >= 80:
-        summary = f"Hai lá số rất tương hợp. {p1['hanh']} và {p2['hanh']} {rel_name.lower()} — mối quan hệ bền vững."
-        advice = f"Nên chọn ngày có hành {p1['hanh']} hoặc {p2['hanh']} để tổ chức lễ cưới sẽ tăng thêm phúc khí."
+        summary = (
+            f"Hai lá số rất tương hợp. {p1['hanh']} và {p2['hanh']} {rel_name.lower()} "
+            "— mối quan hệ bền vững."
+        )
+        advice = (
+            f"Nên chọn ngày có hành {p1['hanh']} hoặc {p2['hanh']} để tổ chức lễ cưới "
+            "sẽ tăng thêm phúc khí."
+        )
     elif overall >= 60:
-        summary = f"Hai lá số tương đối hòa hợp. Cần chú ý một số điểm xung khắc nhỏ."
+        summary = "Hai lá số tương đối hòa hợp. Cần chú ý một số điểm xung khắc nhỏ."
         advice = "Nên tránh các ngày xung với Chi năm của hai người. Chọn ngày Hoàng Đạo để giảm thiểu bất lợi."
     else:
-        summary = f"Hai lá số có một số xung khắc. Cần hóa giải bằng phong thủy."
+        summary = "Hai lá số có một số xung khắc. Cần hóa giải bằng phong thủy."
         advice = "Nên nhờ thầy xem kỹ và chọn ngày cẩn thận. Có thể dùng vật phẩm phong thủy hành trung gian để hóa giải."
 
     return {
@@ -205,20 +217,33 @@ async def hop_tuoi_endpoint(req: HopTuoiRequest) -> JSONResponse:
         p1 = _build_person_info(req.person1_birth_date, req.person1_birth_time, req.person1_gender)
         p2 = _build_person_info(req.person2_birth_date, req.person2_birth_time, req.person2_gender)
 
-        compat = _compute_compatibility(p1, p2)
+        if req.relationship_type:
+            analysis = analyze_compatibility(p1, p2, req.relationship_type)
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "status": "success",
+                    "version": 2,
+                    "relationship_type": analysis["relationship_type"],
+                    "relationship_label": analysis["relationship_label"],
+                    "person1": _strip_internal(p1),
+                    "person2": _strip_internal(p2),
+                    "verdict": analysis["verdict"],
+                    "verdict_level": analysis["verdict_level"],
+                    "criteria": analysis["criteria"],
+                    "reading": analysis["reading"],
+                    "advice": analysis["advice"],
+                },
+            )
 
-        # Clean internal keys before response
-        for p in (p1, p2):
-            p.pop("nhat_chu_hanh", None)
-            p.pop("year_chi_idx", None)
-            p.pop("day_can_idx", None)
-
+        compat = _compute_compatibility_v1(p1, p2)
         return JSONResponse(
             status_code=200,
             content={
                 "status": "success",
-                "person1": p1,
-                "person2": p2,
+                "version": 1,
+                "person1": _strip_internal(p1),
+                "person2": _strip_internal(p2),
                 **compat,
             },
         )

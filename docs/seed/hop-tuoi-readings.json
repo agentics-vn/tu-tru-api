@@ -1,0 +1,114 @@
+{
+  "PHU_THE": {
+    "reading": {
+      "rat_tuong_hop": "Hai người có nhân duyên tương đối thuận. {hints}",
+      "tuong_hop": "Hai người có nền tảng hòa hợp. {hints} Nên vun đều tình cảm và lễ nghi.",
+      "can_luu_y": "Mối quan hệ cần chú ý một số điểm. {neg_hint} Thấu hiểu và nhường nhịn sẽ giúp bền lâu.",
+      "nhieu_thu_thach": "Hai người sẽ cần nỗ lực lớn. {neg_hint} Tình thật và phong thủy hóa giải có thể hỗ trợ."
+    },
+    "advice": {
+      "rat_tuong_hop": "Nên chọn ngày Hoàng Đạo, ưu tiên hành tương sinh với hai mệnh. {hints}",
+      "tuong_hop": "Tránh ngày xung Chi năm; ưu tiên lễ cưới giờ lành theo lịch âm.",
+      "can_luu_y": "Nhờ thầy chọn ngày kỹ; có thể dùng vật phẩm trung hòa ngũ hành. {neg_hint}",
+      "nhieu_thu_thach": "Xem kỹ phong thủy nhà ở và phương vị giường; tránh quyết định vội. {neg_hint}"
+    }
+  },
+  "DOI_TAC": {
+    "reading": {
+      "rat_tuong_hop": "Hợp tác kinh doanh có tiềm năng. {hints}",
+      "tuong_hop": "Đối tác tương đối tin cậy. {hints} Nên rõ hợp đồng và vai trò.",
+      "can_luu_y": "Có điểm cần thận trọng trong hợp tác. {neg_hint}",
+      "nhieu_thu_thach": "Rủi ro hợp tác cao. {neg_hint} Cần kiểm soát tài chính và pháp lý."
+    },
+    "advice": {
+      "rat_tuong_hop": "Ký kết nên chọn ngày Tài/Quan tinh mạnh theo lá số. {hints}",
+      "tuong_hop": "Ưu tiên minh bạch cổ phần và trách nhiệm.",
+      "can_luu_y": "Tránh vội góp vốn lớn; thử dự án nhỏ trước. {neg_hint}",
+      "nhieu_thu_thach": "Cân nhắc đối tác dự phòng hoặc trung gian pháp lý. {neg_hint}"
+    }
+  },
+  "SEP_NHAN_VIEN": {
+    "reading": {
+      "rat_tuong_hop": "Quan hệ sếp — nhân viên tương đối thuận. {hints}",
+      "tuong_hop": "Có thể làm việc ổn định với ranh giới rõ. {hints}",
+      "can_luu_y": "Dễ căng thẳng quyền lực hoặc kỳ vọng. {neg_hint}",
+      "nhieu_thu_thach": "Môi trường thử thách; cần quy tắc và giao tiếp thẳng. {neg_hint}"
+    },
+    "advice": {
+      "rat_tuong_hop": "Khuyến khích phản hồi định kỳ; giao việc theo sở trường. {hints}",
+      "tuong_hop": "Ghi rõ KPI và quyền quyết định.",
+      "can_luu_y": "Tránh chồng chéo vai trò; có thể luân chuyển dự án. {neg_hint}",
+      "nhieu_thu_thach": "Cần mediator HR hoặc quy trình escalation. {neg_hint}"
+    }
+  },
+  "DONG_NGHIEP": {
+    "reading": {
+      "rat_tuong_hop": "Đồng nghiệp dễ hỗ trợ lẫn nhau. {hints}",
+      "tuong_hop": "Làm việc nhóm khả thi. {hints}",
+      "can_luu_y": "Cạnh tranh ngầm hoặc hiểu lầm nhỏ. {neg_hint}",
+      "nhieu_thu_thach": "Dễ xung đột công việc. {neg_hint}"
+    },
+    "advice": {
+      "rat_tuong_hop": "Chia sẻ credit công bằng; họp ngắn gọn. {hints}",
+      "tuong_hop": "Thống nhất deadline và owner từng hạng mục.",
+      "can_luu_y": "Giảm tranh luận email; ưu tiên họp trực tiếp. {neg_hint}",
+      "nhieu_thu_thach": "Giảm phụ thuộc chéo; tài liệu hóa quyết định. {neg_hint}"
+    }
+  },
+  "BAN_BE": {
+    "reading": {
+      "rat_tuong_hop": "Tình bạn hòa khí, dễ lâu dài. {hints}",
+      "tuong_hop": "Bạn bè tin cậy mức cơ bản. {hints}",
+      "can_luu_y": "Cần thêm thời gian xây niềm tin. {neg_hint}",
+      "nhieu_thu_thach": "Dễ bất đồng giá trị. {neg_hint}"
+    },
+    "advice": {
+      "rat_tuong_hop": "Duy trì liên lạc đều; tôn trọng ranh giới cá nhân. {hints}",
+      "tuong_hop": "Tránh vay mượn lớn khi chưa rõ cam kết.",
+      "can_luu_y": "Giao tiếp thẳng về kỳ vọng. {neg_hint}",
+      "nhieu_thu_thach": "Giảm chủ đề nhạy cảm (tiền, chính trị). {neg_hint}"
+    }
+  },
+  "PHU_TU": {
+    "reading": {
+      "rat_tuong_hop": "Mối quan hệ cha mẹ — con có nền sinh khí tốt. {hints}",
+      "tuong_hop": "Cần kiên nhẫn và khoan dung. {hints}",
+      "can_luu_y": "Dễ bất đồng thế hệ. {neg_hint}",
+      "nhieu_thu_thach": "Cần can thiệp hoặc tư vấn gia đình. {neg_hint}"
+    },
+    "advice": {
+      "rat_tuong_hop": "Khuyến khích con tự chủ trong giới hạn an toàn. {hints}",
+      "tuong_hop": "Đặt quy tắc chung, thưởng tiến bộ nhỏ.",
+      "can_luu_y": "Giảm so sánh anh chị em; lắng nghe trước khi phán xét. {neg_hint}",
+      "nhieu_thu_thach": "Tìm mediator đáng tin; tránh đổ lỗi công khai. {neg_hint}"
+    }
+  },
+  "ANH_CHI_EM": {
+    "reading": {
+      "rat_tuong_hop": "Anh chị em tương trợ. {hints}",
+      "tuong_hop": "Có thể hòa nhà với ranh giới. {hints}",
+      "can_luu_y": "Dễ ganh đua tài sản hoặc sự chú ý. {neg_hint}",
+      "nhieu_thu_thach": "Cần chia tách trách nhiệm rõ. {neg_hint}"
+    },
+    "advice": {
+      "rat_tuong_hop": "Ghi nhận đóng góp của từng người. {hints}",
+      "tuong_hop": "Tránh can thiệp hôn nhân/con cái của nhau quá sâu.",
+      "can_luu_y": "Minh bạch tài chính chung. {neg_hint}",
+      "nhieu_thu_thach": "Viết thỏa thuận nếu có đồng sở hữu. {neg_hint}"
+    }
+  },
+  "THAY_TRO": {
+    "reading": {
+      "rat_tuong_hop": "Thầy trò dễ truyền đạt và tiến bộ. {hints}",
+      "tuong_hop": "Học tập ổn định với nỗ lực hai phía. {hints}",
+      "can_luu_y": "Cần điều chỉnh phương pháp hoặc kỳ vọng. {neg_hint}",
+      "nhieu_thu_thach": "Dễ nản hoặc mất động lực. {neg_hint}"
+    },
+    "advice": {
+      "rat_tuong_hop": "Đặt mục tiểu học từng giai đoạn nhỏ. {hints}",
+      "tuong_hop": "Phản hồi định kỳ; ghi nhận tiến bộ.",
+      "can_luu_y": "Thử đổi format bài tập hoặc mentor phụ. {neg_hint}",
+      "nhieu_thu_thach": "Tạm dừng để đánh giá lại mục tiêu. {neg_hint}"
+    }
+  }
+}

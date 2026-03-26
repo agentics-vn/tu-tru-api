@@ -264,3 +264,158 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
 | 401 | UNAUTHORIZED | Missing/invalid API key |
 | 429 | RATE_LIMITED | Over quota |
 | 500 | INTERNAL_ERROR | Unexpected server error |
+
+---
+
+# API Spec — POST /v1/hop-tuoi
+
+So khớp tuổi / hợp tuổi giữa hai người. Một endpoint, hai chế độ trả lời:
+
+- **v1** (mặc định): bỏ qua `relationship_type` → điểm số tổng hợp + hạng chữ.
+- **v2**: gửi `relationship_type` → phân tích định tính theo mục đích quan hệ (tiêu chí có trọng số, kết luận, luận giải, lời khuyên).
+
+**Định dạng ngày sinh:** `dd/mm/yyyy` (ví dụ `15/05/1990`). Khác với một số endpoint khác trong tài liệu này dùng ISO — riêng Hợp Tuổi dùng parser `dd/mm/yyyy`.
+
+## Request
+
+```json
+{
+  "person1_birth_date": "15/05/1990",
+  "person1_birth_time": 8,
+  "person1_gender": 1,
+  "person2_birth_date": "20/03/1992",
+  "person2_birth_time": 10,
+  "person2_gender": -1,
+  "relationship_type": "PHU_THE"
+}
+```
+
+| Field | Required | Type | Validation / ghi chú |
+|---|---|---|---|
+| person1_birth_date | Yes | string | `dd/mm/yyyy`, quá khứ, năm ≥ 1900 |
+| person2_birth_date | Yes | string | Cùng quy tắc |
+| person1_birth_time | No | int \| null | Giờ sinh dropdown Tứ Trụ: `0, 2, 4, 6, 8, 10, 11, 14, 16, 18, 20, 22, 23` |
+| person2_birth_time | No | int \| null | Cùng tập giá trị |
+| person1_gender | No | int \| null | `1` (nam) hoặc `-1` (nữ); dùng cho v2 **Phu Thê** (tiêu chí giới tính) |
+| person2_gender | No | int \| null | Cùng quy tắc |
+| relationship_type | No | string \| null | Bỏ trống → **v1**. Có giá trị → **v2**; phải là một trong bảng dưới |
+
+### `relationship_type` (v2)
+
+| Giá trị | Nhãn hiển thị | Đối xứng |
+|---|---|---|
+| PHU_THE | Phu Thê | Có |
+| DOI_TAC | Đối Tác | Có |
+| SEP_NHAN_VIEN | Sếp — Nhân Viên | Không (người 1 = người hỏi / sếp) |
+| DONG_NGHIEP | Đồng Nghiệp | Có |
+| BAN_BE | Bạn Bè | Có |
+| PHU_TU | Phụ Tử | Không (người 1 = cha mẹ) |
+| ANH_CHI_EM | Anh Chị Em | Có |
+| THAY_TRO | Thầy — Trò | Không (người 1 = thầy) |
+
+**Ghi chú vai trò (v2, quan hệ không đối xứng):** `person1` luôn là **người hỏi** (sếp, thầy, hoặc phụ huynh tùy loại). `person2` là đối tượng còn lại.
+
+## Response 200 — v1 (`relationship_type` không gửi)
+
+```json
+{
+  "status": "success",
+  "version": 1,
+  "person1": {
+    "birth_date": "1990-05-15",
+    "menh": "Lộ Bàng Thổ",
+    "hanh": "Thổ",
+    "nhatChu": "Đinh Hỏa",
+    "gender": 1
+  },
+  "person2": { "...": "..." },
+  "overall_score": 72,
+  "grade": "B",
+  "ngu_hanh_relation": "Tương Sinh",
+  "details": [
+    {
+      "category": "Ngũ Hành Nạp Âm",
+      "score": 90,
+      "description": "Thổ và Kim — Tương Sinh."
+    }
+  ],
+  "summary": "...",
+  "advice": "..."
+}
+```
+
+| Field | Mô tả |
+|---|---|
+| version | Luôn `1` |
+| person1 / person2 | `birth_date` trả về dạng ISO (`YYYY-MM-DD`); không gồm chỉ số nội bộ engine |
+| gender | Chỉ có khi client gửi `person*_gender` |
+| overall_score | Trung bình điểm các hạng mục v1 |
+| grade | `A` \| `B` \| `C` \| `D` |
+| details | Ngũ Hành Nạp Âm, Nhật Chủ, Địa Chi, Thiên Can |
+
+## Response 200 — v2 (`relationship_type` có giá trị)
+
+```json
+{
+  "status": "success",
+  "version": 2,
+  "relationship_type": "PHU_THE",
+  "relationship_label": "Phu Thê",
+  "person1": {
+    "birth_date": "1990-05-15",
+    "menh": "Lộ Bàng Thổ",
+    "hanh": "Thổ",
+    "nhatChu": "Đinh Hỏa",
+    "gender": 1
+  },
+  "person2": { "...": "..." },
+  "verdict": "Tương hợp",
+  "verdict_level": 2,
+  "criteria": [
+    {
+      "name": "Ngũ Hành Nạp Âm",
+      "sentiment": "positive",
+      "description": "..."
+    }
+  ],
+  "reading": "...",
+  "advice": "..."
+}
+```
+
+| Field | Mô tả |
+|---|---|
+| version | Luôn `2` |
+| verdict | Nhãn kết luận tiếng Việt (ví dụ `Rất tương hợp`, `Tương hợp`, `Cần lưu ý`, `Nhiều thử thách`) |
+| verdict_level | `1` (tốt nhất) … `4` (khó khăn nhất) — map với `verdict` |
+| criteria | Mỗi phần tử: `name` (nhãn tiêu chí), `sentiment` (`positive` \| `neutral` \| `negative`), `description` (giải thích) |
+| reading / advice | Chuỗi luận giải và gợi ý; nội dung gốc lấy từ `docs/seed/hop-tuoi-readings.json` và ngữ cảnh từ các tiêu chí |
+
+### Tiêu chí v2 theo `relationship_type` (tên `name` trong `criteria`)
+
+Các tiêu chí sau xuất hiện theo đúng thứ tự và trọng số trong engine (`src/engine/hop_tuoi.py`); bảng này để client biết trước có những mục nào.
+
+| relationship_type | Các key tiêu chí (theo thứ tự) |
+|---|---|
+| PHU_THE | nap_am, luc_hop, tam_hop, dia_chi_xung, thien_can, nhat_chu, thap_than_spouse, phu_the_gioi_tinh |
+| DOI_TAC | nap_am, nhat_chu, dung_than_bo_tro, dia_chi_xung, thien_can |
+| SEP_NHAN_VIEN | nap_am_directed, nhat_chu_directed, cuong_nhuoc_pair, thien_can_directed |
+| DONG_NGHIEP | nhat_chu, dia_chi_xung, thien_can, nap_am |
+| BAN_BE | dia_chi_harmony, nap_am, nhat_chu |
+| PHU_TU | nap_am_directed, dia_chi_xung, thien_can_directed |
+| ANH_CHI_EM | nap_am, dia_chi_xung, nhat_chu |
+| THAY_TRO | nhat_chu_directed, dung_than_bo_tro, cuong_nhuoc_pair |
+
+**Lưu ý:**
+
+- `thap_than_spouse`, `dung_than_bo_tro`, `cuong_nhuoc_pair` cần **đủ** `birth_time` hai người (có Tứ Trụ); thiếu giờ → tiêu chí đó thường trả `neutral` với mô tả “cần giờ sinh…”.
+- `phu_the_gioi_tinh` (Phu Thê): cần **cả** `person1_gender` và `person2_gender` (`1` / `-1`) mới phân loại tích cực theo cặp nam/nữ truyền thống; thiếu một bên hoặc cùng mã giới → `neutral`.
+
+## Error Responses (Hợp Tuổi)
+
+| HTTP | error_code | When |
+|---|---|---|
+| 400 | INVALID_INPUT | Sai định dạng ngày, giờ, giới, `relationship_type` không hợp lệ, v.v. |
+| 401 | UNAUTHORIZED | Thiếu / sai API key |
+| 429 | RATE_LIMITED | Vượt hạn mức |
+| 500 | INTERNAL_ERROR | Lỗi máy chủ |
