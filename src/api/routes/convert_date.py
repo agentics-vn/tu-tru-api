@@ -29,7 +29,7 @@ LUNAR_MONTH_NAMES = [
 
 
 @router.get("")
-@router.get("/")
+@router.get("/", include_in_schema=False)
 async def convert_date(
     solar: Optional[str] = Query(
         None,

@@ -4,7 +4,8 @@ dai_van.py — Phase 5: Đại Vận (10-Year Luck Cycles / 大运).
 Calculates the series of 10-year luck pillars that modulate a person's
 overall fortune across their lifetime.
 
-Source of truth: docs/algorithm.md §21
+起运 (starting age) uses only the twelve 节 (month-boundary terms), not the
+twelve 气 — see docs/algorithm.md §17.
 """
 
 from __future__ import annotations
@@ -12,7 +13,7 @@ from __future__ import annotations
 from datetime import date as dt_date
 from datetime import timedelta
 
-from engine.bazi_solar import DEFAULT_TZ, has_jie_qi
+from engine.bazi_solar import DEFAULT_TZ, solar_apparent_longitude_deg, solar_term_bucket
 from engine.can_chi import CAN_NAMES, CHI_NAMES, CAN_HANH, NAP_AM_HANH, get_nap_am_pair_idx
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -46,68 +47,71 @@ def get_dai_van_direction(year_can_idx: int, gender: int) -> int:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Starting age calculation
+# Starting age calculation (节 only — not 气)
 # ─────────────────────────────────────────────────────────────────────────────
+
+def _term_bucket_on_date(day: dt_date, tz: float = DEFAULT_TZ) -> int:
+    lam = solar_apparent_longitude_deg(day.day, day.month, day.year, tz)
+    return solar_term_bucket(lam)
+
+
+def _is_first_calendar_day_of_jie(day: dt_date, tz: float = DEFAULT_TZ) -> bool:
+    """
+    True if `day` is the first civil day of a new 15° segment that is 节.
+
+    24 terms alternate 节 / 气. With bucket = int((λ mod 360) / 15) % 24,
+    节 correspond to odd buckets (立春=21, 惊蛰=23, 清明=1, …), 气 to even.
+    """
+    prev = day - timedelta(days=1)
+    b0 = _term_bucket_on_date(prev, tz)
+    b1 = _term_bucket_on_date(day, tz)
+    if b0 == b1:
+        return False
+    return b1 % 2 == 1
+
+
+def _next_jie_date(birth: dt_date, tz: float = DEFAULT_TZ) -> dt_date | None:
+    """Strictly after birth: first 节 boundary day."""
+    for delta in range(1, 400):
+        d = birth + timedelta(days=delta)
+        if _is_first_calendar_day_of_jie(d, tz):
+            return d
+    return None
+
+
+def _prev_jie_date(birth: dt_date, tz: float = DEFAULT_TZ) -> dt_date | None:
+    """Strictly before birth: nearest prior 节 boundary day."""
+    for delta in range(1, 500):
+        d = birth - timedelta(days=delta)
+        if _is_first_calendar_day_of_jie(d, tz):
+            return d
+    return None
+
 
 def _get_start_age(birth_date: str, direction: int) -> float:
     """
-    Calculate the starting age of the first Đại Vận.
+    Calculate the starting age of the first Đại Vận (起运岁数).
 
     Rules:
-    - Forward direction: count days from birth to NEXT Tiết Khí (solar term)
-    - Backward direction: count days from PREVIOUS Tiết Khí to birth
-    - Divide by 3 = starting age (in years)
-    - Round to nearest integer, minimum 1
+    - Forward (顺): days from birth to the **next** 节 (exclusive of same-day 节)
+    - Backward (逆): days from the **previous** 节 to birth
+    - Three days ≈ one year of virtual age → round(days / 3), minimum 1
 
-    Uses lich_hnd-based solar longitude (24 tiết, 15° steps).
+    Uses solar longitude (lich_hnd); only 节 count — not mid-month 气.
     """
     parts = birth_date.split("-")
     y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
-
     birth = dt_date(y, m, d)
     tz = DEFAULT_TZ
 
-    prev_jq_date = None
-    next_jq_date = None
-
-    for delta in range(-45, 46):
-        try:
-            check_date = birth + timedelta(days=delta)
-        except OverflowError:
-            continue
-
-        if has_jie_qi(check_date.year, check_date.month, check_date.day, tz):
-            jq_date = check_date
-            if jq_date < birth:
-                prev_jq_date = jq_date
-            elif jq_date > birth:
-                if next_jq_date is None:
-                    next_jq_date = jq_date
-            # Birth date itself on a Jie Qi
-            elif jq_date == birth:
-                if direction == 1:
-                    # Forward: this counts as 0 days to next term
-                    # But we should find the NEXT term after this one
-                    continue
-                else:
-                    prev_jq_date = jq_date
-
     if direction == 1:
-        # Forward: days from birth to next Jie Qi
-        if next_jq_date:
-            days_diff = (next_jq_date - birth).days
-        else:
-            days_diff = 15  # fallback
+        nxt = _next_jie_date(birth, tz)
+        days_diff = (nxt - birth).days if nxt else 15
     else:
-        # Backward: days from previous Jie Qi to birth
-        if prev_jq_date:
-            days_diff = (birth - prev_jq_date).days
-        else:
-            days_diff = 15  # fallback
+        prv = _prev_jie_date(birth, tz)
+        days_diff = (birth - prv).days if prv else 15
 
-    # Divide by 3, round to nearest integer, minimum 1
-    start_age = max(1, round(days_diff / 3))
-    return start_age
+    return max(1, round(days_diff / 3))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -192,17 +196,15 @@ def get_current_dai_van(
     if current_date is None:
         current_date = dt_date.today().isoformat()
 
-    # Calculate current age
     birth_parts = birth_date.split("-")
-    birth_y = int(birth_parts[0])
     cur_parts = current_date.split("-")
-    cur_y = int(cur_parts[0])
-    cur_m = int(cur_parts[1])
-    birth_m = int(birth_parts[1])
+    birth_d = dt_date(
+        int(birth_parts[0]), int(birth_parts[1]), int(birth_parts[2])
+    )
+    cur_d = dt_date(int(cur_parts[0]), int(cur_parts[1]), int(cur_parts[2]))
 
-    # Approximate age
-    age = cur_y - birth_y
-    if cur_m < birth_m:
+    age = cur_d.year - birth_d.year
+    if (cur_d.month, cur_d.day) < (birth_d.month, birth_d.day):
         age -= 1
 
     cycles = get_dai_van(tu_tru, gender, birth_date)

@@ -176,7 +176,7 @@ _READING_TEMPLATES: dict[str, dict] = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 @router.get("")
-@router.get("/")
+@router.get("/", include_in_schema=False)
 async def tieu_van(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),

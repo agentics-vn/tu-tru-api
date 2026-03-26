@@ -78,7 +78,7 @@ def _get_good_and_avoid(day_info: dict, user_chart: dict) -> tuple[list[str], li
 
 
 @router.get("")
-@router.get("/")
+@router.get("/", include_in_schema=False)
 async def day_detail_endpoint(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None),

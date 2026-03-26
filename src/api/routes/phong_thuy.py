@@ -124,7 +124,7 @@ VAT_PHAM_BY_HANH: dict[str, list[dict]] = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 @router.get("")
-@router.get("/")
+@router.get("/", include_in_schema=False)
 async def phong_thuy_endpoint(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh"),

@@ -280,6 +280,15 @@ class TestDaiVan:
         # Either way, function should not crash
         assert current is None or isinstance(current, dict)
 
+    def test_qi_yun_skips_qi_uses_next_jie(self):
+        """起运顺排: giữa hai 节 phải bỏ qua 气 (ví dụ 雨水), lấy 节 kế tiếp."""
+        # 2024-02-10: sau Lập Xuân → năm Giáp (Dương), nam → thuận.
+        # Tiết kế tiếp trên lịch là 雨水 (~20/02) nhưng chỉ 节 mới tính → Kinh Trập 06/03.
+        # (06-02-10).days = 25 → round(25/3) = 8.
+        tu_tru = get_tu_tru("2024-02-10", 8)
+        cycles = get_dai_van(tu_tru, 1, "2024-02-10", num_cycles=1)
+        assert cycles[0]["start_age"] == 8
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Integration: calendar_service with full Tứ Trụ

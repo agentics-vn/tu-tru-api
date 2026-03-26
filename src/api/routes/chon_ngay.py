@@ -351,7 +351,7 @@ def _build_bat_tu_summary(user_chart: dict) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 
 @router.post("")
-@router.post("/")
+@router.post("/", include_in_schema=False)
 async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
     try:
         from api.tz import today_in_tz

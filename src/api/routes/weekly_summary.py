@@ -37,7 +37,7 @@ _DEFAULT_RULE = _INTENT_RULES.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao":
 
 
 @router.get("")
-@router.get("/")
+@router.get("/", include_in_schema=False)
 async def weekly_summary(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh"),

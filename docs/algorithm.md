@@ -853,3 +853,37 @@ function getGioHoangDao(dayChiIdx) {
   return dayChiIdx % 2 === 0 ? GOOD_HOURS_EVEN : GOOD_HOURS_ODD
 }
 ```
+
+---
+
+## 17. ĐẠI VẬN (大运) — 10-Year Luck Cycles
+
+Used when Tứ Trụ + gender are known (`engine/dai_van.py`).
+
+### 17.1 Hướng đại vận (顺 / 逆)
+
+Theo **Can năm** (Dương = Giáp Bính Mậu Canh Nhâm) và **giới tính**:
+
+- **Nam (1):** Can năm Dương → thuận (+1); Can năm Âm → nghịch (−1).
+- **Nữ (−1):** Ngược lại nam.
+
+### 17.2 Trụ bắt đầu
+
+Mỗi bước đại vận: từ **Nguyệt trụ** (月柱), cùng bước nhịp **Thiên Can** và **Địa Chi** theo hướng (một bước trong chuỗi 60 Giáp Tý).
+
+### 17.3 Tuổi khởi vận (起运)
+
+- **Thuận:** đếm **ngày dương lịch** từ ngày sinh đến **ngày bắt đầu tiết 节 kế tiếp** (sau ngày sinh, không tính trùng ngày nếu sinh đúng ngày đổi 节).
+- **Nghịch:** đếm ngày từ **ngày bắt đầu tiết 节 liền trước** đến ngày sinh.
+
+**Chỉ dùng mười hai 节** (ranh giới tháng tiết: Lập Xuân, Kinh Trập, Thanh Minh, …). **Không** dùng mười hai 气 (Vũ Thủy, Xuân Phân, Cốc Vũ, …).
+
+Công thức gần đúng phổ biến: `ba ngày ≈ một năm khởi vận` → `tuổi_khởi_vận = max(1, round(số_ngày / 3))`.
+
+Xác định 节 trên lịch: dùng kinh độ Mặt Trời (24 tiết, mỗi 15°). Với bucket `b = floor((λ mod 360°) / 15°) mod 24`, các **节** ứng với bucket **lẻ** (1, 3, …, 21, 23) trong ánh xạ cùng `bazi_solar.solar_term_bucket`.
+
+### 17.4 Chu kỳ hiện tại
+
+So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật trong năm dương) với khoảng `[start_age, end_age]` của từng đại vận (`start_age` của vận 1 = tuổi khởi vận; mỗi vận 10 năm).
+
+**Ghi chú:** Hiện tại tuổi khởi vận chỉ theo **ngày** sinh (không tinh chỉnh theo **giờ** sinh); một số phái lịch tính theo giờ — có thể mở rộng sau.

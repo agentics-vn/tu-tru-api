@@ -31,7 +31,7 @@ from engine.can_chi import (
 )
 from engine.dung_than import find_dung_than
 from engine.thap_than import analyze_thap_than
-from engine.dai_van import get_dai_van, get_current_dai_van
+from engine.dai_van import get_current_dai_van, get_dai_van, get_dai_van_direction
 
 logger = logging.getLogger("tu_tru")
 
@@ -99,7 +99,7 @@ def _build_pillar_display(pillar: dict) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 
 @router.post("")
-@router.post("/")
+@router.post("/", include_in_schema=False)
 async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
     try:
         bd = parse_dmy(req.birth_date)
@@ -194,9 +194,10 @@ async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
 
                 cycles = get_dai_van(tu_tru, req.gender, birth_date_str)
                 current = get_current_dai_van(tu_tru, req.gender, birth_date_str)
+                dir_step = get_dai_van_direction(tu_tru["year"]["can_idx"], req.gender)
 
                 result["dai_van"] = {
-                    "direction": "thuận" if cycles else "nghịch",
+                    "direction": "thuận" if dir_step == 1 else "nghịch",
                     "current": (
                         {
                             "display": current["display"],

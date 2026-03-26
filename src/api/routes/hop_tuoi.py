@@ -13,7 +13,7 @@ from typing import Optional
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 from api.errors import error_response
 from api.parse_date import parse_dmy
@@ -60,7 +60,14 @@ class HopTuoiRequest(BaseModel):
     person2_birth_date: str
     person2_birth_time: Optional[int] = None
     person2_gender: Optional[int] = None
-    relationship_type: Optional[str] = None
+    relationship_type: Optional[str] = Field(
+        default=None,
+        description=(
+            "Để trống → phản hồi v1 (`version: 1`, điểm + grade). "
+            "Một trong: PHU_THE, DOI_TAC, SEP_NHAN_VIEN, DONG_NGHIEP, BAN_BE, "
+            "PHU_TU, ANH_CHI_EM, THAY_TRO → v2 (`version: 2`, verdict, criteria, …)."
+        ),
+    )
 
     @field_validator("person1_birth_date", "person2_birth_date")
     @classmethod
@@ -210,8 +217,17 @@ def _compute_compatibility_v1(p1: dict, p2: dict) -> dict:
 # POST /v1/hop-tuoi
 # ─────────────────────────────────────────────────────────────────────────────
 
-@router.post("")
-@router.post("/")
+@router.post(
+    "",
+    summary="Hợp tuổi — v1 (điểm) hoặc v2 (luận theo quan hệ)",
+    description=(
+        "**v1 (mặc định):** không gửi `relationship_type` → `version: 1`, điểm tổng và `grade`.\n\n"
+        "**v2:** gửi `relationship_type` (ví dụ `PHU_THE`, `DOI_TAC`) → `version: 2`, "
+        "`verdict`, `criteria`, `reading`, `advice`. "
+        "Xem `docs/api-spec.md` và body schema `relationship_type`."
+    ),
+)
+@router.post("/", include_in_schema=False)
 async def hop_tuoi_endpoint(req: HopTuoiRequest) -> JSONResponse:
     try:
         p1 = _build_person_info(req.person1_birth_date, req.person1_birth_time, req.person1_gender)

@@ -47,7 +47,7 @@ def get_profile(profile_id: str) -> dict | None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 @router.post("")
-@router.post("/")
+@router.post("/", include_in_schema=False)
 async def save_profile(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh"),
