@@ -428,6 +428,7 @@ class TestTuTru:
         assert data["menh"]["nap_am_name"] == "Hải Trung Kim"
         assert "_note" in data
         assert "pillars" not in data
+        assert "element_counts" not in data
 
     def test_full_with_birth_time(self):
         """With birth_time, returns full Tứ Trụ analysis."""
@@ -452,6 +453,11 @@ class TestTuTru:
         assert "ky_than" in data
         assert "cuu_than" in data
         assert "thap_than" in data
+        ec = data["element_counts"]
+        assert set(ec.keys()) == {"Kim", "Mộc", "Thủy", "Hỏa", "Thổ"}
+        assert all(isinstance(ec[k], (int, float)) for k in ec)
+        assert "support_ratio" in data
+        assert 0.0 <= data["support_ratio"] <= 1.0
 
     def test_pillar_structure(self):
         """Each pillar should have can_chi, can, chi, nap_am."""

@@ -146,9 +146,12 @@ async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
                 "hanh": nhat_chu["hanh"],
             }
 
-            # Dụng Thần analysis
+            # Dụng Thần analysis (reuse analysis — same source as GET /v1/la-so _raw)
             dung_than_result = find_dung_than(tu_tru)
+            strength_analysis = dung_than_result["analysis"]
             result["chart_strength"] = dung_than_result["strength"]
+            result["element_counts"] = strength_analysis["element_counts"]
+            result["support_ratio"] = strength_analysis["support_ratio"]
             result["dung_than"] = {
                 "element": dung_than_result["dung_than"],
                 "description": "Nguyên tố hỗ trợ tốt nhất cho lá số",

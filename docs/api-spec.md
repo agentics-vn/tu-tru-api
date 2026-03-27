@@ -163,7 +163,7 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
 
 **Notes:**
 - `birth_time` omitted → chỉ trả về Mệnh Nạp Âm (year-level info)
-- `birth_time` provided → trả đầy đủ Tứ Trụ, Dụng Thần, Thập Thần
+- `birth_time` provided → trả đầy đủ Tứ Trụ, Dụng Thần, Thập Thần, **`element_counts`** (trọng số ngũ hành — cùng nguồn với `GET /v1/la-so` → `_raw.element_counts`) và **`support_ratio`** (0–1). Để hiển thị %: chia mỗi hành cho tổng các trọng số rồi nhân 100.
 - `gender` provided (+ birth_time) → thêm Đại Vận (10-year luck cycles)
 - `birth_year_can_chi` và `menh` (Nạp Âm) tính theo **năm Can Chi Bát Tự** (ranh giới **Lập Xuân**, cùng quy ước trụ Năm trong Tứ Trụ): sinh trước Lập Xuân vẫn thuộc năm Can Chi của năm dương lịch trước.
 
@@ -197,7 +197,15 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
     "can_name": "Đinh",
     "hanh": "Hỏa"
   },
-  "chart_strength": "weak",
+  "element_counts": {
+    "Kim": 1.2,
+    "Mộc": 2.0,
+    "Thủy": 2.5,
+    "Hỏa": 0.8,
+    "Thổ": 1.5
+  },
+  "support_ratio": 0.38,
+  "chart_strength": "nhược",
   "dung_than": {
     "element": "Mộc",
     "description": "Nguyên tố hỗ trợ tốt nhất cho lá số"
