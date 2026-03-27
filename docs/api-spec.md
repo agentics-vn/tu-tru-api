@@ -267,6 +267,106 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
 
 ---
 
+# API Spec — GET /v1/la-so
+
+Lá số **diễn giải có cấu trúc**: cùng nguồn tính toán với Tứ Trụ (`get_tu_tru`, cường nhược, Dụng Thần, Thập Thần, Đại Vận) nhưng trả object đã gắn **nhãn ngữ nghĩa** (archetype Nhật Chủ, gợi ý sự nghiệp/tài/sức khỏe, tín hiệu tình duyên…) để App hoặc Supabase Edge Function đưa vào LLM tạo văn xuôi. **Không** gọi LLM trong API này.
+
+**Khác POST /v1/tu-tru:** `birth_time` **bắt buộc** (không đủ trụ thì không diễn giải). `gender` tuỳ chọn: có `1` / `-1` thì thêm `tinh_duyen` và `dai_van_current`.
+
+## Request (query)
+
+| Param | Required | Type | Description |
+|---|---|---|---|
+| birth_date | Yes | string | `dd/mm/yyyy`, quá khứ, năm ≥ 1900 |
+| birth_time | Yes | int | Giờ sinh (dropdown giống Tứ Trụ) |
+| gender | No | int | `1` nam \| `-1` nữ |
+
+## Response 200 (rút gọn — cấu trúc chính)
+
+```json
+{
+  "status": "success",
+  "birth_date": "1990-05-15",
+  "birth_time": 8,
+  "gender": 1,
+  "tinh_cach": {
+    "archetype": "Ngọn nến",
+    "image": "...",
+    "core_traits": ["..."],
+    "element": "Hỏa",
+    "polarity": "Âm",
+    "strength": "vượng",
+    "strength_note": "..."
+  },
+  "su_nghiep": {
+    "dominant_thap_than": "Chính Tài",
+    "dominant_thap_than_key": "chinh_tai",
+    "career_tendency": "...",
+    "suitable_fields": ["..."],
+    "wealth_style": "...",
+    "wealth_risk": "...",
+    "dung_than_element": "Thủy",
+    "element_tip": "..."
+  },
+  "tai_van": {
+    "wealth_style": "...",
+    "wealth_risk": "...",
+    "dung_than": "Thủy",
+    "hi_than": "Kim",
+    "ky_than": "Thổ"
+  },
+  "suc_khoe": {
+    "dm_element": "Hỏa",
+    "dm_strength": "vượng",
+    "organ": "...",
+    "risk_when_weak": "...",
+    "risk_when_strong": "...",
+    "health_context": "risk_when_strong",
+    "boost_element": "Thủy",
+    "avoid_element": "Thổ"
+  },
+  "tinh_duyen": {
+    "spouse_star": "Chính Tài (vợ)",
+    "spouse_presence": 0,
+    "affair_presence": 0,
+    "dm_strength": "vượng",
+    "signals": {
+      "strong_spouse": false,
+      "multiple_affair": false,
+      "weak_dm_needs_support": false,
+      "strong_dm_dominant": true
+    }
+  },
+  "dai_van_current": {
+    "display": "Giáp Thân",
+    "hanh": "Mộc",
+    "nap_am_hanh": "Thủy",
+    "age_range": "28-37"
+  },
+  "_raw": {
+    "tu_tru_display": "...",
+    "element_counts": {},
+    "support_ratio": 0.0,
+    "thap_than_profile": { "year": "...", "month": "...", "hour": "..." },
+    "god_counts": {}
+  }
+}
+```
+
+- `tinh_duyen` và `dai_van_current` chỉ có khi client gửi `gender`.
+- `_raw` dùng thêm ngữ cảnh kỹ thuật cho bước LLM (không bắt buộc hiển thị user).
+
+## Error Responses (Lá số)
+
+| HTTP | error_code | When |
+|---|---|---|
+| 400 | INVALID_INPUT | Thiếu/thời gian không hợp lệ, `birth_time` sai enum |
+| 401 | UNAUTHORIZED | API key |
+| 429 | RATE_LIMITED | Quota |
+| 500 | INTERNAL_ERROR | Lỗi máy chủ |
+
+---
+
 # API Spec — POST /v1/hop-tuoi
 
 So khớp tuổi / hợp tuổi giữa hai người. Một endpoint, hai chế độ trả lời:
