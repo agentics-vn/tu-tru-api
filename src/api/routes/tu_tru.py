@@ -19,6 +19,7 @@ from pydantic import BaseModel, field_validator
 
 from api.parse_date import parse_dmy
 
+from engine.bazi_solar import bazi_cycle_year
 from engine.pillars import get_tu_tru, VALID_BIRTH_HOURS, BIRTH_HOUR_LABELS
 from engine.can_chi import (
     CAN_NAMES,
@@ -26,7 +27,7 @@ from engine.can_chi import (
     NAP_AM_HANH,
     NAP_AM_NAMES,
     get_can_chi_year,
-    get_menh_nap_am,
+    get_menh_nap_am_from_date,
     get_nap_am_pair_idx,
 )
 from engine.dung_than import find_dung_than
@@ -107,8 +108,9 @@ async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
         birth_year = bd.year
 
         # ── Year-level info (always available) ──────────────────────────
-        year_cc = get_can_chi_year(birth_year)
-        menh = get_menh_nap_am(birth_year)
+        cycle_y = bazi_cycle_year(bd.year, bd.month, bd.day)
+        year_cc = get_can_chi_year(cycle_y)
+        menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day)
 
         result: dict = {
             "status": "success",

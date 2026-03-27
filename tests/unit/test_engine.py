@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 import pytest
 
 from engine.can_chi import (
+    get_menh_nap_am_from_date,
     get_can_chi_day,
     get_can_chi_year,
     get_menh_nap_am,
@@ -161,6 +162,18 @@ class TestGetMenhNapAm:
 
     def test_2026_ky_than(self):
         assert get_menh_nap_am(2026)["ky_than"] == "Thổ"
+
+    def test_nap_am_from_date_before_lichun_1956(self):
+        """Trước Lập Xuân 1956 vẫn thuộc năm trụ Ất Mùi → Sa Trung Kim."""
+        m = get_menh_nap_am_from_date(1956, 1, 6)
+        assert m["name"] == "Sa Trung Kim"
+        assert m["hanh"] == "Kim"
+
+    def test_nap_am_from_date_after_lichun_1956(self):
+        """Sau Lập Xuân → Bính Thân → Sơn Hạ Hỏa."""
+        m = get_menh_nap_am_from_date(1956, 6, 1)
+        assert m["name"] == "Sơn Hạ Hỏa"
+        assert m["hanh"] == "Hỏa"
 
 
 # ─────────────────────────────────────────────────────────────────────────────

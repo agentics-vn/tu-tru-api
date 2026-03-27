@@ -165,6 +165,7 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
 - `birth_time` omitted → chỉ trả về Mệnh Nạp Âm (year-level info)
 - `birth_time` provided → trả đầy đủ Tứ Trụ, Dụng Thần, Thập Thần
 - `gender` provided (+ birth_time) → thêm Đại Vận (10-year luck cycles)
+- `birth_year_can_chi` và `menh` (Nạp Âm) tính theo **năm Can Chi Bát Tự** (ranh giới **Lập Xuân**, cùng quy ước trụ Năm trong Tứ Trụ): sinh trước Lập Xuân vẫn thuộc năm Can Chi của năm dương lịch trước.
 
 ## Response 200 — Full (birth_time + gender)
 ```json

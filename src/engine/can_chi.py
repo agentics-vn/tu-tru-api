@@ -9,6 +9,8 @@ All functions are pure — no side effects, no I/O.
 
 from __future__ import annotations
 
+from engine.bazi_solar import DEFAULT_TZ, bazi_cycle_year
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. LOOKUP TABLES
 # ─────────────────────────────────────────────────────────────────────────────
@@ -166,13 +168,7 @@ def get_nap_am_pair_idx(can_idx: int, chi_idx: int) -> int:
     return cycle_pos // 2
 
 
-def get_menh_nap_am(birth_year: int) -> dict:
-    """
-    Nạp Âm mệnh for a birth year.
-
-    Returns dict with keys: hanh, name, duong_than, ky_than
-    """
-    cc = get_can_chi_year(birth_year)
+def _menh_nap_am_from_can_chi(cc: dict) -> dict:
     pair_idx = get_nap_am_pair_idx(cc["can_idx"], cc["chi_idx"])
     hanh = NAP_AM_HANH[pair_idx]
     return {
@@ -181,6 +177,38 @@ def get_menh_nap_am(birth_year: int) -> dict:
         "duong_than": DUONG_THAN[hanh],
         "ky_than": KY_THAN[hanh],
     }
+
+
+def get_menh_nap_am_from_date(
+    year: int,
+    month: int,
+    day: int,
+    tz: float | None = None,
+) -> dict:
+    """
+    Nạp Âm mệnh theo **năm Can Chi Bát Tự** (ranh giới Lập Xuân).
+
+    Trước Lập Xuân của năm dương lịch ``year`` → thuộc năm trụ ``year - 1``
+    (cùng quy ước ``bazi_cycle_year`` / trụ Năm trong ``get_tu_tru``).
+
+    Returns dict with keys: hanh, name, duong_than, ky_than
+    """
+    t = DEFAULT_TZ if tz is None else tz
+    cycle_y = bazi_cycle_year(year, month, day, t)
+    cc = get_can_chi_year(cycle_y)
+    return _menh_nap_am_from_can_chi(cc)
+
+
+def get_menh_nap_am(birth_year: int) -> dict:
+    """
+    Nạp Âm mệnh chỉ từ **số năm dương lịch** (coi Can Chi năm = ``get_can_chi_year(birth_year)``).
+
+    Không dùng cho hiển thị mệnh người sinh khi chỉ biết năm: trước Lập Xuân,
+    mệnh thuộc năm trụ trước — dùng :func:`get_menh_nap_am_from_date`.
+    Giữ hàm này cho tương thích & test vector theo năm.
+    """
+    cc = get_can_chi_year(birth_year)
+    return _menh_nap_am_from_can_chi(cc)
 
 
 def is_xung(chi_a: int, chi_b: int) -> bool:

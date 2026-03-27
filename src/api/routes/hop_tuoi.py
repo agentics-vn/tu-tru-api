@@ -17,7 +17,8 @@ from pydantic import BaseModel, Field, field_validator
 
 from api.errors import error_response
 from api.parse_date import parse_dmy
-from engine.can_chi import CAN_HANH, get_can_chi_year, get_menh_nap_am
+from engine.bazi_solar import bazi_cycle_year
+from engine.can_chi import CAN_HANH, get_can_chi_year, get_menh_nap_am_from_date
 from engine.dung_than import KHAC_BY, KHAC_TARGET, SINH_BY, SINH_TARGET
 from engine.hop_tuoi import RELATIONSHIP_TYPES, analyze_compatibility
 from engine.pillars import VALID_BIRTH_HOURS, get_tu_tru
@@ -111,8 +112,9 @@ class HopTuoiRequest(BaseModel):
 def _build_person_info(bd_str: str, birth_time: Optional[int], gender: Optional[int]) -> dict:
     """Internal dict for v1 + v2 (includes indices and optional tu_tru)."""
     bd = parse_dmy(bd_str)
-    year_cc = get_can_chi_year(bd.year)
-    menh = get_menh_nap_am(bd.year)
+    cycle_y = bazi_cycle_year(bd.year, bd.month, bd.day)
+    year_cc = get_can_chi_year(cycle_y)
+    menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day)
 
     result: dict = {
         "birth_date": bd.isoformat(),

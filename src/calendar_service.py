@@ -10,6 +10,7 @@ from __future__ import annotations
 import calendar
 from typing import Optional
 
+from engine.bazi_solar import bazi_cycle_year
 from engine.can_chi import (
     CAN_NAMES,
     CHI_NAMES,
@@ -19,7 +20,7 @@ from engine.can_chi import (
     NAP_AM_NAMES,
     get_can_chi_day,
     get_can_chi_year,
-    get_menh_nap_am,
+    get_menh_nap_am_from_date,
     get_nap_am_pair_idx,
     is_can_khac,
     is_xung,
@@ -229,9 +230,11 @@ def get_user_chart(
     Returns:
         dict with keys matching what chon_ngay.py consumes.
     """
-    y = int(birth_date.split("-")[0])
-    year_cc = get_can_chi_year(y)
-    menh = get_menh_nap_am(y)
+    parts = birth_date.split("-")
+    y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+    cycle_y = bazi_cycle_year(y, m, d)
+    year_cc = get_can_chi_year(cycle_y)
+    menh = get_menh_nap_am_from_date(y, m, d)
 
     chart = {
         "birth_year": y,

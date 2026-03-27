@@ -16,7 +16,7 @@ from fastapi.responses import JSONResponse
 from api.errors import error_response
 from api.parse_date import parse_dmy
 from api.tz import today_in_tz
-from engine.can_chi import get_menh_nap_am
+from engine.can_chi import get_menh_nap_am_from_date
 from engine.dung_than import find_dung_than
 from engine.phi_tinh import PhiTinhSeedError, build_phi_tinh_payload
 from engine.pillars import VALID_BIRTH_HOURS, get_tu_tru
@@ -96,7 +96,7 @@ async def phong_thuy_endpoint(
                 message_vi=f"purpose phải là một trong: {allowed}",
             )
 
-        menh = get_menh_nap_am(bd.year)
+        menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day)
         tu_tru = None
         if birth_time is not None:
             tu_tru = get_tu_tru(bd.isoformat(), birth_time)
@@ -150,7 +150,7 @@ async def phong_thuy_endpoint(
                     "INVALID_INPUT",
                     message_vi="partner_birth_date phải là ngày quá khứ (năm >= 1900).",
                 )
-            pm = get_menh_nap_am(pbd.year)
+            pm = get_menh_nap_am_from_date(pbd.year, pbd.month, pbd.day)
             ch = build_couple_harmony(
                 menh["hanh"],
                 pm["hanh"],

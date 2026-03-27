@@ -98,6 +98,8 @@ Date          Result      Notes
 The Mệnh (Destiny Element) is determined by the year's Can + Chi using Nạp Âm method.
 This is NOT the same as the element of the Can or Chi individually.
 
+**Ranh giới năm (Bát Tự):** Can Chi **năm** dùng cho Nạp Âm mệnh phải trùng năm trụ trong Tứ Trụ — tức sau **Lập Xuân** (tiết khí ~4–5/2) mới đổi sang năm dương lịch mới; trước đó vẫn thuộc năm Can Chi của năm dương lịch trước. API: `get_menh_nap_am_from_date(y,m,d)`; `get_menh_nap_am(year)` chỉ là shortcut theo số năm (không dùng cho sinh đầu năm).
+
 ### Complete 60 Hoa Giáp → Ngũ Hành Mệnh
 ```javascript
 // Key: "can_index-chi_index", Value: ngu_hanh_menh
@@ -890,7 +892,7 @@ So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật 
 
 ## 18. Phong thủy API và Phi Tinh (GET /v1/phong-thuy, version 2)
 
-**Dụng Thần / Kỵ Thần / hướng–màu–số:** Khi không có `birth_time`, lấy Dương Thần / Kỵ Thần từ **Nạp Âm năm sinh** (`get_menh_nap_am`). Khi có `birth_time`, dùng `find_dung_than` trên Tứ Trụ. Gợi ý vật phẩm theo mục đích đọc từ `docs/seed/phong-thuy-purposes.json`; hóa giải cặp đôi (Nạp Âm tương khắc trực tiếp) từ `phong-thuy-couple-remedies.json`.
+**Dụng Thần / Kỵ Thần / hướng–màu–số:** Khi không có `birth_time`, lấy Dương Thần / Kỵ Thần từ **Nạp Âm năm sinh** (`get_menh_nap_am_from_date` theo ngày sinh, ranh giới Lập Xuân). Khi có `birth_time`, dùng `find_dung_than` trên Tứ Trụ. Gợi ý vật phẩm theo mục đích đọc từ `docs/seed/phong-thuy-purposes.json`; hóa giải cặp đôi (Nạp Âm tương khắc trực tiếp) từ `phong-thuy-couple-remedies.json`.
 
 **Phi Tinh (Cửu cung lưu niên):** Tính theo **năm dương lịch** tham số `year`. **Nhập trung:** mặc định neo năm 2024 = sao 3, mỗi năm giảm 1 (mod 9, 0 → 9); có thể ghi đè từng năm trong `docs/seed/phi-tinh-year-center.json` (chỉ số nhập trung 1–9). **Thuận / nghịch phi:** theo **can năm Gregorian** `(year - 4) % 10` chẵn → Dương can (thuận phi), lẻ → Âm can (nghịch phi) — **không** dùng tiết Lập Xuân hay năm âm lịch. Do đó có thể lệch một số bảng sách hoặc phần mềm khác.
 
