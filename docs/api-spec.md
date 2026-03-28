@@ -66,9 +66,7 @@
 |---|---|---|
 | 400 | INVALID_INPUT | Missing field / validation fail |
 | 400 | RANGE_TOO_LARGE | range > 90 days |
-| 401 | UNAUTHORIZED | Missing/invalid API key |
 | 422 | NO_DATES_FOUND | 0 dates passed all layers |
-| 429 | RATE_LIMITED | Over quota |
 | 500 | INTERNAL_ERROR | Unexpected server error |
 
 ```json
@@ -80,9 +78,7 @@
 ```
 
 ## Headers
-- `X-API-Key: <key>` — required on all requests
-- `X-RateLimit-Remaining: 94` — remaining calls today
-- `X-RateLimit-Reset: 1735689600` — Unix timestamp when quota resets
+- Không yêu cầu API key. Với POST JSON, dùng `Content-Type: application/json`.
 
 ---
 
@@ -270,8 +266,6 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
 | HTTP | error_code | When |
 |---|---|---|
 | 400 | INVALID_INPUT | Missing/invalid field |
-| 401 | UNAUTHORIZED | Missing/invalid API key |
-| 429 | RATE_LIMITED | Over quota |
 | 500 | INTERNAL_ERROR | Unexpected server error |
 
 ---
@@ -370,8 +364,6 @@ Lá số **diễn giải có cấu trúc**: cùng nguồn tính toán với Tứ
 | HTTP | error_code | When |
 |---|---|---|
 | 400 | INVALID_INPUT | Thiếu/thời gian không hợp lệ, `birth_time` sai enum |
-| 401 | UNAUTHORIZED | API key |
-| 429 | RATE_LIMITED | Quota |
 | 500 | INTERNAL_ERROR | Lỗi máy chủ |
 
 ---
@@ -525,8 +517,6 @@ Các tiêu chí sau xuất hiện theo đúng thứ tự và trọng số trong 
 | HTTP | error_code | When |
 |---|---|---|
 | 400 | INVALID_INPUT | Sai định dạng ngày, giờ, giới, `relationship_type` không hợp lệ, v.v. |
-| 401 | UNAUTHORIZED | Thiếu / sai API key |
-| 429 | RATE_LIMITED | Vượt hạn mức |
 | 500 | INTERNAL_ERROR | Lỗi máy chủ |
 
 ---

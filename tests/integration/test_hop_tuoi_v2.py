@@ -6,13 +6,12 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
-os.environ["BATTU_API_KEYS"] = "test-key:BASIC"
 
 from fastapi.testclient import TestClient
 
 from app import app
 
-client = TestClient(app, headers={"X-API-Key": "test-key"})
+client = TestClient(app)
 
 
 def test_hop_tuoi_v1_default():

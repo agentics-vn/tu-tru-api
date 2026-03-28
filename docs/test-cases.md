@@ -32,13 +32,12 @@ All 10 must pass before production deployment.
 - **Input:** intent: "BAO_GIO_CUNG_DUOC"
 - **Expect:** HTTP 400, error_code: INVALID_INPUT
 
-## TC-07 — No API key
-- **Input:** Valid body, no X-API-Key header
-- **Expect:** HTTP 401, error_code: UNAUTHORIZED
+## TC-07 — Không cần API key
+- **Input:** Valid body, không gửi `X-API-Key`
+- **Expect:** HTTP 200 (hoặc 4xx nghiệp vụ khác), **không** được 401 vì thiếu key
 
-## TC-08 — Rate limit
-- **Input:** 101 requests with same BASIC plan key in same day
-- **Expect:** 101st request → HTTP 429, error_code: RATE_LIMITED, header X-RateLimit-Remaining: 0
+## TC-08 — (Đã bỏ) Rate limit theo API key
+- Trước đây: giới hạn theo key. Ứng dụng không còn middleware API key / rate limit trong process — nếu cần hạn mức, đặt tại gateway (CDN, API gateway, Fly proxy).
 
 ## TC-09 — top_n respected
 - **Input:** top_n: 1, range: 90 days, any birth/intent

@@ -11,16 +11,12 @@ import os
 # Ensure src is importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
-# Configure auth for tests: set a known API key
-os.environ["BATTU_API_KEYS"] = "test-key:BASIC"
-
 import pytest
 from fastapi.testclient import TestClient
 
 from app import app
 
-# All requests include the test API key
-client = TestClient(app, headers={"X-API-Key": "test-key"})
+client = TestClient(app)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

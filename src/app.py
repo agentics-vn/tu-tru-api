@@ -23,7 +23,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from api.errors import error_response
-from api.middleware.auth import AuthMiddleware
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Sentry — error tracking (no-op when SENTRY_DSN is unset)
@@ -95,9 +94,6 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["X-API-Key", "Content-Type"],
 )
-
-# Auth + rate limiting
-app.add_middleware(AuthMiddleware)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
