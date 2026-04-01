@@ -35,7 +35,7 @@ from calendar_service import get_day_info, get_user_chart, get_month_info
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 1. getCanChiDay — anchored at 1900-01-31 = Giap Ty
+# 1. getCanChiDay — neo ANCHOR_JDN khớp vạn niên (1900-01-31 = Giáp Thìn)
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestGetCanChiDay:
@@ -46,27 +46,29 @@ class TestGetCanChiDay:
         return f"{r['can_name']} {r['chi_name']}"
 
     def test_anchor_1900_01_31(self):
-        assert self._cc_day(1900, 1, 31) == "Giáp Tý"
+        assert self._cc_day(1900, 1, 31) == "Giáp Thìn"
 
     def test_2000_01_01(self):
-        assert self._cc_day(2000, 1, 1) == "Mậu Dần"
+        assert self._cc_day(2000, 1, 1) == "Mậu Ngọ"
+
+    def test_2000_01_09_bing_yin(self):
+        """Regression: civic almanac = 丙寅 (bazi.vn / rili.com.cn)."""
+        assert self._cc_day(2000, 1, 9) == "Bính Dần"
 
     def test_2024_01_01(self):
-        assert self._cc_day(2024, 1, 1) == "Giáp Thân"
+        assert self._cc_day(2024, 1, 1) == "Giáp Tý"
 
     def test_2024_02_10_tet(self):
-        assert self._cc_day(2024, 2, 10) == "Giáp Tý"
+        assert self._cc_day(2024, 2, 10) == "Giáp Thìn"
 
     def test_2025_01_29_tet(self):
-        assert self._cc_day(2025, 1, 29) == "Mậu Ngọ"
+        assert self._cc_day(2025, 1, 29) == "Mậu Tuất"
 
     def test_2026_01_17_tet(self):
-        assert self._cc_day(2026, 1, 17) == "Tân Hợi"
+        assert self._cc_day(2026, 1, 17) == "Tân Mão"
 
     def test_2026_03_11(self):
-        # JS test had "Mậu Dần" but JDN math gives Giáp Thìn
-        # (offset=46060, can=0→Giáp, chi=4→Thìn). All other 6 vectors match.
-        assert self._cc_day(2026, 3, 11) == "Giáp Thìn"
+        assert self._cc_day(2026, 3, 11) == "Giáp Thân"
 
     def test_returns_all_keys(self):
         r = get_can_chi_day(2026, 3, 11)
@@ -468,7 +470,7 @@ class TestGetDayInfo:
 
     def test_2026_03_11_chi_name(self):
         info = get_day_info("2026-03-11")
-        assert info["day_chi_name"] == "Thìn"
+        assert info["day_chi_name"] == "Thân"
 
     def test_all_required_keys(self):
         info = get_day_info("2026-03-11")

@@ -118,8 +118,9 @@ def get_jdn(y: int, m: int, d: int) -> int:
     )
 
 
-# Anchor: 1900-01-31 = Giáp Tý
-ANCHOR_JDN = 2415051
+# Neo trụ ngày: khớp lịch dân dụng phổ biến (ví dụ 日历网).
+# 1900-01-31 = Giáp Thìn (甲辰), không phải Giáp Tý — xem docs/algorithm.md §2.
+ANCHOR_JDN = 2415011
 
 
 def get_can_chi_day(year: int, month: int, day: int) -> dict:

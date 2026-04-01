@@ -64,8 +64,9 @@ function getJDN(year, month, day) {
     - 32045
 }
 
-// Anchor: 1900-01-31 = Giáp Tý (JDN = 2415051)
-const ANCHOR_JDN = 2415051
+// Neo: ANCHOR_JDN sao cho 1900-01-31 = Giáp Thìn (甲辰), khớp lịch vạn niên dân dụng phổ biến.
+// JDN(1900-01-31) = 2415051; offset tại ngày neo = 40 → (2415051 - 40) = 2415011.
+const ANCHOR_JDN = 2415011
 
 function getCanChiDay(dateString) {
   // dateString: "YYYY-MM-DD"
@@ -81,15 +82,17 @@ function getCanChiDay(dateString) {
 ### Verified Test Vectors (machine-verified ✅ — do NOT change these)
 ```
 Date          Result      Notes
-1900-01-31    Giáp Tý     Anchor — offset 0
-1900-02-01    Ất Sửu      Anchor + 1
-2000-01-01    Mậu Dần     offset=36494, mod10=4(Mậu), mod12=2(Dần)
-2024-01-01    Giáp Thân   offset=45260, mod10=0(Giáp), mod12=8(Thân)
-2024-02-10    Giáp Tý     Mồng 1 Tết Giáp Thìn 2024
-2025-01-29    Mậu Ngọ     Mồng 1 Tết Ất Tỵ 2025
-2026-01-17    Tân Hợi     Mồng 1 Tết Bính Ngọ 2026
+1900-01-31    Giáp Thìn   Neo — khớp 日历网 / bazi.vn (甲辰日)
+1900-02-01    Ất Tỵ       +1 ngày dương
+2000-01-01    Mậu Ngọ     戊午
+2000-01-09    Bính Dần    丙寅 — regression civic almanac
+2024-01-01    Giáp Tý     甲子
+2024-02-10    Giáp Thìn   Mồng 1 Tết Giáp Thìn 2024 (甲辰日)
+2025-01-29    Mậu Tuất    Mồng 1 Tết Ất Tỵ 2025
+2026-01-17    Tân Mão     Mồng 1 Tết Bính Ngọ 2026
+2026-03-11    Giáp Thân   offset kiểm thử engine
 ```
-**Algorithm verified programmatically. SME spot-check 2–3 dates against physical lịch vạn niên.**
+**Neo cũ (Giáp Tý 31/01/1900) lệch 40 bước offset so với lịch thông dụng → trụ ngày sai một pha trên chu kỳ 60 ngày.**
 
 ---
 
@@ -719,32 +722,32 @@ Trả về toàn bộ thông tin cần thiết cho Layer 1, 2, 3.
 {
   date: '2026-03-11',
   // Can Chi
-  dayCanIdx: 4,          // Mậu
-  dayChiIdx: 2,          // Dần
-  dayCanName: 'Mậu',
-  dayChiName: 'Dần',
+  dayCanIdx: 0,          // Giáp
+  dayChiIdx: 8,          // Thân
+  dayCanName: 'Giáp',
+  dayChiName: 'Thân',
   // Lunar
-  lunarDay: 12,
-  lunarMonth: 2,
+  lunarDay: 23,
+  lunarMonth: 1,
   lunarYear: 2026,
   isLeapMonth: false,
   // 12 Trực
-  trucIdx: 3,            // Bình
-  trucName: 'Bình',
-  trucScore: 1,
+  trucIdx: 6,            // Phá
+  trucName: 'Phá',
+  trucScore: -2,
   // Sao ngày
   hasThienDuc: false,
   hasThienDucHop: false,
-  hasNguyetDuc: true,
+  hasNguyetDuc: false,
   hasNguyetDucHop: false,
-  napAmHanh: 'Thổ',      // Nạp âm ngũ hành của ngày (Mậu Dần = Thành Đầu Thổ)
+  napAmHanh: 'Thủy',     // Nạp âm ngày Giáp Thân = Tuyền Trung Thủy
   // Layer 1 flags (pre-computed)
-  isNguyetKy: false,
+  isNguyetKy: true,
   isTamNuong: false,
   isDuongCongKy: false,
-  isTrucPha: false,      // trucIdx === 6
+  isTrucPha: true,       // trucIdx === 6
   isTrucNguy: false,     // trucIdx === 7
-  isLayer1Pass: true,    // true = không bị loại ở Layer 1
+  isLayer1Pass: false,   // ví dụ: nguyệt kỵ / trực phá → không qua Layer 1
 }
 ```
 
