@@ -124,6 +124,8 @@ async def lich_thang(
             raise ValueError("Tháng phải có định dạng YYYY-MM")
         year = int(parts[0])
         month_num = int(parts[1])
+        if not (1900 <= year <= 2100):
+            raise ValueError("Năm phải trong khoảng 1900–2100")
         if not (1 <= month_num <= 12):
             raise ValueError("Tháng phải từ 01 đến 12")
 

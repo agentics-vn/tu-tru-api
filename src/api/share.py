@@ -5,8 +5,8 @@ Generates short, URL-safe HMAC-signed tokens that encode the request parameters
 needed to reproduce a result. The token is self-contained (no DB lookup required).
 
 Token format: base64url( JSON payload + "." + HMAC-SHA256 signature )
-The payload does NOT contain raw birth data — only a SHA-256 hash of it,
-so the shareable URL never exposes personal information.
+The payload contains the birth date (needed to replay the query) and a SHA-256
+hash of it for client-side verification. Treat share URLs as semi-private.
 """
 
 from __future__ import annotations
@@ -14,12 +14,21 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
+import logging
 import os
 import time
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 
-# Secret for signing tokens — must be set in production
-_SECRET = os.environ.get("SHARE_TOKEN_SECRET", "dev-secret-change-me").encode()
+_logger = logging.getLogger("bat_tu_api.share")
+
+_SECRET_RAW = os.environ.get("SHARE_TOKEN_SECRET", "")
+if not _SECRET_RAW:
+    _logger.warning(
+        "SHARE_TOKEN_SECRET is not set — using insecure default. "
+        "Set this env var in production to prevent token forgery."
+    )
+    _SECRET_RAW = "dev-secret-change-me"
+_SECRET = _SECRET_RAW.encode()
 
 # Token validity: 90 days
 TOKEN_TTL_SECONDS = 90 * 24 * 3600
