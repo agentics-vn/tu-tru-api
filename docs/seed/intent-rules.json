@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "2.0",
-    "total_intents": 26,
+    "total_intents": 28,
     "source_primary": "Ngọc Hạp Thông Thư (Hứa Chân Quân, bản Triều Nguyễn 1926)",
     "source_secondary": "xemvm.com, tuvikhoahoc.vn, lich365.net",
     "truc_index_map": {
@@ -261,6 +261,32 @@
     "bonus_sao": ["thienDuc", "nguyetDuc", "sinhKhi", "nguyetKhong"],
     "forbidden_sao": ["thoOn", "thoPhU", "thoCam", "cuuThoQuy", "nguyetKienChuyenSat", "thienDiaChuyenSat", "nguyetKy", "duongCongKy", "thienTac"],
     "_notes_vi": "Thổ Ôn đặc biệt kỵ đào giếng/ao — cùng nhóm sao đất với động thổ. Nguyệt Không tốt cho việc đào đất nước.",
+    "_sme_verified": false
+  },
+
+  "CAT_TOC": {
+    "_label_vi": "Cắt tóc / Làm tóc / Chăm sóc bản thân",
+    "_description": "Cắt tóc, uốn tóc, nhuộm tóc, cắt móng tay, chăm sóc ngoại hình cá nhân",
+    "preferred_truc": [1, 2, 3, 8],
+    "_preferred_truc_names": ["Trừ", "Mãn", "Bình", "Thành"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["sinhKhi", "thienDuc", "nguyetDuc", "thienAn", "thienPhuc"],
+    "forbidden_sao": ["thoTu", "nguyetKy", "duongCongKy", "thienCuong", "vatVong"],
+    "_notes_vi": "Trực Trừ ('trừ bỏ điều cũ') là trực TỐT NHẤT cho cắt tóc — ý nghĩa loại bỏ, làm mới bản thân. Sinh Khí tốt cho mọi việc liên quan đến sức khỏe và ngoại hình. Thọ Tử đại kỵ cho mọi việc liên quan đến thân thể.",
+    "_sme_verified": false
+  },
+
+  "XAM_MINH": {
+    "_label_vi": "Xăm mình / Xỏ khuyên",
+    "_description": "Xăm hình, xăm nghệ thuật, xỏ khuyên tai, xỏ khuyên thân thể",
+    "preferred_truc": [1, 8, 10],
+    "_preferred_truc_names": ["Trừ", "Thành", "Khai"],
+    "forbidden_truc": [6, 7, 9, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Thu", "Bế"],
+    "bonus_sao": ["sinhKhi", "thienDuc", "nguyetDuc", "thienAn"],
+    "forbidden_sao": ["thoTu", "mauThuong", "nguyetKy", "duongCongKy", "thienCuong", "nguyetSat", "vatVong"],
+    "_notes_vi": "Xăm mình đụng chạm đến da thịt và máu, nên khắt khe hơn cắt tóc. Mậu Thương (máu/vết thương) và Thọ Tử là hai sao TUYỆT ĐỐI tránh. Trực Thu kỵ vì nghĩa 'thu lại' — không tốt cho việc thêm vào thân thể vĩnh viễn. Nguyệt Sát đại kỵ cho mọi việc gây tổn thương thân thể.",
     "_sme_verified": false
   },
 

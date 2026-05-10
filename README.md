@@ -210,6 +210,8 @@ Ngày solar
 | `NHAP_HOC_THI_CU` | Nhập học / Thi cử | Học tập |
 | `KIEN_TUNG` | Kiện tụng | Pháp lý |
 | `TRONG_CAY` | Trồng cây | Nông nghiệp |
+| `CAT_TOC` | Cắt tóc / Làm tóc | Chăm sóc cá nhân |
+| `XAM_MINH` | Xăm mình / Xỏ khuyên | Chăm sóc cá nhân |
 | `MAC_DINH` | Sự kiện chung | Chung |
 
 `CUOI_HOI` là alias cho `DAM_CUOI` — cả hai đều được chấp nhận.
