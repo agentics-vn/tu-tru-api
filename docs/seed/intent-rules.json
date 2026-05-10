@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "2.0",
-    "total_intents": 26,
+    "total_intents": 27,
     "source_primary": "Ngọc Hạp Thông Thư (Hứa Chân Quân, bản Triều Nguyễn 1926)",
     "source_secondary": "xemvm.com, tuvikhoahoc.vn, lich365.net",
     "truc_index_map": {
@@ -261,6 +261,19 @@
     "bonus_sao": ["thienDuc", "nguyetDuc", "sinhKhi", "nguyetKhong"],
     "forbidden_sao": ["thoOn", "thoPhU", "thoCam", "cuuThoQuy", "nguyetKienChuyenSat", "thienDiaChuyenSat", "nguyetKy", "duongCongKy", "thienTac"],
     "_notes_vi": "Thổ Ôn đặc biệt kỵ đào giếng/ao — cùng nhóm sao đất với động thổ. Nguyệt Không tốt cho việc đào đất nước.",
+    "_sme_verified": false
+  },
+
+  "CAT_TOC": {
+    "_label_vi": "Cắt tóc / Làm tóc / Chăm sóc bản thân",
+    "_description": "Cắt tóc, uốn tóc, nhuộm tóc, cắt móng tay, chăm sóc ngoại hình cá nhân",
+    "preferred_truc": [1, 2, 3, 8],
+    "_preferred_truc_names": ["Trừ", "Mãn", "Bình", "Thành"],
+    "forbidden_truc": [6, 7, 11],
+    "_forbidden_truc_names": ["Phá", "Nguy", "Bế"],
+    "bonus_sao": ["sinhKhi", "thienDuc", "nguyetDuc", "thienAn", "thienPhuc"],
+    "forbidden_sao": ["thoTu", "nguyetKy", "duongCongKy", "thienCuong", "vatVong"],
+    "_notes_vi": "Trực Trừ ('trừ bỏ điều cũ') là trực TỐT NHẤT cho cắt tóc — ý nghĩa loại bỏ, làm mới bản thân. Sinh Khí tốt cho mọi việc liên quan đến sức khỏe và ngoại hình. Thọ Tử đại kỵ cho mọi việc liên quan đến thân thể.",
     "_sme_verified": false
   },
 

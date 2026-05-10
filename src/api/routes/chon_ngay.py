@@ -130,6 +130,8 @@ class IntentEnum(str, Enum):
     KIEN_TUNG = "KIEN_TUNG"
     # ── Nông nghiệp ──
     TRONG_CAY = "TRONG_CAY"
+    # ── Chăm sóc cá nhân ──
+    CAT_TOC = "CAT_TOC"
     # ── Mặc định ──
     MAC_DINH = "MAC_DINH"
 
