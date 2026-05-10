@@ -64,8 +64,7 @@ async def weekly_summary(
             return error_response(400, "INVALID_INPUT", message_vi="birth_date phải là ngày quá khứ (năm >= 1900).")
 
         birth_date_str = bd.isoformat()
-        gender_str = str(gender) if gender is not None else None
-        user_chart = get_user_chart(birth_date_str, birth_time, gender_str)
+        user_chart = get_user_chart(birth_date_str, birth_time, gender)
 
         intent_rule = _INTENT_RULES.get(intent, _DEFAULT_RULE)
         rule_key = intent

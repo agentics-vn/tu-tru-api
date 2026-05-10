@@ -29,6 +29,7 @@ router = APIRouter(tags=["profile"])
 # In-memory store (production should use Redis)
 # ─────────────────────────────────────────────────────────────────────────────
 
+_MAX_PROFILES = 10_000
 _profiles: dict[str, dict] = {}
 
 
@@ -56,6 +57,13 @@ async def save_profile(
     try:
         bd = parse_dmy(birth_date)
         profile_id = _make_profile_id(birth_date, birth_time, gender)
+
+        if profile_id not in _profiles and len(_profiles) >= _MAX_PROFILES:
+            return error_response(
+                503, "INTERNAL_ERROR",
+                message_vi="Kho hồ sơ tạm thời đầy. Vui lòng thử lại sau.",
+                message_en="Profile store is temporarily full. Please try again later.",
+            )
 
         _profiles[profile_id] = {
             "birth_date": birth_date,
