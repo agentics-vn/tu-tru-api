@@ -42,7 +42,7 @@ EXPECTED_INTENTS = {
     "TE_TU", "GIAI_HAN", "KHAM_BENH", "PHAU_THUAT",
     "NHAP_HOC_THI_CU", "KIEN_TUNG",
     "TRONG_CAY", "CAU_TU",
-    "CAT_TOC",
+    "CAT_TOC", "XAM_MINH",
     "MAC_DINH",
 }
 
