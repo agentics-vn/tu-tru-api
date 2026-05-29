@@ -197,10 +197,10 @@ Hiển thị cho user biết lá số của họ. `summary_vi` là đoạn văn 
 | Trạng thái | Điều kiện | UI |
 |---|---|---|
 | Loading | Request đang chạy | Skeleton cards |
-| Không có ngày tốt | HTTP 422, `error_code: NO_DATES_FOUND` | Thông báo gợi ý mở rộng khoảng ngày |
+| Không có ngày tốt | HTTP **200**, `ranked_days: []`, `empty_reason_vi` (tiếng Việt) | Thông báo gợi ý mở rộng khoảng ngày |
 | Khoảng ngày quá dài | HTTP 400, `error_code: RANGE_TOO_LARGE` | Inline error trên date picker |
 | Ngày sinh tương lai | HTTP 400, `error_code: INVALID_INPUT` | Inline error trên field ngày sinh |
-| Kết quả rỗng sau lọc | `recommended_dates: []` (không xảy ra — server trả 422) | — |
+| Kết quả rỗng sau lọc | `ranked_days: []` + `empty_reason_vi` (HTTP 200) | Hiển thị `empty_reason_vi`, không coi là lỗi HTTP |
 
 ---
 
@@ -427,8 +427,8 @@ birth_time=8   (tuỳ chọn)
       "truc_name": "Bình",
       "truc_score": 1,
       "is_layer1_pass": false,
-      "gio_hoang_dao": [
-        { "chi_name": "Tý", "range": "23:00-01:00" }
+      "gio_tot": [
+        { "chi": "Tý", "chi_name": "Tý", "start_hour": "23:00", "end_hour": "01:00", "label_vi": "Tý 23:00–01:00", "range": "23:00-01:00" }
       ],
       "sao_28": {
         "name": "Giác",
@@ -979,7 +979,7 @@ Mọi error response đều có cùng cấu trúc:
 |---|---|---|
 | `INVALID_INPUT` | Field sai định dạng, ngày tương lai, giờ sinh không hợp lệ | Inline validation error |
 | `RANGE_TOO_LARGE` | Khoảng ngày > 90 ngày | "Vui lòng chọn khoảng tối đa 90 ngày" |
-| `NO_DATES_FOUND` | Không có ngày tốt nào | "Không tìm được ngày phù hợp. Thử mở rộng khoảng thời gian." |
+| ~~`NO_DATES_FOUND`~~ | Không có ngày tốt (Direction C: HTTP 200 + `empty_reason_vi`) | Dùng `empty_reason_vi` từ body; không parse 422 |
 | `INTERNAL_ERROR` | Lỗi server | Toast "Đã có lỗi xảy ra. Vui lòng thử lại." + retry |
 
 ---

@@ -320,3 +320,125 @@ def build_la_so(
     }
 
     return result
+
+
+NAP_AM_MO_TA: dict[str, str] = {
+    "Hải Trung Kim": "Vàng trong biển — giá trị ẩn sâu, cần thời gian tỏa sáng",
+    "Lư Trung Hỏa": "Lửa trong lò — nhiệt huyết bên trong, sáng tạo khi được ủ",
+    "Đại Lâm Mộc": "Rừng lớn — phát triển bền vững, che chở người khác",
+    "Lộ Bàng Thổ": "Đất ven đường — thực tế, linh hoạt, dễ thích nghi",
+    "Kiếm Phong Kim": "Kim kiếm — sắc bén, quyết đoán, cần mài giũa",
+    "Sơn Đầu Hỏa": "Lửa núi — nhiệt tình nhưng cần kiểm soát",
+    "Giản Hạ Thủy": "Nước dưới khe — tinh tế, sâu sắc, lan tỏa âm thầm",
+    "Thành Đầu Thổ": "Đất thành — vững chãi, bảo vệ, trách nhiệm",
+    "Bạch Lạp Kim": "Vàng sáp — tinh khiết, cầu toàn, chi tiết",
+    "Dương Liễu Mộc": "Liễu dương — mềm mại, uyển chuyển, dễ uốn",
+    "Tuyền Trung Thủy": "Nước giếng — nguồn lực nội tại, nuôi dưỡng",
+    "Ốc Thượng Thổ": "Đất mái — che chở gia đình, ổn định",
+    "Tích Lịch Hỏa": "Lửa sấm — bùng nổ nhanh, cần định hướng",
+    "Tùng Bách Mộc": "Tùng bách — bền bỉ, trường thọ, nguyên tắc",
+    "Trường Lưu Thủy": "Sông dài — lan rộng, thích ứng, không ngừng",
+    "Sa Trung Kim": "Vàng cát — cần tôi luyện để thành tài",
+    "Sơn Hạ Hỏa": "Lửa chân núi — ẩn mình, tích lũy năng lực",
+    "Bình Địa Mộc": "Cây đồng bằng — phát triển ổn định, gần gũi",
+    "Bích Thượng Thổ": "Đất vách — kiên định, bảo vệ ranh giới",
+    "Kim Bạc Kim": "Vàng lá — mỏng manh, tinh xảo, cần nền tảng",
+    "Phúc Đăng Hỏa": "Đèn dầu — soi sáng, trí tuệ, tĩnh lặng",
+    "Thiên Hà Thủy": "Sông trời — bao la, tự do, khó kiểm soát",
+    "Đại Trạch Thổ": "Đất nhà — an cư, tích lũy, gia đình",
+    "Thoa Xuyến Kim": "Vàng trang sức — thẩm mỹ, giá trị tinh tế",
+    "Tang Đố Mộc": "Gỗ tang — che chở, trưởng thành sớm",
+    "Đại Khê Thủy": "Khe lớn — sâu sắc, mạnh mẽ, có tiềm năng",
+    "Sa Trung Thổ": "Đất cát — linh hoạt, đa dạng, cần cấu trúc",
+    "Thiên Thượng Hỏa": "Lửa trời — rực rỡ, công khai, dẫn dắt",
+    "Thạch Lựu Mộc": "Gỗ thạch lựu — cứng rắn, bền, lâu dài",
+    "Đại Hải Thủy": "Biển cả — bao la, sâu thẳm, khó lường",
+}
+
+
+def build_la_so_chart_contract(
+    tu_tru: dict,
+    gender: Optional[int],
+    birth_date_iso: str,
+) -> dict[str, Any]:
+    """Shared chart contract for GET /la-so and POST /tu-tru (Direction C P2)."""
+    from engine.can_chi import NAP_AM_HANH, NAP_AM_NAMES, get_nap_am_pair_idx
+    from engine.dai_van import get_current_dai_van, get_dai_van
+
+    strength_info = analyze_chart_strength(tu_tru)
+    dung_than_info = find_dung_than(tu_tru)
+    thap_than = analyze_thap_than(tu_tru)
+
+    def pillar_contract(pillar: dict) -> dict[str, Any]:
+        pair_idx = get_nap_am_pair_idx(pillar["can_idx"], pillar["chi_idx"])
+        nap_name = NAP_AM_NAMES[pair_idx]
+        return {
+            "can": {"name": pillar["can_name"], "idx": pillar["can_idx"]},
+            "chi": {"name": pillar["chi_name"], "idx": pillar["chi_idx"]},
+            "nap_am": {
+                "name": nap_name,
+                "hanh": NAP_AM_HANH[pair_idx],
+                "mo_ta": NAP_AM_MO_TA.get(nap_name, f"Nạp Âm {nap_name}"),
+            },
+        }
+
+    year_p = tu_tru["year"]
+    menh_pair = get_nap_am_pair_idx(year_p["can_idx"], year_p["chi_idx"])
+    menh_name = NAP_AM_NAMES[menh_pair]
+
+    contract: dict[str, Any] = {
+        "pillars": {
+            "year": pillar_contract(tu_tru["year"]),
+            "month": pillar_contract(tu_tru["month"]),
+            "day": pillar_contract(tu_tru["day"]),
+            "hour": pillar_contract(tu_tru["hour"]),
+        },
+        "nhat_chu": {
+            "can_name": tu_tru["nhat_chu"]["can_name"],
+            "hanh": tu_tru["nhat_chu"]["hanh"],
+        },
+        "menh": {
+            "nap_am_name": menh_name,
+            "hanh": NAP_AM_HANH[menh_pair],
+        },
+        "dung_than": dung_than_info["dung_than"],
+        "ky_than": dung_than_info["ky_than"],
+        "hi_than": dung_than_info["hi_than"],
+        "cuu_than": dung_than_info["cuu_than"],
+        "cuong_nhuoc": strength_info["strength"],
+        "chart_strength": strength_info["strength"],
+        "thap_than": {
+            "dominant": {
+                "key": thap_than["dominant_god"]["key"],
+                "name": thap_than["dominant_god"]["name"],
+            },
+            "year": thap_than["year_god"]["name"],
+            "month": thap_than["month_god"]["name"],
+            "hour": thap_than["hour_god"]["name"],
+        },
+        "element_counts": strength_info["element_counts"],
+        "ngu_hanh": strength_info["element_counts"],
+        "_raw": {
+            "element_counts": strength_info["element_counts"],
+            "support_ratio": strength_info["support_ratio"],
+        },
+    }
+
+    if gender in (1, -1):
+        cycles = get_dai_van(tu_tru, gender, birth_date_iso)
+        current = get_current_dai_van(tu_tru, gender, birth_date_iso)
+        contract["dai_van"] = {
+            "current": current["display"] if current else None,
+            "cycles": [
+                {
+                    "cycle_num": c["cycle_num"],
+                    "display": c["display"],
+                    "hanh": c["can_hanh"],
+                    "age_range": f"{c['start_age']}-{c['end_age']}",
+                }
+                for c in cycles
+            ],
+        }
+        contract["dai_van_list"] = contract["dai_van"]["cycles"]
+
+    return contract

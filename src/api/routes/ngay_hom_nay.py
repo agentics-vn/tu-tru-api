@@ -7,46 +7,33 @@ including hoàng đạo/hắc đạo badge, giờ tốt/xấu, and daily advice.
 
 from __future__ import annotations
 
-import json
-
-from api.errors import error_response
 import logging
 from datetime import date
-from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
+from api.errors import error_response
+from api.gio_slots import format_gio_tot_slots, format_gio_xau_slots
+from api.day_score_response import build_good_and_avoid
+from api.intent_rules_loader import get_intent_rule, resolve_intent_key
 from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart, get_can_chi_year
-from engine.hoang_dao import get_day_star, get_gio_hoang_dao, get_gio_hac_dao
-from engine.can_chi import CAN_NAMES, CHI_NAMES, NAP_AM_NAMES, get_can_chi_day, get_nap_am_pair_idx
+from engine.can_chi import get_nap_am_pair_idx
+from engine.hoang_dao import get_day_star
+from engine.score_methodology import get_score_methodology_block
 from filter import apply_layer2_filter
+from scoring import collect_score_deltas
 
 logger = logging.getLogger("ngay_hom_nay")
 
 router = APIRouter()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Load intent rules
-# ─────────────────────────────────────────────────────────────────────────────
-
-_INTENT_RULES_PATH = Path(__file__).resolve().parent.parent.parent.parent / "docs" / "seed" / "intent-rules.json"
-with open(_INTENT_RULES_PATH, encoding="utf-8") as f:
-    INTENT_RULES: dict = json.load(f)
-
 LUNAR_MONTH_NAMES = [
     "", "Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu",
     "Bảy", "Tám", "Chín", "Mười", "Một", "Chạp",
 ]
-
-# Intents to check for good_for / avoid_for
-_INTENT_KEYS = [
-    k for k in INTENT_RULES if not k.startswith("_") and k != "MAC_DINH"
-]
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Helpers
@@ -99,39 +86,6 @@ def _build_tu_tru_section(day_info: dict, user_chart: dict) -> dict:
     return result
 
 
-def _get_good_and_avoid(day_info: dict, user_chart: dict) -> tuple[list[str], list[str]]:
-    """
-    Determine what this day is good/bad for based on truc and layer-2 compatibility.
-
-    Returns (good_for, avoid_for) — lists of Vietnamese intent labels.
-    """
-    good_for: list[str] = []
-    avoid_for: list[str] = []
-    truc_idx = day_info["truc_idx"]
-
-    for intent_key in _INTENT_KEYS:
-        rule = INTENT_RULES[intent_key]
-        label = rule.get("_label_vi", intent_key)
-        # Extract short label (before /)
-        short_label = label.split("/")[0].strip()
-
-        preferred = rule.get("preferred_truc", [])
-        forbidden = rule.get("forbidden_truc", [])
-
-        # Check layer 2 (xung, khắc) for this intent
-        l2 = apply_layer2_filter(day_info, user_chart, intent_key)
-
-        if l2["severity"] == 3:
-            # Absolute avoid
-            avoid_for.append(short_label)
-        elif truc_idx in forbidden:
-            avoid_for.append(short_label)
-        elif truc_idx in preferred and l2["pass"]:
-            good_for.append(short_label)
-
-    return good_for, avoid_for
-
-
 def _build_daily_advice(day_info: dict, star_info: dict, good_for: list[str], avoid_for: list[str]) -> dict:
     """Generate simple daily advice based on the day's characteristics."""
     nen_lam_parts: list[str] = []
@@ -177,6 +131,7 @@ async def ngay_hom_nay(
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
     gender: Optional[int] = Query(None, description="Giới tính: 1 (nam) hoặc -1 (nữ)"),
     target_date: Optional[str] = Query(None, alias="date", description="Ngày mục tiêu YYYY-MM-DD (mặc định: hôm nay)"),
+    intent: str = Query("MAC_DINH", description="Mục đích việc cho điểm ngày"),
     tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)"),
 ) -> JSONResponse:
     try:
@@ -205,23 +160,33 @@ async def ngay_hom_nay(
         star_info = get_day_star(day_info["lunar_month"], day_info["day_chi_idx"])
 
         # Giờ tốt / xấu
-        gio_tot = get_gio_hoang_dao(day_info["day_chi_idx"])
-        gio_xau = get_gio_hac_dao(day_info["day_chi_idx"])
+        gio_tot = format_gio_tot_slots(day_info["day_chi_idx"])
+        gio_xau = format_gio_xau_slots(day_info["day_chi_idx"])
 
         # Nạp Âm name for the day
         pair_idx = get_nap_am_pair_idx(day_info["day_can_idx"], day_info["day_chi_idx"])
 
         # Good for / avoid for
-        good_for, avoid_for = _get_good_and_avoid(day_info, user_chart)
+        good_for, avoid_for = build_good_and_avoid(day_info, user_chart)
 
         # Daily advice
         advice = _build_daily_advice(day_info, star_info, good_for, avoid_for)
+
+        rule_key = resolve_intent_key(intent)
+        intent_rule = get_intent_rule(intent)
+        l2 = apply_layer2_filter(day_info, user_chart, rule_key)
+        score_ctx = collect_score_deltas(day_info, user_chart, rule_key, intent_rule, l2)
+        methodology = get_score_methodology_block()
 
         return JSONResponse(
             status_code=200,
             content={
                 "status": "success",
                 "date": td_str,
+                "intent": rule_key,
+                "score": score_ctx["score"],
+                "grade": score_ctx["grade"],
+                **methodology,
                 "can_chi": {
                     "name": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
                     "can_name": day_info["day_can_name"],
@@ -245,14 +210,8 @@ async def ngay_hom_nay(
                 },
                 "good_for": good_for,
                 "avoid_for": avoid_for,
-                "gio_tot": [
-                    {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
-                    for g in gio_tot
-                ],
-                "gio_xau": [
-                    {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
-                    for g in gio_xau
-                ],
+                "gio_tot": gio_tot,
+                "gio_xau": gio_xau,
                 "daily_advice": advice,
                 **(_build_tu_tru_section(day_info, user_chart)),
             },

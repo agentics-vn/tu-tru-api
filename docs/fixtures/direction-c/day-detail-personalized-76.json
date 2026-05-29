@@ -1,0 +1,415 @@
+{
+  "status": "success",
+  "date": "2026-06-26",
+  "lunar_date": "Ngày 12 tháng Năm năm Bính Ngọ",
+  "lunar_label": "Ngày 12 tháng Năm năm Bính Ngọ",
+  "can_chi": "Tân Mùi",
+  "can_chi_day": "Tân Mùi",
+  "hoang_dao": false,
+  "star_name": "Câu Trận",
+  "truc_name": "Trừ",
+  "truc_score": 1,
+  "sao_28": "Cang",
+  "sao_element": "Kim",
+  "gio_tot": [
+    {
+      "chi": "Dần",
+      "chi_name": "Dần",
+      "start_hour": "03:00",
+      "end_hour": "05:00",
+      "label_vi": "Dần 03:00–05:00",
+      "range": "03:00-05:00"
+    },
+    {
+      "chi": "Mão",
+      "chi_name": "Mão",
+      "start_hour": "05:00",
+      "end_hour": "07:00",
+      "label_vi": "Mão 05:00–07:00",
+      "range": "05:00-07:00"
+    },
+    {
+      "chi": "Tỵ",
+      "chi_name": "Tỵ",
+      "start_hour": "09:00",
+      "end_hour": "11:00",
+      "label_vi": "Tỵ 09:00–11:00",
+      "range": "09:00-11:00"
+    },
+    {
+      "chi": "Ngọ",
+      "chi_name": "Ngọ",
+      "start_hour": "11:00",
+      "end_hour": "13:00",
+      "label_vi": "Ngọ 11:00–13:00",
+      "range": "11:00-13:00"
+    },
+    {
+      "chi": "Thân",
+      "chi_name": "Thân",
+      "start_hour": "15:00",
+      "end_hour": "17:00",
+      "label_vi": "Thân 15:00–17:00",
+      "range": "15:00-17:00"
+    },
+    {
+      "chi": "Hợi",
+      "chi_name": "Hợi",
+      "start_hour": "21:00",
+      "end_hour": "23:00",
+      "label_vi": "Hợi 21:00–23:00",
+      "range": "21:00-23:00"
+    }
+  ],
+  "gio_xau": [
+    {
+      "chi": "Tý",
+      "chi_name": "Tý",
+      "start_hour": "23:00",
+      "end_hour": "01:00",
+      "label_vi": "Tý 23:00–01:00",
+      "range": "23:00-01:00"
+    },
+    {
+      "chi": "Sửu",
+      "chi_name": "Sửu",
+      "start_hour": "01:00",
+      "end_hour": "03:00",
+      "label_vi": "Sửu 01:00–03:00",
+      "range": "01:00-03:00"
+    },
+    {
+      "chi": "Thìn",
+      "chi_name": "Thìn",
+      "start_hour": "07:00",
+      "end_hour": "09:00",
+      "label_vi": "Thìn 07:00–09:00",
+      "range": "07:00-09:00"
+    },
+    {
+      "chi": "Mùi",
+      "chi_name": "Mùi",
+      "start_hour": "13:00",
+      "end_hour": "15:00",
+      "label_vi": "Mùi 13:00–15:00",
+      "range": "13:00-15:00"
+    },
+    {
+      "chi": "Dậu",
+      "chi_name": "Dậu",
+      "start_hour": "17:00",
+      "end_hour": "19:00",
+      "label_vi": "Dậu 17:00–19:00",
+      "range": "17:00-19:00"
+    },
+    {
+      "chi": "Tuất",
+      "chi_name": "Tuất",
+      "start_hour": "19:00",
+      "end_hour": "21:00",
+      "label_vi": "Tuất 19:00–21:00",
+      "range": "19:00-21:00"
+    }
+  ],
+  "hung_ngay": [],
+  "score": 76,
+  "grade": "B",
+  "summary_vi": "Tốt — có thể chọn. Điểm tốt: có phúc đức hỗ trợ; năng lượng ngày (Thổ (đất)) tương hợp với mệnh bạn.",
+  "breakdown": [
+    {
+      "id": "truc",
+      "source": "Trực ngày",
+      "source_ref": 1,
+      "type": "Trung · Trực Trừ",
+      "points": 29,
+      "reason_vi": "Trực Trừ cộng 29 điểm trong tổng điểm ngày. Với lá số của bạn, Trực này hỗ trợ việc sự kiện chung."
+    },
+    {
+      "id": "sao28",
+      "source": "Nhị thập bát tú",
+      "source_ref": 2,
+      "type": "Hắc Đạo · Câu Trận · Sao Cang",
+      "points": 24,
+      "reason_vi": "Ngày Hắc Đạo (Câu Trận), sao Cang (xấu) cộng 24 điểm. Ảnh hưởng này được tính cho mục đích sự kiện chung."
+    },
+    {
+      "id": "can_chi_laso",
+      "source": "Can chi · lá số",
+      "source_ref": 3,
+      "type": "Tân Mùi · Hỷ Thần (Mậu)",
+      "points": 23,
+      "reason_vi": "Quan hệ ngũ hành ngày (Thổ) với lá số Nhật Chủ Mậu cộng 23 điểm trong bối cảnh sự kiện chung."
+    },
+    {
+      "id": "gio_vang",
+      "source": "Giờ vàng",
+      "source_ref": 4,
+      "type": "Giờ vàng · Dần, Mão",
+      "points": 0,
+      "reason_vi": "Phần giờ vàng không đổi điểm phản ánh khung Hoàng đạo hợp Dụng Thần hành Hỏa của bạn — nên ưu tiên khởi sự trong các giờ tốt. Giờ đáng chú ý: Dần (03:00–05:00)."
+    }
+  ],
+  "sources": [
+    {
+      "ref": 1,
+      "label_vi": "Trực ngày",
+      "description_vi": "Thập nhị trực trong tháng âm lịch"
+    },
+    {
+      "ref": 2,
+      "label_vi": "Nhị thập bát tú",
+      "description_vi": "Sao ngày theo lịch truyền thống"
+    },
+    {
+      "ref": 3,
+      "label_vi": "Can chi · lá số",
+      "description_vi": "Quan hệ ngũ hành ngày với lá số cá nhân"
+    },
+    {
+      "ref": 4,
+      "label_vi": "Giờ vàng",
+      "description_vi": "Khung giờ Hoàng đạo phù hợp với lá số"
+    }
+  ],
+  "score_max": 100,
+  "score_methodology": {
+    "summary_vi": "Điểm tổng hợp từ Trực, sao, Can Chi với lá số, và giờ vàng.",
+    "weights": [
+      {
+        "factor": "truc",
+        "label_vi": "Trực ngày",
+        "max_points": 30
+      },
+      {
+        "factor": "sao28",
+        "label_vi": "Nhị thập bát tú",
+        "max_points": 25
+      },
+      {
+        "factor": "can_chi_laso",
+        "label_vi": "Can chi · lá số",
+        "max_points": 25
+      },
+      {
+        "factor": "gio_vang",
+        "label_vi": "Giờ vàng",
+        "max_points": 20
+      }
+    ]
+  },
+  "personalized": true,
+  "intent": "MAC_DINH",
+  "good_for": [
+    "Động thổ",
+    "Làm nhà",
+    "An táng",
+    "Cải táng",
+    "Tế tự",
+    "Khám bệnh",
+    "Phẫu thuật",
+    "Cắt tóc",
+    "Xăm mình",
+    "Trồng cây",
+    "Kiện tụng",
+    "Giải hạn"
+  ],
+  "avoid_for": [],
+  "purpose_rows": [
+    {
+      "intent": "AN_HOI",
+      "intent_label_vi": "Lễ ăn hỏi / đính hôn / dạm ngõ",
+      "short_label_vi": "Lễ ăn hỏi",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho lễ ăn hỏi."
+    },
+    {
+      "intent": "AN_TANG",
+      "intent_label_vi": "An táng / Chôn cất / Lễ tang",
+      "short_label_vi": "An táng",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho an táng."
+    },
+    {
+      "intent": "CAI_TANG",
+      "intent_label_vi": "Cải táng / Bốc mộ / Sửa mộ",
+      "short_label_vi": "Cải táng",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho cải táng."
+    },
+    {
+      "intent": "CAT_TOC",
+      "intent_label_vi": "Cắt tóc / Làm tóc / Chăm sóc bản thân",
+      "short_label_vi": "Cắt tóc",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho cắt tóc."
+    },
+    {
+      "intent": "CAU_TAI",
+      "intent_label_vi": "Cầu tài lộc / Vay vốn / Huy động vốn",
+      "short_label_vi": "Cầu tài lộc",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho cầu tài lộc."
+    },
+    {
+      "intent": "CAU_TU",
+      "intent_label_vi": "Cầu tự / Cầu con / Xin duyên",
+      "short_label_vi": "Cầu tự",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho cầu tự."
+    },
+    {
+      "intent": "DAM_CUOI",
+      "intent_label_vi": "Đám cưới / Lễ thành hôn",
+      "short_label_vi": "Đám cưới",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho đám cưới."
+    },
+    {
+      "intent": "DAO_GIENG",
+      "intent_label_vi": "Đào giếng / Đào ao / Đào hầm",
+      "short_label_vi": "Đào giếng",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho đào giếng."
+    },
+    {
+      "intent": "DI_CHUYEN_NGOAI",
+      "intent_label_vi": "Xuất ngoại / Du học / Di cư",
+      "short_label_vi": "Xuất ngoại",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho xuất ngoại."
+    },
+    {
+      "intent": "DONG_THO",
+      "intent_label_vi": "Động thổ / Khởi công xây dựng",
+      "short_label_vi": "Động thổ",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho động thổ."
+    },
+    {
+      "intent": "GIAI_HAN",
+      "intent_label_vi": "Giải hạn / Cúng sao / Hóa giải",
+      "short_label_vi": "Giải hạn",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho giải hạn."
+    },
+    {
+      "intent": "KHAI_TRUONG",
+      "intent_label_vi": "Khai trương cửa hàng / công ty",
+      "short_label_vi": "Khai trương cửa hàng",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho khai trương cửa hàng."
+    },
+    {
+      "intent": "KHAM_BENH",
+      "intent_label_vi": "Khám bệnh / Uống thuốc / Điều trị",
+      "short_label_vi": "Khám bệnh",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho khám bệnh."
+    },
+    {
+      "intent": "KIEN_TUNG",
+      "intent_label_vi": "Kiện tụng / Nộp đơn khiếu nại / Tố cáo",
+      "short_label_vi": "Kiện tụng",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho kiện tụng."
+    },
+    {
+      "intent": "KY_HOP_DONG",
+      "intent_label_vi": "Ký kết hợp đồng / giao dịch kinh doanh",
+      "short_label_vi": "Ký kết hợp đồng",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho ký kết hợp đồng."
+    },
+    {
+      "intent": "LAM_GIUONG",
+      "intent_label_vi": "Làm giường / Mua giường / Kê giường",
+      "short_label_vi": "Làm giường",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho làm giường."
+    },
+    {
+      "intent": "LAM_NHA",
+      "intent_label_vi": "Làm nhà / Sửa nhà / Xây dựng",
+      "short_label_vi": "Làm nhà",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho làm nhà."
+    },
+    {
+      "intent": "MAC_DINH",
+      "intent_label_vi": "Mặc định / Sự kiện chung",
+      "short_label_vi": "Mặc định",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho mặc định."
+    },
+    {
+      "intent": "MUA_NHA_DAT",
+      "intent_label_vi": "Mua nhà / đất / bất động sản",
+      "short_label_vi": "Mua nhà",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho mua nhà."
+    },
+    {
+      "intent": "NHAM_CHUC",
+      "intent_label_vi": "Nhậm chức / Bổ nhiệm / Thăng chức",
+      "short_label_vi": "Nhậm chức",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho nhậm chức."
+    },
+    {
+      "intent": "NHAP_HOC_THI_CU",
+      "intent_label_vi": "Nhập học / Thi cử / Khai bút",
+      "short_label_vi": "Nhập học",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho nhập học."
+    },
+    {
+      "intent": "NHAP_TRACH",
+      "intent_label_vi": "Nhập trạch / Chuyển nhà mới / Dọn vào nhà",
+      "short_label_vi": "Nhập trạch",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho nhập trạch."
+    },
+    {
+      "intent": "PHAU_THUAT",
+      "intent_label_vi": "Phẫu thuật / Mổ xẻ / Thủ thuật y tế",
+      "short_label_vi": "Phẫu thuật",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho phẫu thuật."
+    },
+    {
+      "intent": "TE_TU",
+      "intent_label_vi": "Tế tự / Cúng bái / Lễ chùa",
+      "short_label_vi": "Tế tự",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho tế tự."
+    },
+    {
+      "intent": "TRONG_CAY",
+      "intent_label_vi": "Trồng cây / Làm vườn / Gieo hạt",
+      "short_label_vi": "Trồng cây",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho trồng cây."
+    },
+    {
+      "intent": "XAM_MINH",
+      "intent_label_vi": "Xăm mình / Xỏ khuyên",
+      "short_label_vi": "Xăm mình",
+      "verdict": "tot",
+      "reason_vi": "Trực Trừ thuận cho xăm mình."
+    },
+    {
+      "intent": "XAY_BEP",
+      "intent_label_vi": "Xây bếp / Sửa bếp / Đặt bếp mới",
+      "short_label_vi": "Xây bếp",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho xây bếp."
+    },
+    {
+      "intent": "XUAT_HANH",
+      "intent_label_vi": "Xuất hành / Đi xa / Du lịch",
+      "short_label_vi": "Xuất hành",
+      "verdict": "trung",
+      "reason_vi": "Ngày trung bình cho xuất hành."
+    }
+  ]
+}

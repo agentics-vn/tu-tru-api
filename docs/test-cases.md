@@ -22,15 +22,15 @@ All 10 must pass before production deployment.
 ## TC-04 — Tháng Cô Hồn (CUOI_HOI)
 - **Input:** birth_date: 1985-01-01, intent: CUOI_HOI, range_start: 2026-08-20, range_end: 2026-09-15
   - Note: This range covers lunar month 7 (Cô Hồn 2026 ≈ Aug 25 – Sep 22 solar)
-- **Expect:** All days inside lunar month 7 appear in `dates_to_avoid` with severity 3, OR `NO_DATES_FOUND` error.
+- **Expect:** All days inside lunar month 7 appear in `dates_to_avoid` with severity 3, OR HTTP **200** with `ranked_days: []` and non-null `empty_reason_vi` (Direction C — không còn `NO_DATES_FOUND` / 422).
 
 ## TC-05 — Range too large
 - **Input:** range_start: 2026-01-01, range_end: 2026-04-02 (91 days)
 - **Expect:** HTTP 400, error_code: RANGE_TOO_LARGE
 
 ## TC-06 — Invalid intent
-- **Input:** intent: "BAO_GIO_CUNG_DUOC"
-- **Expect:** HTTP 400, error_code: INVALID_INPUT
+- **Input:** intent: "BAO_GIO_CUNG_DUOC" on `POST /v1/chon-ngay` or `GET /v1/day-detail`
+- **Expect:** HTTP 400, error_code: INVALID_INPUT (FastAPI validation handler)
 
 ## TC-07 — Không cần API key
 - **Input:** Valid body, không gửi `X-API-Key`

@@ -28,7 +28,10 @@ class TestHealth:
     def test_health_check(self):
         r = client.get("/health")
         assert r.status_code == 200
-        assert r.json() == {"status": "ok"}
+        data = r.json()
+        assert data["status"] == "ok"
+        assert "version" in data
+        assert "engine_version" in data
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -83,6 +86,28 @@ class TestChonNgay:
             f"Safety violation: {sev3_dates & rec_dates}"
         )
 
+    def test_safety_invariant_severity3_not_in_ranked_days(self):
+        """Direction C: severity=3 must never appear in ranked_days."""
+        r = client.post("/v1/chon-ngay", json=self._valid_request())
+        data = r.json()
+        sev3_dates = {
+            d["date"] for d in data.get("dates_to_avoid", [])
+            if d.get("severity") == 3
+        }
+        ranked_dates = {d["date"] for d in data.get("ranked_days", [])}
+        assert len(sev3_dates & ranked_dates) == 0, (
+            f"Safety violation in ranked_days: {sev3_dates & ranked_dates}"
+        )
+
+    def test_invalid_intent_returns_400(self):
+        """TC-06: unknown intent → 400 INVALID_INPUT (via validation handler)."""
+        r = client.post(
+            "/v1/chon-ngay",
+            json=self._valid_request(intent="BAO_GIO_CUNG_DUOC"),
+        )
+        assert r.status_code == 400
+        assert r.json()["error_code"] == "INVALID_INPUT"
+
     def test_meta_contains_bat_tu_summary(self):
         r = client.post("/v1/chon-ngay", json=self._valid_request())
         data = r.json()
@@ -125,6 +150,66 @@ class TestChonNgay:
         data = r.json()
         for d in data["recommended_dates"]:
             assert d["grade"] in {"A", "B", "C", "D"}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GET /v1/share/{token}
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestShare:
+
+    def test_chon_ngay_token_replay_matches_original(self):
+        r = client.post("/v1/chon-ngay", json=TestChonNgay()._valid_request())
+        assert r.status_code == 200
+        orig = r.json()
+        token = orig["meta"]["share_token"]
+
+        r2 = client.get(f"/v1/share/{token}")
+        assert r2.status_code == 200
+        shared = r2.json()
+        assert shared["shared"] is True
+        assert shared["endpoint"] == "chon-ngay"
+        assert shared["ranked_days"]
+        assert {d["date"] for d in shared["ranked_days"]} == {
+            d["date"] for d in orig["ranked_days"]
+        }
+        for d in shared["ranked_days"]:
+            assert len(d["time_slots"]) == 6
+            assert "chi" in d["time_slots"][0]
+
+    def test_share_safety_invariant_severity3_not_in_ranked_days(self):
+        r = client.post("/v1/chon-ngay", json=TestChonNgay()._valid_request())
+        token = r.json()["meta"]["share_token"]
+        shared = client.get(f"/v1/share/{token}").json()
+        sev3_dates = {
+            d["date"] for d in shared.get("dates_to_avoid", [])
+            if d.get("severity") == 3
+        }
+        ranked_dates = {d["date"] for d in shared.get("ranked_days", [])}
+        assert len(sev3_dates & ranked_dates) == 0
+
+    def test_invalid_share_token_returns_400(self):
+        r = client.get("/v1/share/not-a-valid-token")
+        assert r.status_code == 400
+        assert r.json()["error_code"] == "INVALID_INPUT"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GET /v1/weekly-summary (deprecated)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestWeeklySummary:
+
+    def test_invalid_intent_returns_400(self):
+        r = client.get(
+            "/v1/weekly-summary",
+            params={
+                "birth_date": "15/03/1984",
+                "intent": "BAO_GIO_CUNG_DUOC",
+            },
+        )
+        assert r.status_code == 400
+        assert r.json()["error_code"] == "INVALID_INPUT"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -175,6 +260,8 @@ class TestNgayHomNay:
         for g in data["gio_tot"]:
             assert "chi_name" in g
             assert "range" in g
+            assert "start_hour" in g
+            assert "end_hour" in g
 
     def test_has_good_for_avoid_for(self):
         r = client.get("/v1/ngay-hom-nay", params={
@@ -284,18 +371,19 @@ class TestLichThang:
         data = r.json()
         assert data["user_menh"]["hanh"] == "Kim"
 
-    def test_day_has_gio_hoang_dao(self):
+    def test_day_has_gio_tot_slots(self):
         r = client.get("/v1/lich-thang", params={
             "birth_date": "15/03/1984",
             "month": "2026-03",
         })
         data = r.json()
         for d in data["days"]:
-            assert "gio_hoang_dao" in d
-            assert len(d["gio_hoang_dao"]) == 6
-            for g in d["gio_hoang_dao"]:
+            assert "gio_tot" in d
+            assert len(d["gio_tot"]) == 6
+            for g in d["gio_tot"]:
                 assert "chi_name" in g
                 assert "range" in g
+                assert "label_vi" in g
 
     def test_day_has_sao_28(self):
         r = client.get("/v1/lich-thang", params={

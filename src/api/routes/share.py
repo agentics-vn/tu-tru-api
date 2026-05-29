@@ -13,6 +13,10 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
 from api.errors import error_response
+from api.intent_rules_loader import resolve_intent_key
+from api.parse_date import parse_dmy
+from api.routes.chon_ngay import run_chon_ngay_scan
+from api.schemas.direction_c import validate_chon_ngay_response
 from api.share import decode_share_token
 
 logger = logging.getLogger(__name__)
@@ -38,15 +42,6 @@ async def resolve_share_token(token: str) -> JSONResponse:
 
     try:
         if endpoint == "chon-ngay":
-            from datetime import timedelta
-
-            from api.parse_date import parse_dmy
-            from api.routes.chon_ngay import INTENT_ALIAS, INTENT_RULES
-            from calendar_service import get_day_info, get_user_chart
-            from engine.hoang_dao import get_gio_hoang_dao
-            from filter import apply_layer2_filter
-            from scoring import compute_score
-
             intent = payload.get("in", "MAC_DINH")
             range_start = payload.get("rs")
             range_end = payload.get("re")
@@ -54,65 +49,27 @@ async def resolve_share_token(token: str) -> JSONResponse:
             if not all([birth_date, range_start, range_end]):
                 return error_response(400, "INVALID_INPUT", message_vi="Token thiếu dữ liệu.")
 
-            birth_date_str = parse_dmy(birth_date).isoformat()
+            resolve_intent_key(intent)
             gender_val = int(gender) if gender is not None else None
-            user_chart = get_user_chart(birth_date_str, birth_time, gender_val)
 
-            rule_key = INTENT_ALIAS.get(intent, intent)
-            intent_rule = INTENT_RULES.get(
-                rule_key,
-                INTENT_RULES.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao": []}),
+            content = run_chon_ngay_scan(
+                birth_date_iso=parse_dmy(birth_date).isoformat(),
+                birth_time=birth_time,
+                gender=gender_val,
+                intent=intent,
+                range_start_dmy=range_start,
+                range_end_dmy=range_end,
+                top_n=3,
             )
-
-            start = parse_dmy(range_start)
-            end = parse_dmy(range_end)
-            all_dates = []
-            cur = start
-            while cur <= end:
-                all_dates.append(cur)
-                cur += timedelta(days=1)
-
-            scored_days = []
-            for d in all_dates:
-                ds = d.isoformat()
-                day_info = get_day_info(ds)
-                if not day_info["is_layer1_pass"]:
-                    continue
-                filter_result = apply_layer2_filter(day_info, user_chart, rule_key)
-                if not filter_result["pass"]:
-                    continue
-                score_result = compute_score(day_info, user_chart, rule_key, intent_rule, filter_result)
-                scored_days.append({"day_info": day_info, "score_result": score_result})
-
-            scored_days.sort(key=lambda x: x["score_result"]["score"], reverse=True)
-            top_days = scored_days[:3]
-
-            recommended = [
-                {
-                    "date": d["day_info"]["date"],
-                    "score": d["score_result"]["score"],
-                    "grade": d["score_result"]["grade"],
-                    "summary_vi": d["score_result"]["summary_vi"],
-                    "time_slots": [
-                        {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
-                        for g in get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
-                    ],
-                }
-                for d in top_days
-            ]
+            content["meta"]["birth_hash"] = payload.get("bh", "")
+            validate_chon_ngay_response(content)
 
             return JSONResponse(
                 status_code=200,
                 content={
-                    "status": "success",
+                    **content,
                     "shared": True,
                     "endpoint": endpoint,
-                    "meta": {
-                        "intent": intent,
-                        "range_scanned": {"from": range_start, "to": range_end},
-                        "birth_hash": payload.get("bh", ""),
-                    },
-                    "recommended_dates": recommended,
                 },
             )
 

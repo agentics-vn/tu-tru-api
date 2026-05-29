@@ -24,7 +24,7 @@ _redis_client = None
 _redis_available: Optional[bool] = None
 
 
-def _get_client():
+def get_redis_client():
     """Get or create Redis client. Returns None if Redis unavailable."""
     global _redis_client, _redis_available
 
@@ -58,7 +58,7 @@ def get_day_info_cached(iso_date: str) -> Optional[dict]:
     Returns:
         Cached dict or None if not cached / Redis unavailable.
     """
-    client = _get_client()
+    client = get_redis_client()
     if client is None:
         return None
 
@@ -80,7 +80,7 @@ def set_day_info_cached(iso_date: str, day_info: dict) -> None:
         iso_date: 'YYYY-MM-DD'
         day_info: dict from get_day_info()
     """
-    client = _get_client()
+    client = get_redis_client()
     if client is None:
         return
 
@@ -93,7 +93,7 @@ def set_day_info_cached(iso_date: str, day_info: dict) -> None:
 
 def get_month_info_cached(year: int, month: int) -> Optional[list[dict]]:
     """Get cached month info."""
-    client = _get_client()
+    client = get_redis_client()
     if client is None:
         return None
 
@@ -109,7 +109,7 @@ def get_month_info_cached(year: int, month: int) -> Optional[list[dict]]:
 
 def set_month_info_cached(year: int, month: int, month_info: list[dict]) -> None:
     """Cache month info."""
-    client = _get_client()
+    client = get_redis_client()
     if client is None:
         return
 
@@ -122,7 +122,7 @@ def set_month_info_cached(year: int, month: int, month_info: list[dict]) -> None
 
 def invalidate_cache() -> None:
     """Flush all layer1 cache keys using SCAN (O(1) per iteration, non-blocking)."""
-    client = _get_client()
+    client = get_redis_client()
     if client is None:
         return
     try:

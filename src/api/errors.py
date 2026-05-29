@@ -26,10 +26,6 @@ ERROR_MESSAGES: dict[str, dict[str, str]] = {
         "vi": "Khoảng thời gian vượt quá giới hạn cho phép.",
         "en": "Date range exceeds the allowed limit.",
     },
-    "NO_DATES_FOUND": {
-        "vi": "Không tìm được ngày tốt nào trong khoảng thời gian đã chọn.",
-        "en": "No auspicious dates found in the selected range.",
-    },
     "UNAUTHORIZED": {
         "vi": "Không có quyền truy cập.",
         "en": "Unauthorized.",

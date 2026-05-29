@@ -18,6 +18,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 
 from api.parse_date import parse_dmy
+from api.version import get_engine_version, utc_now_iso
 
 from engine.bazi_solar import bazi_cycle_year
 from engine.pillars import get_tu_tru, VALID_BIRTH_HOURS, BIRTH_HOUR_LABELS
@@ -33,6 +34,7 @@ from engine.can_chi import (
 from engine.dung_than import find_dung_than
 from engine.thap_than import analyze_thap_than
 from engine.dai_van import get_current_dai_van, get_dai_van, get_dai_van_direction
+from engine.la_so import build_la_so_chart_contract
 
 logger = logging.getLogger("tu_tru")
 
@@ -115,6 +117,8 @@ async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
         result: dict = {
             "status": "success",
             "birth_date": birth_date_str,
+            "engine_version": get_engine_version(),
+            "computed_at": utc_now_iso(),
             "birth_year_can_chi": f"{year_cc['can_name']} {year_cc['chi_name']}",
             "menh": {
                 "nap_am_name": menh["name"],
@@ -224,6 +228,18 @@ async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
                         for c in cycles
                     ],
                 }
+
+            chart = build_la_so_chart_contract(tu_tru, req.gender, birth_date_str)
+            for pillar in ("year", "month", "day", "hour"):
+                result["pillars"][pillar]["nap_am"]["mo_ta"] = (
+                    chart["pillars"][pillar]["nap_am"]["mo_ta"]
+                )
+            result["cuong_nhuoc"] = chart["cuong_nhuoc"]
+            result["ngu_hanh"] = chart["ngu_hanh"]
+            result["_raw"] = chart["_raw"]
+            result["thap_than"]["dominant"] = chart["thap_than"]["dominant"]
+            if chart.get("dai_van_list"):
+                result["dai_van_list"] = chart["dai_van_list"]
         else:
             result["_note"] = (
                 "Chỉ có thông tin cơ bản (mệnh Nạp Âm). "

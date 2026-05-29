@@ -1,0 +1,206 @@
+{
+  "status": "success",
+  "version": 2,
+  "purpose": "NHA_O",
+  "user_menh": {
+    "hanh": "Kim",
+    "name": "Hải Trung Kim"
+  },
+  "dung_than": "Thổ",
+  "ky_than": "Hỏa",
+  "huong_tot": [
+    {
+      "direction": "Trung Tâm",
+      "element": "Thổ",
+      "reason": "Trung Tâm thuộc Thổ — hành Dụng Thần."
+    },
+    {
+      "direction": "Đông Bắc",
+      "element": "Thổ",
+      "reason": "Đông Bắc thuộc Thổ — hỗ trợ ổn định."
+    },
+    {
+      "direction": "Nam",
+      "element": "Hỏa",
+      "reason": "Hỏa sinh Thổ — gián tiếp hỗ trợ."
+    }
+  ],
+  "huong_xau": [
+    {
+      "direction": "Nam",
+      "element": "Hỏa",
+      "reason": "Hỏa là Kỵ Thần — nên tránh hướng này."
+    },
+    {
+      "direction": "Đông",
+      "element": "Mộc",
+      "reason": "Mộc là Kỵ Thần — nên tránh hướng này."
+    },
+    {
+      "direction": "Đông Nam",
+      "element": "Mộc",
+      "reason": "Mộc là Kỵ Thần — nên tránh hướng này."
+    }
+  ],
+  "mau_may_man": [
+    {
+      "color": "Vàng đất",
+      "hex": "#B8860B",
+      "element": "Thổ"
+    },
+    {
+      "color": "Nâu",
+      "hex": "#8B6914",
+      "element": "Thổ"
+    },
+    {
+      "color": "Đỏ",
+      "hex": "#C53030",
+      "element": "Hỏa"
+    }
+  ],
+  "mau_ky": [
+    {
+      "color": "Đỏ",
+      "hex": "#C53030",
+      "element": "Hỏa"
+    },
+    {
+      "color": "Tím",
+      "hex": "#6B46C1",
+      "element": "Hỏa"
+    }
+  ],
+  "so_may_man": [
+    5,
+    0,
+    8
+  ],
+  "so_ky": [
+    2,
+    7
+  ],
+  "vat_pham": [
+    {
+      "item": "Chậu đá cảnh",
+      "vi_tri": "Sảnh vào",
+      "reason": "Thổ trấn cửa — ổn định trường khí."
+    },
+    {
+      "item": "Bình gốm sứ",
+      "vi_tri": "Bếp hoặc phòng khách",
+      "reason": "Thổ nâng sức khỏe nền."
+    }
+  ],
+  "phi_tinh_year": 2026,
+  "phi_tinh": [
+    {
+      "direction": "Đông Nam",
+      "star": 4,
+      "star_name": "Tứ Lục Văn Xương",
+      "hanh": "Mộc",
+      "nature": "tốt",
+      "meaning": "Văn Xương chiếu — tốt cho học hành, thi cử, sáng tạo."
+    },
+    {
+      "direction": "Nam",
+      "star": 9,
+      "star_name": "Cửu Tử Hữu Bật",
+      "hanh": "Hỏa",
+      "nature": "tốt",
+      "meaning": "Hữu Bật — vui mừng, hỷ sự, danh tiếng."
+    },
+    {
+      "direction": "Tây Nam",
+      "star": 2,
+      "star_name": "Nhị Hắc Cự Môn",
+      "hanh": "Thổ",
+      "nature": "xấu",
+      "meaning": "Cự Môn — dễ bệnh tật, tiểu nhân; nên ít động, ít ồn."
+    },
+    {
+      "direction": "Đông",
+      "star": 3,
+      "star_name": "Tam Bích Lộc Tồn",
+      "hanh": "Mộc",
+      "nature": "xấu",
+      "meaning": "Lộc Tồn — tranh chấp, thị phi; cần giữ hòa khí."
+    },
+    {
+      "direction": "Trung Tâm",
+      "star": 5,
+      "star_name": "Ngũ Hoàng Liêm Trinh",
+      "hanh": "Thổ",
+      "nature": "rất xấu",
+      "meaning": "Ngũ Hoàng đại sát — tránh động thổ, sửa chữa lớn khu vực trung tâm hoặc cung này."
+    },
+    {
+      "direction": "Tây",
+      "star": 7,
+      "star_name": "Thất Xích Phá Quân",
+      "hanh": "Kim",
+      "nature": "xấu",
+      "meaning": "Phá Quân — hao tán, thị phi; cẩn thận tranh chấp."
+    },
+    {
+      "direction": "Đông Bắc",
+      "star": 8,
+      "star_name": "Bát Bạch Tả Phụ",
+      "hanh": "Thổ",
+      "nature": "tốt",
+      "meaning": "Tả Phụ — tốt cho tài lộc, quý nhân phụ trợ."
+    },
+    {
+      "direction": "Bắc",
+      "star": 1,
+      "star_name": "Nhất Bạch Tham Lang",
+      "hanh": "Thủy",
+      "nature": "tốt",
+      "meaning": "Tham Lang chiếu — tốt cho danh tiếng, giao tế, tài lộc nhẹ."
+    },
+    {
+      "direction": "Tây Bắc",
+      "star": 6,
+      "star_name": "Lục Bạch Vũ Khúc",
+      "hanh": "Kim",
+      "nature": "tốt",
+      "meaning": "Vũ Khúc — tốt cho quyền uy, sự nghiệp, tài chính."
+    }
+  ],
+  "huong_tot_nam_nay": [
+    "Đông Nam",
+    "Nam",
+    "Đông Bắc",
+    "Bắc",
+    "Tây Bắc"
+  ],
+  "huong_xau_nam_nay": [
+    "Tây Nam",
+    "Đông",
+    "Trung Tâm",
+    "Tây"
+  ],
+  "hoa_giai": [
+    {
+      "direction": "Tây Nam",
+      "star": 2,
+      "remedy": "Đặt hồ lô đồng, chuông gió 6 ống kim loại hoặc vật Kim để hóa giải Thổ hung."
+    },
+    {
+      "direction": "Đông",
+      "star": 3,
+      "remedy": "Thêm đèn đỏ nhỏ hoặc tông Hỏa vừa phải để chế Mộc quá vượng."
+    },
+    {
+      "direction": "Trung Tâm",
+      "star": 5,
+      "remedy": "Dùng âm thanh Kim (chuông đồng), màu trắng/bạc vừa phải; không kích hoạt bằng lửa mạnh."
+    },
+    {
+      "direction": "Tây",
+      "star": 7,
+      "remedy": "Tránh kích động; có thể dùng nước nhỏ (Thủy) hóa Kim hung vừa phải theo chỉ dẫn thầy."
+    }
+  ],
+  "phi_tinh_note_vi": "Hướng tốt/xấu năm nay xếp theo tính chất sao lưu niên trong seed — không lọc theo Dụng Thần / Kỵ Thần cá nhân. Năm và thuận/nghịch phi theo quy ước dương lịch đơn giản; có thể lệch sách dùng Lập Xuân."
+}

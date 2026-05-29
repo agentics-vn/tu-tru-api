@@ -1,0 +1,934 @@
+{
+  "status": "success",
+  "intent": "KHAI_TRUONG",
+  "intent_label_vi": "Khai trương cửa hàng / công ty",
+  "range_start": "2026-04-01",
+  "range_end": "2026-04-30",
+  "score_max": 100,
+  "score_methodology": {
+    "summary_vi": "Điểm tổng hợp từ Trực, sao, Can Chi với lá số, và giờ vàng.",
+    "weights": [
+      {
+        "factor": "truc",
+        "label_vi": "Trực ngày",
+        "max_points": 30
+      },
+      {
+        "factor": "sao28",
+        "label_vi": "Nhị thập bát tú",
+        "max_points": 25
+      },
+      {
+        "factor": "can_chi_laso",
+        "label_vi": "Can chi · lá số",
+        "max_points": 25
+      },
+      {
+        "factor": "gio_vang",
+        "label_vi": "Giờ vàng",
+        "max_points": 20
+      }
+    ]
+  },
+  "empty_reason_vi": null,
+  "meta": {
+    "intent": "KHAI_TRUONG",
+    "range_scanned": {
+      "from": "01/04/2026",
+      "to": "30/04/2026"
+    },
+    "total_days_scanned": 30,
+    "days_passed_layer1": 17,
+    "days_passed_layer2": 15,
+    "candidates_scanned": 15,
+    "bat_tu_summary": {
+      "ngu_hanh_menh": "Kim",
+      "duong_than": "Thổ",
+      "ky_than": "Hỏa",
+      "summary_vi": "Mệnh bạn thuộc hành Kim (kim loại)."
+    },
+    "share_token": "eyJlcCI6ImNob24tbmdheSIsImJkIjoiMTUvMDMvMTk4NCIsImJ0IjpudWxsLCJnIjpudWxsLCJiaCI6IjE1MDVjMGI3ZDBmZmNlMTIiLCJ0cyI6MTc4MDAxOTY2MSwiaW4iOiJLSEFJX1RSVU9ORyIsInJzIjoiMDEvMDQvMjAyNiIsInJlIjoiMzAvMDQvMjAyNiJ9LjRjYmUyNmE4YmYwYjNlNGI"
+  },
+  "ranked_days": [
+    {
+      "rank": 1,
+      "date": "2026-04-13",
+      "lunar_date": "Ngày 26 tháng Hai năm Bính Ngọ",
+      "lunar_label": "Ngày 26 tháng Hai năm Bính Ngọ",
+      "score": 100,
+      "grade": "A",
+      "can_chi_day": "Đinh Tỵ",
+      "truc": "Mãn",
+      "gio_tot": [
+        {
+          "chi": "Dần",
+          "chi_name": "Dần",
+          "start_hour": "03:00",
+          "end_hour": "05:00",
+          "label_vi": "Dần 03:00–05:00",
+          "range": "03:00-05:00"
+        },
+        {
+          "chi": "Mão",
+          "chi_name": "Mão",
+          "start_hour": "05:00",
+          "end_hour": "07:00",
+          "label_vi": "Mão 05:00–07:00",
+          "range": "05:00-07:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Ngọ",
+          "chi_name": "Ngọ",
+          "start_hour": "11:00",
+          "end_hour": "13:00",
+          "label_vi": "Ngọ 11:00–13:00",
+          "range": "11:00-13:00"
+        },
+        {
+          "chi": "Thân",
+          "chi_name": "Thân",
+          "start_hour": "15:00",
+          "end_hour": "17:00",
+          "label_vi": "Thân 15:00–17:00",
+          "range": "15:00-17:00"
+        },
+        {
+          "chi": "Hợi",
+          "chi_name": "Hợi",
+          "start_hour": "21:00",
+          "end_hour": "23:00",
+          "label_vi": "Hợi 21:00–23:00",
+          "range": "21:00-23:00"
+        }
+      ],
+      "reason_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; năng lượng ngày (Thổ (đất)) hợp với mệnh bạn; ngày có phú quý từ trời, tốt cho kinh doanh; ngày có tài lộc trong tháng; ngày mở kho lộc, tốt cho tài chính. Lưu ý: ngày có sao Nguyệt Hỏa, kiêng lửa/bếp.",
+      "summary_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; năng lượng ngày (Thổ (đất)) hợp với mệnh bạn; ngày có phú quý từ trời, tốt cho kinh doanh; ngày có tài lộc trong tháng; ngày mở kho lộc, tốt cho tài chính. Lưu ý: ngày có sao Nguyệt Hỏa, kiêng lửa/bếp.",
+      "sao_cat": [
+        "Thiên Phú",
+        "Nguyệt Tài",
+        "Lộc Khố"
+      ],
+      "sao_hung": [
+        "Nguyệt Hỏa"
+      ],
+      "nguhanh_day": "Thổ",
+      "time_slots": [
+        {
+          "chi": "Dần",
+          "chi_name": "Dần",
+          "start_hour": "03:00",
+          "end_hour": "05:00",
+          "label_vi": "Dần 03:00–05:00",
+          "range": "03:00-05:00"
+        },
+        {
+          "chi": "Mão",
+          "chi_name": "Mão",
+          "start_hour": "05:00",
+          "end_hour": "07:00",
+          "label_vi": "Mão 05:00–07:00",
+          "range": "05:00-07:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Ngọ",
+          "chi_name": "Ngọ",
+          "start_hour": "11:00",
+          "end_hour": "13:00",
+          "label_vi": "Ngọ 11:00–13:00",
+          "range": "11:00-13:00"
+        },
+        {
+          "chi": "Thân",
+          "chi_name": "Thân",
+          "start_hour": "15:00",
+          "end_hour": "17:00",
+          "label_vi": "Thân 15:00–17:00",
+          "range": "15:00-17:00"
+        },
+        {
+          "chi": "Hợi",
+          "chi_name": "Hợi",
+          "start_hour": "21:00",
+          "end_hour": "23:00",
+          "label_vi": "Hợi 21:00–23:00",
+          "range": "21:00-23:00"
+        }
+      ],
+      "render_card": {
+        "headline": "Ngày 2026-04-13",
+        "lunar_line": "Ngày 26 tháng Hai năm Bính Ngọ",
+        "badge": "A",
+        "score_pct": 100,
+        "intent_vi": "KHAI_TRUONG",
+        "element": "Thổ",
+        "truc": "Mãn",
+        "stars": [
+          "Thiên Phú",
+          "Nguyệt Tài",
+          "Lộc Khố"
+        ],
+        "one_liner": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; năng lượng ngày (Thổ (đất)) hợp với mệnh bạn; ngày có phú quý từ trời, tốt cho kinh doanh; ngày có tài lộc trong tháng; ngày mở kho lộc, tốt cho tài chính. Lưu ý: ngày có sao Nguyệt Hỏa, kiêng lửa/bếp.",
+        "best_hours": [
+          "03:00-05:00",
+          "05:00-07:00",
+          "09:00-11:00"
+        ]
+      }
+    },
+    {
+      "rank": 2,
+      "date": "2026-04-20",
+      "lunar_date": "Ngày 4 tháng Ba năm Bính Ngọ",
+      "lunar_label": "Ngày 4 tháng Ba năm Bính Ngọ",
+      "score": 93,
+      "grade": "A",
+      "can_chi_day": "Giáp Tý",
+      "truc": "Thành",
+      "gio_tot": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "reason_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; ngày có quý nhân phù trợ.",
+      "summary_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; ngày có quý nhân phù trợ.",
+      "sao_cat": [
+        "Thiên Quý"
+      ],
+      "sao_hung": [],
+      "nguhanh_day": "Kim",
+      "time_slots": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "render_card": {
+        "headline": "Ngày 2026-04-20",
+        "lunar_line": "Ngày 4 tháng Ba năm Bính Ngọ",
+        "badge": "A",
+        "score_pct": 93,
+        "intent_vi": "KHAI_TRUONG",
+        "element": "Kim",
+        "truc": "Thành",
+        "stars": [
+          "Thiên Quý"
+        ],
+        "one_liner": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; ngày có quý nhân phù trợ.",
+        "best_hours": [
+          "23:00-01:00",
+          "01:00-03:00",
+          "07:00-09:00"
+        ]
+      }
+    },
+    {
+      "rank": 3,
+      "date": "2026-04-28",
+      "lunar_date": "Ngày 12 tháng Ba năm Bính Ngọ",
+      "lunar_label": "Ngày 12 tháng Ba năm Bính Ngọ",
+      "score": 90,
+      "grade": "A",
+      "can_chi_day": "Nhâm Thân",
+      "truc": "Định",
+      "gio_tot": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "reason_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: được quý nhân phù trợ, mọi việc thuận lợi; được phúc lành che chở, gặp dữ hóa lành; ngày có tài lộc từ trời, tốt cho cầu tài. Lưu ý: ngày dễ hao tốn, tổn thất.",
+      "summary_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: được quý nhân phù trợ, mọi việc thuận lợi; được phúc lành che chở, gặp dữ hóa lành; ngày có tài lộc từ trời, tốt cho cầu tài. Lưu ý: ngày dễ hao tốn, tổn thất.",
+      "sao_cat": [
+        "Thiên Đức",
+        "Nguyệt Đức",
+        "Thiên Tài"
+      ],
+      "sao_hung": [
+        "Đại Hao"
+      ],
+      "nguhanh_day": "Kim",
+      "time_slots": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "render_card": {
+        "headline": "Ngày 2026-04-28",
+        "lunar_line": "Ngày 12 tháng Ba năm Bính Ngọ",
+        "badge": "A",
+        "score_pct": 90,
+        "intent_vi": "KHAI_TRUONG",
+        "element": "Kim",
+        "truc": "Định",
+        "stars": [
+          "Thiên Đức",
+          "Nguyệt Đức",
+          "Thiên Tài"
+        ],
+        "one_liner": "Rất tốt — nên chọn ngày này. Điểm tốt: được quý nhân phù trợ, mọi việc thuận lợi; được phúc lành che chở, gặp dữ hóa lành; ngày có tài lộc từ trời, tốt cho cầu tài. Lưu ý: ngày dễ hao tốn, tổn thất.",
+        "best_hours": [
+          "23:00-01:00",
+          "01:00-03:00",
+          "07:00-09:00"
+        ]
+      }
+    }
+  ],
+  "recommended_dates": [
+    {
+      "rank": 1,
+      "date": "2026-04-13",
+      "lunar_date": "Ngày 26 tháng Hai năm Bính Ngọ",
+      "lunar_label": "Ngày 26 tháng Hai năm Bính Ngọ",
+      "score": 100,
+      "grade": "A",
+      "can_chi_day": "Đinh Tỵ",
+      "truc": "Mãn",
+      "gio_tot": [
+        {
+          "chi": "Dần",
+          "chi_name": "Dần",
+          "start_hour": "03:00",
+          "end_hour": "05:00",
+          "label_vi": "Dần 03:00–05:00",
+          "range": "03:00-05:00"
+        },
+        {
+          "chi": "Mão",
+          "chi_name": "Mão",
+          "start_hour": "05:00",
+          "end_hour": "07:00",
+          "label_vi": "Mão 05:00–07:00",
+          "range": "05:00-07:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Ngọ",
+          "chi_name": "Ngọ",
+          "start_hour": "11:00",
+          "end_hour": "13:00",
+          "label_vi": "Ngọ 11:00–13:00",
+          "range": "11:00-13:00"
+        },
+        {
+          "chi": "Thân",
+          "chi_name": "Thân",
+          "start_hour": "15:00",
+          "end_hour": "17:00",
+          "label_vi": "Thân 15:00–17:00",
+          "range": "15:00-17:00"
+        },
+        {
+          "chi": "Hợi",
+          "chi_name": "Hợi",
+          "start_hour": "21:00",
+          "end_hour": "23:00",
+          "label_vi": "Hợi 21:00–23:00",
+          "range": "21:00-23:00"
+        }
+      ],
+      "reason_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; năng lượng ngày (Thổ (đất)) hợp với mệnh bạn; ngày có phú quý từ trời, tốt cho kinh doanh; ngày có tài lộc trong tháng; ngày mở kho lộc, tốt cho tài chính. Lưu ý: ngày có sao Nguyệt Hỏa, kiêng lửa/bếp.",
+      "summary_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; năng lượng ngày (Thổ (đất)) hợp với mệnh bạn; ngày có phú quý từ trời, tốt cho kinh doanh; ngày có tài lộc trong tháng; ngày mở kho lộc, tốt cho tài chính. Lưu ý: ngày có sao Nguyệt Hỏa, kiêng lửa/bếp.",
+      "sao_cat": [
+        "Thiên Phú",
+        "Nguyệt Tài",
+        "Lộc Khố"
+      ],
+      "sao_hung": [
+        "Nguyệt Hỏa"
+      ],
+      "nguhanh_day": "Thổ",
+      "time_slots": [
+        {
+          "chi": "Dần",
+          "chi_name": "Dần",
+          "start_hour": "03:00",
+          "end_hour": "05:00",
+          "label_vi": "Dần 03:00–05:00",
+          "range": "03:00-05:00"
+        },
+        {
+          "chi": "Mão",
+          "chi_name": "Mão",
+          "start_hour": "05:00",
+          "end_hour": "07:00",
+          "label_vi": "Mão 05:00–07:00",
+          "range": "05:00-07:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Ngọ",
+          "chi_name": "Ngọ",
+          "start_hour": "11:00",
+          "end_hour": "13:00",
+          "label_vi": "Ngọ 11:00–13:00",
+          "range": "11:00-13:00"
+        },
+        {
+          "chi": "Thân",
+          "chi_name": "Thân",
+          "start_hour": "15:00",
+          "end_hour": "17:00",
+          "label_vi": "Thân 15:00–17:00",
+          "range": "15:00-17:00"
+        },
+        {
+          "chi": "Hợi",
+          "chi_name": "Hợi",
+          "start_hour": "21:00",
+          "end_hour": "23:00",
+          "label_vi": "Hợi 21:00–23:00",
+          "range": "21:00-23:00"
+        }
+      ],
+      "render_card": {
+        "headline": "Ngày 2026-04-13",
+        "lunar_line": "Ngày 26 tháng Hai năm Bính Ngọ",
+        "badge": "A",
+        "score_pct": 100,
+        "intent_vi": "KHAI_TRUONG",
+        "element": "Thổ",
+        "truc": "Mãn",
+        "stars": [
+          "Thiên Phú",
+          "Nguyệt Tài",
+          "Lộc Khố"
+        ],
+        "one_liner": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; năng lượng ngày (Thổ (đất)) hợp với mệnh bạn; ngày có phú quý từ trời, tốt cho kinh doanh; ngày có tài lộc trong tháng; ngày mở kho lộc, tốt cho tài chính. Lưu ý: ngày có sao Nguyệt Hỏa, kiêng lửa/bếp.",
+        "best_hours": [
+          "03:00-05:00",
+          "05:00-07:00",
+          "09:00-11:00"
+        ]
+      }
+    },
+    {
+      "rank": 2,
+      "date": "2026-04-20",
+      "lunar_date": "Ngày 4 tháng Ba năm Bính Ngọ",
+      "lunar_label": "Ngày 4 tháng Ba năm Bính Ngọ",
+      "score": 93,
+      "grade": "A",
+      "can_chi_day": "Giáp Tý",
+      "truc": "Thành",
+      "gio_tot": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "reason_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; ngày có quý nhân phù trợ.",
+      "summary_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; ngày có quý nhân phù trợ.",
+      "sao_cat": [
+        "Thiên Quý"
+      ],
+      "sao_hung": [],
+      "nguhanh_day": "Kim",
+      "time_slots": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "render_card": {
+        "headline": "Ngày 2026-04-20",
+        "lunar_line": "Ngày 4 tháng Ba năm Bính Ngọ",
+        "badge": "A",
+        "score_pct": 93,
+        "intent_vi": "KHAI_TRUONG",
+        "element": "Kim",
+        "truc": "Thành",
+        "stars": [
+          "Thiên Quý"
+        ],
+        "one_liner": "Rất tốt — nên chọn ngày này. Điểm tốt: ngày thuộc loại hợp với việc khai trương; ngày có quý nhân phù trợ.",
+        "best_hours": [
+          "23:00-01:00",
+          "01:00-03:00",
+          "07:00-09:00"
+        ]
+      }
+    },
+    {
+      "rank": 3,
+      "date": "2026-04-28",
+      "lunar_date": "Ngày 12 tháng Ba năm Bính Ngọ",
+      "lunar_label": "Ngày 12 tháng Ba năm Bính Ngọ",
+      "score": 90,
+      "grade": "A",
+      "can_chi_day": "Nhâm Thân",
+      "truc": "Định",
+      "gio_tot": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "reason_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: được quý nhân phù trợ, mọi việc thuận lợi; được phúc lành che chở, gặp dữ hóa lành; ngày có tài lộc từ trời, tốt cho cầu tài. Lưu ý: ngày dễ hao tốn, tổn thất.",
+      "summary_vi": "Rất tốt — nên chọn ngày này. Điểm tốt: được quý nhân phù trợ, mọi việc thuận lợi; được phúc lành che chở, gặp dữ hóa lành; ngày có tài lộc từ trời, tốt cho cầu tài. Lưu ý: ngày dễ hao tốn, tổn thất.",
+      "sao_cat": [
+        "Thiên Đức",
+        "Nguyệt Đức",
+        "Thiên Tài"
+      ],
+      "sao_hung": [
+        "Đại Hao"
+      ],
+      "nguhanh_day": "Kim",
+      "time_slots": [
+        {
+          "chi": "Tý",
+          "chi_name": "Tý",
+          "start_hour": "23:00",
+          "end_hour": "01:00",
+          "label_vi": "Tý 23:00–01:00",
+          "range": "23:00-01:00"
+        },
+        {
+          "chi": "Sửu",
+          "chi_name": "Sửu",
+          "start_hour": "01:00",
+          "end_hour": "03:00",
+          "label_vi": "Sửu 01:00–03:00",
+          "range": "01:00-03:00"
+        },
+        {
+          "chi": "Thìn",
+          "chi_name": "Thìn",
+          "start_hour": "07:00",
+          "end_hour": "09:00",
+          "label_vi": "Thìn 07:00–09:00",
+          "range": "07:00-09:00"
+        },
+        {
+          "chi": "Tỵ",
+          "chi_name": "Tỵ",
+          "start_hour": "09:00",
+          "end_hour": "11:00",
+          "label_vi": "Tỵ 09:00–11:00",
+          "range": "09:00-11:00"
+        },
+        {
+          "chi": "Mùi",
+          "chi_name": "Mùi",
+          "start_hour": "13:00",
+          "end_hour": "15:00",
+          "label_vi": "Mùi 13:00–15:00",
+          "range": "13:00-15:00"
+        },
+        {
+          "chi": "Tuất",
+          "chi_name": "Tuất",
+          "start_hour": "19:00",
+          "end_hour": "21:00",
+          "label_vi": "Tuất 19:00–21:00",
+          "range": "19:00-21:00"
+        }
+      ],
+      "render_card": {
+        "headline": "Ngày 2026-04-28",
+        "lunar_line": "Ngày 12 tháng Ba năm Bính Ngọ",
+        "badge": "A",
+        "score_pct": 90,
+        "intent_vi": "KHAI_TRUONG",
+        "element": "Kim",
+        "truc": "Định",
+        "stars": [
+          "Thiên Đức",
+          "Nguyệt Đức",
+          "Thiên Tài"
+        ],
+        "one_liner": "Rất tốt — nên chọn ngày này. Điểm tốt: được quý nhân phù trợ, mọi việc thuận lợi; được phúc lành che chở, gặp dữ hóa lành; ngày có tài lộc từ trời, tốt cho cầu tài. Lưu ý: ngày dễ hao tốn, tổn thất.",
+        "best_hours": [
+          "23:00-01:00",
+          "01:00-03:00",
+          "07:00-09:00"
+        ]
+      }
+    }
+  ],
+  "dates_to_avoid": [
+    {
+      "date": "2026-04-02",
+      "reason_vi": "Địa Chi ngày Ngọ xung với tuổi Tý. Tuyệt đối tránh.",
+      "severity": 3,
+      "summary_vi": "Ngày này xung khắc trực tiếp với tuổi của bạn. Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
+    },
+    {
+      "date": "2026-04-03",
+      "reason_vi": "Thiên Can ngày (Hỏa) là Kỵ Thần của mệnh Hải Trung Kim",
+      "severity": 2,
+      "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác."
+    },
+    {
+      "date": "2026-04-12",
+      "reason_vi": "Thiên Can ngày (Hỏa) là Kỵ Thần của mệnh Hải Trung Kim",
+      "severity": 2,
+      "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác."
+    },
+    {
+      "date": "2026-04-13",
+      "reason_vi": "Thiên Can ngày (Hỏa) là Kỵ Thần của mệnh Hải Trung Kim",
+      "severity": 2,
+      "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác."
+    },
+    {
+      "date": "2026-04-16",
+      "reason_vi": "Thiên Can ngày Canh khắc Thiên Can tuổi Giáp",
+      "severity": 2,
+      "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác."
+    },
+    {
+      "date": "2026-04-22",
+      "reason_vi": "Thiên Can ngày (Hỏa) là Kỵ Thần của mệnh Hải Trung Kim",
+      "severity": 2,
+      "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác."
+    },
+    {
+      "date": "2026-04-26",
+      "reason_vi": "Địa Chi ngày Ngọ xung với tuổi Tý. Tuyệt đối tránh.",
+      "severity": 3,
+      "summary_vi": "Ngày này xung khắc trực tiếp với tuổi của bạn. Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
+    }
+  ]
+}

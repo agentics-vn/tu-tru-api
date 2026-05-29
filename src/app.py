@@ -23,6 +23,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from api.errors import error_response
+from api.rate_limit import RateLimitMiddleware
+from api.version import get_engine_version
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Sentry — error tracking (no-op when SENTRY_DSN is unset)
@@ -41,9 +43,11 @@ from api.routes.lich_thang import router as lich_thang_router
 from api.routes.tieu_van import router as tieu_van_router
 from api.routes.tu_tru import router as tu_tru_router
 from api.routes.la_so import router as la_so_router
+from api.routes.la_so_luu_nien import router as la_so_luu_nien_router
 from api.routes.hop_tuoi import router as hop_tuoi_router
 from api.routes.phong_thuy import router as phong_thuy_router
 from api.routes.day_detail import router as day_detail_router
+from api.routes.day_compare import router as day_compare_router
 from api.routes.convert_date import router as convert_date_router
 from api.routes.share import router as share_router
 from api.routes.profile import router as profile_router
@@ -96,6 +100,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["X-API-Key", "Content-Type"],
 )
+app.add_middleware(RateLimitMiddleware)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -134,7 +139,11 @@ async def generic_exception_handler(
 
 @app.get("/health")
 async def health() -> dict:
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "version": app.version,
+        "engine_version": get_engine_version(),
+    }
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -146,10 +155,12 @@ app.include_router(ngay_hom_nay_router, prefix="/v1/ngay-hom-nay")
 app.include_router(lich_thang_router, prefix="/v1/lich-thang")
 app.include_router(tieu_van_router, prefix="/v1/tieu-van")
 app.include_router(tu_tru_router, prefix="/v1/tu-tru")
+app.include_router(la_so_luu_nien_router, prefix="/v1/la-so")
 app.include_router(la_so_router, prefix="/v1/la-so")
 app.include_router(hop_tuoi_router, prefix="/v1/hop-tuoi")
 app.include_router(phong_thuy_router, prefix="/v1/phong-thuy")
 app.include_router(day_detail_router, prefix="/v1/day-detail")
+app.include_router(day_compare_router, prefix="/v1/day-compare")
 app.include_router(convert_date_router, prefix="/v1/convert-date")
 app.include_router(share_router, prefix="/v1/share")
 app.include_router(profile_router, prefix="/v1/profile")

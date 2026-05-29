@@ -1,0 +1,74 @@
+{
+  "status": "success",
+  "intent": "KHAI_TRUONG",
+  "intent_label_vi": "Khai trương cửa hàng / công ty",
+  "range_start": "2026-08-13",
+  "range_end": "2026-08-19",
+  "score_max": 100,
+  "score_methodology": {
+    "summary_vi": "Điểm tổng hợp từ Trực, sao, Can Chi với lá số, và giờ vàng.",
+    "weights": [
+      {
+        "factor": "truc",
+        "label_vi": "Trực ngày",
+        "max_points": 30
+      },
+      {
+        "factor": "sao28",
+        "label_vi": "Nhị thập bát tú",
+        "max_points": 25
+      },
+      {
+        "factor": "can_chi_laso",
+        "label_vi": "Can chi · lá số",
+        "max_points": 25
+      },
+      {
+        "factor": "gio_vang",
+        "label_vi": "Giờ vàng",
+        "max_points": 20
+      }
+    ]
+  },
+  "empty_reason_vi": "Không tìm được ngày tốt trong khoảng 13/08/2026–19/08/2026. Đã quét 7 ngày; 3 qua lớp 1, 0 qua lớp 2.",
+  "meta": {
+    "intent": "KHAI_TRUONG",
+    "range_scanned": {
+      "from": "13/08/2026",
+      "to": "19/08/2026"
+    },
+    "total_days_scanned": 7,
+    "days_passed_layer1": 3,
+    "days_passed_layer2": 0,
+    "candidates_scanned": 0,
+    "bat_tu_summary": {
+      "ngu_hanh_menh": "Kim",
+      "duong_than": "Thổ",
+      "ky_than": "Hỏa",
+      "summary_vi": "Mệnh bạn thuộc hành Kim (kim loại)."
+    },
+    "share_token": "eyJlcCI6ImNob24tbmdheSIsImJkIjoiMTUvMDMvMTk4NCIsImJ0IjpudWxsLCJnIjpudWxsLCJiaCI6IjE1MDVjMGI3ZDBmZmNlMTIiLCJ0cyI6MTc4MDAxOTY2MSwiaW4iOiJLSEFJX1RSVU9ORyIsInJzIjoiMTMvMDgvMjAyNiIsInJlIjoiMTkvMDgvMjAyNiJ9LjZjMDUzYjc1NmM3NzQwYTg"
+  },
+  "ranked_days": [],
+  "recommended_dates": [],
+  "dates_to_avoid": [
+    {
+      "date": "2026-08-14",
+      "reason_vi": "Tháng Cô Hồn (tháng 7 âm lịch) — không thích hợp cho Khai trương. Tuyệt đối tránh.",
+      "severity": 3,
+      "summary_vi": "Ngày này xung khắc trực tiếp với tuổi của bạn. Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
+    },
+    {
+      "date": "2026-08-16",
+      "reason_vi": "Tháng Cô Hồn (tháng 7 âm lịch) — không thích hợp cho Khai trương. Tuyệt đối tránh.",
+      "severity": 3,
+      "summary_vi": "Ngày này xung khắc trực tiếp với tuổi của bạn. Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
+    },
+    {
+      "date": "2026-08-18",
+      "reason_vi": "Tháng Cô Hồn (tháng 7 âm lịch) — không thích hợp cho Khai trương. Tuyệt đối tránh.",
+      "severity": 3,
+      "summary_vi": "Ngày này xung khắc trực tiếp với tuổi của bạn. Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
+    }
+  ]
+}

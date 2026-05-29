@@ -902,3 +902,28 @@ So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật 
 **Hướng tốt / xấu năm (`huong_tot_nam_nay` / `huong_xau_nam_nay`):** Phân loại theo trường `nature` của từng sao trong `phi-tinh-stars.json` — **không** lọc theo Dụng Thần cá nhân. Ghi chú giải thích thêm nằm trong `phi_tinh_note_vi` của response.
 
 **Override nhập trung:** Nếu JSON override khác với công thức mà vẫn giữ cùng quy ước thuận/nghịch theo can dương lịch, có thể xảy ra tổ hợp không trùng mọi tài liệu truyền thống — client nên đọc `docs/seed/phi-tinh-year-center.json` (`_comment`) và phần mô tả API.
+
+## 19. Direction C — Day score presentation (NLTT contract)
+
+**Tách engine vs presentation:**
+
+- `collect_score_deltas()` — phân loại delta vào bucket `truc`, `sao28`, `can_chi_laso`; `compute_score()` vẫn là nguồn `score`/`grade` cho ranking.
+- `build_direction_c_breakdown()` — đúng **4** mục (`truc`, `sao28`, `can_chi_laso`, `gio_vang`); **không** có hàng `"Điểm cơ bản"`.
+
+**Phân bổ điểm:**
+
+1. `BASE_SCORE` 50 chia vào 3 bucket: truc=19, sao28=16, can_chi_laso=15.
+2. Cộng delta engine vào từng bucket theo mapping ở `collect_score_deltas`.
+3. **`gio_vang.points = score − truc − sao28 − can_chi_laso`** (phần dư; engine không score giờ riêng).
+4. **`sum(breakdown[].points) == score`** (bắt buộc).
+
+**Giờ vàng:** `gio_tot[]` liệt kê slot; `gio_vang.reason_vi` luận ý nghĩa với lá số — không thay bằng list giờ.
+
+**Generic mode:** `mode=generic` trên `GET /v1/day-detail` — không cần birth; `can_chi_laso`/`reason_vi` theo lịch chung.
+
+## 20. P3 — NLTT polish (optional contract)
+
+- **Health:** `GET /health` trả `version` (FastAPI app) + `engine_version` (từ `pyproject.toml` hoặc `0.1.0` trong Docker).
+- **Giờ chuẩn:** `gio_tot`/`gio_xau` dùng một shape slot trên mọi endpoint ngày (xem `api/gio_slots.py`).
+- **`purpose_rows`:** Mỗi intent trong seed → `verdict` (`tot` \| `xau` \| `luu_y` \| `trung`) + `reason_vi` trên `day-detail` personalized.
+- **Rate limit:** Header `X-RateLimit-*`; vượt ngưỡng → 429 `RATE_LIMITED`.

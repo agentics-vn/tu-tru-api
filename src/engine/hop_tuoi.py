@@ -456,6 +456,14 @@ def sentiment_score(s: str) -> int:
     return {"positive": 1, "neutral": 0, "negative": -1}.get(s, 0)
 
 
+def criterion_points(sentiment: str, weight: int, max_weight: int) -> int:
+    """Map sentiment + weight to 0–100 display points (P3-07)."""
+    base = {"positive": 90, "neutral": 55, "negative": 20}.get(sentiment, 50)
+    if max_weight <= 0:
+        return base
+    return max(0, min(100, round(base * weight / max_weight)))
+
+
 def compute_verdict(
     criteria_results: list[dict[str, Any]],
     weights: list[int],
@@ -548,9 +556,11 @@ def analyze_compatibility(
 
     specs = CRITERIA_BY_RELATIONSHIP[relationship_type]
     weights = [s["weight"] for s in specs]
-    criteria_results: list[dict[str, str]] = []
+    max_weight = max(weights) if weights else 1
+    criteria_results: list[dict[str, Any]] = []
     for s in specs:
         row = evaluate_criterion(s["key"], p1, p2, relationship_type)
+        row["points"] = criterion_points(row["sentiment"], s["weight"], max_weight)
         criteria_results.append(row)
 
     verdict, level = compute_verdict(criteria_results, weights)

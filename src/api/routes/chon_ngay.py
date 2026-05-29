@@ -7,24 +7,27 @@ and returns recommended_dates + dates_to_avoid per docs/api-spec.md.
 
 from __future__ import annotations
 
-import json
 import logging
 import traceback
 from datetime import date, datetime, timedelta
 from enum import Enum
-from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from api.gio_slots import format_gio_slot, format_gio_tot_slots
+from api.intent_rules_loader import get_intent_rule, resolve_intent_key
 from api.parse_date import parse_dmy
+from engine.chon_ngay_copy import build_chon_ngay_reason_vi
+from engine.score_methodology import get_score_methodology_block
 
 # ── Engine imports (Python ports of the JS engine modules) ─────────────────
 from calendar_service import get_day_info, get_user_chart, get_can_chi_year, CAN_NAMES, CHI_NAMES
 from filter import apply_layer2_filter
-from scoring import compute_score, compute_score_breakdown
+from scoring import compute_score
+from api.day_score_response import build_personalized_day_payload
 from engine.hoang_dao import get_gio_hoang_dao
 from engine.pillars import VALID_BIRTH_HOURS, BIRTH_HOUR_LABELS
 
@@ -33,57 +36,12 @@ logger = logging.getLogger("chon_ngay")
 router = APIRouter()
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Load intent rules from seed data
-# ─────────────────────────────────────────────────────────────────────────────
-
-_INTENT_RULES_PATH = Path(__file__).resolve().parent.parent.parent.parent / "docs" / "seed" / "intent-rules.json"
-with open(_INTENT_RULES_PATH, encoding="utf-8") as f:
-    INTENT_RULES: dict = json.load(f)
-
-# ── T1-08: Validate intent-rules.json schema at startup ──────────────────────
-_REQUIRED_FIELDS = {"preferred_truc", "forbidden_truc", "bonus_sao", "forbidden_sao"}
-_VALID_TRUC = set(range(12))
-for _key, _rule in INTENT_RULES.items():
-    if _key.startswith("_"):
-        continue
-    _missing = _REQUIRED_FIELDS - set(_rule.keys())
-    if _missing:
-        raise RuntimeError(
-            f"intent-rules.json: intent '{_key}' missing fields: {_missing}"
-        )
-    for _field in ("preferred_truc", "forbidden_truc"):
-        if not isinstance(_rule[_field], list):
-            raise RuntimeError(
-                f"intent-rules.json: intent '{_key}'.{_field} must be a list"
-            )
-        for _idx in _rule[_field]:
-            if not isinstance(_idx, int) or _idx not in _VALID_TRUC:
-                raise RuntimeError(
-                    f"intent-rules.json: intent '{_key}'.{_field} has invalid index {_idx}"
-                )
-    for _field in ("bonus_sao", "forbidden_sao"):
-        if not isinstance(_rule[_field], list):
-            raise RuntimeError(
-                f"intent-rules.json: intent '{_key}'.{_field} must be a list"
-            )
-        for _sao in _rule[_field]:
-            if not isinstance(_sao, str) or not _sao:
-                raise RuntimeError(
-                    f"intent-rules.json: intent '{_key}'.{_field} has invalid entry '{_sao}'"
-                )
-
-# ─────────────────────────────────────────────────────────────────────────────
 # Constants
 # ─────────────────────────────────────────────────────────────────────────────
 
 MAX_RANGE_DAYS = 90
 TOP_N_DEFAULT = 3
 TOP_N_MAX = 10
-
-# Map API-facing intent → intent-rules.json key
-INTENT_ALIAS: dict[str, str] = {
-    "CUOI_HOI": "DAM_CUOI",
-}
 
 LUNAR_MONTH_NAMES = [
     "", "Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu",
@@ -158,6 +116,12 @@ class ChonNgayRequest(BaseModel):
     range_end: str = Field(..., description="Ngày kết thúc dd/mm/yyyy")
     top_n: Optional[int] = Field(default=TOP_N_DEFAULT, ge=1, le=TOP_N_MAX)
     tz: Optional[str] = Field(default=None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)")
+
+    @field_validator("intent")
+    @classmethod
+    def intent_must_be_valid(cls, v: IntentEnum) -> IntentEnum:
+        resolve_intent_key(v.value)
+        return v
 
     @field_validator("birth_date")
     @classmethod
@@ -349,6 +313,154 @@ def _build_bat_tu_summary(user_chart: dict) -> dict:
     return summary
 
 
+def run_chon_ngay_scan(
+    *,
+    birth_date_iso: str,
+    birth_time: int | None,
+    gender: int | None,
+    intent: str,
+    range_start_dmy: str,
+    range_end_dmy: str,
+    top_n: int = TOP_N_DEFAULT,
+) -> dict[str, Any]:
+    """Run the chon-ngay pipeline; shared by POST /v1/chon-ngay and GET /v1/share."""
+    rule_key = resolve_intent_key(intent)
+    intent_rule = get_intent_rule(intent)
+    user_chart = get_user_chart(birth_date_iso, birth_time, gender)
+
+    all_dates = _each_day_in_range(parse_dmy(range_start_dmy), parse_dmy(range_end_dmy))
+    total_scanned = len(all_dates)
+
+    layer1_passed = 0
+    layer2_passed = 0
+    scored_days: list[dict] = []
+    dates_to_avoid: list[dict] = []
+
+    for d in all_dates:
+        date_str = d.isoformat()
+        day_info = get_day_info(date_str)
+        if not day_info["is_layer1_pass"]:
+            continue
+        layer1_passed += 1
+
+        filter_result = apply_layer2_filter(day_info, user_chart, rule_key)
+        if not filter_result["pass"]:
+            avoid_entry: dict = {
+                "date": date_str,
+                "reason_vi": ". ".join(filter_result["reasons"]) + ". Tuyệt đối tránh.",
+                "severity": filter_result["severity"],
+            }
+            if filter_result["severity"] == 3:
+                avoid_entry["summary_vi"] = (
+                    "Ngày này xung khắc trực tiếp với tuổi của bạn. "
+                    "Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
+                )
+            dates_to_avoid.append(avoid_entry)
+            continue
+
+        layer2_passed += 1
+        score_result = compute_score(
+            day_info, user_chart, rule_key, intent_rule, filter_result
+        )
+
+        if filter_result["severity"] == 2:
+            dates_to_avoid.append({
+                "date": date_str,
+                "reason_vi": ". ".join(filter_result["reasons"]),
+                "severity": 2,
+                "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác.",
+            })
+
+        scored_days.append({"day_info": day_info, "score_result": score_result})
+
+    scored_days.sort(key=lambda x: x["score_result"]["score"], reverse=True)
+    top_days = scored_days[:top_n]
+
+    intent_label_vi = intent_rule.get("_label_vi", intent)
+    range_start_iso = parse_dmy(range_start_dmy).isoformat()
+    range_end_iso = parse_dmy(range_end_dmy).isoformat()
+    methodology = get_score_methodology_block()
+
+    avoid_sev3_dates = {d["date"] for d in dates_to_avoid if d["severity"] == 3}
+    recommended_dates: list[dict] = []
+    ranked_days: list[dict] = []
+    for d in top_days:
+        if d["day_info"]["date"] in avoid_sev3_dates:
+            continue
+        rank = len(ranked_days) + 1
+        gio_raw = get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
+        can_chi_day = f"{d['day_info']['day_can_name']} {d['day_info']['day_chi_name']}"
+        lunar_label = _format_lunar_date(d["day_info"])
+        summary_vi = d["score_result"]["summary_vi"]
+        reason_vi = summary_vi or build_chon_ngay_reason_vi(
+            grade=d["score_result"]["grade"],
+            truc_name=d["day_info"]["truc_name"],
+            can_chi_day=can_chi_day,
+            intent_label_vi=intent_label_vi,
+        )
+        gio_tot = [format_gio_slot(g) for g in gio_raw]
+        row = {
+            "rank": rank,
+            "date": d["day_info"]["date"],
+            "lunar_date": lunar_label,
+            "lunar_label": lunar_label,
+            "score": d["score_result"]["score"],
+            "grade": d["score_result"]["grade"],
+            "can_chi_day": can_chi_day,
+            "truc": d["day_info"]["truc_name"],
+            "gio_tot": gio_tot,
+            "reason_vi": reason_vi,
+            "summary_vi": summary_vi,
+            "sao_cat": d["score_result"]["bonus_sao"],
+            "sao_hung": d["score_result"]["penalty_sao"],
+            "nguhanh_day": d["day_info"]["day_nap_am_hanh"],
+            "time_slots": gio_tot,
+            "render_card": {
+                "headline": f"Ngày {d['day_info']['date']}",
+                "lunar_line": lunar_label,
+                "badge": d["score_result"]["grade"],
+                "score_pct": min(round(d["score_result"]["score"] / 100 * 100), 100),
+                "intent_vi": intent,
+                "element": d["day_info"]["day_nap_am_hanh"],
+                "truc": d["day_info"]["truc_name"],
+                "stars": d["score_result"]["bonus_sao"][:3],
+                "one_liner": summary_vi,
+                "best_hours": [g["range"] for g in gio_tot][:3],
+            },
+        }
+        ranked_days.append(row)
+        recommended_dates.append(row)
+
+    empty_reason_vi: str | None = None
+    if not ranked_days:
+        empty_reason_vi = (
+            f"Không tìm được ngày tốt trong khoảng {range_start_dmy}–{range_end_dmy}. "
+            f"Đã quét {total_scanned} ngày; {layer1_passed} qua lớp 1, {layer2_passed} qua lớp 2."
+        )
+
+    return {
+        "status": "success",
+        "intent": intent,
+        "intent_label_vi": intent_label_vi,
+        "range_start": range_start_iso,
+        "range_end": range_end_iso,
+        **methodology,
+        "empty_reason_vi": empty_reason_vi,
+        "meta": {
+            "intent": intent,
+            "range_scanned": {"from": range_start_dmy, "to": range_end_dmy},
+            "total_days_scanned": total_scanned,
+            "days_passed_layer1": layer1_passed,
+            "days_passed_layer2": layer2_passed,
+            "candidates_scanned": layer2_passed,
+            "bat_tu_summary": _build_bat_tu_summary(user_chart),
+        },
+        "ranked_days": ranked_days,
+        "recommended_dates": recommended_dates,
+        "dates_to_avoid": dates_to_avoid,
+    }
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # POST /v1/chon-ngay
 # ─────────────────────────────────────────────────────────────────────────────
@@ -384,159 +496,31 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
         intent = req.intent.value
         top_n = req.top_n or TOP_N_DEFAULT
         birth_date_str = bd.isoformat()
+        gender_val = req.gender.value if req.gender else None
 
-        # ── Resolve intent key for intent-rules.json ──────────────────────
-        rule_key = INTENT_ALIAS.get(intent, intent)
-        intent_rule = INTENT_RULES.get(
-            rule_key,
-            INTENT_RULES.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao": []}),
-        )
-
-        # ── User chart (Layer 2 input) ────────────────────────────────────
-        gender_str = req.gender.value if req.gender else None
-        user_chart = get_user_chart(birth_date_str, req.birth_time, gender_str)
-
-        # ── Iterate date range ────────────────────────────────────────────
-        all_dates = _each_day_in_range(parse_dmy(req.range_start), parse_dmy(req.range_end))
-        total_scanned = len(all_dates)
-
-        layer1_passed = 0
-        layer2_passed = 0
-        scored_days: list[dict] = []
-        dates_to_avoid: list[dict] = []
-
-        for d in all_dates:
-            date_str = d.isoformat()
-
-            # Layer 1
-            day_info = get_day_info(date_str)
-            if not day_info["is_layer1_pass"]:
-                continue
-            layer1_passed += 1
-
-            # Layer 2
-            filter_result = apply_layer2_filter(day_info, user_chart, rule_key)
-
-            if not filter_result["pass"]:
-                # severity 3 → dates_to_avoid
-                avoid_entry: dict = {
-                    "date": date_str,
-                    "reason_vi": ". ".join(filter_result["reasons"]) + ". Tuyệt đối tránh.",
-                    "severity": filter_result["severity"],
-                }
-                if filter_result["severity"] == 3:
-                    avoid_entry["summary_vi"] = (
-                        "Ngày này xung khắc trực tiếp với tuổi của bạn. "
-                        "Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
-                    )
-                dates_to_avoid.append(avoid_entry)
-                continue
-
-            layer2_passed += 1
-
-            # Layer 3 — scoring
-            score_result = compute_score(
-                day_info, user_chart, rule_key, intent_rule, filter_result
-            )
-
-            # severity 2 days still pass but also appear in dates_to_avoid
-            if filter_result["severity"] == 2:
-                dates_to_avoid.append({
-                    "date": date_str,
-                    "reason_vi": ". ".join(filter_result["reasons"]),
-                    "severity": 2,
-                    "summary_vi": "Ngày này có yếu tố không hợp với mệnh bạn. Nếu có thể, nên chọn ngày khác.",
-                })
-
-            scored_days.append({"day_info": day_info, "score_result": score_result})
-
-        # ── Sort and pick top N ───────────────────────────────────────────
-        scored_days.sort(key=lambda x: x["score_result"]["score"], reverse=True)
-        top_days = scored_days[:top_n]
-
-        # ── Safety invariant: severity=3 MUST NEVER appear in recommended ─
-        avoid_sev3_dates = {
-            d["date"] for d in dates_to_avoid if d["severity"] == 3
-        }
-        recommended_dates = []
-        for d in top_days:
-            if d["day_info"]["date"] in avoid_sev3_dates:
-                continue
-            gio = get_gio_hoang_dao(d["day_info"]["day_chi_idx"])
-            recommended_dates.append({
-                "date": d["day_info"]["date"],
-                "lunar_date": _format_lunar_date(d["day_info"]),
-                "score": d["score_result"]["score"],
-                "grade": d["score_result"]["grade"],
-                "truc": d["day_info"]["truc_name"],
-                "sao_cat": d["score_result"]["bonus_sao"],
-                "sao_hung": d["score_result"]["penalty_sao"],
-                "nguhanh_day": d["day_info"]["day_nap_am_hanh"],
-                "reason_vi": ". ".join(d["score_result"]["reasons_vi"]),
-                "summary_vi": d["score_result"]["summary_vi"],
-                "time_slots": [
-                    {"chi_name": g["chi_name"], "range": f"{g['start']}-{g['end']}"}
-                    for g in gio
-                ],
-                "render_card": {
-                    "headline": f"Ngày {d['day_info']['date']}",
-                    "lunar_line": _format_lunar_date(d["day_info"]),
-                    "badge": d["score_result"]["grade"],
-                    "score_pct": min(round(d["score_result"]["score"] / 100 * 100), 100),
-                    "intent_vi": intent,
-                    "element": d["day_info"]["day_nap_am_hanh"],
-                    "truc": d["day_info"]["truc_name"],
-                    "stars": d["score_result"]["bonus_sao"][:3],
-                    "one_liner": d["score_result"]["summary_vi"],
-                    "best_hours": [
-                        f"{g['start']}-{g['end']}"
-                        for g in gio
-                    ][:3],
-                },
-            })
-
-        # ── 422 if nothing survived ───────────────────────────────────────
-        if not recommended_dates:
-            return _error_response(
-                422,
-                "NO_DATES_FOUND",
-                "Không tìm được ngày tốt nào trong khoảng thời gian đã chọn.",
-            )
-
-        # ── Share token (T5-01) ──────────────────────────────────────────
+        from api.schemas.direction_c import validate_chon_ngay_response
         from api.share import create_share_token
 
-        share_token = create_share_token(
+        content = run_chon_ngay_scan(
+            birth_date_iso=birth_date_str,
+            birth_time=req.birth_time,
+            gender=gender_val,
+            intent=intent,
+            range_start_dmy=req.range_start,
+            range_end_dmy=req.range_end,
+            top_n=top_n,
+        )
+        content["meta"]["share_token"] = create_share_token(
             endpoint="chon-ngay",
             birth_date=req.birth_date,
             birth_time=req.birth_time,
-            gender=req.gender.value if req.gender else None,
+            gender=gender_val,
             intent=intent,
             range_start=req.range_start,
             range_end=req.range_end,
         )
-
-        # ── Build response ────────────────────────────────────────────────
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "success",
-                "meta": {
-                    "intent": intent,
-                    "range_scanned": {
-                        "from": req.range_start,
-                        "to": req.range_end,
-                    },
-                    "total_days_scanned": total_scanned,
-                    "days_passed_layer1": layer1_passed,
-                    "days_passed_layer2": layer2_passed,
-                    "bat_tu_summary": _build_bat_tu_summary(user_chart),
-                    "share_token": share_token,
-                },
-                "recommended_dates": recommended_dates,
-                "dates_to_avoid": dates_to_avoid,
-            },
-        )
+        validate_chon_ngay_response(content)
+        return JSONResponse(status_code=200, content=content)
 
     except HTTPException:
         raise
@@ -566,6 +550,12 @@ class DetailRequest(BaseModel):
     intent: IntentEnum
     date: str = Field(..., description="Ngày cần phân tích dd/mm/yyyy")
     tz: Optional[str] = Field(default=None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)")
+
+    @field_validator("intent")
+    @classmethod
+    def intent_must_be_valid(cls, v: IntentEnum) -> IntentEnum:
+        resolve_intent_key(v.value)
+        return v
 
     @field_validator("birth_date")
     @classmethod
@@ -627,12 +617,8 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
         target_date = parse_dmy(req.date)
         birth_date_str = bd.isoformat()
 
-        # Resolve intent
-        rule_key = INTENT_ALIAS.get(intent, intent)
-        intent_rule = INTENT_RULES.get(
-            rule_key,
-            INTENT_RULES.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao": []}),
-        )
+        rule_key = resolve_intent_key(intent)
+        intent_rule = get_intent_rule(intent)
 
         # User chart
         gender_str = req.gender.value if req.gender else None
@@ -740,32 +726,32 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
                 },
             )
 
-        # ── Layer 3 — detailed scoring ──────────────────────────────────────
-        score_result = compute_score_breakdown(
-            day_info, user_chart, rule_key, intent_rule, filter_result
+        # ── Layer 3 — Direction C scoring ─────────────────────────────────
+        from datetime import date as date_cls
+
+        payload = build_personalized_day_payload(
+            day_info=day_info,
+            user_chart=user_chart,
+            intent=rule_key,
+            intent_rule=intent_rule,
+            target=date_cls.fromisoformat(date_str),
+            include_layers=True,
         )
 
         layer3_detail = {
             "base_score": 50,
-            "final_score": score_result["score"],
-            "grade": score_result["grade"],
-            "breakdown": score_result["breakdown"],
-            "bonus_sao": score_result["bonus_sao"],
-            "penalty_sao": score_result["penalty_sao"],
+            "final_score": payload["score"],
+            "grade": payload["grade"],
+            "breakdown": payload["breakdown"],
+            "bonus_sao": payload.get("bonus_sao", []),
+            "penalty_sao": payload.get("penalty_sao", []),
         }
 
         # ── Time slots ──────────────────────────────────────────────────────
-        gio_list = get_gio_hoang_dao(day_info["day_chi_idx"])
-        time_slots = [
-            {
-                "chi_name": g["chi_name"],
-                "range": f"{g['start']}-{g['end']}",
-            }
-            for g in gio_list
-        ]
+        time_slots = format_gio_tot_slots(day_info["day_chi_idx"])
 
         # Verdict
-        grade = score_result["grade"]
+        grade = payload["grade"]
         if grade == "A":
             verdict = "Rất tốt"
             verdict_vi = "Ngày rất tốt — nên chọn."
@@ -793,14 +779,18 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
                 "verdict": verdict,
                 "verdict_vi": verdict_vi,
                 "severity": filter_result["severity"],
-                "score": score_result["score"],
-                "grade": score_result["grade"],
+                "score": payload["score"],
+                "grade": payload["grade"],
+                "breakdown": payload["breakdown"],
+                "sources": payload["sources"],
+                "score_max": payload["score_max"],
+                "score_methodology": payload["score_methodology"],
                 "layer1": layer1_detail,
                 "layer2": layer2_detail,
                 "layer3": layer3_detail,
                 "time_slots": time_slots,
-                "reason_vi": ". ".join(score_result["reasons_vi"]),
-                "summary_vi": score_result["summary_vi"],
+                "reason_vi": payload["summary_vi"],
+                "summary_vi": payload["summary_vi"],
             },
         )
 

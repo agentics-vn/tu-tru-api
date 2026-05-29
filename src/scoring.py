@@ -421,6 +421,308 @@ def _build_summary_vi(
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# SCORE DELTA COLLECTOR (Direction C + compute_score source)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _add_delta(
+    buckets: dict[str, int],
+    bucket: str,
+    points: int,
+) -> None:
+    buckets[bucket] = buckets.get(bucket, 0) + points
+
+
+def collect_score_deltas(
+    day_info: dict,
+    user_chart: dict,
+    intent: str,
+    intent_rule: dict,
+    filter_result: dict,
+) -> dict:
+    """
+    Single pass: categorized numeric contributions for Direction C breakdown
+    and authoritative score/grade (same as compute_score).
+    """
+    from engine.score_methodology import BASE_BUCKET_SPLIT
+
+    raw: dict[str, int] = {"truc": 0, "sao28": 0, "can_chi_laso": 0}
+    score = BASE_SCORE
+    bonus_sao: list[str] = []
+    penalty_sao: list[str] = []
+    reasons: list[str] = []
+    plain_pros: list[str] = []
+    plain_cons: list[str] = []
+
+    def apply(bucket: str, points: int) -> None:
+        nonlocal score
+        score += points
+        _add_delta(raw, bucket, points)
+
+    # 1. Trực score (generic)
+    truc_delta = day_info["truc_score"] * TRUC_SCORE_MULTIPLIER
+    apply("truc", truc_delta)
+    if truc_delta > 0:
+        reasons.append(f"Trực {day_info['truc_name']} — ngày tốt (+{truc_delta})")
+    elif truc_delta < 0:
+        reasons.append(f"Trực {day_info['truc_name']} — ngày xấu ({truc_delta})")
+
+    # 1b. Trực intent preference/forbid
+    truc_idx = day_info.get("truc_idx")
+    preferred_truc = intent_rule.get("preferred_truc", [])
+    forbidden_truc = intent_rule.get("forbidden_truc", [])
+    if truc_idx is not None:
+        if truc_idx in preferred_truc:
+            apply("truc", BONUS["truc_preferred"])
+            reasons.append(
+                f"Trực {day_info['truc_name']} — hợp với {_intent_label(intent)} "
+                f"(+{BONUS['truc_preferred']})"
+            )
+            plain_pros.append(f"ngày thuộc loại hợp với việc {_intent_label(intent).lower()}")
+        elif truc_idx in forbidden_truc:
+            apply("truc", PENALTY["truc_forbidden"])
+            penalty_sao.append(f"Trực {day_info['truc_name']}")
+            reasons.append(
+                f"Trực {day_info['truc_name']} — KỴ {_intent_label(intent)} "
+                f"({PENALTY['truc_forbidden']})"
+            )
+            plain_cons.append(f"ngày thuộc loại kiêng kỵ cho việc {_intent_label(intent).lower()}")
+
+    # 2. Universal cát tinh → sao28
+    if day_info.get("has_thien_duc"):
+        apply("sao28", BONUS["thien_duc"])
+        bonus_sao.append("Thiên Đức")
+        reasons.append(f"Ngày có Thiên Đức (+{BONUS['thien_duc']})")
+        plain_pros.append(SAO_PLAIN["thienDuc"])
+
+    if day_info.get("has_thien_duc_hop"):
+        apply("sao28", BONUS["thien_duc_hop"])
+        bonus_sao.append("Thiên Đức Hợp")
+        reasons.append(f"Ngày có Thiên Đức Hợp (+{BONUS['thien_duc_hop']})")
+        plain_pros.append(SAO_PLAIN["thienDucHop"])
+
+    if day_info.get("has_nguyet_duc"):
+        if _nguyet_duc_bonus_applies(intent):
+            apply("sao28", BONUS["nguyet_duc"])
+            bonus_sao.append("Nguyệt Đức")
+            reasons.append(f"Ngày có Nguyệt Đức (+{BONUS['nguyet_duc']})")
+            plain_pros.append(SAO_PLAIN["nguyetDuc"])
+        else:
+            reasons.append(
+                f"Nguyệt Đức — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
+            )
+
+    if day_info.get("has_nguyet_duc_hop"):
+        if _nguyet_duc_bonus_applies(intent):
+            apply("sao28", BONUS["nguyet_duc_hop"])
+            bonus_sao.append("Nguyệt Đức Hợp")
+            reasons.append(f"Ngày có Nguyệt Đức Hợp (+{BONUS['nguyet_duc_hop']})")
+            plain_pros.append(SAO_PLAIN["nguyetDucHop"])
+        else:
+            reasons.append(
+                f"Nguyệt Đức Hợp — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
+            )
+
+    # 3. Element matching → can_chi_laso
+    day_hanh = day_info.get("day_nap_am_hanh")
+
+    if user_chart.get("dung_than"):
+        dm_name = user_chart.get("nhat_chu", {}).get("can_name", "")
+
+        if day_hanh == user_chart["dung_than"]:
+            apply("can_chi_laso", BONUS["dung_than_match"])
+            bonus_sao.append("Dụng Thần")
+            reasons.append(
+                f"Nạp Âm ngày ({day_hanh}) là Dụng Thần của "
+                f"Nhật Chủ {dm_name} (+{BONUS['dung_than_match']})"
+            )
+            plain_pros.append(
+                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
+                f"rất hợp với mệnh bạn, bổ trợ sức khỏe"
+            )
+        elif day_hanh == user_chart.get("hi_than"):
+            apply("can_chi_laso", BONUS["hi_than_match"])
+            bonus_sao.append("Hỷ Thần")
+            reasons.append(
+                f"Nạp Âm ngày ({day_hanh}) là Hỷ Thần của "
+                f"Nhật Chủ {dm_name} (+{BONUS['hi_than_match']})"
+            )
+            plain_pros.append(
+                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
+                f"tương hợp với mệnh bạn"
+            )
+        elif day_hanh == user_chart.get("ky_than_v2"):
+            apply("can_chi_laso", PENALTY["ky_than_v2_match"])
+            penalty_sao.append("Kỵ Thần")
+            reasons.append(
+                f"Nạp Âm ngày ({day_hanh}) là Kỵ Thần của "
+                f"Nhật Chủ {dm_name} ({PENALTY['ky_than_v2_match']})"
+            )
+            plain_cons.append(
+                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
+                f"xung khắc với mệnh bạn"
+            )
+        elif day_hanh == user_chart.get("cuu_than"):
+            apply("can_chi_laso", PENALTY["cuu_than_match"])
+            reasons.append(
+                f"Nạp Âm ngày ({day_hanh}) là Cừu Thần của "
+                f"Nhật Chủ {dm_name} ({PENALTY['cuu_than_match']})"
+            )
+            plain_cons.append(
+                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
+                f"không thuận lợi cho mệnh bạn"
+            )
+    elif day_hanh == user_chart.get("duong_than"):
+        apply("can_chi_laso", BONUS["duong_than_match"])
+        reasons.append(
+            f"Nạp Âm ngày ({day_hanh}) là Dương Thần "
+            f"của mệnh {user_chart['menh_name']} (+{BONUS['duong_than_match']})"
+        )
+        plain_pros.append(
+            f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
+            f"hợp với mệnh bạn"
+        )
+
+    # 4. Layer 2 severity → sao28
+    if filter_result.get("severity") == 2:
+        apply("sao28", PENALTY["layer2_severity2"])
+        for r in filter_result.get("reasons", []):
+            reasons.append(f"{r} ({PENALTY['layer2_severity2']})")
+
+    # 5. Thiên Xá → sao28
+    thien_xa_detector = SAO_DETECTORS.get("thienXa")
+    if thien_xa_detector and thien_xa_detector(day_info, user_chart):
+        if intent in THIEN_XA_BONUS_INTENTS:
+            apply("sao28", BONUS["thien_xa_bonus"])
+            bonus_sao.append("Thiên Xá")
+            reasons.append(
+                f"Ngày có Thiên Xá — cát tinh cho {_intent_label(intent)} (+{BONUS['thien_xa_bonus']})"
+            )
+            plain_pros.append(SAO_PLAIN["thienXa"])
+        elif intent in THIEN_XA_PENALTY_INTENTS:
+            apply("sao28", PENALTY["thien_xa_penalty"])
+            penalty_sao.append("Thiên Xá")
+            reasons.append(
+                f"Ngày có Thiên Xá — KỴ {_intent_label(intent)} "
+                f"theo Ngọc Hạp Thông Thư ({PENALTY['thien_xa_penalty']})"
+            )
+            plain_cons.append(f"ngày không phù hợp cho việc {_intent_label(intent).lower()}")
+
+    # 6. Intent bonus sao → sao28
+    skip_keys = {"thienXa", "nguyetDuc", "nguyetDucHop", "thienDuc", "thienDucHop"}
+    for sao_key in intent_rule.get("bonus_sao", []):
+        if sao_key in skip_keys:
+            continue
+        detector = SAO_DETECTORS.get(sao_key)
+        if detector and detector(day_info, user_chart):
+            apply("sao28", BONUS["intent_bonus"])
+            bonus_sao.append(_sao_label(sao_key))
+            reasons.append(
+                f"Cát tinh {_sao_label(sao_key)} — tốt cho {_intent_label(intent)} (+{BONUS['intent_bonus']})"
+            )
+            plain = SAO_PLAIN.get(sao_key)
+            if plain:
+                plain_pros.append(plain)
+
+    # 7. Intent forbidden sao → sao28
+    for sao_key in intent_rule.get("forbidden_sao", []):
+        if sao_key == "thienXa":
+            continue
+        detector = SAO_DETECTORS.get(sao_key)
+        if detector and detector(day_info, user_chart):
+            apply("sao28", PENALTY["intent_penalty"])
+            penalty_sao.append(_sao_label(sao_key))
+            reasons.append(
+                f"Hung tinh {_sao_label(sao_key)} — kỵ {_intent_label(intent)} ({PENALTY['intent_penalty']})"
+            )
+            plain = SAO_PLAIN.get(sao_key)
+            if plain:
+                plain_cons.append(plain)
+
+    # 8. Thập Thần → can_chi_laso
+    if user_chart.get("nhat_chu"):
+        from engine.thap_than import get_day_god_for_intent
+
+        dm_can = user_chart["nhat_chu"]["can_idx"]
+        day_god = get_day_god_for_intent(day_info["day_can_idx"], dm_can, intent)
+        if day_god:
+            apply("can_chi_laso", BONUS["thap_than_intent"])
+            reasons.append(
+                f"Ngày {day_god['name']} — hợp với {_intent_label(intent)} "
+                f"(+{BONUS['thap_than_intent']})"
+            )
+            plain_pros.append(
+                f"mối quan hệ ngũ hành ngày hỗ trợ tốt cho việc {_intent_label(intent).lower()}"
+            )
+
+    # 9. Đại Vận → can_chi_laso
+    current_dv = user_chart.get("current_dai_van")
+    if current_dv and user_chart.get("dung_than"):
+        dv_hanh = current_dv.get("can_hanh")
+        dung_than = user_chart["dung_than"]
+        hi_than = user_chart.get("hi_than")
+
+        if dv_hanh == dung_than or dv_hanh == hi_than:
+            apply("can_chi_laso", BONUS["dai_van_favorable"])
+            reasons.append(
+                f"Đại Vận {current_dv['display']} ({dv_hanh}) hỗ trợ Dụng Thần "
+                f"(+{BONUS['dai_van_favorable']})"
+            )
+            plain_pros.append("vận may giai đoạn hiện tại đang thuận lợi")
+        elif dv_hanh == user_chart.get("ky_than_v2"):
+            apply("can_chi_laso", PENALTY["dai_van_unfavorable"])
+            reasons.append(
+                f"Đại Vận {current_dv['display']} ({dv_hanh}) là Kỵ Thần "
+                f"({PENALTY['dai_van_unfavorable']})"
+            )
+            plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
+        elif dv_hanh == user_chart.get("cuu_than"):
+            apply("can_chi_laso", PENALTY["dai_van_unfavorable"])
+            reasons.append(
+                f"Đại Vận {current_dv['display']} ({dv_hanh}) là Cừu Thần "
+                f"({PENALTY['dai_van_unfavorable']})"
+            )
+            plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
+
+    score = max(0, min(100, score))
+
+    if score >= GRADE_THRESHOLDS["A"]:
+        grade = "A"
+    elif score >= GRADE_THRESHOLDS["B"]:
+        grade = "B"
+    elif score >= GRADE_THRESHOLDS["C"]:
+        grade = "C"
+    else:
+        grade = "D"
+
+    summary_vi = _build_summary_vi(
+        day_info, user_chart, intent, grade,
+        bonus_sao, penalty_sao, plain_pros, plain_cons,
+    )
+
+    presentation = {
+        "truc": BASE_BUCKET_SPLIT["truc"] + raw["truc"],
+        "sao28": BASE_BUCKET_SPLIT["sao28"] + raw["sao28"],
+        "can_chi_laso": BASE_BUCKET_SPLIT["can_chi_laso"] + raw["can_chi_laso"],
+    }
+    presentation["gio_vang"] = score - (
+        presentation["truc"] + presentation["sao28"] + presentation["can_chi_laso"]
+    )
+
+    return {
+        "score": score,
+        "grade": grade,
+        "bonus_sao": bonus_sao,
+        "penalty_sao": penalty_sao,
+        "reasons_vi": reasons,
+        "summary_vi": summary_vi,
+        "raw_buckets": raw,
+        "presentation_buckets": presentation,
+        "plain_pros": plain_pros,
+        "plain_cons": plain_cons,
+    }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # MAIN SCORING FUNCTION
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -437,541 +739,12 @@ def compute_score(
     Returns:
         dict with keys: score, grade, bonus_sao, penalty_sao, reasons_vi
     """
-    score = BASE_SCORE
-    bonus_sao: list[str] = []
-    penalty_sao: list[str] = []
-    reasons: list[str] = []
-    plain_pros: list[str] = []
-    plain_cons: list[str] = []
-
-    # 1. Trực score (generic)
-    truc_delta = day_info["truc_score"] * TRUC_SCORE_MULTIPLIER
-    score += truc_delta
-    if truc_delta > 0:
-        reasons.append(f"Trực {day_info['truc_name']} — ngày tốt (+{truc_delta})")
-    elif truc_delta < 0:
-        reasons.append(f"Trực {day_info['truc_name']} — ngày xấu ({truc_delta})")
-
-    # 1b. Trực intent preference/forbid (from intent-rules.json)
-    truc_idx = day_info.get("truc_idx")
-    preferred_truc = intent_rule.get("preferred_truc", [])
-    forbidden_truc = intent_rule.get("forbidden_truc", [])
-    if truc_idx is not None:
-        if truc_idx in preferred_truc:
-            score += BONUS["truc_preferred"]
-            reasons.append(
-                f"Trực {day_info['truc_name']} — hợp với {_intent_label(intent)} "
-                f"(+{BONUS['truc_preferred']})"
-            )
-            plain_pros.append(f"ngày thuộc loại hợp với việc {_intent_label(intent).lower()}")
-        elif truc_idx in forbidden_truc:
-            score += PENALTY["truc_forbidden"]
-            penalty_sao.append(f"Trực {day_info['truc_name']}")
-            reasons.append(
-                f"Trực {day_info['truc_name']} — KỴ {_intent_label(intent)} "
-                f"({PENALTY['truc_forbidden']})"
-            )
-            plain_cons.append(f"ngày thuộc loại kiêng kỵ cho việc {_intent_label(intent).lower()}")
-
-    # 2. Universal cát tinh
-    if day_info.get("has_thien_duc"):
-        score += BONUS["thien_duc"]
-        bonus_sao.append("Thiên Đức")
-        reasons.append(f"Ngày có Thiên Đức (+{BONUS['thien_duc']})")
-        plain_pros.append(SAO_PLAIN["thienDuc"])
-
-    if day_info.get("has_thien_duc_hop"):
-        score += BONUS["thien_duc_hop"]
-        bonus_sao.append("Thiên Đức Hợp")
-        reasons.append(f"Ngày có Thiên Đức Hợp (+{BONUS['thien_duc_hop']})")
-        plain_pros.append(SAO_PLAIN["thienDucHop"])
-
-    # SPECIAL RULE 1: Nguyệt Đức ngoại lệ KIEN_TUNG
-    if day_info.get("has_nguyet_duc"):
-        if _nguyet_duc_bonus_applies(intent):
-            score += BONUS["nguyet_duc"]
-            bonus_sao.append("Nguyệt Đức")
-            reasons.append(f"Ngày có Nguyệt Đức (+{BONUS['nguyet_duc']})")
-            plain_pros.append(SAO_PLAIN["nguyetDuc"])
-        else:
-            reasons.append(
-                f"Nguyệt Đức — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
-            )
-
-    if day_info.get("has_nguyet_duc_hop"):
-        if _nguyet_duc_bonus_applies(intent):
-            score += BONUS["nguyet_duc_hop"]
-            bonus_sao.append("Nguyệt Đức Hợp")
-            reasons.append(f"Ngày có Nguyệt Đức Hợp (+{BONUS['nguyet_duc_hop']})")
-            plain_pros.append(SAO_PLAIN["nguyetDucHop"])
-        else:
-            reasons.append(
-                f"Nguyệt Đức Hợp — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
-            )
-
-    # 3. Element matching: Dụng Thần (advanced) or Dương Thần (simplified)
-    day_hanh = day_info.get("day_nap_am_hanh")
-
-    if user_chart.get("dung_than"):
-        # ── Tứ Trụ mode: Dụng Thần / Hỷ Thần / Kỵ Thần v2 ──
-        dm_name = user_chart.get("nhat_chu", {}).get("can_name", "")
-
-        if day_hanh == user_chart["dung_than"]:
-            score += BONUS["dung_than_match"]
-            bonus_sao.append("Dụng Thần")
-            reasons.append(
-                f"Nạp Âm ngày ({day_hanh}) là Dụng Thần của "
-                f"Nhật Chủ {dm_name} (+{BONUS['dung_than_match']})"
-            )
-            plain_pros.append(
-                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
-                f"rất hợp với mệnh bạn, bổ trợ sức khỏe"
-            )
-        elif day_hanh == user_chart.get("hi_than"):
-            score += BONUS["hi_than_match"]
-            bonus_sao.append("Hỷ Thần")
-            reasons.append(
-                f"Nạp Âm ngày ({day_hanh}) là Hỷ Thần của "
-                f"Nhật Chủ {dm_name} (+{BONUS['hi_than_match']})"
-            )
-            plain_pros.append(
-                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
-                f"tương hợp với mệnh bạn"
-            )
-        elif day_hanh == user_chart.get("ky_than_v2"):
-            score += PENALTY["ky_than_v2_match"]
-            penalty_sao.append("Kỵ Thần")
-            reasons.append(
-                f"Nạp Âm ngày ({day_hanh}) là Kỵ Thần của "
-                f"Nhật Chủ {dm_name} ({PENALTY['ky_than_v2_match']})"
-            )
-            plain_cons.append(
-                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
-                f"xung khắc với mệnh bạn"
-            )
-        elif day_hanh == user_chart.get("cuu_than"):
-            score += PENALTY["cuu_than_match"]
-            reasons.append(
-                f"Nạp Âm ngày ({day_hanh}) là Cừu Thần của "
-                f"Nhật Chủ {dm_name} ({PENALTY['cuu_than_match']})"
-            )
-            plain_cons.append(
-                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
-                f"không thuận lợi cho mệnh bạn"
-            )
-    else:
-        # ── Simplified mode: Dương Thần (year Nạp Âm) ──
-        if day_hanh == user_chart.get("duong_than"):
-            score += BONUS["duong_than_match"]
-            reasons.append(
-                f"Nạp Âm ngày ({day_hanh}) là Dương Thần "
-                f"của mệnh {user_chart['menh_name']} (+{BONUS['duong_than_match']})"
-            )
-            plain_pros.append(
-                f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) "
-                f"hợp với mệnh bạn"
-            )
-
-    # 4. Layer 2 severity penalty
-    if filter_result.get("severity") == 2:
-        score += PENALTY["layer2_severity2"]
-        for r in filter_result.get("reasons", []):
-            reasons.append(f"{r} ({PENALTY['layer2_severity2']})")
-
-    # 5. SPECIAL RULE 2: Thiên Xá nghịch lý
-    thien_xa_detector = SAO_DETECTORS.get("thienXa")
-    if thien_xa_detector and thien_xa_detector(day_info, user_chart):
-        if intent in THIEN_XA_BONUS_INTENTS:
-            score += BONUS["thien_xa_bonus"]
-            bonus_sao.append("Thiên Xá")
-            reasons.append(
-                f"Ngày có Thiên Xá — cát tinh cho {_intent_label(intent)} (+{BONUS['thien_xa_bonus']})"
-            )
-            plain_pros.append(SAO_PLAIN["thienXa"])
-        elif intent in THIEN_XA_PENALTY_INTENTS:
-            score += PENALTY["thien_xa_penalty"]
-            penalty_sao.append("Thiên Xá")
-            reasons.append(
-                f"Ngày có Thiên Xá — KỴ {_intent_label(intent)} "
-                f"theo Ngọc Hạp Thông Thư ({PENALTY['thien_xa_penalty']})"
-            )
-            plain_cons.append(f"ngày không phù hợp cho việc {_intent_label(intent).lower()}")
-
-    # 6. Intent-specific bonus_sao
-    skip_keys = {"thienXa", "nguyetDuc", "nguyetDucHop", "thienDuc", "thienDucHop"}
-    for sao_key in intent_rule.get("bonus_sao", []):
-        if sao_key in skip_keys:
-            continue
-        detector = SAO_DETECTORS.get(sao_key)
-        if detector and detector(day_info, user_chart):
-            score += BONUS["intent_bonus"]
-            bonus_sao.append(_sao_label(sao_key))
-            reasons.append(
-                f"Cát tinh {_sao_label(sao_key)} — tốt cho {_intent_label(intent)} (+{BONUS['intent_bonus']})"
-            )
-            plain = SAO_PLAIN.get(sao_key)
-            if plain:
-                plain_pros.append(plain)
-
-    # 7. Intent-specific forbidden_sao
-    for sao_key in intent_rule.get("forbidden_sao", []):
-        if sao_key == "thienXa":
-            continue
-        detector = SAO_DETECTORS.get(sao_key)
-        if detector and detector(day_info, user_chart):
-            score += PENALTY["intent_penalty"]
-            penalty_sao.append(_sao_label(sao_key))
-            reasons.append(
-                f"Hung tinh {_sao_label(sao_key)} — kỵ {_intent_label(intent)} ({PENALTY['intent_penalty']})"
-            )
-            plain = SAO_PLAIN.get(sao_key)
-            if plain:
-                plain_cons.append(plain)
-
-    # 8. Thập Thần intent alignment (Tứ Trụ mode only)
-    if user_chart.get("nhat_chu"):
-        from engine.thap_than import get_day_god_for_intent
-        dm_can = user_chart["nhat_chu"]["can_idx"]
-        day_god = get_day_god_for_intent(day_info["day_can_idx"], dm_can, intent)
-        if day_god:
-            score += BONUS["thap_than_intent"]
-            reasons.append(
-                f"Ngày {day_god['name']} — hợp với {_intent_label(intent)} "
-                f"(+{BONUS['thap_than_intent']})"
-            )
-            plain_pros.append(f"mối quan hệ ngũ hành ngày hỗ trợ tốt cho việc {_intent_label(intent).lower()}")
-
-    # 9. Đại Vận element alignment (Tứ Trụ + gender mode only)
-    current_dv = user_chart.get("current_dai_van")
-    if current_dv and user_chart.get("dung_than"):
-        dv_hanh = current_dv.get("can_hanh")
-        dung_than = user_chart["dung_than"]
-        hi_than = user_chart.get("hi_than")
-
-        if dv_hanh == dung_than or dv_hanh == hi_than:
-            score += BONUS["dai_van_favorable"]
-            reasons.append(
-                f"Đại Vận {current_dv['display']} ({dv_hanh}) hỗ trợ Dụng Thần "
-                f"(+{BONUS['dai_van_favorable']})"
-            )
-            plain_pros.append("vận may giai đoạn hiện tại đang thuận lợi")
-        elif dv_hanh == user_chart.get("ky_than_v2"):
-            score += PENALTY["dai_van_unfavorable"]
-            reasons.append(
-                f"Đại Vận {current_dv['display']} ({dv_hanh}) là Kỵ Thần "
-                f"({PENALTY['dai_van_unfavorable']})"
-            )
-            plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
-        elif dv_hanh == user_chart.get("cuu_than"):
-            score += PENALTY["dai_van_unfavorable"]
-            reasons.append(
-                f"Đại Vận {current_dv['display']} ({dv_hanh}) là Cừu Thần "
-                f"({PENALTY['dai_van_unfavorable']})"
-            )
-            plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
-
-    # 10. Clamp + Grade
-    score = max(0, min(100, score))
-
-    if score >= GRADE_THRESHOLDS["A"]:
-        grade = "A"
-    elif score >= GRADE_THRESHOLDS["B"]:
-        grade = "B"
-    elif score >= GRADE_THRESHOLDS["C"]:
-        grade = "C"
-    else:
-        grade = "D"
-
-    summary_vi = _build_summary_vi(
-        day_info, user_chart, intent, grade,
-        bonus_sao, penalty_sao, plain_pros, plain_cons,
-    )
-
+    ctx = collect_score_deltas(day_info, user_chart, intent, intent_rule, filter_result)
     return {
-        "score": score,
-        "grade": grade,
-        "bonus_sao": bonus_sao,
-        "penalty_sao": penalty_sao,
-        "reasons_vi": reasons,
-        "summary_vi": summary_vi,
-    }
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# DETAILED SCORE BREAKDOWN (for /v1/chon-ngay/detail)
-# ─────────────────────────────────────────────────────────────────────────────
-
-def compute_score_breakdown(
-    day_info: dict,
-    user_chart: dict,
-    intent: str,
-    intent_rule: dict,
-    filter_result: dict,
-) -> dict:
-    """
-    Compute score with a detailed breakdown of each scoring component.
-
-    Returns the same result as compute_score(), plus a 'breakdown' list
-    where each item has: source, points, reason_vi, type ('bonus'|'penalty'|'neutral').
-    """
-    score = BASE_SCORE
-    bonus_sao: list[str] = []
-    penalty_sao: list[str] = []
-    reasons: list[str] = []
-    plain_pros: list[str] = []
-    plain_cons: list[str] = []
-    breakdown: list[dict] = []
-
-    breakdown.append({
-        "source": "Điểm cơ bản",
-        "points": BASE_SCORE,
-        "reason_vi": "Mọi ngày bắt đầu từ 50 điểm",
-        "type": "neutral",
-    })
-
-    # 1. Trực score
-    truc_delta = day_info["truc_score"] * TRUC_SCORE_MULTIPLIER
-    score += truc_delta
-    if truc_delta != 0:
-        btype = "bonus" if truc_delta > 0 else "penalty"
-        reason = f"Trực {day_info['truc_name']} — {'ngày tốt' if truc_delta > 0 else 'ngày xấu'}"
-        reasons.append(f"{reason} ({'+' if truc_delta > 0 else ''}{truc_delta})")
-        breakdown.append({"source": f"Trực {day_info['truc_name']}", "points": truc_delta, "reason_vi": reason, "type": btype})
-
-    # 1b. Trực intent preference/forbid
-    truc_idx = day_info.get("truc_idx")
-    preferred_truc = intent_rule.get("preferred_truc", [])
-    forbidden_truc = intent_rule.get("forbidden_truc", [])
-    if truc_idx is not None:
-        if truc_idx in preferred_truc:
-            pts = BONUS["truc_preferred"]
-            score += pts
-            reason = f"Trực {day_info['truc_name']} — hợp với {_intent_label(intent)}"
-            reasons.append(f"{reason} (+{pts})")
-            plain_pros.append(f"ngày thuộc loại hợp với việc {_intent_label(intent).lower()}")
-            breakdown.append({"source": f"Trực {day_info['truc_name']} (intent)", "points": pts, "reason_vi": reason, "type": "bonus"})
-        elif truc_idx in forbidden_truc:
-            pts = PENALTY["truc_forbidden"]
-            score += pts
-            penalty_sao.append(f"Trực {day_info['truc_name']}")
-            reason = f"Trực {day_info['truc_name']} — KỴ {_intent_label(intent)}"
-            reasons.append(f"{reason} ({pts})")
-            plain_cons.append(f"ngày thuộc loại kiêng kỵ cho việc {_intent_label(intent).lower()}")
-            breakdown.append({"source": f"Trực {day_info['truc_name']} (intent)", "points": pts, "reason_vi": reason, "type": "penalty"})
-
-    # 2. Universal cát tinh
-    for field, key, sao_name, sao_key in [
-        ("has_thien_duc", "thien_duc", "Thiên Đức", "thienDuc"),
-        ("has_thien_duc_hop", "thien_duc_hop", "Thiên Đức Hợp", "thienDucHop"),
-    ]:
-        if day_info.get(field):
-            pts = BONUS[key]
-            score += pts
-            bonus_sao.append(sao_name)
-            reasons.append(f"Ngày có {sao_name} (+{pts})")
-            plain_pros.append(SAO_PLAIN[sao_key])
-            breakdown.append({"source": sao_name, "points": pts, "reason_vi": f"Ngày có {sao_name}", "type": "bonus"})
-
-    # SPECIAL RULE 1: Nguyệt Đức
-    if day_info.get("has_nguyet_duc"):
-        if _nguyet_duc_bonus_applies(intent):
-            pts = BONUS["nguyet_duc"]
-            score += pts
-            bonus_sao.append("Nguyệt Đức")
-            reasons.append(f"Ngày có Nguyệt Đức (+{pts})")
-            plain_pros.append(SAO_PLAIN["nguyetDuc"])
-            breakdown.append({"source": "Nguyệt Đức", "points": pts, "reason_vi": "Ngày có Nguyệt Đức", "type": "bonus"})
-        else:
-            reason = f"Nguyệt Đức — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
-            reasons.append(reason)
-            breakdown.append({"source": "Nguyệt Đức", "points": 0, "reason_vi": reason, "type": "neutral"})
-
-    if day_info.get("has_nguyet_duc_hop"):
-        if _nguyet_duc_bonus_applies(intent):
-            pts = BONUS["nguyet_duc_hop"]
-            score += pts
-            bonus_sao.append("Nguyệt Đức Hợp")
-            reasons.append(f"Ngày có Nguyệt Đức Hợp (+{pts})")
-            plain_pros.append(SAO_PLAIN["nguyetDucHop"])
-            breakdown.append({"source": "Nguyệt Đức Hợp", "points": pts, "reason_vi": "Ngày có Nguyệt Đức Hợp", "type": "bonus"})
-        else:
-            reason = f"Nguyệt Đức Hợp — không tính điểm cho {_intent_label(intent)} (theo Ngọc Hạp Thông Thư)"
-            reasons.append(reason)
-            breakdown.append({"source": "Nguyệt Đức Hợp", "points": 0, "reason_vi": reason, "type": "neutral"})
-
-    # 3. Element matching
-    day_hanh = day_info.get("day_nap_am_hanh")
-
-    if user_chart.get("dung_than"):
-        dm_name = user_chart.get("nhat_chu", {}).get("can_name", "")
-        if day_hanh == user_chart["dung_than"]:
-            pts = BONUS["dung_than_match"]
-            score += pts
-            bonus_sao.append("Dụng Thần")
-            reason = f"Nạp Âm ngày ({day_hanh}) là Dụng Thần của Nhật Chủ {dm_name}"
-            reasons.append(f"{reason} (+{pts})")
-            plain_pros.append(f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) rất hợp với mệnh bạn, bổ trợ sức khỏe")
-            breakdown.append({"source": "Dụng Thần", "points": pts, "reason_vi": reason, "type": "bonus"})
-        elif day_hanh == user_chart.get("hi_than"):
-            pts = BONUS["hi_than_match"]
-            score += pts
-            bonus_sao.append("Hỷ Thần")
-            reason = f"Nạp Âm ngày ({day_hanh}) là Hỷ Thần của Nhật Chủ {dm_name}"
-            reasons.append(f"{reason} (+{pts})")
-            plain_pros.append(f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) tương hợp với mệnh bạn")
-            breakdown.append({"source": "Hỷ Thần", "points": pts, "reason_vi": reason, "type": "bonus"})
-        elif day_hanh == user_chart.get("ky_than_v2"):
-            pts = PENALTY["ky_than_v2_match"]
-            score += pts
-            penalty_sao.append("Kỵ Thần")
-            reason = f"Nạp Âm ngày ({day_hanh}) là Kỵ Thần của Nhật Chủ {dm_name}"
-            reasons.append(f"{reason} ({pts})")
-            plain_cons.append(f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) xung khắc với mệnh bạn")
-            breakdown.append({"source": "Kỵ Thần", "points": pts, "reason_vi": reason, "type": "penalty"})
-        elif day_hanh == user_chart.get("cuu_than"):
-            pts = PENALTY["cuu_than_match"]
-            score += pts
-            reason = f"Nạp Âm ngày ({day_hanh}) là Cừu Thần của Nhật Chủ {dm_name}"
-            reasons.append(f"{reason} ({pts})")
-            plain_cons.append(f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) không thuận lợi cho mệnh bạn")
-            breakdown.append({"source": "Cừu Thần", "points": pts, "reason_vi": reason, "type": "penalty"})
-    else:
-        if day_hanh == user_chart.get("duong_than"):
-            pts = BONUS["duong_than_match"]
-            score += pts
-            reason = f"Nạp Âm ngày ({day_hanh}) là Dương Thần của mệnh {user_chart['menh_name']}"
-            reasons.append(f"{reason} (+{pts})")
-            plain_pros.append(f"năng lượng ngày ({ELEMENT_PLAIN.get(day_hanh, day_hanh)}) hợp với mệnh bạn")
-            breakdown.append({"source": "Dương Thần", "points": pts, "reason_vi": reason, "type": "bonus"})
-
-    # 4. Layer 2 severity penalty
-    if filter_result.get("severity") == 2:
-        pts = PENALTY["layer2_severity2"]
-        score += pts
-        for r in filter_result.get("reasons", []):
-            reasons.append(f"{r} ({pts})")
-            breakdown.append({"source": "Cảnh báo Layer 2", "points": pts, "reason_vi": r, "type": "penalty"})
-
-    # 5. SPECIAL RULE 2: Thiên Xá
-    thien_xa_detector = SAO_DETECTORS.get("thienXa")
-    if thien_xa_detector and thien_xa_detector(day_info, user_chart):
-        if intent in THIEN_XA_BONUS_INTENTS:
-            pts = BONUS["thien_xa_bonus"]
-            score += pts
-            bonus_sao.append("Thiên Xá")
-            reason = f"Ngày có Thiên Xá — cát tinh cho {_intent_label(intent)}"
-            reasons.append(f"{reason} (+{pts})")
-            plain_pros.append(SAO_PLAIN["thienXa"])
-            breakdown.append({"source": "Thiên Xá", "points": pts, "reason_vi": reason, "type": "bonus"})
-        elif intent in THIEN_XA_PENALTY_INTENTS:
-            pts = PENALTY["thien_xa_penalty"]
-            score += pts
-            penalty_sao.append("Thiên Xá")
-            reason = f"Ngày có Thiên Xá — KỴ {_intent_label(intent)} theo Ngọc Hạp Thông Thư"
-            reasons.append(f"{reason} ({pts})")
-            plain_cons.append(f"ngày không phù hợp cho việc {_intent_label(intent).lower()}")
-            breakdown.append({"source": "Thiên Xá", "points": pts, "reason_vi": reason, "type": "penalty"})
-
-    # 6. Intent-specific bonus_sao
-    skip_keys = {"thienXa", "nguyetDuc", "nguyetDucHop", "thienDuc", "thienDucHop"}
-    for sao_key in intent_rule.get("bonus_sao", []):
-        if sao_key in skip_keys:
-            continue
-        detector = SAO_DETECTORS.get(sao_key)
-        if detector and detector(day_info, user_chart):
-            pts = BONUS["intent_bonus"]
-            score += pts
-            label = _sao_label(sao_key)
-            bonus_sao.append(label)
-            reason = f"Cát tinh {label} — tốt cho {_intent_label(intent)}"
-            reasons.append(f"{reason} (+{pts})")
-            plain = SAO_PLAIN.get(sao_key)
-            if plain:
-                plain_pros.append(plain)
-            breakdown.append({"source": label, "points": pts, "reason_vi": reason, "type": "bonus"})
-
-    # 7. Intent-specific forbidden_sao
-    for sao_key in intent_rule.get("forbidden_sao", []):
-        if sao_key == "thienXa":
-            continue
-        detector = SAO_DETECTORS.get(sao_key)
-        if detector and detector(day_info, user_chart):
-            pts = PENALTY["intent_penalty"]
-            score += pts
-            label = _sao_label(sao_key)
-            penalty_sao.append(label)
-            reason = f"Hung tinh {label} — kỵ {_intent_label(intent)}"
-            reasons.append(f"{reason} ({pts})")
-            plain = SAO_PLAIN.get(sao_key)
-            if plain:
-                plain_cons.append(plain)
-            breakdown.append({"source": label, "points": pts, "reason_vi": reason, "type": "penalty"})
-
-    # 8. Thập Thần intent alignment
-    if user_chart.get("nhat_chu"):
-        from engine.thap_than import get_day_god_for_intent
-        dm_can = user_chart["nhat_chu"]["can_idx"]
-        day_god = get_day_god_for_intent(day_info["day_can_idx"], dm_can, intent)
-        if day_god:
-            pts = BONUS["thap_than_intent"]
-            score += pts
-            reason = f"Ngày {day_god['name']} — hợp với {_intent_label(intent)}"
-            reasons.append(f"{reason} (+{pts})")
-            plain_pros.append(f"mối quan hệ ngũ hành ngày hỗ trợ tốt cho việc {_intent_label(intent).lower()}")
-            breakdown.append({"source": f"Thập Thần ({day_god['name']})", "points": pts, "reason_vi": reason, "type": "bonus"})
-
-    # 9. Đại Vận
-    current_dv = user_chart.get("current_dai_van")
-    if current_dv and user_chart.get("dung_than"):
-        dv_hanh = current_dv.get("can_hanh")
-        dung_than = user_chart["dung_than"]
-        hi_than = user_chart.get("hi_than")
-
-        if dv_hanh == dung_than or dv_hanh == hi_than:
-            pts = BONUS["dai_van_favorable"]
-            score += pts
-            reason = f"Đại Vận {current_dv['display']} ({dv_hanh}) hỗ trợ Dụng Thần"
-            reasons.append(f"{reason} (+{pts})")
-            plain_pros.append("vận may giai đoạn hiện tại đang thuận lợi")
-            breakdown.append({"source": "Đại Vận", "points": pts, "reason_vi": reason, "type": "bonus"})
-        elif dv_hanh == user_chart.get("ky_than_v2"):
-            pts = PENALTY["dai_van_unfavorable"]
-            score += pts
-            reason = f"Đại Vận {current_dv['display']} ({dv_hanh}) là Kỵ Thần"
-            reasons.append(f"{reason} ({pts})")
-            plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
-            breakdown.append({"source": "Đại Vận", "points": pts, "reason_vi": reason, "type": "penalty"})
-        elif dv_hanh == user_chart.get("cuu_than"):
-            pts = PENALTY["dai_van_unfavorable"]
-            score += pts
-            reason = f"Đại Vận {current_dv['display']} ({dv_hanh}) là Cừu Thần"
-            reasons.append(f"{reason} ({pts})")
-            plain_cons.append("vận may giai đoạn hiện tại không thuận, nên cẩn thận hơn")
-            breakdown.append({"source": "Đại Vận", "points": pts, "reason_vi": reason, "type": "penalty"})
-
-    # 10. Clamp + Grade
-    score = max(0, min(100, score))
-
-    if score >= GRADE_THRESHOLDS["A"]:
-        grade = "A"
-    elif score >= GRADE_THRESHOLDS["B"]:
-        grade = "B"
-    elif score >= GRADE_THRESHOLDS["C"]:
-        grade = "C"
-    else:
-        grade = "D"
-
-    summary_vi = _build_summary_vi(
-        day_info, user_chart, intent, grade,
-        bonus_sao, penalty_sao, plain_pros, plain_cons,
-    )
-
-    return {
-        "score": score,
-        "grade": grade,
-        "bonus_sao": bonus_sao,
-        "penalty_sao": penalty_sao,
-        "reasons_vi": reasons,
-        "summary_vi": summary_vi,
-        "breakdown": breakdown,
+        "score": ctx["score"],
+        "grade": ctx["grade"],
+        "bonus_sao": ctx["bonus_sao"],
+        "penalty_sao": ctx["penalty_sao"],
+        "reasons_vi": ctx["reasons_vi"],
+        "summary_vi": ctx["summary_vi"],
     }

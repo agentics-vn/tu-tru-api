@@ -235,7 +235,7 @@ Mọi lỗi trả về JSON cùng cấu trúc:
 |---|---|---|
 | 400 | `INVALID_INPUT` | Field sai / thiếu / ngày không hợp lệ |
 | 400 | `RANGE_TOO_LARGE` | Khoảng ngày > 90 ngày |
-| 422 | `NO_DATES_FOUND` | Không tìm thấy ngày tốt nào |
+| 422 | `NO_DATES_FOUND` | ~~Không tìm thấy ngày tốt~~ — **Direction C:** HTTP 200 + `empty_reason_vi` |
 | 500 | `INTERNAL_ERROR` | Lỗi server không mong đợi |
 
 ---
@@ -256,7 +256,7 @@ uv run pytest tests/integration -v
 uv run pytest tests/unit/test_safety_invariant.py -v
 ```
 
-CI (GitHub Actions) chạy `uv run pytest tests/unit` khi push vào `main` hoặc mở PR.
+CI (GitHub Actions) chạy `tests/unit` + `tests/integration` khi push vào `main` hoặc mở PR. Deploy Fly chỉ chạy sau khi workflow **Unit Tests** pass.
 
 ---
 
@@ -275,3 +275,10 @@ fly deploy
 Tài liệu API chi tiết: [`docs/api-spec.md`](docs/api-spec.md)  
 Hướng dẫn thiết kế FE: [`docs/frontend-design-guide.md`](docs/frontend-design-guide.md)  
 Thuật toán: [`docs/algorithm.md`](docs/algorithm.md)
+
+### Direction C (NLTT)
+
+- Contract fixtures: [`docs/fixtures/direction-c/`](docs/fixtures/direction-c/)
+- Regenerate: `PYTHONPATH=src python scripts/generate_direction_c_fixtures.py`
+- **NLTT coordination:** Edge `bat-tu` must handle empty `POST /v1/chon-ngay` as **200** (not 422 only).
+- Staging QA: set NLTT `BAT_TU_API_URL` to Fly preview URL before production cutover.

@@ -7,16 +7,15 @@ reason for each, designed for push notifications and dashboard widgets.
 
 from __future__ import annotations
 
-import json
 import logging
 from datetime import timedelta
-from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 
 from api.errors import error_response
+from api.intent_rules_loader import get_intent_rule, resolve_intent_key
 from api.parse_date import parse_dmy
 from api.tz import today_in_tz
 from calendar_service import get_day_info, get_user_chart
@@ -28,16 +27,13 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["weekly-summary"])
 
-# Load intent rules once
-_RULES_PATH = Path(__file__).resolve().parent.parent.parent.parent / "docs" / "seed" / "intent-rules.json"
-with open(_RULES_PATH) as _f:
-    _INTENT_RULES = json.load(_f)
 
-_DEFAULT_RULE = _INTENT_RULES.get("MAC_DINH", {"bonus_sao": [], "forbidden_sao": []})
-
-
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get(
+    "",
+    deprecated=True,
+    summary="[Deprecated] Tóm tắt tuần — dùng POST /v1/chon-ngay",
+)
+@router.get("/", include_in_schema=False, deprecated=True)
 async def weekly_summary(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh"),
@@ -66,8 +62,8 @@ async def weekly_summary(
         birth_date_str = bd.isoformat()
         user_chart = get_user_chart(birth_date_str, birth_time, gender)
 
-        intent_rule = _INTENT_RULES.get(intent, _DEFAULT_RULE)
-        rule_key = intent
+        rule_key = resolve_intent_key(intent)
+        intent_rule = get_intent_rule(intent)
 
         # Scan next 7 days (today + 6)
         scored_days: list[dict] = []

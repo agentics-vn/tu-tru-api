@@ -1,0 +1,77 @@
+{
+  "status": "success",
+  "birth_date": "1984-03-15",
+  "engine_version": "0.1.0",
+  "computed_at": "2026-05-29T01:54:21+00:00",
+  "year": 2026,
+  "year_can_chi": "Bính Ngọ",
+  "year_label_vi": "Lưu niên 2026 — Bính Ngọ",
+  "element_relation": "sinh_menh",
+  "year_rating": "tốt",
+  "year_theme_vi": "Năm 2026 (Bính Ngọ) hành Hỏa quan hệ với Nhật Chủ hành Thổ: sinh menh Trùng Dụng Thần — thuận cho bổ trợ sức khỏe và việc quan trọng.",
+  "life_areas": [
+    {
+      "area": "sự_nghiệp",
+      "outlook_vi": "Có cơ hội nếu chủ động và chọn ngày tốt"
+    },
+    {
+      "area": "sức_khoe",
+      "outlook_vi": "Năng lượng Dụng Thần hỗ trợ — duy trì thói quen tốt"
+    }
+  ],
+  "warnings": [],
+  "month_scores": [
+    {
+      "month": 1,
+      "score": 55
+    },
+    {
+      "month": 2,
+      "score": 58
+    },
+    {
+      "month": 3,
+      "score": 52
+    },
+    {
+      "month": 4,
+      "score": 55
+    },
+    {
+      "month": 5,
+      "score": 58
+    },
+    {
+      "month": 6,
+      "score": 52
+    },
+    {
+      "month": 7,
+      "score": 55
+    },
+    {
+      "month": 8,
+      "score": 58
+    },
+    {
+      "month": 9,
+      "score": 52
+    },
+    {
+      "month": 10,
+      "score": 55
+    },
+    {
+      "month": 11,
+      "score": 58
+    },
+    {
+      "month": 12,
+      "score": 52
+    }
+  ],
+  "assumptions_vi": [
+    "MVP: điểm tháng là ước lượng theo quan hệ năm–Nhật Chủ, chưa tính xung hợp chi tiết.",
+    "Phase 2b: quy_nhan, tuoi_hop, tuoi_xung chưa có — màn NLTT §05 Quý nhân vẫn blocked."
+  ]
+}

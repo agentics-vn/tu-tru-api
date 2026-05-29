@@ -1,0 +1,293 @@
+{
+  "status": "success",
+  "birth_date": "1984-03-15",
+  "birth_time": 8,
+  "engine_version": "0.1.0",
+  "computed_at": "2026-05-29T01:54:21+00:00",
+  "gender": 1,
+  "pillars": {
+    "year": {
+      "can": {
+        "name": "Giáp",
+        "idx": 0
+      },
+      "chi": {
+        "name": "Tý",
+        "idx": 0
+      },
+      "nap_am": {
+        "name": "Hải Trung Kim",
+        "hanh": "Kim",
+        "mo_ta": "Vàng trong biển — giá trị ẩn sâu, cần thời gian tỏa sáng"
+      }
+    },
+    "month": {
+      "can": {
+        "name": "Đinh",
+        "idx": 3
+      },
+      "chi": {
+        "name": "Mão",
+        "idx": 3
+      },
+      "nap_am": {
+        "name": "Lò Trung Hỏa",
+        "hanh": "Hỏa",
+        "mo_ta": "Nạp Âm Lò Trung Hỏa"
+      }
+    },
+    "day": {
+      "can": {
+        "name": "Mậu",
+        "idx": 4
+      },
+      "chi": {
+        "name": "Thân",
+        "idx": 8
+      },
+      "nap_am": {
+        "name": "Đại Dịch Thổ",
+        "hanh": "Thổ",
+        "mo_ta": "Nạp Âm Đại Dịch Thổ"
+      }
+    },
+    "hour": {
+      "can": {
+        "name": "Bính",
+        "idx": 2
+      },
+      "chi": {
+        "name": "Thìn",
+        "idx": 4
+      },
+      "nap_am": {
+        "name": "Sa Trung Thổ",
+        "hanh": "Thổ",
+        "mo_ta": "Đất cát — linh hoạt, đa dạng, cần cấu trúc"
+      }
+    }
+  },
+  "nhat_chu": {
+    "can_name": "Mậu",
+    "hanh": "Thổ"
+  },
+  "menh": {
+    "nap_am_name": "Hải Trung Kim",
+    "hanh": "Kim"
+  },
+  "dung_than": "Hỏa",
+  "ky_than": "Mộc",
+  "hi_than": "Thổ",
+  "cuu_than": "Thủy",
+  "cuong_nhuoc": "nhược",
+  "chart_strength": "nhược",
+  "thap_than": {
+    "dominant": {
+      "key": "that_sat",
+      "name": "Thất Sát"
+    },
+    "year": "Thất Sát",
+    "month": "Chính Ấn",
+    "hour": "Thiên Ấn"
+  },
+  "element_counts": {
+    "Kim": 1.0,
+    "Mộc": 2.6,
+    "Thủy": 1.9000000000000001,
+    "Hỏa": 2.0,
+    "Thổ": 2.3
+  },
+  "ngu_hanh": {
+    "Kim": 1.0,
+    "Mộc": 2.6,
+    "Thủy": 1.9000000000000001,
+    "Hỏa": 2.0,
+    "Thổ": 2.3
+  },
+  "_raw": {
+    "tu_tru_display": "Giáp Tý | Đinh Mão | Mậu Thân | Bính Thìn",
+    "element_counts": {
+      "Kim": 1.0,
+      "Mộc": 2.6,
+      "Thủy": 1.9000000000000001,
+      "Hỏa": 2.0,
+      "Thổ": 2.3
+    },
+    "support_ratio": 0.398,
+    "thap_than_profile": {
+      "year": "Thất Sát",
+      "month": "Chính Ấn",
+      "hour": "Thiên Ấn"
+    },
+    "god_counts": {
+      "that_sat": 1,
+      "chinh_an": 1,
+      "thien_an": 1
+    }
+  },
+  "dai_van": {
+    "current": "Tân Mùi",
+    "cycles": [
+      {
+        "cycle_num": 1,
+        "display": "Mậu Thìn",
+        "hanh": "Thổ",
+        "age_range": "7-16"
+      },
+      {
+        "cycle_num": 2,
+        "display": "Kỷ Tỵ",
+        "hanh": "Thổ",
+        "age_range": "17-26"
+      },
+      {
+        "cycle_num": 3,
+        "display": "Canh Ngọ",
+        "hanh": "Kim",
+        "age_range": "27-36"
+      },
+      {
+        "cycle_num": 4,
+        "display": "Tân Mùi",
+        "hanh": "Kim",
+        "age_range": "37-46"
+      },
+      {
+        "cycle_num": 5,
+        "display": "Nhâm Thân",
+        "hanh": "Thủy",
+        "age_range": "47-56"
+      },
+      {
+        "cycle_num": 6,
+        "display": "Quý Dậu",
+        "hanh": "Thủy",
+        "age_range": "57-66"
+      },
+      {
+        "cycle_num": 7,
+        "display": "Giáp Tuất",
+        "hanh": "Mộc",
+        "age_range": "67-76"
+      },
+      {
+        "cycle_num": 8,
+        "display": "Ất Hợi",
+        "hanh": "Mộc",
+        "age_range": "77-86"
+      }
+    ]
+  },
+  "dai_van_list": [
+    {
+      "cycle_num": 1,
+      "display": "Mậu Thìn",
+      "hanh": "Thổ",
+      "age_range": "7-16"
+    },
+    {
+      "cycle_num": 2,
+      "display": "Kỷ Tỵ",
+      "hanh": "Thổ",
+      "age_range": "17-26"
+    },
+    {
+      "cycle_num": 3,
+      "display": "Canh Ngọ",
+      "hanh": "Kim",
+      "age_range": "27-36"
+    },
+    {
+      "cycle_num": 4,
+      "display": "Tân Mùi",
+      "hanh": "Kim",
+      "age_range": "37-46"
+    },
+    {
+      "cycle_num": 5,
+      "display": "Nhâm Thân",
+      "hanh": "Thủy",
+      "age_range": "47-56"
+    },
+    {
+      "cycle_num": 6,
+      "display": "Quý Dậu",
+      "hanh": "Thủy",
+      "age_range": "57-66"
+    },
+    {
+      "cycle_num": 7,
+      "display": "Giáp Tuất",
+      "hanh": "Mộc",
+      "age_range": "67-76"
+    },
+    {
+      "cycle_num": 8,
+      "display": "Ất Hợi",
+      "hanh": "Mộc",
+      "age_range": "77-86"
+    }
+  ],
+  "tinh_cach": {
+    "archetype": "Núi lớn",
+    "image": "Núi — vững chãi, đáng tin cậy, ít thay đổi",
+    "core_traits": [
+      "Đáng tin cậy",
+      "Bao dung",
+      "Chậm thích nghi"
+    ],
+    "element": "Thổ",
+    "polarity": "Dương",
+    "strength": "nhược",
+    "strength_note": "Cần sự hỗ trợ, nên tìm đối tác mạnh để bổ trợ."
+  },
+  "su_nghiep": {
+    "dominant_thap_than": "Thất Sát",
+    "dominant_thap_than_key": "that_sat",
+    "career_tendency": "Cạnh tranh cao, quân đội, thể thao, khởi nghiệp",
+    "suitable_fields": [
+      "Quân đội, công an",
+      "Kinh doanh cạnh tranh",
+      "Thể thao, võ thuật"
+    ],
+    "wealth_style": "Kiếm tiền bằng sức mạnh và quyết đoán.",
+    "wealth_risk": "Áp lực cao. Thành công lớn hoặc thất bại lớn, ít trung dung.",
+    "dung_than_element": "Hỏa",
+    "element_tip": "Ngành nghề liên quan hành Hỏa sẽ thuận lợi hơn."
+  },
+  "tai_van": {
+    "wealth_style": "Kiếm tiền bằng sức mạnh và quyết đoán.",
+    "wealth_risk": "Áp lực cao. Thành công lớn hoặc thất bại lớn, ít trung dung.",
+    "dung_than": "Hỏa",
+    "hi_than": "Thổ",
+    "ky_than": "Mộc"
+  },
+  "suc_khoe": {
+    "dm_element": "Thổ",
+    "dm_strength": "nhược",
+    "organ": "Dạ dày, lá lách, tiêu hóa",
+    "risk_when_weak": "Tiêu hóa kém, suy nhược",
+    "risk_when_strong": "Thừa cân, tiểu đường",
+    "health_context": "risk_when_weak",
+    "boost_element": "Hỏa",
+    "avoid_element": "Mộc"
+  },
+  "tinh_duyen": {
+    "spouse_star": "Chính Tài (vợ)",
+    "spouse_presence": 0,
+    "affair_presence": 0,
+    "dm_strength": "nhược",
+    "signals": {
+      "strong_spouse": false,
+      "multiple_affair": false,
+      "weak_dm_needs_support": true,
+      "strong_dm_dominant": false
+    }
+  },
+  "dai_van_current": {
+    "display": "Tân Mùi",
+    "hanh": "Kim",
+    "nap_am_hanh": "Thổ",
+    "age_range": "37-46"
+  }
+}

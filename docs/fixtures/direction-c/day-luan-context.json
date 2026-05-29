@@ -1,0 +1,170 @@
+{
+  "status": "success",
+  "date_iso": "2026-05-28",
+  "can_chi_day": "Nhâm Dần",
+  "score": 35,
+  "grade": "D",
+  "menh_user": "Hải Trung Kim",
+  "breakdown_summary": [
+    {
+      "id": "truc",
+      "label_vi": "Trực ngày",
+      "verdict_vi": "Trung · Trực Thu",
+      "reason_vi": "Trực Thu cộng 19 điểm trong tổng điểm ngày. Với lá số của bạn, Trực này hỗ trợ việc sự kiện chung.",
+      "points": 19,
+      "source_ref": 1
+    },
+    {
+      "id": "sao28",
+      "label_vi": "Nhị thập bát tú",
+      "verdict_vi": "Hắc Đạo · Thiên Lao · Sao Giác",
+      "reason_vi": "Ngày Hắc Đạo (Thiên Lao), sao Giác (tốt) cộng 1 điểm. Ảnh hưởng này được tính cho mục đích sự kiện chung.",
+      "points": 1,
+      "source_ref": 2
+    },
+    {
+      "id": "can_chi_laso",
+      "label_vi": "Can chi · lá số",
+      "verdict_vi": "Nhâm Dần · Trung hòa (Mậu)",
+      "reason_vi": "Quan hệ ngũ hành ngày (Kim) với lá số Nhật Chủ Mậu cộng 15 điểm trong bối cảnh sự kiện chung.",
+      "points": 15,
+      "source_ref": 3
+    },
+    {
+      "id": "gio_vang",
+      "label_vi": "Giờ vàng",
+      "verdict_vi": "Giờ vàng · Tý, Sửu",
+      "reason_vi": "Phần giờ vàng không đổi điểm phản ánh khung Hoàng đạo hợp Dụng Thần hành Hỏa của bạn — nên ưu tiên khởi sự trong các giờ tốt. Giờ đáng chú ý: Tý (23:00–01:00).",
+      "points": 0,
+      "source_ref": 4
+    }
+  ],
+  "sources": [
+    {
+      "ref": 1,
+      "label_vi": "Trực ngày",
+      "description_vi": "Thập nhị trực trong tháng âm lịch"
+    },
+    {
+      "ref": 2,
+      "label_vi": "Nhị thập bát tú",
+      "description_vi": "Sao ngày theo lịch truyền thống"
+    },
+    {
+      "ref": 3,
+      "label_vi": "Can chi · lá số",
+      "description_vi": "Quan hệ ngũ hành ngày với lá số cá nhân"
+    },
+    {
+      "ref": 4,
+      "label_vi": "Giờ vàng",
+      "description_vi": "Khung giờ Hoàng đạo phù hợp với lá số"
+    }
+  ],
+  "gio_tot": [
+    {
+      "chi": "Tý",
+      "chi_name": "Tý",
+      "start_hour": "23:00",
+      "end_hour": "01:00",
+      "label_vi": "Tý 23:00–01:00",
+      "range": "23:00-01:00"
+    },
+    {
+      "chi": "Sửu",
+      "chi_name": "Sửu",
+      "start_hour": "01:00",
+      "end_hour": "03:00",
+      "label_vi": "Sửu 01:00–03:00",
+      "range": "01:00-03:00"
+    },
+    {
+      "chi": "Thìn",
+      "chi_name": "Thìn",
+      "start_hour": "07:00",
+      "end_hour": "09:00",
+      "label_vi": "Thìn 07:00–09:00",
+      "range": "07:00-09:00"
+    },
+    {
+      "chi": "Tỵ",
+      "chi_name": "Tỵ",
+      "start_hour": "09:00",
+      "end_hour": "11:00",
+      "label_vi": "Tỵ 09:00–11:00",
+      "range": "09:00-11:00"
+    },
+    {
+      "chi": "Mùi",
+      "chi_name": "Mùi",
+      "start_hour": "13:00",
+      "end_hour": "15:00",
+      "label_vi": "Mùi 13:00–15:00",
+      "range": "13:00-15:00"
+    },
+    {
+      "chi": "Tuất",
+      "chi_name": "Tuất",
+      "start_hour": "19:00",
+      "end_hour": "21:00",
+      "label_vi": "Tuất 19:00–21:00",
+      "range": "19:00-21:00"
+    }
+  ],
+  "gio_xau": [
+    {
+      "chi": "Dần",
+      "chi_name": "Dần",
+      "start_hour": "03:00",
+      "end_hour": "05:00",
+      "label_vi": "Dần 03:00–05:00",
+      "range": "03:00-05:00"
+    },
+    {
+      "chi": "Mão",
+      "chi_name": "Mão",
+      "start_hour": "05:00",
+      "end_hour": "07:00",
+      "label_vi": "Mão 05:00–07:00",
+      "range": "05:00-07:00"
+    },
+    {
+      "chi": "Ngọ",
+      "chi_name": "Ngọ",
+      "start_hour": "11:00",
+      "end_hour": "13:00",
+      "label_vi": "Ngọ 11:00–13:00",
+      "range": "11:00-13:00"
+    },
+    {
+      "chi": "Thân",
+      "chi_name": "Thân",
+      "start_hour": "15:00",
+      "end_hour": "17:00",
+      "label_vi": "Thân 15:00–17:00",
+      "range": "15:00-17:00"
+    },
+    {
+      "chi": "Dậu",
+      "chi_name": "Dậu",
+      "start_hour": "17:00",
+      "end_hour": "19:00",
+      "label_vi": "Dậu 17:00–19:00",
+      "range": "17:00-19:00"
+    },
+    {
+      "chi": "Hợi",
+      "chi_name": "Hợi",
+      "start_hour": "21:00",
+      "end_hour": "23:00",
+      "label_vi": "Hợi 21:00–23:00",
+      "range": "21:00-23:00"
+    }
+  ],
+  "scope_hint_vi": "Chỉ luận giải dựa trên dữ kiện ngày và lá số đã cung cấp; không dự đoán tương lai tuyệt đối.",
+  "anchor_question_hint_vi": "Giải thích vì sao ngày Nhâm Dần đạt điểm 35 và từng yếu tố Trực, sao, Can Chi, giờ vàng.",
+  "suggested_followups": [
+    "Nên làm gì vào giờ vàng?",
+    "So sánh với ngày khác trong tuần?"
+  ]
+}

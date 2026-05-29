@@ -15,7 +15,8 @@ from fastapi.responses import JSONResponse
 
 from api.errors import error_response
 from api.parse_date import parse_dmy
-from engine.la_so import build_la_so
+from api.version import get_engine_version, utc_now_iso
+from engine.la_so import build_la_so, build_la_so_chart_contract
 from engine.pillars import VALID_BIRTH_HOURS, get_tu_tru
 
 logger = logging.getLogger("la_so")
@@ -59,6 +60,7 @@ async def la_so_endpoint(
         birth_iso = bd.isoformat()
         tu_tru = get_tu_tru(birth_iso, birth_time)
         la_so = build_la_so(tu_tru, gender, birth_iso)
+        chart = build_la_so_chart_contract(tu_tru, gender, birth_iso)
 
         return JSONResponse(
             status_code=200,
@@ -66,8 +68,15 @@ async def la_so_endpoint(
                 "status": "success",
                 "birth_date": birth_iso,
                 "birth_time": birth_time,
+                "engine_version": get_engine_version(),
+                "computed_at": utc_now_iso(),
                 **({"gender": gender} if gender is not None else {}),
+                **chart,
                 **la_so,
+                "thap_than": {
+                    **chart.get("thap_than", {}),
+                    "dominant": chart["thap_than"]["dominant"],
+                },
             },
         )
 

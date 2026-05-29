@@ -5,7 +5,7 @@ Stores birth data keyed by a SHA-256 hash so the user doesn't need to
 re-enter it on every request.  Other endpoints accept an optional
 ``profile_id`` query param to look up saved data.
 
-Storage: Redis if available, else in-memory dict (cleared on restart).
+Storage: Redis when `REDIS_URL` is reachable; otherwise in-memory (cleared on restart).
 """
 
 from __future__ import annotations
@@ -25,22 +25,12 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["profile"])
 
-# ─────────────────────────────────────────────────────────────────────────────
-# In-memory store (production should use Redis)
-# ─────────────────────────────────────────────────────────────────────────────
-
-_MAX_PROFILES = 10_000
-_profiles: dict[str, dict] = {}
+from api.profile_store import get_profile, memory_profile_count, save_profile
 
 
 def _make_profile_id(birth_date: str, birth_time: int | None, gender: int | None) -> str:
     raw = f"{birth_date}|{birth_time}|{gender}"
     return hashlib.sha256(raw.encode()).hexdigest()[:12]
-
-
-def get_profile(profile_id: str) -> dict | None:
-    """Retrieve a stored profile by ID. Returns None if not found."""
-    return _profiles.get(profile_id)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -58,18 +48,24 @@ async def save_profile(
         bd = parse_dmy(birth_date)
         profile_id = _make_profile_id(birth_date, birth_time, gender)
 
-        if profile_id not in _profiles and len(_profiles) >= _MAX_PROFILES:
+        from cache.redis import get_redis_client
+
+        if (
+            get_profile(profile_id) is None
+            and get_redis_client() is None
+            and memory_profile_count() >= 10_000
+        ):
             return error_response(
                 503, "INTERNAL_ERROR",
                 message_vi="Kho hồ sơ tạm thời đầy. Vui lòng thử lại sau.",
                 message_en="Profile store is temporarily full. Please try again later.",
             )
 
-        _profiles[profile_id] = {
+        save_profile(profile_id, {
             "birth_date": birth_date,
             "birth_time": birth_time,
             "gender": gender,
-        }
+        })
 
         return JSONResponse(
             status_code=200,

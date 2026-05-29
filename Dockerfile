@@ -22,6 +22,7 @@ COPY --from=builder /app/.venv /app/.venv
 # Copy application code and static data
 COPY src/ ./src/
 COPY docs/seed/ ./docs/seed/
+COPY pyproject.toml ./pyproject.toml
 
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH=/app/src

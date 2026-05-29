@@ -55,6 +55,8 @@ def test_hop_tuoi_v2_phu_the():
     for c in data["criteria"]:
         assert c["sentiment"] in ("positive", "neutral", "negative")
         assert "name" in c and "description" in c
+        assert "points" in c
+        assert 0 <= c["points"] <= 100
     assert data["reading"]
     assert data["advice"]
 
