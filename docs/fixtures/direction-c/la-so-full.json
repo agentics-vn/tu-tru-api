@@ -2,7 +2,7 @@
   "status": "success",
   "birth_date": "1984-03-15",
   "birth_time": 8,
-  "engine_version": "0.1.1",
+  "engine_version": "0.1.2",
   "computed_at": "2026-05-29T01:54:21+00:00",
   "gender": 1,
   "pillars": {

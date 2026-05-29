@@ -82,7 +82,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(
     title="API Chọn Ngày Bát Tự",
-    version="0.1.1",
+    version="0.1.2",
     lifespan=lifespan,
 )
 
@@ -142,7 +142,7 @@ async def generic_exception_handler(
 async def health() -> HealthResponse:
     return HealthResponse(
         status="ok",
-        version=app.version or "0.1.1",
+        version=app.version or "0.1.2",
         engine_version=get_engine_version(),
     )
 

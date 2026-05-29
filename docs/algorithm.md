@@ -923,7 +923,7 @@ So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật 
 
 ## 20. P3 — NLTT polish (optional contract)
 
-- **Health:** `GET /health` trả `version` (FastAPI app) + `engine_version` (từ `pyproject.toml` hoặc `0.1.1` trong Docker).
+- **Health:** `GET /health` trả `version` (FastAPI app) + `engine_version` (từ `pyproject.toml` hoặc `0.1.2` trong Docker).
 - **Giờ chuẩn:** `gio_tot`/`gio_xau` dùng một shape slot trên mọi endpoint ngày (xem `api/gio_slots.py`).
 - **`purpose_rows`:** Mỗi intent trong seed → `verdict` (`tot` \| `xau` \| `luu_y` \| `trung`) + `reason_vi` trên `day-detail` personalized.
 - **Rate limit:** Header `X-RateLimit-*`; vượt ngưỡng → 429 `RATE_LIMITED`.
