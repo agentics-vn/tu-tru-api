@@ -316,8 +316,12 @@ class PhongThuyResponse(BaseModel):
     version: Literal[2] = 2
     purpose: str
     user_menh: UserMenhBrief
+    dung_than_method: Literal["tu_tru", "nap_am"] = "nap_am"
     dung_than: str
     ky_than: str
+    hi_than: Optional[str] = None
+    cuu_than: Optional[str] = None
+    precision_note: Optional[str] = None
     huong_tot: list[HuongItem] = Field(default_factory=list)
     huong_xau: list[HuongItem] = Field(default_factory=list)
     mau_may_man: list[MauItem] = Field(default_factory=list)

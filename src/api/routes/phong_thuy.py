@@ -111,14 +111,25 @@ async def phong_thuy_endpoint(
 
         menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day)
         tu_tru = None
+        hi_than: str | None = None
+        cuu_than: str | None = None
         if birth_time is not None:
             tu_tru = get_tu_tru(bd.isoformat(), birth_time)
             dung_result = find_dung_than(tu_tru)
             dung_than = dung_result["dung_than"]
             ky_than = dung_result["ky_than"]
+            hi_than = dung_result.get("hi_than")
+            cuu_than = dung_result.get("cuu_than")
+            dung_than_method = "tu_tru"
+            precision_note = None
         else:
             dung_than = menh["duong_than"]
             ky_than = menh["ky_than"]
+            dung_than_method = "nap_am"
+            precision_note = (
+                "Dụng Thần được ước tính từ Nạp Âm năm sinh. "
+                "Cung cấp thêm giờ sinh (birth_time) để tính chính xác theo Tứ Trụ đầy đủ."
+            )
 
         huong_tot = HUONG_BY_HANH.get(dung_than, [])
         huong_xau = huong_xau_labeled(ky_than)
@@ -134,8 +145,12 @@ async def phong_thuy_endpoint(
             "version": 2,
             "purpose": pur,
             "user_menh": {"hanh": menh["hanh"], "name": menh["name"]},
+            "dung_than_method": dung_than_method,
             "dung_than": dung_than,
             "ky_than": ky_than,
+            **({"hi_than": hi_than} if hi_than else {}),
+            **({"cuu_than": cuu_than} if cuu_than else {}),
+            **({"precision_note": precision_note} if precision_note else {}),
             "huong_tot": huong_tot,
             "huong_xau": huong_xau,
             "mau_may_man": mau_may_man,
