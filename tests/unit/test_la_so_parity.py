@@ -31,6 +31,18 @@ class TestLaSoParity:
             assert key in b
         assert a["pillars"]["year"]["can"]["name"] == b["pillars"]["year"]["can"]["name"]
         assert a["engine_version"] == b["engine_version"]
+        assert a["element_counts"] == b["element_counts"]
+        assert a["ngu_hanh"] == b["ngu_hanh"]
+
+    def test_la_so_personality_traits(self):
+        r = client.get(
+            "/v1/la-so",
+            params={"birth_date": "15/03/1984", "birth_time": 8, "gender": 1},
+        )
+        assert r.status_code == 200
+        traits = r.json()["personality_traits"]
+        assert len(traits) == 4
+        assert {t["id"] for t in traits} == {"diem_manh", "ca_tinh", "luu_y", "tinh_cam"}
 
     def test_la_so_year_nap_am_mo_ta(self):
         r = client.get("/v1/la-so", params={"birth_date": "15/03/1984", "birth_time": 8})
@@ -52,4 +64,9 @@ class TestLaSoParity:
         data = r.json()
         assert data["year_label_vi"]
         assert len(data["month_scores"]) == 12
+        assert len(data["life_areas"]) == 4
+        assert data["quy_nhan"]["tuoi_hop"]
+        assert data["quy_nhan"]["huong_quy_nhan"]
+        assert data["dai_van_next"]
+        assert len(data["month_score_values"]) == 12
         assert data["assumptions_vi"]

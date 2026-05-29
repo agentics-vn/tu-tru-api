@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 # Direction C: exactly 4 breakdown buckets (truc, sao28, can_chi_laso, gio_vang)
 BreakdownFour = Annotated[list["BreakdownItem"], Field(min_length=4, max_length=4)]
 BreakdownSummaryFour = Annotated[list["BreakdownSummaryItem"], Field(min_length=4, max_length=4)]
+MonthScoreValuesTwelve = Annotated[list[int], Field(min_length=12, max_length=12)]
 
 # ── Shared ────────────────────────────────────────────────────────────────────
 
@@ -286,13 +287,37 @@ class ChonNgayDetailResponse(BaseModel):
 # ── GET /v1/la-so/luu-nien ──────────────────────────────────────────────────
 
 class LuuNienLifeArea(BaseModel):
-    area: str
-    outlook_vi: str
+    id: str
+    label_vi: str
+    verdict_vi: str
+    detail_vi: str
+    area: Optional[str] = Field(default=None, description="Legacy alias of id")
+    outlook_vi: Optional[str] = Field(default=None, description="Legacy alias of detail_vi")
 
 
 class LuuNienMonthScore(BaseModel):
-    month: int
-    score: int
+    month: int = Field(..., ge=1, le=12, description="Tháng âm lịch (1–12)")
+    score: int = Field(..., ge=0, le=100)
+
+
+class QuyNhanBlock(BaseModel):
+    tuoi_hop: list[str] = Field(default_factory=list)
+    tuoi_xung: list[str] = Field(default_factory=list)
+    huong_quy_nhan: str
+    note_vi: str
+
+
+class DaiVanNextBrief(BaseModel):
+    display: str
+    theme_vi: str
+    start_year: Optional[str] = None
+    age_range: Optional[str] = None
+
+
+class LuuNienTeaser(BaseModel):
+    year_can_chi: str
+    year_rating: str
+    year_theme_vi: str
 
 
 class LuuNienResponse(BaseModel):
@@ -308,9 +333,29 @@ class LuuNienResponse(BaseModel):
     element_relation: str
     year_rating: str
     year_theme_vi: str
-    life_areas: list[LuuNienLifeArea] = Field(default_factory=list)
+    life_areas: list[LuuNienLifeArea] = Field(
+        ...,
+        min_length=4,
+        max_length=4,
+        description="Tài lộc, Sự nghiệp, Sức khỏe, Tình duyên",
+    )
     warnings: list[str] = Field(default_factory=list)
-    month_scores: list[LuuNienMonthScore] = Field(default_factory=list)
+    month_scores: list[LuuNienMonthScore] = Field(
+        ...,
+        min_length=12,
+        max_length=12,
+        description="Điểm 12 tháng âm lịch (MVP)",
+    )
+    month_score_values: MonthScoreValuesTwelve = Field(
+        ...,
+        description="Chỉ mảng điểm 1–12 (tháng âm) — tiện cho biểu đồ FE",
+    )
+    quy_nhan: QuyNhanBlock
+    dai_van_next: Optional[DaiVanNextBrief] = None
+    teaser: Optional[LuuNienTeaser] = Field(
+        default=None,
+        description="Facts an toàn cho paywall preview (REQ-BR-07)",
+    )
     assumptions_vi: list[str] = Field(default_factory=list)
 
 

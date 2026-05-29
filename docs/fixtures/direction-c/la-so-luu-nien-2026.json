@@ -1,8 +1,8 @@
 {
   "status": "success",
   "birth_date": "1984-03-15",
-  "engine_version": "0.1.2",
-  "computed_at": "2026-05-29T01:54:21+00:00",
+  "engine_version": "0.1.3",
+  "computed_at": "2026-05-29T22:39:23+00:00",
   "year": 2026,
   "year_can_chi": "Bính Ngọ",
   "year_label_vi": "Lưu niên 2026 — Bính Ngọ",
@@ -11,15 +11,41 @@
   "year_theme_vi": "Năm 2026 (Bính Ngọ) hành Hỏa quan hệ với Nhật Chủ hành Thổ: sinh menh Trùng Dụng Thần — thuận cho bổ trợ sức khỏe và việc quan trọng.",
   "life_areas": [
     {
-      "area": "sự_nghiệp",
-      "outlook_vi": "Có cơ hội nếu chủ động và chọn ngày tốt"
+      "id": "tai_loc",
+      "label_vi": "Tài lộc",
+      "verdict_vi": "Thuận",
+      "detail_vi": "Hành năm trùng Dụng Thần — thuận cho tích lũy và đầu tư có kế hoạch.",
+      "area": "tai_loc",
+      "outlook_vi": "Hành năm trùng Dụng Thần — thuận cho tích lũy và đầu tư có kế hoạch."
     },
     {
-      "area": "sức_khoe",
-      "outlook_vi": "Năng lượng Dụng Thần hỗ trợ — duy trì thói quen tốt"
+      "id": "su_nghiep",
+      "label_vi": "Sự nghiệp",
+      "verdict_vi": "Thuận",
+      "detail_vi": "Thập Thần chủ đạo Thất Sát — có cửa thăng tiến nếu chủ động.",
+      "area": "su_nghiep",
+      "outlook_vi": "Thập Thần chủ đạo Thất Sát — có cửa thăng tiến nếu chủ động."
+    },
+    {
+      "id": "suc_khoe",
+      "label_vi": "Sức khỏe",
+      "verdict_vi": "Thuận",
+      "detail_vi": "Năng lượng Dụng Thần hỗ trợ — duy trì thói quen tốt.",
+      "area": "suc_khoe",
+      "outlook_vi": "Năng lượng Dụng Thần hỗ trợ — duy trì thói quen tốt."
+    },
+    {
+      "id": "tinh_duyen",
+      "label_vi": "Tình duyên",
+      "verdict_vi": "Cần thận trọng",
+      "detail_vi": "Năm xung tuổi — tránh quyết định hôn nhân/tình cảm vội vàng.",
+      "area": "tinh_duyen",
+      "outlook_vi": "Năm xung tuổi — tránh quyết định hôn nhân/tình cảm vội vàng."
     }
   ],
-  "warnings": [],
+  "warnings": [
+    "Năm Bính Ngọ xung tuổi — cần thận trọng Tam Tai / quyết sách lớn."
+  ],
   "month_scores": [
     {
       "month": 1,
@@ -27,51 +53,88 @@
     },
     {
       "month": 2,
-      "score": 58
+      "score": 57
     },
     {
       "month": 3,
-      "score": 52
+      "score": 59
     },
     {
       "month": 4,
-      "score": 55
+      "score": 51
     },
     {
       "month": 5,
-      "score": 58
+      "score": 53
     },
     {
       "month": 6,
-      "score": 52
+      "score": 55
     },
     {
       "month": 7,
-      "score": 55
+      "score": 57
     },
     {
       "month": 8,
-      "score": 58
+      "score": 59
     },
     {
       "month": 9,
-      "score": 52
+      "score": 51
     },
     {
       "month": 10,
-      "score": 55
+      "score": 53
     },
     {
       "month": 11,
-      "score": 58
+      "score": 55
     },
     {
       "month": 12,
-      "score": 52
+      "score": 57
     }
   ],
+  "month_score_values": [
+    55,
+    57,
+    59,
+    51,
+    53,
+    55,
+    57,
+    59,
+    51,
+    53,
+    55,
+    57
+  ],
+  "quy_nhan": {
+    "tuoi_hop": [
+      "Thìn",
+      "Thân",
+      "Sửu"
+    ],
+    "tuoi_xung": [
+      "Ngọ"
+    ],
+    "huong_quy_nhan": "Nam",
+    "note_vi": "Năm lưu niên Bính Ngọ xung tuổi — ưu tiên người tuổi hợp (Thìn, Thân, Sửu)."
+  },
+  "dai_van_next": {
+    "display": "Nhâm Thân",
+    "theme_vi": "Đại vận Nhâm Thân (hành Thủy) — tuổi 47-56, khoảng từ năm 2031.",
+    "start_year": "2031",
+    "age_range": "47-56"
+  },
+  "teaser": {
+    "year_can_chi": "Bính Ngọ",
+    "year_rating": "tốt",
+    "year_theme_vi": "Năm 2026 (Bính Ngọ) hành Hỏa"
+  },
   "assumptions_vi": [
-    "MVP: điểm tháng là ước lượng theo quan hệ năm–Nhật Chủ, chưa tính xung hợp chi tiết.",
-    "Phase 2b: quy_nhan, tuoi_hop, tuoi_xung chưa có — màn NLTT §05 Quý nhân vẫn blocked."
+    "Điểm tháng là ước lượng theo quan hệ năm–Nhật Chủ và chi lưu niên (MVP).",
+    "quy_nhan.tuoi_hop/xung theo Tam Hợp, Lục Hợp và xung tuổi năm sinh."
   ]
 }

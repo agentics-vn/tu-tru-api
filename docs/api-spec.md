@@ -353,12 +353,51 @@ Lá số **diễn giải có cấu trúc**: cùng nguồn tính toán với Tứ
 
 - `tinh_duyen` và `dai_van_current` chỉ có khi client gửi `gender`.
 - `_raw` dùng thêm ngữ cảnh kỹ thuật cho bước LLM (không bắt buộc hiển thị user).
+- **`personality_traits`** (4 block deterministic cho màn luận Bát tự §02): `diem_manh`, `ca_tinh`, `luu_y`, `tinh_cam` — mỗi phần tử `{ id, title, text }`. Không thay Gemini `la-so-chi-tiet`; dùng khi cần UI structured trước/ song song LLM.
+- **`element_counts`** / **`ngu_hanh`**: cùng nguồn trọng số ngũ hành; dùng vẽ biểu đồ % (chia cho tổng trọng số × 100). Parity với `POST /v1/tu-tru` khi có `birth_time`.
+- **`dai_van.cycles[]`**: timeline đại vận (khi có `gender`).
 
 ## Error Responses (Lá số)
 
 | HTTP | error_code | When |
 |---|---|---|
 | 400 | INVALID_INPUT | Thiếu/thời gian không hợp lệ, `birth_time` sai enum |
+| 500 | INTERNAL_ERROR | Lỗi máy chủ |
+
+---
+
+# API Spec — GET /v1/la-so/luu-nien
+
+Facts **lưu niên** (vận năm) deterministic — phục vụ màn luận Bát tự §03 & §05. Khác `GET /v1/tieu-van` (vận tháng).
+
+## Request (query)
+
+| Param | Required | Type | Description |
+|---|---|---|---|
+| birth_date | Yes | string | `dd/mm/yyyy` |
+| birth_time | Yes | int | Giờ sinh (enum Tứ Trụ) |
+| gender | Yes | int | `1` nam \| `-1` nữ |
+| year | Yes | int | Năm dương lịch cần xem (1900–2100) |
+
+## Response 200 (trường chính)
+
+| Field | Mô tả |
+|---|---|
+| `year_can_chi`, `year_label_vi` | Can Chi năm lưu niên |
+| `year_rating`, `year_theme_vi` | Đánh giá / chủ đề năm (MVP) |
+| `life_areas` | **Đúng 4** phần tử: `tai_loc`, `su_nghiep`, `suc_khoe`, `tinh_duyen` — mỗi item `id`, `label_vi`, `verdict_vi`, `detail_vi` |
+| `warnings` | Cảnh báo (string hoặc object tùy client; API trả `string[]`) |
+| `month_scores` | 12 object `{ month: 1–12, score: 0–100 }` (tháng **âm lịch**, MVP) |
+| `month_score_values` | **12 số** — `score` theo thứ tự tháng 1→12; dùng trực tiếp cho biểu đồ FE |
+| `quy_nhan` | `{ tuoi_hop[], tuoi_xung[], huong_quy_nhan, note_vi }` — §05 Quý nhân (chi hợp/xung, hướng **đủ tên** vd. `Tây Bắc`) |
+| `dai_van_next` | Đại vận kế tiếp: `display`, `theme_vi`, `start_year`, `age_range` |
+| `teaser` | Paywall-safe: `year_can_chi`, `year_rating`, `year_theme_vi` (một dòng) |
+
+## Error Responses
+
+| HTTP | error_code | When |
+|---|---|---|
+| 400 | INVALID_INPUT | Thiếu param, ngày tương lai, `gender` / `birth_time` sai |
 | 500 | INTERNAL_ERROR | Lỗi máy chủ |
 
 ---

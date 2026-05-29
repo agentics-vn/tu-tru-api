@@ -215,3 +215,25 @@ def get_current_dai_van(
             return cycle
 
     return None
+
+
+def get_next_dai_van(
+    tu_tru: dict,
+    gender: int,
+    birth_date: str,
+    current_date: str | None = None,
+) -> dict | None:
+    """Return the Đại Vận cycle after the active one (or first cycle if not yet started)."""
+    cycles = get_dai_van(tu_tru, gender, birth_date)
+    if not cycles:
+        return None
+
+    current = get_current_dai_van(tu_tru, gender, birth_date, current_date)
+    if current is None:
+        return cycles[0]
+
+    next_num = current["cycle_num"] + 1
+    for cycle in cycles:
+        if cycle["cycle_num"] == next_num:
+            return cycle
+    return None

@@ -322,6 +322,41 @@ def build_la_so(
     return result
 
 
+def build_personality_traits(
+    tinh_cach: dict[str, Any],
+    tinh_duyen: Optional[dict[str, Any]] = None,
+) -> list[dict[str, str]]:
+    """
+    Deterministic personality sub-blocks for bazi reading §02 (REQ-BR-03 option 2).
+    """
+    traits = tinh_cach.get("core_traits") or []
+    diem_manh = ", ".join(traits[:2]) if traits else str(tinh_cach.get("archetype", ""))
+    archetype = str(tinh_cach.get("archetype", ""))
+    image = str(tinh_cach.get("image", ""))
+    ca_tinh = f"{archetype} — {image}".strip(" —") if image else archetype
+    luu_y = str(tinh_cach.get("strength_note", ""))
+
+    if tinh_duyen:
+        signals = tinh_duyen.get("signals") or {}
+        parts: list[str] = []
+        if signals.get("strong_spouse"):
+            parts.append("Có sao phu thê rõ — thường coi trọng cam kết.")
+        if signals.get("multiple_affair"):
+            parts.append("Nhiều sao tình duyên — cần giữ ranh giới rõ ràng.")
+        if tinh_duyen.get("dm_strength") == "nhược":
+            parts.append("Thân nhược — nên chọn người bổ trợ, tránh áp lực một chiều.")
+        tinh_cam = " ".join(parts) if parts else "Quan hệ cần cân bằng ngũ hành và thời vận cá nhân."
+    else:
+        tinh_cam = "Cung cấp giới tính để xem thêm gợi ý tình duyên trên lá số."
+
+    return [
+        {"id": "diem_manh", "title": "Điểm mạnh", "text": diem_manh},
+        {"id": "ca_tinh", "title": "Cá tính", "text": ca_tinh},
+        {"id": "luu_y", "title": "Lưu ý", "text": luu_y},
+        {"id": "tinh_cam", "title": "Tình cảm", "text": tinh_cam},
+    ]
+
+
 NAP_AM_MO_TA: dict[str, str] = {
     "Hải Trung Kim": "Vàng trong biển — giá trị ẩn sâu, cần thời gian tỏa sáng",
     "Lò Trung Hỏa": "Lửa trong lò — nhiệt huyết bên trong, sáng tạo khi được ủ",

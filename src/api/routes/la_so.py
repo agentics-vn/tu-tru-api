@@ -18,7 +18,7 @@ from api.schemas.direction_c import API_ERROR_RESPONSES
 from api.schemas.p2_responses import LaSoResponse
 from api.parse_date import parse_dmy
 from api.version import get_engine_version, utc_now_iso
-from engine.la_so import build_la_so, build_la_so_chart_contract
+from engine.la_so import build_la_so, build_la_so_chart_contract, build_personality_traits
 from engine.pillars import VALID_BIRTH_HOURS, get_tu_tru
 
 logger = logging.getLogger("la_so")
@@ -74,6 +74,10 @@ async def la_so_endpoint(
         tu_tru = get_tu_tru(birth_iso, birth_time)
         la_so = build_la_so(tu_tru, gender, birth_iso)
         chart = build_la_so_chart_contract(tu_tru, gender, birth_iso)
+        personality_traits = build_personality_traits(
+            la_so["tinh_cach"],
+            la_so.get("tinh_duyen"),
+        )
 
         return LaSoResponse.model_validate({
             "status": "success",
@@ -84,6 +88,7 @@ async def la_so_endpoint(
             **({"gender": gender} if gender is not None else {}),
             **chart,
             **la_so,
+            "personality_traits": personality_traits,
             "thap_than": {
                 **chart.get("thap_than", {}),
                 "dominant": chart["thap_than"]["dominant"],

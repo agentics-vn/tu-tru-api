@@ -211,6 +211,12 @@ class ChartContractP2(BaseModel):
     dai_van_list: Optional[list[DaiVanCycle]] = None
 
 
+class PersonalityTrait(BaseModel):
+    id: str
+    title: str
+    text: str
+
+
 class LaSoResponse(BaseModel):
     model_config = ConfigDict(extra="allow")
 
@@ -241,6 +247,10 @@ class LaSoResponse(BaseModel):
     suc_khoe: Optional[dict[str, Any]] = None
     tinh_duyen: Optional[dict[str, Any]] = None
     dai_van_current: Optional[dict[str, Any]] = None
+    personality_traits: Optional[list[PersonalityTrait]] = Field(
+        default=None,
+        description="4 sub-block Tính cách deterministic (REQ-BR-03)",
+    )
 
 
 class TuTruMenhBasic(BaseModel):

@@ -7,7 +7,6 @@ from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, Query
-from fastapi.responses import JSONResponse
 
 from api.errors import error_response
 from api.schemas.direction_c import API_ERROR_RESPONSES, LuuNienResponse
@@ -32,7 +31,7 @@ async def la_so_luu_nien(
     birth_time: int = Query(..., description="Giờ sinh (bắt buộc)"),
     gender: int = Query(..., description="1 nam | -1 nữ"),
     year: int = Query(..., ge=1900, le=2100, description="Năm dương lịch cần xem"),
-) -> JSONResponse:
+) -> LuuNienResponse:
     try:
         bd = parse_dmy(birth_date)
         if bd >= date.today():

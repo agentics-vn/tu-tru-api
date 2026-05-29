@@ -82,3 +82,24 @@ def test_breakdown_arrays_have_min_length_four():
         _schema("LuanContextResponse")["properties"]["breakdown_summary"]
     )
     assert luan.get("minItems") == 4
+
+
+def test_luu_nien_response_openapi_rich_facts():
+    props = _schema("LuuNienResponse")["properties"]
+    assert {
+        "quy_nhan",
+        "dai_van_next",
+        "life_areas",
+        "month_scores",
+        "month_score_values",
+    } <= set(props)
+    assert props["life_areas"]["minItems"] == 4
+    assert props["month_scores"]["minItems"] == 12
+    assert props["month_score_values"]["minItems"] == 12
+    qn = _schema(props["quy_nhan"]["$ref"].split("/")[-1])["properties"]
+    assert {"tuoi_hop", "tuoi_xung", "huong_quy_nhan"} <= set(qn)
+
+
+def test_la_so_personality_traits_in_openapi():
+    props = _schema("LaSoResponse")["properties"]
+    assert "personality_traits" in props
