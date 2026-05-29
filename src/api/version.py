@@ -12,7 +12,7 @@ def get_engine_version() -> str:
         for line in pyproject.read_text(encoding="utf-8").splitlines():
             if line.startswith("version = "):
                 return line.split("=", 1)[1].strip().strip('"').strip("'")
-    return "0.1.0"
+    return "0.1.1"
 
 
 def utc_now_iso() -> str:
