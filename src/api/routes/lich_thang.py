@@ -18,6 +18,8 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from api.gio_slots import format_gio_tot_slots
+from api.schemas.direction_c import API_ERROR_RESPONSES
+from api.schemas.p2_responses import LichThangResponse
 from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart, get_month_info
 from engine.hoang_dao import get_day_star
@@ -131,8 +133,13 @@ def _build_day_summary(
 # GET /v1/lich-thang
 # ─────────────────────────────────────────────────────────────────────────────
 
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get(
+    "",
+    response_model=LichThangResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Lịch tháng với điểm và days[]",
+)
+@router.get("/", include_in_schema=False, response_model=LichThangResponse)
 async def lich_thang(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
@@ -214,19 +221,16 @@ async def lich_thang(
                 "summary": tot_xau,
             })
 
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "success",
-                "month": month,
-                **methodology,
-                "user_menh": {
-                    "hanh": user_chart["menh_hanh"],
-                    "name": user_chart["menh_name"],
-                },
-                "days": days_response,
+        return LichThangResponse.model_validate({
+            "status": "success",
+            "month": month,
+            **methodology,
+            "user_menh": {
+                "hanh": user_chart["menh_hanh"],
+                "name": user_chart["menh_name"],
             },
-        )
+            "days": days_response,
+        })
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))

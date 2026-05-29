@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal, Optional
+from typing import Annotated, Any, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
+
+# Direction C: exactly 4 breakdown buckets (truc, sao28, can_chi_laso, gio_vang)
+BreakdownFour = Annotated[list["BreakdownItem"], Field(min_length=4, max_length=4)]
+BreakdownSummaryFour = Annotated[list["BreakdownSummaryItem"], Field(min_length=4, max_length=4)]
 
 # ── Shared ────────────────────────────────────────────────────────────────────
 
@@ -186,8 +190,14 @@ class DayDetailResponse(BaseModel):
     score_methodology: ScoreMethodology
     sources: list[SourceRef] = Field(default_factory=list)
     personalized: bool
-    breakdown: Optional[list[BreakdownItem]] = None
-    breakdown_generic: Optional[list[BreakdownItem]] = None
+    breakdown: Optional[BreakdownFour] = Field(
+        default=None,
+        description="4 yếu tố: truc, sao28, can_chi_laso, gio_vang (personalized).",
+    )
+    breakdown_generic: Optional[BreakdownFour] = Field(
+        default=None,
+        description="4 yếu tố (generic mode).",
+    )
     summary_vi: Optional[str] = None
     intent: Optional[str] = None
     good_for: Optional[list[str]] = None
@@ -210,7 +220,7 @@ class LuanContextResponse(BaseModel):
     score: int
     grade: str
     menh_user: str
-    breakdown_summary: list[BreakdownSummaryItem]
+    breakdown_summary: BreakdownSummaryFour
     sources: list[SourceRef]
     gio_tot: list[GioSlot] = Field(default_factory=list)
     gio_xau: list[GioSlot] = Field(default_factory=list)
@@ -265,7 +275,7 @@ class ChonNgayDetailResponse(BaseModel):
     time_slots: Optional[list[GioSlot]] = None
     score: Optional[int] = None
     grade: Optional[str] = None
-    breakdown: Optional[list[BreakdownItem]] = None
+    breakdown: Optional[BreakdownFour] = None
     score_max: Optional[int] = None
     score_methodology: Optional[ScoreMethodology] = None
     sources: Optional[list[SourceRef]] = None

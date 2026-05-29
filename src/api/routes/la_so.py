@@ -14,6 +14,8 @@ from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 
 from api.errors import error_response
+from api.schemas.direction_c import API_ERROR_RESPONSES
+from api.schemas.p2_responses import LaSoResponse
 from api.parse_date import parse_dmy
 from api.version import get_engine_version, utc_now_iso
 from engine.la_so import build_la_so, build_la_so_chart_contract
@@ -24,8 +26,19 @@ logger = logging.getLogger("la_so")
 router = APIRouter()
 
 
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get(
+    "",
+    response_model=LaSoResponse,
+    response_model_exclude_none=True,
+    responses=API_ERROR_RESPONSES,
+    summary="Lá số diễn giải (P2 chart contract + tinh_cach, su_nghiep, …)",
+)
+@router.get(
+    "/",
+    include_in_schema=False,
+    response_model=LaSoResponse,
+    response_model_exclude_none=True,
+)
 async def la_so_endpoint(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: int = Query(..., description="Giờ sinh (dropdown engine) — bắt buộc"),
@@ -62,23 +75,20 @@ async def la_so_endpoint(
         la_so = build_la_so(tu_tru, gender, birth_iso)
         chart = build_la_so_chart_contract(tu_tru, gender, birth_iso)
 
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "success",
-                "birth_date": birth_iso,
-                "birth_time": birth_time,
-                "engine_version": get_engine_version(),
-                "computed_at": utc_now_iso(),
-                **({"gender": gender} if gender is not None else {}),
-                **chart,
-                **la_so,
-                "thap_than": {
-                    **chart.get("thap_than", {}),
-                    "dominant": chart["thap_than"]["dominant"],
-                },
+        return LaSoResponse.model_validate({
+            "status": "success",
+            "birth_date": birth_iso,
+            "birth_time": birth_time,
+            "engine_version": get_engine_version(),
+            "computed_at": utc_now_iso(),
+            **({"gender": gender} if gender is not None else {}),
+            **chart,
+            **la_so,
+            "thap_than": {
+                **chart.get("thap_than", {}),
+                "dominant": chart["thap_than"]["dominant"],
             },
-        )
+        })
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))

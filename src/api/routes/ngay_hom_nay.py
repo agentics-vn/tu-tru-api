@@ -18,6 +18,8 @@ from api.errors import error_response
 from api.gio_slots import format_gio_tot_slots, format_gio_xau_slots
 from api.day_score_response import build_good_and_avoid
 from api.intent_rules_loader import get_intent_rule, resolve_intent_key
+from api.schemas.direction_c import API_ERROR_RESPONSES
+from api.schemas.p2_responses import NgayHomNayResponse
 from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart, get_can_chi_year
 from engine.can_chi import get_nap_am_pair_idx
@@ -124,8 +126,13 @@ def _build_daily_advice(day_info: dict, star_info: dict, good_for: list[str], av
 # GET /v1/ngay-hom-nay
 # ─────────────────────────────────────────────────────────────────────────────
 
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get(
+    "",
+    response_model=NgayHomNayResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Card ngày hôm nay / ngày chỉ định",
+)
+@router.get("/", include_in_schema=False, response_model=NgayHomNayResponse)
 async def ngay_hom_nay(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
@@ -178,44 +185,41 @@ async def ngay_hom_nay(
         score_ctx = collect_score_deltas(day_info, user_chart, rule_key, intent_rule, l2)
         methodology = get_score_methodology_block()
 
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "success",
-                "date": td_str,
-                "intent": rule_key,
-                "score": score_ctx["score"],
-                "grade": score_ctx["grade"],
-                **methodology,
-                "can_chi": {
-                    "name": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
-                    "can_name": day_info["day_can_name"],
-                    "chi_name": day_info["day_chi_name"],
-                    "nap_am_hanh": day_info["day_nap_am_hanh"],
-                },
-                "lunar": {
-                    "day": day_info["lunar_day"],
-                    "month": day_info["lunar_month"],
-                    "year": day_info["lunar_year"],
-                    "display": _format_lunar_display(day_info),
-                },
-                "hoang_dao": {
-                    "is_hoang_dao": star_info["is_hoang_dao"],
-                    "star_name": star_info["star_name"],
-                    "badge": "HOÀNG ĐẠO" if star_info["is_hoang_dao"] else "HẮC ĐẠO",
-                },
-                "truc": {
-                    "name": day_info["truc_name"],
-                    "score": day_info["truc_score"],
-                },
-                "good_for": good_for,
-                "avoid_for": avoid_for,
-                "gio_tot": gio_tot,
-                "gio_xau": gio_xau,
-                "daily_advice": advice,
-                **(_build_tu_tru_section(day_info, user_chart)),
+        return NgayHomNayResponse.model_validate({
+            "status": "success",
+            "date": td_str,
+            "intent": rule_key,
+            "score": score_ctx["score"],
+            "grade": score_ctx["grade"],
+            **methodology,
+            "can_chi": {
+                "name": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
+                "can_name": day_info["day_can_name"],
+                "chi_name": day_info["day_chi_name"],
+                "nap_am_hanh": day_info["day_nap_am_hanh"],
             },
-        )
+            "lunar": {
+                "day": day_info["lunar_day"],
+                "month": day_info["lunar_month"],
+                "year": day_info["lunar_year"],
+                "display": _format_lunar_display(day_info),
+            },
+            "hoang_dao": {
+                "is_hoang_dao": star_info["is_hoang_dao"],
+                "star_name": star_info["star_name"],
+                "badge": "HOÀNG ĐẠO" if star_info["is_hoang_dao"] else "HẮC ĐẠO",
+            },
+            "truc": {
+                "name": day_info["truc_name"],
+                "score": day_info["truc_score"],
+            },
+            "good_for": good_for,
+            "avoid_for": avoid_for,
+            "gio_tot": gio_tot,
+            "gio_xau": gio_xau,
+            "daily_advice": advice,
+            **(_build_tu_tru_section(day_info, user_chart)),
+        })
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))

@@ -18,6 +18,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 
 from api.parse_date import parse_dmy
+from api.schemas.direction_c import API_ERROR_RESPONSES
+from api.schemas.p2_responses import TuTruResponse
 from api.version import get_engine_version, utc_now_iso
 
 from engine.bazi_solar import bazi_cycle_year
@@ -101,9 +103,20 @@ def _build_pillar_display(pillar: dict) -> dict:
 # POST /v1/tu-tru
 # ─────────────────────────────────────────────────────────────────────────────
 
-@router.post("")
-@router.post("/", include_in_schema=False)
-async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
+@router.post(
+    "",
+    response_model=TuTruResponse,
+    response_model_exclude_none=True,
+    responses=API_ERROR_RESPONSES,
+    summary="Tứ Trụ / Bát Tự (P2 chart khi có birth_time)",
+)
+@router.post(
+    "/",
+    include_in_schema=False,
+    response_model=TuTruResponse,
+    response_model_exclude_none=True,
+)
+async def tu_tru_endpoint(req: TuTruRequest):
     try:
         bd = parse_dmy(req.birth_date)
         birth_date_str = bd.isoformat()
@@ -246,7 +259,7 @@ async def tu_tru_endpoint(req: TuTruRequest) -> JSONResponse:
                 "Cung cấp birth_time để xem đầy đủ Tứ Trụ, Dụng Thần, Thập Thần."
             )
 
-        return JSONResponse(status_code=200, content=result)
+        return TuTruResponse.model_validate(result)
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))

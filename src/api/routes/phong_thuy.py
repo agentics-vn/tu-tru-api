@@ -14,6 +14,8 @@ from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 
 from api.errors import error_response
+from api.schemas.direction_c import API_ERROR_RESPONSES
+from api.schemas.p2_responses import PhongThuyResponse
 from api.parse_date import parse_dmy
 from api.tz import today_in_tz
 from engine.can_chi import get_menh_nap_am_from_date
@@ -38,8 +40,19 @@ logger = logging.getLogger("phong_thuy")
 router = APIRouter()
 
 
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get(
+    "",
+    response_model=PhongThuyResponse,
+    response_model_exclude_none=True,
+    responses=API_ERROR_RESPONSES,
+    summary="Gợi ý phong thủy v2 (Phi Tinh, personalization, couple_harmony)",
+)
+@router.get(
+    "/",
+    include_in_schema=False,
+    response_model=PhongThuyResponse,
+    response_model_exclude_none=True,
+)
 async def phong_thuy_endpoint(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh"),
@@ -160,7 +173,7 @@ async def phong_thuy_endpoint(
             if ch is not None:
                 payload["couple_harmony"] = ch
 
-        return JSONResponse(status_code=200, content=payload)
+        return PhongThuyResponse.model_validate(payload)
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))
