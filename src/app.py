@@ -24,6 +24,7 @@ from fastapi.responses import JSONResponse
 
 from api.errors import error_response
 from api.rate_limit import RateLimitMiddleware
+from api.schemas.direction_c import HealthResponse
 from api.version import get_engine_version
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -137,13 +138,13 @@ async def generic_exception_handler(
 # Health check
 # ─────────────────────────────────────────────────────────────────────────────
 
-@app.get("/health")
-async def health() -> dict:
-    return {
-        "status": "ok",
-        "version": app.version,
-        "engine_version": get_engine_version(),
-    }
+@app.get("/health", response_model=HealthResponse, summary="Health check")
+async def health() -> HealthResponse:
+    return HealthResponse(
+        status="ok",
+        version=app.version or "0.1.0",
+        engine_version=get_engine_version(),
+    )
 
 
 # ─────────────────────────────────────────────────────────────────────────────

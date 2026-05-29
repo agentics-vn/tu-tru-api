@@ -17,7 +17,11 @@ from api.intent_rules_loader import get_intent_rule, resolve_intent_key
 from api.parse_date import parse_dmy
 from calendar_service import get_day_info, get_user_chart
 from engine.day_score import build_compare_copy
-from api.schemas.direction_c import validate_day_compare_response
+from api.schemas.direction_c import (
+    API_ERROR_RESPONSES,
+    DayCompareResponse,
+    validate_day_compare_response,
+)
 from engine.score_methodology import DIRECTION_C_SOURCES
 
 logger = logging.getLogger("day_compare")
@@ -25,8 +29,13 @@ logger = logging.getLogger("day_compare")
 router = APIRouter()
 
 
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get(
+    "",
+    response_model=DayCompareResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="So sánh điểm hai ngày cho cùng lá số",
+)
+@router.get("/", include_in_schema=False, response_model=DayCompareResponse)
 async def day_compare(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     date_a: str = Query(..., description="Ngày A YYYY-MM-DD"),
@@ -87,8 +96,7 @@ async def day_compare(
             "better_for": better_for,
             "sources": DIRECTION_C_SOURCES,
         }
-        validate_day_compare_response(content)
-        return JSONResponse(status_code=200, content=content)
+        return validate_day_compare_response(content)
 
     except ValueError as e:
         from pydantic import ValidationError

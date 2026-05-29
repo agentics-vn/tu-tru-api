@@ -16,7 +16,11 @@ from api.errors import error_response
 from api.intent_rules_loader import resolve_intent_key
 from api.parse_date import parse_dmy
 from api.routes.chon_ngay import run_chon_ngay_scan
-from api.schemas.direction_c import validate_chon_ngay_response
+from api.schemas.direction_c import (
+    API_ERROR_RESPONSES,
+    ShareChonNgayResponse,
+    validate_chon_ngay_response,
+)
 from api.share import decode_share_token
 
 logger = logging.getLogger(__name__)
@@ -24,8 +28,13 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["share"])
 
 
-@router.get("/{token}")
-async def resolve_share_token(token: str) -> JSONResponse:
+@router.get(
+    "/{token}",
+    response_model=ShareChonNgayResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Giải mã share token và replay kết quả chon-ngay",
+)
+async def resolve_share_token(token: str):
     """Decode a share token and replay the original request."""
     payload = decode_share_token(token)
     if payload is None:
@@ -62,16 +71,12 @@ async def resolve_share_token(token: str) -> JSONResponse:
                 top_n=3,
             )
             content["meta"]["birth_hash"] = payload.get("bh", "")
-            validate_chon_ngay_response(content)
-
-            return JSONResponse(
-                status_code=200,
-                content={
-                    **content,
-                    "shared": True,
-                    "endpoint": endpoint,
-                },
-            )
+            validated = validate_chon_ngay_response(content)
+            return ShareChonNgayResponse.model_validate({
+                **validated.model_dump(),
+                "shared": True,
+                "endpoint": endpoint,
+            })
 
         return error_response(
             400, "INVALID_INPUT",

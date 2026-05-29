@@ -10,6 +10,7 @@ from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 
 from api.errors import error_response
+from api.schemas.direction_c import API_ERROR_RESPONSES, LuuNienResponse
 from api.parse_date import parse_dmy
 from api.version import get_engine_version, utc_now_iso
 from engine.luu_nien import build_luu_nien
@@ -20,7 +21,12 @@ logger = logging.getLogger("la_so_luu_nien")
 router = APIRouter()
 
 
-@router.get("/luu-nien")
+@router.get(
+    "/luu-nien",
+    response_model=LuuNienResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Lưu niên MVP — vận năm theo lá số",
+)
 async def la_so_luu_nien(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: int = Query(..., description="Giờ sinh (bắt buộc)"),
@@ -47,16 +53,13 @@ async def la_so_luu_nien(
             gender=gender,
             year=year,
         )
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "success",
-                "birth_date": bd.isoformat(),
-                "engine_version": get_engine_version(),
-                "computed_at": utc_now_iso(),
-                **payload,
-            },
-        )
+        return LuuNienResponse.model_validate({
+            "status": "success",
+            "birth_date": bd.isoformat(),
+            "engine_version": get_engine_version(),
+            "computed_at": utc_now_iso(),
+            **payload,
+        })
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))

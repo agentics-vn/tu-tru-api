@@ -19,6 +19,12 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 from api.gio_slots import format_gio_slot, format_gio_tot_slots
 from api.intent_rules_loader import get_intent_rule, resolve_intent_key
+from api.schemas.direction_c import (
+    API_ERROR_RESPONSES,
+    ChonNgayDetailResponse,
+    ChonNgayResponse,
+    validate_chon_ngay_response,
+)
 from api.parse_date import parse_dmy
 from engine.chon_ngay_copy import build_chon_ngay_reason_vi
 from engine.score_methodology import get_score_methodology_block
@@ -465,9 +471,15 @@ def run_chon_ngay_scan(
 # POST /v1/chon-ngay
 # ─────────────────────────────────────────────────────────────────────────────
 
-@router.post("")
-@router.post("/", include_in_schema=False)
-async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
+@router.post(
+    "",
+    response_model=ChonNgayResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Chọn ngày tốt theo lá số và ý định",
+    description="Direction C: `ranked_days[]`, `empty_reason_vi` (HTTP 200 khi rỗng), `score_methodology`.",
+)
+@router.post("/", include_in_schema=False, response_model=ChonNgayResponse)
+async def chon_ngay(req: ChonNgayRequest):
     try:
         from api.tz import today_in_tz
 
@@ -498,7 +510,6 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
         birth_date_str = bd.isoformat()
         gender_val = req.gender.value if req.gender else None
 
-        from api.schemas.direction_c import validate_chon_ngay_response
         from api.share import create_share_token
 
         content = run_chon_ngay_scan(
@@ -519,8 +530,7 @@ async def chon_ngay(req: ChonNgayRequest) -> JSONResponse:
             range_start=req.range_start,
             range_end=req.range_end,
         )
-        validate_chon_ngay_response(content)
-        return JSONResponse(status_code=200, content=content)
+        return validate_chon_ngay_response(content)
 
     except HTTPException:
         raise
@@ -602,8 +612,13 @@ def _ngu_hanh_relation(day_hanh: str, menh_hanh: str) -> str:
     return "không xác định"
 
 
-@router.post("/detail")
-async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
+@router.post(
+    "/detail",
+    response_model=ChonNgayDetailResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Phân tích chi tiết một ngày (3 lớp lọc)",
+)
+async def chon_ngay_detail(req: DetailRequest):
     """Return detailed analysis for a single date."""
     try:
         from api.tz import today_in_tz
@@ -665,23 +680,20 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
             if day_info.get("is_truc_nguy"):
                 fail_reasons.append("Trực Nguy")
 
-            return JSONResponse(
-                status_code=200,
-                content={
-                    "status": "success",
-                    "date": date_str,
-                    "lunar_date": _format_lunar_date(day_info),
-                    "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
-                    "nguhanh_day": day_info["day_nap_am_hanh"],
-                    "verdict": "Nên tránh",
-                    "verdict_vi": "Ngày xấu — không qua được bộ lọc cơ bản.",
-                    "layer1": layer1_detail,
-                    "layer1_fail_reasons": fail_reasons,
-                    "layer2": None,
-                    "layer3": None,
-                    "time_slots": None,
-                },
-            )
+            return ChonNgayDetailResponse.model_validate({
+                "status": "success",
+                "date": date_str,
+                "lunar_date": _format_lunar_date(day_info),
+                "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
+                "nguhanh_day": day_info["day_nap_am_hanh"],
+                "verdict": "Nên tránh",
+                "verdict_vi": "Ngày xấu — không qua được bộ lọc cơ bản.",
+                "layer1": layer1_detail,
+                "layer1_fail_reasons": fail_reasons,
+                "layer2": None,
+                "layer3": None,
+                "time_slots": None,
+            })
 
         # ── Layer 2 ─────────────────────────────────────────────────────────
         filter_result = apply_layer2_filter(day_info, user_chart, rule_key)
@@ -704,27 +716,24 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
 
         # If Layer 2 fails (severity 3), return early
         if not filter_result["pass"]:
-            return JSONResponse(
-                status_code=200,
-                content={
-                    "status": "success",
-                    "date": date_str,
-                    "lunar_date": _format_lunar_date(day_info),
-                    "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
-                    "nguhanh_day": day_info["day_nap_am_hanh"],
-                    "verdict": "Cấm",
-                    "verdict_vi": (
-                        "Tuyệt đối tránh — ngày xung khắc trực tiếp với tuổi của bạn."
-                        if filter_result["severity"] == 3
-                        else ". ".join(filter_result["reasons"])
-                    ),
-                    "severity": filter_result["severity"],
-                    "layer1": layer1_detail,
-                    "layer2": layer2_detail,
-                    "layer3": None,
-                    "time_slots": None,
-                },
-            )
+            return ChonNgayDetailResponse.model_validate({
+                "status": "success",
+                "date": date_str,
+                "lunar_date": _format_lunar_date(day_info),
+                "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
+                "nguhanh_day": day_info["day_nap_am_hanh"],
+                "verdict": "Cấm",
+                "verdict_vi": (
+                    "Tuyệt đối tránh — ngày xung khắc trực tiếp với tuổi của bạn."
+                    if filter_result["severity"] == 3
+                    else ". ".join(filter_result["reasons"])
+                ),
+                "severity": filter_result["severity"],
+                "layer1": layer1_detail,
+                "layer2": layer2_detail,
+                "layer3": None,
+                "time_slots": None,
+            })
 
         # ── Layer 3 — Direction C scoring ─────────────────────────────────
         from datetime import date as date_cls
@@ -768,31 +777,28 @@ async def chon_ngay_detail(req: DetailRequest) -> JSONResponse:
         if filter_result["severity"] == 2:
             verdict_vi += " (Có cảnh báo — xem chi tiết lớp lọc 2.)"
 
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "success",
-                "date": date_str,
-                "lunar_date": _format_lunar_date(day_info),
-                "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
-                "nguhanh_day": day_info["day_nap_am_hanh"],
-                "verdict": verdict,
-                "verdict_vi": verdict_vi,
-                "severity": filter_result["severity"],
-                "score": payload["score"],
-                "grade": payload["grade"],
-                "breakdown": payload["breakdown"],
-                "sources": payload["sources"],
-                "score_max": payload["score_max"],
-                "score_methodology": payload["score_methodology"],
-                "layer1": layer1_detail,
-                "layer2": layer2_detail,
-                "layer3": layer3_detail,
-                "time_slots": time_slots,
-                "reason_vi": payload["summary_vi"],
-                "summary_vi": payload["summary_vi"],
-            },
-        )
+        return ChonNgayDetailResponse.model_validate({
+            "status": "success",
+            "date": date_str,
+            "lunar_date": _format_lunar_date(day_info),
+            "can_chi_day": f"{day_info['day_can_name']} {day_info['day_chi_name']}",
+            "nguhanh_day": day_info["day_nap_am_hanh"],
+            "verdict": verdict,
+            "verdict_vi": verdict_vi,
+            "severity": filter_result["severity"],
+            "score": payload["score"],
+            "grade": payload["grade"],
+            "breakdown": payload["breakdown"],
+            "sources": payload["sources"],
+            "score_max": payload["score_max"],
+            "score_methodology": payload["score_methodology"],
+            "layer1": layer1_detail,
+            "layer2": layer2_detail,
+            "layer3": layer3_detail,
+            "time_slots": time_slots,
+            "reason_vi": payload["summary_vi"],
+            "summary_vi": payload["summary_vi"],
+        })
 
     except Exception:
         logger.exception("Internal error in chon_ngay_detail")

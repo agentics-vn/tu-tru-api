@@ -21,6 +21,9 @@ from api.day_score_response import (
     good_and_avoid_from_purpose_rows,
 )
 from api.schemas.direction_c import (
+    API_ERROR_RESPONSES,
+    DayDetailResponse,
+    LuanContextResponse,
     validate_day_detail_response,
     validate_luan_context_response,
 )
@@ -54,8 +57,13 @@ def _resolve_intent(intent: str) -> tuple[str, dict]:
     return rule_key, get_intent_rule(intent)
 
 
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get(
+    "",
+    response_model=DayDetailResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Chi tiết một ngày (generic hoặc personalized)",
+)
+@router.get("/", include_in_schema=False, response_model=DayDetailResponse)
 async def day_detail_endpoint(
     target_date: str = Query(..., alias="date", description="Ngày mục tiêu YYYY-MM-DD"),
     tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Ho_Chi_Minh (default)"),
@@ -106,8 +114,7 @@ async def day_detail_endpoint(
                 target=td,
             )
             content = {**base, **generic}
-            validate_day_detail_response(content, personalized=False)
-            return JSONResponse(status_code=200, content=content)
+            return validate_day_detail_response(content, personalized=False)
 
         if not birth_date:
             return error_response(
@@ -150,8 +157,7 @@ async def day_detail_endpoint(
             "avoid_for": avoid_for,
             "purpose_rows": purpose_rows,
         }
-        validate_day_detail_response(content, personalized=True)
-        return JSONResponse(status_code=200, content=content)
+        return validate_day_detail_response(content, personalized=True)
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))
@@ -160,7 +166,12 @@ async def day_detail_endpoint(
         return error_response(500, "INTERNAL_ERROR")
 
 
-@router.get("/luan-context")
+@router.get(
+    "/luan-context",
+    response_model=LuanContextResponse,
+    responses=API_ERROR_RESPONSES,
+    summary="Dữ kiện cho LLM (breakdown + giờ vàng)",
+)
 async def day_detail_luan_context(
     target_date: str = Query(..., alias="date", description="Ngày mục tiêu YYYY-MM-DD"),
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
@@ -189,9 +200,7 @@ async def day_detail_luan_context(
             intent_rule=intent_rule,
             target=td,
         )
-        full = {"status": "success", **content}
-        validate_luan_context_response(full)
-        return JSONResponse(status_code=200, content=full)
+        return validate_luan_context_response({"status": "success", **content})
 
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))
