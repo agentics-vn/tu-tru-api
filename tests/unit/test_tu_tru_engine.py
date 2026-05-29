@@ -265,9 +265,9 @@ class TestDaiVan:
             assert "end_age" in c
 
     def test_current_dai_van_found(self):
-        """Should find the current cycle for a 36-year-old."""
+        """Should find the current cycle for a 36-year-old (after birthday)."""
         tu_tru = get_tu_tru("1990-03-21", 8)
-        current = get_current_dai_van(tu_tru, 1, "1990-03-21", "2026-03-11")
+        current = get_current_dai_van(tu_tru, 1, "1990-03-21", "2026-05-29")
         assert current is not None
         assert current["start_age"] <= 36 <= current["end_age"]
 
@@ -284,10 +284,10 @@ class TestDaiVan:
         """起运顺排: giữa hai 节 phải bỏ qua 气 (ví dụ 雨水), lấy 节 kế tiếp."""
         # 2024-02-10: sau Lập Xuân → năm Giáp (Dương), nam → thuận.
         # Tiết kế tiếp trên lịch là 雨水 (~20/02) nhưng chỉ 节 mới tính → Kinh Trập 06/03.
-        # (06-02-10).days = 25 → round(25/3) = 8.
+        # (06-02-10).days = 25 → ceil(25/3) = 9.
         tu_tru = get_tu_tru("2024-02-10", 8)
         cycles = get_dai_van(tu_tru, 1, "2024-02-10", num_cycles=1)
-        assert cycles[0]["start_age"] == 8
+        assert cycles[0]["start_age"] == 9
 
 
 # ─────────────────────────────────────────────────────────────────────────────

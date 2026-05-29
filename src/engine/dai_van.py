@@ -10,6 +10,7 @@ twelve 气 — see docs/algorithm.md §17.
 
 from __future__ import annotations
 
+import math
 from datetime import date as dt_date
 from datetime import timedelta
 
@@ -111,7 +112,7 @@ def _get_start_age(birth_date: str, direction: int) -> float:
         prv = _prev_jie_date(birth, tz)
         days_diff = (birth - prv).days if prv else 15
 
-    return max(1, round(days_diff / 3))
+    return max(1, math.ceil(days_diff / 3))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

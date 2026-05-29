@@ -304,7 +304,7 @@ def build_la_so(
                 "display": current_dv["display"],
                 "hanh": current_dv["can_hanh"],
                 "nap_am_hanh": current_dv["nap_am_hanh"],
-                "age_range": f"{current_dv['start_age']}-{current_dv['end_age']}",
+                "age_range": f"{current_dv['start_age']}-{current_dv['start_age'] + 10}",
             }
 
     result["_raw"] = {
