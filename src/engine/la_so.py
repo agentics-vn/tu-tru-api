@@ -324,7 +324,7 @@ def build_la_so(
 
 NAP_AM_MO_TA: dict[str, str] = {
     "Hải Trung Kim": "Vàng trong biển — giá trị ẩn sâu, cần thời gian tỏa sáng",
-    "Lư Trung Hỏa": "Lửa trong lò — nhiệt huyết bên trong, sáng tạo khi được ủ",
+    "Lò Trung Hỏa": "Lửa trong lò — nhiệt huyết bên trong, sáng tạo khi được ủ",
     "Đại Lâm Mộc": "Rừng lớn — phát triển bền vững, che chở người khác",
     "Lộ Bàng Thổ": "Đất ven đường — thực tế, linh hoạt, dễ thích nghi",
     "Kiếm Phong Kim": "Kim kiếm — sắc bén, quyết đoán, cần mài giũa",
@@ -342,8 +342,8 @@ NAP_AM_MO_TA: dict[str, str] = {
     "Sơn Hạ Hỏa": "Lửa chân núi — ẩn mình, tích lũy năng lực",
     "Bình Địa Mộc": "Cây đồng bằng — phát triển ổn định, gần gũi",
     "Bích Thượng Thổ": "Đất vách — kiên định, bảo vệ ranh giới",
-    "Kim Bạc Kim": "Vàng lá — mỏng manh, tinh xảo, cần nền tảng",
-    "Phúc Đăng Hỏa": "Đèn dầu — soi sáng, trí tuệ, tĩnh lặng",
+    "Kim Bạch Kim": "Vàng lá — mỏng manh, tinh xảo, cần nền tảng",
+    "Phú Đăng Hỏa": "Đèn dầu — soi sáng, trí tuệ, tĩnh lặng",
     "Thiên Hà Thủy": "Sông trời — bao la, tự do, khó kiểm soát",
     "Đại Trạch Thổ": "Đất nhà — an cư, tích lũy, gia đình",
     "Thoa Xuyến Kim": "Vàng trang sức — thẩm mỹ, giá trị tinh tế",

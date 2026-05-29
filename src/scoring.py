@@ -104,7 +104,7 @@ BONUS = {
     "nguyet_duc": 12,
     "nguyet_duc_hop": 8,
     "duong_than_match": 12,
-    "intent_bonus": 8,
+    "intent_bonus": 10,
     "thien_xa_bonus": 8,
     "truc_preferred": 15,
     # Tứ Trụ bonuses (Phase 3-5)
