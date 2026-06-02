@@ -16,111 +16,13 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
-from engine.can_chi import (
-    CAN_NAMES,
-    CHI_NAMES,
-    CAN_HANH,
-    NAP_AM_HANH,
-    NAP_AM_NAMES,
-    get_can_chi_year,
-    get_nap_am_pair_idx,
-)
 from api.parse_date import parse_dmy
 from calendar_service import get_user_chart
+from engine.luu_nguyet import element_relation_menh, get_luu_nguyet_pillar
 
 logger = logging.getLogger("tieu_van")
 
 router = APIRouter()
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Ngũ Hành interaction tables
-# ─────────────────────────────────────────────────────────────────────────────
-
-# A sinh B  (A nurtures B)
-TUONG_SINH: dict[str, str] = {
-    "Kim": "Thủy", "Thủy": "Mộc", "Mộc": "Hỏa",
-    "Hỏa": "Thổ", "Thổ": "Kim",
-}
-
-# A khắc B  (A overcomes B)
-TUONG_KHAC: dict[str, str] = {
-    "Kim": "Mộc", "Mộc": "Thổ", "Thổ": "Thủy",
-    "Thủy": "Hỏa", "Hỏa": "Kim",
-}
-
-
-def _element_relation(month_hanh: str, menh_hanh: str) -> str:
-    """
-    Determine the Ngũ Hành relationship between month pillar element
-    and user's mệnh element.
-
-    Returns one of: 'tuong_sinh', 'bi_sinh', 'tuong_khac', 'bi_khac', 'binh_hoa'
-    """
-    if month_hanh == menh_hanh:
-        return "binh_hoa"  # Same element
-    if TUONG_SINH.get(month_hanh) == menh_hanh:
-        return "bi_sinh"  # Month nurtures user → good
-    if TUONG_SINH.get(menh_hanh) == month_hanh:
-        return "tuong_sinh"  # User nurtures month → mediocre (leaking energy)
-    if TUONG_KHAC.get(month_hanh) == menh_hanh:
-        return "bi_khac"  # Month overcomes user → bad
-    if TUONG_KHAC.get(menh_hanh) == month_hanh:
-        return "tuong_khac"  # User overcomes month → ok-ish
-    return "binh_hoa"  # Fallback
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Month pillar calculation (simplified solar-term approach)
-#
-# ⚠️ This is a simplified version using the "year-month" rule:
-#   month_can = (year_can * 2 + month_index) % 10
-#   month_chi = month_index + 2  (month 1→Dần(2), …, 12→Sửu(1))
-#
-# A proper implementation would use exact solar terms (tiết khí).
-# This is good enough for monthly fortune overview.
-# ─────────────────────────────────────────────────────────────────────────────
-
-def _get_month_pillar(year: int, month: int) -> dict:
-    """
-    Get the Can Chi pillar for a solar month (simplified).
-
-    Uses the classical rule:
-      month_chi: month 1→Dần(2), 2→Mão(3), ..., 11→Tý(0), 12→Sửu(1)
-      month_can: derived from year's Thiên Can.
-        year_can_idx 0(Giáp)/5(Kỷ): month 1 starts with Bính(2)
-        year_can_idx 1(Ất)/6(Canh): month 1 starts with Mậu(4)
-        year_can_idx 2(Bính)/7(Tân): month 1 starts with Canh(6)
-        year_can_idx 3(Đinh)/8(Nhâm): month 1 starts with Nhâm(8)
-        year_can_idx 4(Mậu)/9(Quý): month 1 starts with Giáp(0)
-
-    Args:
-        year: solar year
-        month: 1-12
-
-    Returns:
-        dict with: can_idx, chi_idx, can_name, chi_name, nap_am_hanh, nap_am_name
-    """
-    year_cc = get_can_chi_year(year)
-    year_can = year_cc["can_idx"]
-
-    # Month chi: 1→Dần(2), 2→Mão(3), ..., 11→Tý(0), 12→Sửu(1)
-    month_chi = (month + 1) % 12
-
-    # Month can from the classical "Ngũ Hổ Độn Nguyệt" rule
-    # Starting can for month 1 (Dần):
-    start_can = ((year_can % 5) * 2 + 2) % 10
-    month_can = (start_can + month - 1) % 10
-
-    pair_idx = get_nap_am_pair_idx(month_can, month_chi)
-
-    return {
-        "can_idx": month_can,
-        "chi_idx": month_chi,
-        "can_name": CAN_NAMES[month_can],
-        "chi_name": CHI_NAMES[month_chi],
-        "nap_am_hanh": NAP_AM_HANH[pair_idx],
-        "nap_am_name": NAP_AM_NAMES[pair_idx],
-    }
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -175,8 +77,8 @@ _READING_TEMPLATES: dict[str, dict] = {
 # GET /v1/tieu-van
 # ─────────────────────────────────────────────────────────────────────────────
 
-@router.get("")
-@router.get("/", include_in_schema=False)
+@router.get("", deprecated=True, summary="[Deprecated] Tiểu vận tháng — dùng /v1/luu-nien/luan-context")
+@router.get("/", include_in_schema=False, deprecated=True)
 async def tieu_van(
     birth_date: str = Query(..., description="Ngày sinh dd/mm/yyyy"),
     birth_time: Optional[int] = Query(None, description="Giờ sinh: 0,2,4,6,8,10,11,14,16,18,20,22,23"),
@@ -215,10 +117,10 @@ async def tieu_van(
         user_chart = get_user_chart(bd.isoformat(), birth_time, gender)
 
         # Month pillar
-        month_pillar = _get_month_pillar(year, month_num)
+        month_pillar = get_luu_nguyet_pillar(year, month_num)
 
         # Element relationship
-        relation = _element_relation(month_pillar["nap_am_hanh"], user_chart["menh_hanh"])
+        relation = element_relation_menh(month_pillar["nap_am_hanh"], user_chart["menh_hanh"])
 
         # Reading template
         template = _READING_TEMPLATES.get(relation, _READING_TEMPLATES["binh_hoa"])

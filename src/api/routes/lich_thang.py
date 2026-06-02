@@ -11,7 +11,6 @@ from __future__ import annotations
 from api.errors import error_response
 
 import logging
-from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
@@ -21,13 +20,12 @@ from api.gio_slots import format_gio_tot_slots
 from api.schemas.direction_c import API_ERROR_RESPONSES
 from api.schemas.p2_responses import LichThangResponse
 from api.parse_date import parse_dmy
-from calendar_service import get_day_info, get_user_chart, get_month_info
+from calendar_service import get_user_chart
+from engine.calendar_month_summary import score_calendar_month
 from engine.hoang_dao import get_day_star
 from engine.nhi_thap_bat_tu import get_nhi_thap_bat_tu
 from filter import apply_layer2_filter
-from scoring import collect_score_deltas
 from engine.score_methodology import get_score_methodology_block
-from api.intent_rules_loader import INTENT_RULES, get_intent_rule
 
 logger = logging.getLogger("lich_thang")
 
@@ -176,26 +174,25 @@ async def lich_thang(
                     f"birth_time phải là một trong {sorted(VALID_BIRTH_HOURS)}"
                 )
 
-        # Get user chart (internal uses ISO format)
         user_chart = get_user_chart(bd.isoformat(), birth_time, gender)
-        intent_rule = get_intent_rule(_INTENT)
         methodology = get_score_methodology_block()
 
-        # Get all days in the month
-        all_days = get_month_info(year, month_num, filter_passed=False)
+        scored = score_calendar_month(
+            year, month_num,
+            birth_date_iso=bd.isoformat(),
+            birth_time=birth_time,
+            gender=gender,
+            intent=_INTENT,
+        )
 
         days_response: list[dict] = []
-        for d in all_days:
+        for row in scored["scored_days"]:
+            d = row["day_info"]
             star_info = get_day_star(d["lunar_month"], d["day_chi_idx"])
             gio_tot = format_gio_tot_slots(d["day_chi_idx"])
             tu_28 = get_nhi_thap_bat_tu(d["solar_year"], d["solar_month"], d["solar_day"])
             tot_xau = _build_day_summary(d, star_info, tu_28, user_chart)
-
-            l2 = apply_layer2_filter(d, user_chart, _INTENT)
-            score_ctx = collect_score_deltas(d, user_chart, _INTENT, intent_rule, l2)
-            grade = score_ctx["grade"]
-            score = score_ctx["score"]
-            day_type = _day_type(grade, d["is_layer1_pass"])
+            day_type = _day_type(row["grade"], d["is_layer1_pass"])
 
             days_response.append({
                 "date": d["date"],
@@ -203,8 +200,8 @@ async def lich_thang(
                 "lunar_month": d["lunar_month"],
                 "lunar_label": _format_lunar_label(d),
                 "can_chi_name": f"{d['day_can_name']} {d['day_chi_name']}",
-                "score": score,
-                "grade": grade,
+                "score": row["score"],
+                "grade": row["grade"],
                 "day_type": day_type,
                 "is_hoang_dao": star_info["is_hoang_dao"],
                 "star_name": star_info["star_name"],

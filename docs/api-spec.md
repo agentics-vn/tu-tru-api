@@ -402,6 +402,44 @@ Facts **lưu niên** (vận năm) deterministic — phục vụ màn luận Bát
 
 ---
 
+# API Spec — GET /v1/luu-nien/luan-context
+
+Facts + **signals** cho bài **Vận trình năm {year}** (NLTT/LLM viết prose). Khác `GET /v1/la-so/luu-nien` (card MVP) và `GET /v1/tieu-van` (deprecated, vận tháng stub).
+
+**Không** trả các key prose: `verdict_vi`, `delta_vs_year_vi`, `giai_hoa_goi_y_vi`, `year_theme_vi`. Dùng `verdict_signal`, `driver_tags`, `month_archetype`, `emphasis_signal`, `mitigation_tags`, `action_tags_*`.
+
+## Request (query)
+
+| Param | Required | Type | Description |
+|---|---|---|---|
+| year | Yes | int | Năm dương (1900–2100) |
+| birth_date | Yes | string | `dd/mm/yyyy` |
+| birth_time | Yes | int | Giờ sinh (enum Tứ Trụ) |
+| gender | Yes | int | `1` nam \| `-1` nữ |
+| tz | No | string | IANA timezone |
+
+## Response 200 — cấu trúc editorial
+
+| Phần | Field | Mô tả |
+|---|---|---|
+| meta | `product_title_vi`, `engine_version`, `computed_at`, `disclaimers` | Cache key: `van-trinh-nam-luan:{profile_hash}:{year}:{engine_version}` |
+| A | `part_a.hook_year` | Lưu niên: `year_theme_signal`, `fact_bullets_vi[]` |
+| A | `part_a.you_this_year` | Tứ trụ + `nhat_chu_hanh` + `dai_van` (+ `transition_in_year` nếu đổi vận trong năm) |
+| A | `part_a.four_aspects_year` | **4** item: `su_nghiep`, `tai_loc`, `tinh_cam` (↔ `life_areas.tinh_duyen`), `suc_khoe` |
+| B | `part_b.luu_nguyet_months` | **12** tháng × `b1`–`b4` (lưu nguyệt, emphasis ≤2, lịch lưu nhật, action tags) |
+| C | `part_c.closing_hints` | `synthesis_inputs` cho LLM kết bài |
+| D | `part_d.mechanics` | Thuật ngữ đầy đủ (gập UI) |
+| — | `writing_brief`, `score_methodology` | Rules G1–G8, methodology chấm ngày |
+
+## Error Responses
+
+| HTTP | error_code | When |
+|---|---|---|
+| 400 | INVALID_INPUT | Thiếu param, ngày tương lai |
+| 500 | INTERNAL_ERROR | Lỗi máy chủ / invariant 12 tháng |
+
+---
+
 # API Spec — POST /v1/hop-tuoi
 
 So khớp tuổi / hợp tuổi giữa hai người. Một endpoint, hai chế độ trả lời:

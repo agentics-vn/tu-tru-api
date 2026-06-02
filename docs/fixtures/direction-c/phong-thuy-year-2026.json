@@ -6,8 +6,10 @@
     "hanh": "Kim",
     "name": "Hải Trung Kim"
   },
+  "dung_than_method": "nap_am",
   "dung_than": "Thổ",
   "ky_than": "Hỏa",
+  "precision_note": "Dụng Thần được ước tính từ Nạp Âm năm sinh. Cung cấp thêm giờ sinh (birth_time) để tính chính xác theo Tứ Trụ đầy đủ.",
   "huong_tot": [
     {
       "direction": "Trung Tâm",

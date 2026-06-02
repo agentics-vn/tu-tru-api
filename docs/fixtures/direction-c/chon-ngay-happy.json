@@ -47,7 +47,7 @@
       "ky_than": "Hỏa",
       "summary_vi": "Mệnh bạn thuộc hành Kim (kim loại)."
     },
-    "share_token": "eyJlcCI6ImNob24tbmdheSIsImJkIjoiMTUvMDMvMTk4NCIsImJ0IjpudWxsLCJnIjpudWxsLCJiaCI6IjE1MDVjMGI3ZDBmZmNlMTIiLCJ0cyI6MTc4MDAxOTY2MSwiaW4iOiJLSEFJX1RSVU9ORyIsInJzIjoiMDEvMDQvMjAyNiIsInJlIjoiMzAvMDQvMjAyNiJ9LjRjYmUyNmE4YmYwYjNlNGI"
+    "share_token": "eyJlcCI6ImNob24tbmdheSIsImJkIjoiMTUvMDMvMTk4NCIsImJ0IjpudWxsLCJnIjpudWxsLCJiaCI6IjE1MDVjMGI3ZDBmZmNlMTIiLCJ0cyI6MTc4MDM2NzI1MCwiaW4iOiJLSEFJX1RSVU9ORyIsInJzIjoiMDEvMDQvMjAyNiIsInJlIjoiMzAvMDQvMjAyNiJ9LmU0YzUxNGEwZWRjM2U4NjI"
   },
   "ranked_days": [
     {
@@ -196,7 +196,7 @@
       "date": "2026-04-20",
       "lunar_date": "Ngày 4 tháng Ba năm Bính Ngọ",
       "lunar_label": "Ngày 4 tháng Ba năm Bính Ngọ",
-      "score": 93,
+      "score": 95,
       "grade": "A",
       "can_chi_day": "Giáp Tý",
       "truc": "Thành",
@@ -311,7 +311,7 @@
         "headline": "Ngày 2026-04-20",
         "lunar_line": "Ngày 4 tháng Ba năm Bính Ngọ",
         "badge": "A",
-        "score_pct": 93,
+        "score_pct": 95,
         "intent_vi": "KHAI_TRUONG",
         "element": "Kim",
         "truc": "Thành",
@@ -331,7 +331,7 @@
       "date": "2026-04-28",
       "lunar_date": "Ngày 12 tháng Ba năm Bính Ngọ",
       "lunar_label": "Ngày 12 tháng Ba năm Bính Ngọ",
-      "score": 90,
+      "score": 92,
       "grade": "A",
       "can_chi_day": "Nhâm Thân",
       "truc": "Định",
@@ -450,7 +450,7 @@
         "headline": "Ngày 2026-04-28",
         "lunar_line": "Ngày 12 tháng Ba năm Bính Ngọ",
         "badge": "A",
-        "score_pct": 90,
+        "score_pct": 92,
         "intent_vi": "KHAI_TRUONG",
         "element": "Kim",
         "truc": "Định",
@@ -615,7 +615,7 @@
       "date": "2026-04-20",
       "lunar_date": "Ngày 4 tháng Ba năm Bính Ngọ",
       "lunar_label": "Ngày 4 tháng Ba năm Bính Ngọ",
-      "score": 93,
+      "score": 95,
       "grade": "A",
       "can_chi_day": "Giáp Tý",
       "truc": "Thành",
@@ -730,7 +730,7 @@
         "headline": "Ngày 2026-04-20",
         "lunar_line": "Ngày 4 tháng Ba năm Bính Ngọ",
         "badge": "A",
-        "score_pct": 93,
+        "score_pct": 95,
         "intent_vi": "KHAI_TRUONG",
         "element": "Kim",
         "truc": "Thành",
@@ -750,7 +750,7 @@
       "date": "2026-04-28",
       "lunar_date": "Ngày 12 tháng Ba năm Bính Ngọ",
       "lunar_label": "Ngày 12 tháng Ba năm Bính Ngọ",
-      "score": 90,
+      "score": 92,
       "grade": "A",
       "can_chi_day": "Nhâm Thân",
       "truc": "Định",
@@ -869,7 +869,7 @@
         "headline": "Ngày 2026-04-28",
         "lunar_line": "Ngày 12 tháng Ba năm Bính Ngọ",
         "badge": "A",
-        "score_pct": 90,
+        "score_pct": 92,
         "intent_vi": "KHAI_TRUONG",
         "element": "Kim",
         "truc": "Định",
@@ -930,5 +930,6 @@
       "severity": 3,
       "summary_vi": "Ngày này xung khắc trực tiếp với tuổi của bạn. Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
     }
-  ]
+  ],
+  "sources": []
 }

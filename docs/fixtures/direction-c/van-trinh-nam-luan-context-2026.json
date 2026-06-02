@@ -1,0 +1,1890 @@
+{
+  "status": "success",
+  "meta": {
+    "product_title_vi": "Vận trình năm 2026",
+    "year": 2026,
+    "engine_version": "0.1.3",
+    "computed_at": "2026-06-02T06:22:37+00:00",
+    "disclaimers": [
+      "luu_nguyet_pillar_solar_simplified",
+      "not_medical_or_legal_advice"
+    ]
+  },
+  "subject": {
+    "birth_date": "1984-03-15",
+    "birth_time": 8,
+    "gender": 1
+  },
+  "part_a": {
+    "hook_year": {
+      "year": 2026,
+      "year_can_chi": "Bính Ngọ",
+      "year_hanh": "Hỏa",
+      "element_relation": "sinh_menh",
+      "year_rating": "tốt",
+      "year_theme_signal": "thuan_nam",
+      "fact_bullets_vi": [
+        "Năm 2026 — Bính Ngọ, hành Hỏa",
+        "Quan hệ với Nhật chủ (Thổ): sinh menh",
+        "Đánh giá năm: tốt",
+        "Hành năm trùng Dụng Thần"
+      ]
+    },
+    "you_this_year": {
+      "natal_facts_vi": [
+        "Nhật chủ: Mậu (Thổ), ngày Mậu Thân",
+        "Dụng Thần: Hỏa, Kỵ Thần: Mộc"
+      ],
+      "nhat_chu_hanh": "Thổ",
+      "dung_than": "Hỏa",
+      "ky_than": "Mộc",
+      "dai_van": {
+        "current": {
+          "display": "Tân Mùi",
+          "can_hanh": "Kim",
+          "age_range": "37-46",
+          "relation_to_dung_than_signal": "trung_tinh"
+        },
+        "transition_in_year": null,
+        "disclaimer_fact_vi": null
+      }
+    },
+    "four_aspects_year": [
+      {
+        "aspect_id": "su_nghiep",
+        "label_vi": "Sự nghiệp",
+        "verdict_signal": "thuan",
+        "driver_tags": [
+          "aspect:su_nghiep",
+          "year_relation:sinh_menh",
+          "year_rating:tốt",
+          "dominant_thap_than:Thất Sát"
+        ],
+        "fact_bullets_vi": [
+          "Lưu niên 2026: Bính Ngọ, hành Hỏa",
+          "Quan hệ năm–Nhật chủ: sinh menh",
+          "year_rating:tốt",
+          "dominant_thap_than:Thất Sát"
+        ],
+        "timing_tags": []
+      },
+      {
+        "aspect_id": "tai_loc",
+        "label_vi": "Tài chính",
+        "verdict_signal": "thuan",
+        "driver_tags": [
+          "aspect:tai_loc",
+          "year_relation:sinh_menh",
+          "year_rating:tốt",
+          "dung_than_match"
+        ],
+        "fact_bullets_vi": [
+          "Lưu niên 2026: Bính Ngọ, hành Hỏa",
+          "Quan hệ năm–Nhật chủ: sinh menh",
+          "year_rating:tốt",
+          "year_hanh trùng Dụng Thần"
+        ],
+        "timing_tags": []
+      },
+      {
+        "aspect_id": "tinh_cam",
+        "label_vi": "Tình cảm",
+        "verdict_signal": "than_trong",
+        "driver_tags": [
+          "aspect:tinh_cam",
+          "year_relation:sinh_menh",
+          "year_rating:tốt",
+          "flow_year_xung_tuoi"
+        ],
+        "fact_bullets_vi": [
+          "Lưu niên 2026: Bính Ngọ, hành Hỏa",
+          "Quan hệ năm–Nhật chủ: sinh menh",
+          "year_rating:tốt",
+          "năm xung tuổi"
+        ],
+        "timing_tags": []
+      },
+      {
+        "aspect_id": "suc_khoe",
+        "label_vi": "Sức khỏe",
+        "verdict_signal": "thuan",
+        "driver_tags": [
+          "aspect:suc_khoe",
+          "year_relation:sinh_menh",
+          "year_rating:tốt",
+          "dung_than_match"
+        ],
+        "fact_bullets_vi": [
+          "Lưu niên 2026: Bính Ngọ, hành Hỏa",
+          "Quan hệ năm–Nhật chủ: sinh menh",
+          "year_rating:tốt",
+          "year_hanh trùng Dụng Thần"
+        ],
+        "timing_tags": []
+      }
+    ],
+    "year_aspect_ranking": [
+      "su_nghiep",
+      "tai_loc",
+      "suc_khoe",
+      "tinh_cam"
+    ]
+  },
+  "part_b": {
+    "luu_nguyet_months": [
+      {
+        "month_num": 1,
+        "target_month": "2026-01",
+        "title_vi": "Tháng 1",
+        "solar_range": "2026-01-01 → 2026-01-31",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Canh Dần",
+          "nap_am": "Tùng Bách Mộc",
+          "month_hanh": "Kim",
+          "element_relation_nhat_chu": "menh_sinh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Canh Dần (Tùng Bách Mộc)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "16 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "16 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-01-12",
+              "date_vi": "Thứ Hai, 12/01/2026",
+              "can_chi": "Bính Tuất",
+              "grade": "A",
+              "score": 93
+            },
+            {
+              "date": "2026-01-04",
+              "date_vi": "Chủ Nhật, 04/01/2026",
+              "can_chi": "Mậu Dần",
+              "grade": "B",
+              "score": 78
+            },
+            {
+              "date": "2026-01-14",
+              "date_vi": "Thứ Tư, 14/01/2026",
+              "can_chi": "Mậu Tý",
+              "grade": "B",
+              "score": 75
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-01-09",
+              "date_vi": "Thứ Sáu, 09/01/2026",
+              "can_chi": "Quý Mùi",
+              "grade": "D",
+              "score": 3,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-01-08",
+              "date_vi": "Thứ Năm, 08/01/2026",
+              "can_chi": "Nhâm Ngọ",
+              "grade": "D",
+              "score": 10,
+              "mitigation_tags": [
+                "xung_tuoi",
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-01-17",
+              "date_vi": "Thứ Bảy, 17/01/2026",
+              "can_chi": "Tân Mão",
+              "grade": "D",
+              "score": 18,
+              "mitigation_tags": [
+                "chon_gio_tot",
+                "tranh_quyet_dinh_lon"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Tý 23:00–01:00",
+            "Sửu 01:00–03:00",
+            "Thìn 07:00–09:00",
+            "Mùi 13:00–15:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 3,
+            "grade_b": 13,
+            "total_days": 31
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng menh sinh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 2,
+        "target_month": "2026-02",
+        "title_vi": "Tháng 2",
+        "solar_range": "2026-02-01 → 2026-02-28",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Tân Mão",
+          "nap_am": "Tùng Bách Mộc",
+          "month_hanh": "Kim",
+          "element_relation_nhat_chu": "menh_sinh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Tân Mão (Tùng Bách Mộc)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "12 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "12 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-02-22",
+              "date_vi": "Chủ Nhật, 22/02/2026",
+              "can_chi": "Đinh Mão",
+              "grade": "A",
+              "score": 90
+            },
+            {
+              "date": "2026-02-04",
+              "date_vi": "Thứ Tư, 04/02/2026",
+              "can_chi": "Kỷ Dậu",
+              "grade": "B",
+              "score": 78
+            },
+            {
+              "date": "2026-02-12",
+              "date_vi": "Thứ Năm, 12/02/2026",
+              "can_chi": "Đinh Tỵ",
+              "grade": "B",
+              "score": 78
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-02-02",
+              "date_vi": "Thứ Hai, 02/02/2026",
+              "can_chi": "Đinh Mùi",
+              "grade": "D",
+              "score": 2,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-02-27",
+              "date_vi": "Thứ Sáu, 27/02/2026",
+              "can_chi": "Nhâm Thân",
+              "grade": "D",
+              "score": 20,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-02-14",
+              "date_vi": "Thứ Bảy, 14/02/2026",
+              "can_chi": "Kỷ Mùi",
+              "grade": "D",
+              "score": 25,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "tam_nuong"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Dần 03:00–05:00",
+            "Mão 05:00–07:00",
+            "Ngọ 11:00–13:00",
+            "Thân 15:00–17:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 2,
+            "grade_b": 10,
+            "total_days": 28
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng menh sinh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 3,
+        "target_month": "2026-03",
+        "title_vi": "Tháng 3",
+        "solar_range": "2026-03-01 → 2026-03-31",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Nhâm Thìn",
+          "nap_am": "Trường Lưu Thủy",
+          "month_hanh": "Thủy",
+          "element_relation_nhat_chu": "menh_khắc",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Nhâm Thìn (Trường Lưu Thủy)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_khắc",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "15 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_khắc",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "15 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-03-28",
+              "date_vi": "Thứ Bảy, 28/03/2026",
+              "can_chi": "Tân Sửu",
+              "grade": "A",
+              "score": 93
+            },
+            {
+              "date": "2026-03-13",
+              "date_vi": "Thứ Sáu, 13/03/2026",
+              "can_chi": "Bính Tuất",
+              "grade": "A",
+              "score": 90
+            },
+            {
+              "date": "2026-03-03",
+              "date_vi": "Thứ Ba, 03/03/2026",
+              "can_chi": "Bính Tý",
+              "grade": "A",
+              "score": 89
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-03-11",
+              "date_vi": "Thứ Tư, 11/03/2026",
+              "can_chi": "Giáp Thân",
+              "grade": "D",
+              "score": 0,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            },
+            {
+              "date": "2026-03-25",
+              "date_vi": "Thứ Tư, 25/03/2026",
+              "can_chi": "Mậu Tuất",
+              "grade": "D",
+              "score": 18,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "tam_nuong"
+              ]
+            },
+            {
+              "date": "2026-03-24",
+              "date_vi": "Thứ Ba, 24/03/2026",
+              "can_chi": "Đinh Dậu",
+              "grade": "D",
+              "score": 25,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Tý 23:00–01:00",
+            "Sửu 01:00–03:00",
+            "Thìn 07:00–09:00",
+            "Mùi 13:00–15:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 5,
+            "grade_b": 10,
+            "total_days": 31
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng menh khắc"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 4,
+        "target_month": "2026-04",
+        "title_vi": "Tháng 4",
+        "solar_range": "2026-04-01 → 2026-04-30",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Quý Tỵ",
+          "nap_am": "Trường Lưu Thủy",
+          "month_hanh": "Thủy",
+          "element_relation_nhat_chu": "menh_khắc",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Quý Tỵ (Trường Lưu Thủy)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_khắc",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "12 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_khắc",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "12 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-04-22",
+              "date_vi": "Thứ Tư, 22/04/2026",
+              "can_chi": "Bính Dần",
+              "grade": "A",
+              "score": 100
+            },
+            {
+              "date": "2026-04-28",
+              "date_vi": "Thứ Ba, 28/04/2026",
+              "can_chi": "Nhâm Thân",
+              "grade": "A",
+              "score": 97
+            },
+            {
+              "date": "2026-04-15",
+              "date_vi": "Thứ Tư, 15/04/2026",
+              "can_chi": "Kỷ Mùi",
+              "grade": "A",
+              "score": 93
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-04-30",
+              "date_vi": "Thứ Năm, 30/04/2026",
+              "can_chi": "Giáp Tuất",
+              "grade": "D",
+              "score": 5,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            },
+            {
+              "date": "2026-04-19",
+              "date_vi": "Chủ Nhật, 19/04/2026",
+              "can_chi": "Quý Hợi",
+              "grade": "D",
+              "score": 7,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "tam_nuong"
+              ]
+            },
+            {
+              "date": "2026-04-10",
+              "date_vi": "Thứ Sáu, 10/04/2026",
+              "can_chi": "Giáp Dần",
+              "grade": "D",
+              "score": 24,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Tý 23:00–01:00",
+            "Sửu 01:00–03:00",
+            "Thìn 07:00–09:00",
+            "Mùi 13:00–15:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 6,
+            "grade_b": 6,
+            "total_days": 30
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng menh khắc"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 5,
+        "target_month": "2026-05",
+        "title_vi": "Tháng 5",
+        "solar_range": "2026-05-01 → 2026-05-31",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Giáp Ngọ",
+          "nap_am": "Sa Trung Kim",
+          "month_hanh": "Mộc",
+          "element_relation_nhat_chu": "khắc_menh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Giáp Ngọ (Sa Trung Kim)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:khắc_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "month_khac_nhat_chu",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "12 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:khắc_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "month_khac_nhat_chu",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "12 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-05-14",
+              "date_vi": "Thứ Năm, 14/05/2026",
+              "can_chi": "Mậu Tý",
+              "grade": "A",
+              "score": 100
+            },
+            {
+              "date": "2026-05-27",
+              "date_vi": "Thứ Tư, 27/05/2026",
+              "can_chi": "Tân Sửu",
+              "grade": "A",
+              "score": 100
+            },
+            {
+              "date": "2026-05-17",
+              "date_vi": "Chủ Nhật, 17/05/2026",
+              "can_chi": "Tân Mão",
+              "grade": "A",
+              "score": 88
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-05-25",
+              "date_vi": "Thứ Hai, 25/05/2026",
+              "can_chi": "Kỷ Hợi",
+              "grade": "D",
+              "score": 0,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-05-12",
+              "date_vi": "Thứ Ba, 12/05/2026",
+              "can_chi": "Bính Tuất",
+              "grade": "D",
+              "score": 18,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-05-01",
+              "date_vi": "Thứ Sáu, 01/05/2026",
+              "can_chi": "Ất Hợi",
+              "grade": "D",
+              "score": 25,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Tý 23:00–01:00",
+            "Sửu 01:00–03:00",
+            "Thìn 07:00–09:00",
+            "Mùi 13:00–15:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 7,
+            "grade_b": 5,
+            "total_days": 31
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng khắc menh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 6,
+        "target_month": "2026-06",
+        "title_vi": "Tháng 6",
+        "solar_range": "2026-06-01 → 2026-06-30",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Ất Mùi",
+          "nap_am": "Sa Trung Kim",
+          "month_hanh": "Mộc",
+          "element_relation_nhat_chu": "khắc_menh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Ất Mùi (Sa Trung Kim)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:khắc_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "month_khac_nhat_chu",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "14 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:khắc_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "month_khac_nhat_chu",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "14 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-06-13",
+              "date_vi": "Thứ Bảy, 13/06/2026",
+              "can_chi": "Mậu Ngọ",
+              "grade": "A",
+              "score": 85
+            },
+            {
+              "date": "2026-06-14",
+              "date_vi": "Chủ Nhật, 14/06/2026",
+              "can_chi": "Kỷ Mùi",
+              "grade": "A",
+              "score": 85
+            },
+            {
+              "date": "2026-06-10",
+              "date_vi": "Thứ Tư, 10/06/2026",
+              "can_chi": "Ất Mão",
+              "grade": "A",
+              "score": 80
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-06-19",
+              "date_vi": "Thứ Sáu, 19/06/2026",
+              "can_chi": "Giáp Tý",
+              "grade": "D",
+              "score": 0,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            },
+            {
+              "date": "2026-06-07",
+              "date_vi": "Chủ Nhật, 07/06/2026",
+              "can_chi": "Nhâm Tý",
+              "grade": "D",
+              "score": 18,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "tam_nuong"
+              ]
+            },
+            {
+              "date": "2026-06-09",
+              "date_vi": "Thứ Ba, 09/06/2026",
+              "can_chi": "Giáp Dần",
+              "grade": "D",
+              "score": 22,
+              "mitigation_tags": [
+                "khac_menh"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Dần 03:00–05:00",
+            "Mão 05:00–07:00",
+            "Ngọ 11:00–13:00",
+            "Thân 15:00–17:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 5,
+            "grade_b": 9,
+            "total_days": 30
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng khắc menh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 7,
+        "target_month": "2026-07",
+        "title_vi": "Tháng 7",
+        "solar_range": "2026-07-01 → 2026-07-31",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Bính Thân",
+          "nap_am": "Sơn Hạ Hỏa",
+          "month_hanh": "Hỏa",
+          "element_relation_nhat_chu": "sinh_menh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Bính Thân (Sơn Hạ Hỏa)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "up",
+            "shift_tags": [
+              "month_vs_nhat_chu:sinh_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_a",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "10 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "up",
+            "shift_tags": [
+              "month_vs_nhat_chu:sinh_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "dung_than_match",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "10 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-07-03",
+              "date_vi": "Thứ Sáu, 03/07/2026",
+              "can_chi": "Mậu Dần",
+              "grade": "A",
+              "score": 100
+            },
+            {
+              "date": "2026-07-30",
+              "date_vi": "Thứ Năm, 30/07/2026",
+              "can_chi": "Ất Tỵ",
+              "grade": "A",
+              "score": 95
+            },
+            {
+              "date": "2026-07-22",
+              "date_vi": "Thứ Tư, 22/07/2026",
+              "can_chi": "Đinh Dậu",
+              "grade": "A",
+              "score": 85
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-07-01",
+              "date_vi": "Thứ Tư, 01/07/2026",
+              "can_chi": "Bính Tý",
+              "grade": "D",
+              "score": 0,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-07-13",
+              "date_vi": "Thứ Hai, 13/07/2026",
+              "can_chi": "Mậu Tý",
+              "grade": "D",
+              "score": 10,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-07-15",
+              "date_vi": "Thứ Tư, 15/07/2026",
+              "can_chi": "Canh Dần",
+              "grade": "D",
+              "score": 13,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Dần 03:00–05:00",
+            "Mão 05:00–07:00",
+            "Ngọ 11:00–13:00",
+            "Thân 15:00–17:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 7,
+            "grade_b": 3,
+            "total_days": 31
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng sinh menh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 8,
+        "target_month": "2026-08",
+        "title_vi": "Tháng 8",
+        "solar_range": "2026-08-01 → 2026-08-31",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Đinh Dậu",
+          "nap_am": "Sơn Hạ Hỏa",
+          "month_hanh": "Hỏa",
+          "element_relation_nhat_chu": "sinh_menh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Đinh Dậu (Sơn Hạ Hỏa)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "up",
+            "shift_tags": [
+              "month_vs_nhat_chu:sinh_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_a",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "10 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "up",
+            "shift_tags": [
+              "month_vs_nhat_chu:sinh_menh",
+              "year_vs_nhat_chu:sinh_menh",
+              "dung_than_match",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "10 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-08-03",
+              "date_vi": "Thứ Hai, 03/08/2026",
+              "can_chi": "Kỷ Dậu",
+              "grade": "A",
+              "score": 96
+            },
+            {
+              "date": "2026-08-11",
+              "date_vi": "Thứ Ba, 11/08/2026",
+              "can_chi": "Đinh Tỵ",
+              "grade": "A",
+              "score": 93
+            },
+            {
+              "date": "2026-08-24",
+              "date_vi": "Thứ Hai, 24/08/2026",
+              "can_chi": "Canh Ngọ",
+              "grade": "A",
+              "score": 93
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-08-07",
+              "date_vi": "Thứ Sáu, 07/08/2026",
+              "can_chi": "Quý Sửu",
+              "grade": "D",
+              "score": 0,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-08-20",
+              "date_vi": "Thứ Năm, 20/08/2026",
+              "can_chi": "Bính Dần",
+              "grade": "D",
+              "score": 25,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-08-19",
+              "date_vi": "Thứ Tư, 19/08/2026",
+              "can_chi": "Ất Sửu",
+              "grade": "D",
+              "score": 30,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high",
+                "tam_nuong"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Tý 23:00–01:00",
+            "Sửu 01:00–03:00",
+            "Thìn 07:00–09:00",
+            "Mùi 13:00–15:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 5,
+            "grade_b": 5,
+            "total_days": 31
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng sinh menh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 9,
+        "target_month": "2026-09",
+        "title_vi": "Tháng 9",
+        "solar_range": "2026-09-01 → 2026-09-30",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Mậu Tuất",
+          "nap_am": "Bình Địa Mộc",
+          "month_hanh": "Thổ",
+          "element_relation_nhat_chu": "bình_hòa",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Mậu Tuất (Bình Địa Mộc)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:bình_hòa",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "13 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:bình_hòa",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "13 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-09-05",
+              "date_vi": "Thứ Bảy, 05/09/2026",
+              "can_chi": "Nhâm Ngọ",
+              "grade": "A",
+              "score": 85
+            },
+            {
+              "date": "2026-09-12",
+              "date_vi": "Thứ Bảy, 12/09/2026",
+              "can_chi": "Kỷ Sửu",
+              "grade": "A",
+              "score": 85
+            },
+            {
+              "date": "2026-09-09",
+              "date_vi": "Thứ Tư, 09/09/2026",
+              "can_chi": "Bính Tuất",
+              "grade": "B",
+              "score": 78
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-09-14",
+              "date_vi": "Thứ Hai, 14/09/2026",
+              "can_chi": "Tân Mão",
+              "grade": "D",
+              "score": 0,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-09-15",
+              "date_vi": "Thứ Ba, 15/09/2026",
+              "can_chi": "Nhâm Thìn",
+              "grade": "D",
+              "score": 7,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            },
+            {
+              "date": "2026-09-26",
+              "date_vi": "Thứ Bảy, 26/09/2026",
+              "can_chi": "Quý Mão",
+              "grade": "D",
+              "score": 10,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Dần 03:00–05:00",
+            "Mão 05:00–07:00",
+            "Ngọ 11:00–13:00",
+            "Thân 15:00–17:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 4,
+            "grade_b": 9,
+            "total_days": 30
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng bình hòa"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 10,
+        "target_month": "2026-10",
+        "title_vi": "Tháng 10",
+        "solar_range": "2026-10-01 → 2026-10-31",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Kỷ Hợi",
+          "nap_am": "Bình Địa Mộc",
+          "month_hanh": "Thổ",
+          "element_relation_nhat_chu": "bình_hòa",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Kỷ Hợi (Bình Địa Mộc)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:bình_hòa",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "14 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:bình_hòa",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "14 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-10-11",
+              "date_vi": "Chủ Nhật, 11/10/2026",
+              "can_chi": "Mậu Ngọ",
+              "grade": "A",
+              "score": 100
+            },
+            {
+              "date": "2026-10-19",
+              "date_vi": "Thứ Hai, 19/10/2026",
+              "can_chi": "Bính Dần",
+              "grade": "A",
+              "score": 97
+            },
+            {
+              "date": "2026-10-29",
+              "date_vi": "Thứ Năm, 29/10/2026",
+              "can_chi": "Bính Tý",
+              "grade": "A",
+              "score": 89
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-10-21",
+              "date_vi": "Thứ Tư, 21/10/2026",
+              "can_chi": "Mậu Thìn",
+              "grade": "D",
+              "score": 0,
+              "mitigation_tags": [
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-10-08",
+              "date_vi": "Thứ Năm, 08/10/2026",
+              "can_chi": "Ất Mão",
+              "grade": "D",
+              "score": 5,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-10-22",
+              "date_vi": "Thứ Năm, 22/10/2026",
+              "can_chi": "Kỷ Tỵ",
+              "grade": "D",
+              "score": 18,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "tam_nuong"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Tý 23:00–01:00",
+            "Sửu 01:00–03:00",
+            "Thìn 07:00–09:00",
+            "Mùi 13:00–15:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 5,
+            "grade_b": 9,
+            "total_days": 31
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng bình hòa"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 11,
+        "target_month": "2026-11",
+        "title_vi": "Tháng 11",
+        "solar_range": "2026-11-01 → 2026-11-30",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Canh Tý",
+          "nap_am": "Bích Thượng Thổ",
+          "month_hanh": "Kim",
+          "element_relation_nhat_chu": "menh_sinh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Canh Tý (Bích Thượng Thổ)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "13 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "13 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-11-19",
+              "date_vi": "Thứ Năm, 19/11/2026",
+              "can_chi": "Đinh Dậu",
+              "grade": "A",
+              "score": 100
+            },
+            {
+              "date": "2026-11-08",
+              "date_vi": "Chủ Nhật, 08/11/2026",
+              "can_chi": "Bính Tuất",
+              "grade": "A",
+              "score": 95
+            },
+            {
+              "date": "2026-11-17",
+              "date_vi": "Thứ Ba, 17/11/2026",
+              "can_chi": "Ất Mùi",
+              "grade": "A",
+              "score": 95
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-11-15",
+              "date_vi": "Chủ Nhật, 15/11/2026",
+              "can_chi": "Quý Tỵ",
+              "grade": "D",
+              "score": 2,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "tam_nuong"
+              ]
+            },
+            {
+              "date": "2026-11-02",
+              "date_vi": "Thứ Hai, 02/11/2026",
+              "can_chi": "Canh Thìn",
+              "grade": "D",
+              "score": 5,
+              "mitigation_tags": [
+                "khac_menh",
+                "layer1_fail_high"
+              ]
+            },
+            {
+              "date": "2026-11-28",
+              "date_vi": "Thứ Bảy, 28/11/2026",
+              "can_chi": "Bính Ngọ",
+              "grade": "D",
+              "score": 22,
+              "mitigation_tags": [
+                "xung_tuoi",
+                "layer1_fail_high"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Dần 03:00–05:00",
+            "Mão 05:00–07:00",
+            "Ngọ 11:00–13:00",
+            "Thân 15:00–17:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 5,
+            "grade_b": 8,
+            "total_days": 30
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng menh sinh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      },
+      {
+        "month_num": 12,
+        "target_month": "2026-12",
+        "title_vi": "Tháng 12",
+        "solar_range": "2026-12-01 → 2026-12-31",
+        "b1_month_theme": {
+          "luu_nguyet_display": "Tân Sửu",
+          "nap_am": "Bích Thượng Thổ",
+          "month_hanh": "Kim",
+          "element_relation_nhat_chu": "menh_sinh",
+          "month_archetype": "phong_thu",
+          "fact_bullets_vi": [
+            "Trụ lưu nguyệt: Tân Sửu (Bích Thượng Thổ)"
+          ]
+        },
+        "b2_month_emphasis": [
+          {
+            "aspect_id": "su_nghiep",
+            "label_vi": "Sự nghiệp",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "9 ngày grade A/B trong tháng"
+            ]
+          },
+          {
+            "aspect_id": "tai_loc",
+            "label_vi": "Tài chính",
+            "emphasis_signal": "down",
+            "shift_tags": [
+              "month_vs_nhat_chu:menh_sinh",
+              "year_vs_nhat_chu:sinh_menh",
+              "many_grade_d",
+              "year_verdict:thuan"
+            ],
+            "fact_bullets_vi": [
+              "9 ngày grade A/B trong tháng"
+            ]
+          }
+        ],
+        "b3_luu_nhat_calendar": {
+          "best_days": [
+            {
+              "date": "2026-12-24",
+              "date_vi": "Thứ Năm, 24/12/2026",
+              "can_chi": "Nhâm Thân",
+              "grade": "A",
+              "score": 100
+            },
+            {
+              "date": "2026-12-14",
+              "date_vi": "Thứ Hai, 14/12/2026",
+              "can_chi": "Nhâm Tuất",
+              "grade": "A",
+              "score": 89
+            },
+            {
+              "date": "2026-12-18",
+              "date_vi": "Thứ Sáu, 18/12/2026",
+              "can_chi": "Bính Dần",
+              "grade": "A",
+              "score": 85
+            }
+          ],
+          "avoid_days": [
+            {
+              "date": "2026-12-22",
+              "date_vi": "Thứ Ba, 22/12/2026",
+              "can_chi": "Canh Ngọ",
+              "grade": "D",
+              "score": 3,
+              "mitigation_tags": [
+                "xung_tuoi",
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            },
+            {
+              "date": "2026-12-13",
+              "date_vi": "Chủ Nhật, 13/12/2026",
+              "can_chi": "Tân Dậu",
+              "grade": "D",
+              "score": 23,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            },
+            {
+              "date": "2026-12-31",
+              "date_vi": "Thứ Năm, 31/12/2026",
+              "can_chi": "Kỷ Mão",
+              "grade": "D",
+              "score": 23,
+              "mitigation_tags": [
+                "layer1_fail_high",
+                "nguyet_ky"
+              ]
+            }
+          ],
+          "top_hours": [
+            "Tỵ 09:00–11:00",
+            "Tý 23:00–01:00",
+            "Sửu 01:00–03:00",
+            "Thìn 07:00–09:00",
+            "Mùi 13:00–15:00"
+          ],
+          "calendar_stats": {
+            "grade_a": 5,
+            "grade_b": 4,
+            "total_days": 31
+          }
+        },
+        "b4_action": {
+          "action_tags_nen": [
+            "on_dinh",
+            "tranh_rui_ro"
+          ],
+          "action_tags_tranh": [
+            "dau_co_lon",
+            "ky_hop_dong_gap"
+          ],
+          "fact_bullets_vi": [
+            "Tháng menh sinh"
+          ]
+        },
+        "qa_hints": {
+          "target_word_band": [
+            80,
+            120
+          ],
+          "has_calendar": true
+        }
+      }
+    ]
+  },
+  "part_c": {
+    "closing_hints": {
+      "synthesis_inputs": {
+        "archetype_counts": {
+          "phong_thu": 12
+        },
+        "strong_months": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12
+        ],
+        "month_count": 12
+      }
+    }
+  },
+  "part_d": {
+    "mechanics": {
+      "natal": {
+        "year": "Giáp Tý",
+        "month": "Đinh Mão",
+        "day": "Mậu Thân",
+        "hour": "Bính Thìn",
+        "nhat_chu_hanh": "Thổ"
+      },
+      "dung_than": "Hỏa",
+      "ky_than": "Mộc",
+      "dai_van_current": "Tân Mùi",
+      "luu_nien_pillar": "Bính Ngọ",
+      "luu_nguyet_sample_pillar": "Canh Dần",
+      "framework_line_vi": "Bát Tự: Tứ trụ bản mệnh, Đại vận 10 năm, Lưu niên năm, Lưu nguyệt tháng, Lưu nhật chọn ngày."
+    }
+  },
+  "score_methodology": {
+    "score_max": 100,
+    "score_methodology": {
+      "summary_vi": "Điểm tổng hợp từ Trực, sao, Can Chi với lá số, và giờ vàng.",
+      "weights": [
+        {
+          "factor": "truc",
+          "label_vi": "Trực ngày",
+          "max_points": 30
+        },
+        {
+          "factor": "sao28",
+          "label_vi": "Nhị thập bát tú",
+          "max_points": 25
+        },
+        {
+          "factor": "can_chi_laso",
+          "label_vi": "Can chi · lá số",
+          "max_points": 25
+        },
+        {
+          "factor": "gio_vang",
+          "label_vi": "Giờ vàng",
+          "max_points": 20
+        }
+      ]
+    }
+  },
+  "writing_brief": {
+    "product": "van_trinh_nam",
+    "version": "1.0",
+    "render_order": [
+      "A1_hook_year",
+      "A2_you_this_year",
+      "A3_four_aspects_year",
+      "B_luu_nguyet_months",
+      "C_closing",
+      "D_mechanics_collapsed"
+    ],
+    "rules": {
+      "G1": "Fact lá số, không Barnum",
+      "G2": "Cảnh báo kèm mitigation_tags",
+      "G3a": "Lưu niên / Lưu nguyệt / Lưu nhật / Đại vận đúng thuật ngữ",
+      "G3b": "Thập Thần, Dụng/Kỵ chi tiết chỉ ở part_d",
+      "G4": "Chủ đề năm/tháng = ngôn ngữ đời (LLM)",
+      "G5": "Không trái Dụng/Hỷ",
+      "G6": "Disclaimer y tế/pháp lý/tài chính",
+      "G7": "Không bịa — omit block trống",
+      "A1": "4 mảng chỉ ở A3",
+      "A2": "Tháng ≤2 mảng emphasis",
+      "A3": "12 tháng độ dài đều (QA BE)"
+    },
+    "forbidden_response_keys": [
+      "verdict_vi",
+      "delta_vs_year_vi",
+      "giai_hoa_goi_y_vi",
+      "year_theme_vi"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "product": "van_trinh_nam",
+  "version": "1.0",
+  "render_order": [
+    "A1_hook_year",
+    "A2_you_this_year",
+    "A3_four_aspects_year",
+    "B_luu_nguyet_months",
+    "C_closing",
+    "D_mechanics_collapsed"
+  ],
+  "rules": {
+    "G1": "Fact lá số, không Barnum",
+    "G2": "Cảnh báo kèm mitigation_tags",
+    "G3a": "Lưu niên / Lưu nguyệt / Lưu nhật / Đại vận đúng thuật ngữ",
+    "G3b": "Thập Thần, Dụng/Kỵ chi tiết chỉ ở part_d",
+    "G4": "Chủ đề năm/tháng = ngôn ngữ đời (LLM)",
+    "G5": "Không trái Dụng/Hỷ",
+    "G6": "Disclaimer y tế/pháp lý/tài chính",
+    "G7": "Không bịa — omit block trống",
+    "A1": "4 mảng chỉ ở A3",
+    "A2": "Tháng ≤2 mảng emphasis",
+    "A3": "12 tháng độ dài đều (QA BE)"
+  },
+  "forbidden_response_keys": [
+    "verdict_vi",
+    "delta_vs_year_vi",
+    "giai_hoa_goi_y_vi",
+    "year_theme_vi"
+  ]
+}

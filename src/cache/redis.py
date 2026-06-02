@@ -18,6 +18,7 @@ from typing import Optional
 logger = logging.getLogger("bat_tu_api.cache")
 
 LAYER1_TTL = 86400  # 1 day in seconds
+VAN_TRINH_NAM_TTL = 60 * 86400  # 60 days — van-trinh-nam luan-context
 
 # Redis client — lazy-initialized
 _redis_client = None
@@ -116,6 +117,37 @@ def set_month_info_cached(year: int, month: int, month_info: list[dict]) -> None
     key = f"layer1:{year}-{month:02d}"
     try:
         client.setex(key, LAYER1_TTL, json.dumps(month_info, ensure_ascii=False))
+    except Exception:
+        logger.debug("Redis set failed for %s", key)
+
+
+def get_van_trinh_nam_cached(
+    profile_hash: str, year: int, engine_version: str
+) -> Optional[dict]:
+    client = get_redis_client()
+    if client is None:
+        return None
+    key = f"van-trinh-nam-luan:{profile_hash}:{year}:{engine_version}"
+    try:
+        raw = client.get(key)
+        if raw is not None:
+            return json.loads(raw)
+    except Exception:
+        logger.debug("Redis get failed for %s", key)
+    return None
+
+
+def set_van_trinh_nam_cached(
+    profile_hash: str, year: int, engine_version: str, payload: dict
+) -> None:
+    client = get_redis_client()
+    if client is None:
+        return
+    key = f"van-trinh-nam-luan:{profile_hash}:{year}:{engine_version}"
+    try:
+        client.setex(
+            key, VAN_TRINH_NAM_TTL, json.dumps(payload, ensure_ascii=False)
+        )
     except Exception:
         logger.debug("Redis set failed for %s", key)
 

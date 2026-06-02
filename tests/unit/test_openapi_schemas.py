@@ -103,3 +103,15 @@ def test_luu_nien_response_openapi_rich_facts():
 def test_la_so_personality_traits_in_openapi():
     props = _schema("LaSoResponse")["properties"]
     assert "personality_traits" in props
+
+
+def test_van_trinh_nam_luan_context_openapi():
+    root = _schema("VanTrinhNamLuanContextResponse")["properties"]
+    assert "part_a" in root and "part_b" in root
+    part_a = _schema("PartABlock")["properties"]
+    you = _schema(part_a["you_this_year"]["$ref"].split("/")[-1])["properties"]
+    assert {"natal_facts_vi", "nhat_chu_hanh", "dung_than", "ky_than", "dai_van"} <= set(you)
+    part_b = _schema("PartBBlock")["properties"]
+    assert part_b["luu_nguyet_months"]["minItems"] == 12
+    assert part_b["luu_nguyet_months"]["maxItems"] == 12
+    assert part_a["four_aspects_year"]["minItems"] == 4

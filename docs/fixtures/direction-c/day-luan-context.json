@@ -161,6 +161,22 @@
       "range": "21:00-23:00"
     }
   ],
+  "gio_tot_labels": [
+    "Tý 23:00–01:00",
+    "Sửu 01:00–03:00",
+    "Thìn 07:00–09:00",
+    "Tỵ 09:00–11:00",
+    "Mùi 13:00–15:00",
+    "Tuất 19:00–21:00"
+  ],
+  "gio_xau_labels": [
+    "Dần 03:00–05:00",
+    "Mão 05:00–07:00",
+    "Ngọ 11:00–13:00",
+    "Thân 15:00–17:00",
+    "Dậu 17:00–19:00",
+    "Hợi 21:00–23:00"
+  ],
   "scope_hint_vi": "Chỉ luận giải dựa trên dữ kiện ngày và lá số đã cung cấp; không dự đoán tương lai tuyệt đối.",
   "anchor_question_hint_vi": "Giải thích vì sao ngày Nhâm Dần đạt điểm 35 và từng yếu tố Trực, sao, Can Chi, giờ vàng.",
   "suggested_followups": [

@@ -47,7 +47,7 @@
       "ky_than": "Hỏa",
       "summary_vi": "Mệnh bạn thuộc hành Kim (kim loại)."
     },
-    "share_token": "eyJlcCI6ImNob24tbmdheSIsImJkIjoiMTUvMDMvMTk4NCIsImJ0IjpudWxsLCJnIjpudWxsLCJiaCI6IjE1MDVjMGI3ZDBmZmNlMTIiLCJ0cyI6MTc4MDAxOTY2MSwiaW4iOiJLSEFJX1RSVU9ORyIsInJzIjoiMTMvMDgvMjAyNiIsInJlIjoiMTkvMDgvMjAyNiJ9LjZjMDUzYjc1NmM3NzQwYTg"
+    "share_token": "eyJlcCI6ImNob24tbmdheSIsImJkIjoiMTUvMDMvMTk4NCIsImJ0IjpudWxsLCJnIjpudWxsLCJiaCI6IjE1MDVjMGI3ZDBmZmNlMTIiLCJ0cyI6MTc4MDM2NzI1MCwiaW4iOiJLSEFJX1RSVU9ORyIsInJzIjoiMTMvMDgvMjAyNiIsInJlIjoiMTkvMDgvMjAyNiJ9LmFiMTE5YmEwMmE2OGMyM2I"
   },
   "ranked_days": [],
   "recommended_dates": [],
@@ -70,5 +70,6 @@
       "severity": 3,
       "summary_vi": "Ngày này xung khắc trực tiếp với tuổi của bạn. Tuyệt đối không nên chọn ngày này cho bất kỳ việc quan trọng nào."
     }
-  ]
+  ],
+  "sources": []
 }
