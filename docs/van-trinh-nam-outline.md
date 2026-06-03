@@ -1,7 +1,7 @@
 # Dàn bài — "Luận giải Vận trình năm {YYYY}" (theo Bát Tự)
 **Sản phẩm: bài thường niên, mua một lần (ritual đầu năm/Tết).**
 Khung kỹ thuật đúng: **Lưu niên (vận năm) + Lưu nguyệt (vận tháng) + Lưu nhật (vận ngày, cho lịch)**, đặt trên nền **Đại vận** đang chạy.
-Version: v1.1 (annual — chuẩn thuật ngữ Bát Tự) · Đọc cùng: `tieu-van-thang-outline-v2.md` (bản monthly) · Map engine: `luan-context` API plan.
+Version: v1.1 (annual — chuẩn thuật ngữ Bát Tự) · Đọc cùng: `tieu-van-thang-outline-v2.md` (bản monthly) · FE: `fe-van-trinh-nam.md` · API: `api-spec.md` § `GET /v1/luu-nien/luan-context`.
 
 ---
 

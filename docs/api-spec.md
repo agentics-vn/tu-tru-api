@@ -404,7 +404,7 @@ Facts **lưu niên** (vận năm) deterministic — phục vụ màn luận Bát
 
 # API Spec — GET /v1/luu-nien/luan-context
 
-Facts + **signals** cho bài **Vận trình năm {year}** (NLTT/LLM viết prose). Khác `GET /v1/la-so/luu-nien` (card MVP) và `GET /v1/tieu-van` (deprecated, vận tháng stub).
+Facts + **signals** cho bài **Vận trình năm {year}** (NLTT/LLM viết prose). Khác `GET /v1/la-so/luu-nien` (card MVP) và `GET /v1/tieu-van` (deprecated, vận tháng stub). Hướng dẫn FE: `docs/fe-van-trinh-nam.md`.
 
 **Không** trả các key prose: `verdict_vi`, `delta_vs_year_vi`, `giai_hoa_goi_y_vi`, `year_theme_vi`. Dùng `verdict_signal`, `driver_tags`, `month_archetype`, `emphasis_signal`, `mitigation_tags`, `action_tags_*`.
 
