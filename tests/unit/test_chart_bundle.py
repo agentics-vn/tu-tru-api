@@ -21,6 +21,13 @@ class TestChartBundle:
         assert bundle["strength_info"]["element_counts"]
         assert bundle["thap_than"]["god_groups"]["percent"]
 
+    def test_1984_chart_strength_unchanged_for_day_score(self):
+        """Borderline chart must stay nhược — dac_dia must not flip Dụng Thần tier."""
+        tu_tru = get_tu_tru("1984-03-15", 8)
+        bundle = build_chart_analysis(tu_tru)
+        assert bundle["strength_info"]["strength"] == "nhược"
+        assert bundle["dung_than_info"]["dung_than"] == "Hỏa"
+
     def test_merge_adds_parity_fields_without_clobbering_dung_than_object(self):
         tu_tru = get_tu_tru("2020-10-07", 10)
         chart = build_la_so_chart_contract(tu_tru, 1, "2020-10-07")

@@ -960,13 +960,13 @@ So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật 
 
 ### 21.3 Cường nhược — ba đắc
 
-| Yếu tố | Điều kiện | Bonus support |
-|--------|-----------|---------------|
-| **Đắc lệnh** | Nhật chủ cùng hành mùa (`SEASONAL_ELEMENT[chi_tháng]`) | +2.0 (đã có trong `_seasonal_bonus`) |
-| **Đắc địa** | Nhật chủ hoặc hành sinh Nhật chủ có Tàng Can Chủ/Trung Khí (weight ≥ 0.6) | +1.0 |
-| **Đắc thế** | ≥2 Can Năm/Tháng/Giờ cùng hành Nhật chủ hoặc sinh Nhật chủ | +1.0; 1 Can → +0.5 |
+| Yếu tố | Điều kiện | Ảnh hưởng `strength` / Dụng Thần |
+|--------|-----------|----------------------------------|
+| **Đắc lệnh** | Nhật chủ cùng hành mùa (`SEASONAL_ELEMENT[chi_tháng]`) | Có — qua `_seasonal_bonus` (+2.0 / +1.0 / −0.5 / −1.0) |
+| **Đắc địa** | Nhật chủ hoặc hành sinh Nhật chủ có Tàng Can Chủ/Trung Khí (weight ≥ 0.6) | **Không** — chỉ `cuong_nhuoc_detail.dac_dia` cho LLM |
+| **Đắc thế** | ≥2 Can Năm/Tháng/Giờ (sau hóa) cùng hành Nhật chủ hoặc sinh Nhật chủ | **Không** — chỉ `dac_the` / `dac_the_count` cho LLM |
 
-Ngưỡng: `support_ratio ≥ 0.55` → vượng; `≤ 0.40` → nhược; còn lại → cân bằng.
+`support_ratio` = ngũ hành (sau hóa) + đắc lệnh mùa. Ngưỡng: `≥ 0.55` → vượng; `≤ 0.40` → nhược; còn lại → cân bằng.
 
 ### 21.4 Nhóm Thập Thần (`god_groups`)
 

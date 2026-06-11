@@ -164,22 +164,18 @@ def analyze_chart_strength(
     total = sum(element_counts.values())
     opposition = total - support
 
-    # 3. Đắc lệnh / đắc địa / đắc thế bonuses
+    # 3. Đắc lệnh (seasonal) — affects strength tier / Dụng Thần / chọn ngày
     season_bonus = _seasonal_bonus(dm_hanh, month_chi_idx)
     support += max(0, season_bonus)
     opposition += max(0, -season_bonus)
 
+    # Đắc địa / đắc thế: boolean facts for LLM only — must NOT shift strength
+    # tier on borderline charts (regression: day-detail personalized score parity).
     dac_lenh = _is_in_season(dm_hanh, month_chi_idx)
     dac_dia = _has_root_in_branches(tu_tru, dm_hanh) or _has_root_in_branches(
         tu_tru, parent_hanh,
     )
     dac_the_count = _count_supporting_stems(tu_tru, dm_hanh, stem_transformations)
-    if dac_dia:
-        support += 1.0
-    if dac_the_count >= 2:
-        support += 1.0
-    elif dac_the_count == 1:
-        support += 0.5
 
     # 4. Calculate support ratio
     total_adj = support + opposition
