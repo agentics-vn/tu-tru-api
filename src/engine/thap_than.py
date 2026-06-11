@@ -8,7 +8,9 @@ Source of truth: docs/algorithm.md §20
 
 from __future__ import annotations
 
-from engine.can_chi import CAN_NAMES, CAN_HANH
+from engine.can_chi import CAN_HANH, CAN_NAMES
+from engine.hoa_hop import detect_stem_transformations, effective_stem_hanh
+from engine.tang_can import get_tang_can
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Polarity: Dương (yang) = even index, Âm (yin) = odd index
@@ -42,6 +44,22 @@ KHAC_MAP: dict[str, str] = {
 # ─────────────────────────────────────────────────────────────────────────────
 # Ten God names
 # ─────────────────────────────────────────────────────────────────────────────
+
+GOD_GROUPS: dict[str, list[str]] = {
+    "ty_kiep": ["ty_kien", "kiep_tai"],
+    "thuc_thuong": ["thuc_than", "thuong_quan"],
+    "tai_tinh": ["chinh_tai", "thien_tai"],
+    "quan_sat": ["chinh_quan", "that_sat"],
+    "an_tinh": ["chinh_an", "thien_an"],
+}
+
+GOD_GROUP_LABELS: dict[str, str] = {
+    "ty_kiep": "Tỷ Kiếp",
+    "thuc_thuong": "Thực Thương",
+    "tai_tinh": "Tài Tinh",
+    "quan_sat": "Quan Sát",
+    "an_tinh": "Ấn Tinh",
+}
 
 THAP_THAN_NAMES: dict[str, str] = {
     "ty_kien": "Tỷ Kiên",         # Compare Shoulder
@@ -134,7 +152,87 @@ def get_thap_than(day_master_can: int, target_can: int) -> dict:
     }
 
 
-def analyze_thap_than(tu_tru: dict) -> dict:
+def _god_key_from_can(dm_can: int, target_can: int) -> str:
+    return get_thap_than(dm_can, target_can)["key"]
+
+
+def _god_key_transformed(
+    dm_can: int,
+    original_can: int,
+    transform_hanh: str,
+) -> str:
+    """Ten God for a stem after 合化 — 化神 element, polarity from original stem."""
+    dm_hanh = CAN_HANH[dm_can]
+    same_pol = (dm_can % 2) == (original_can % 2)
+    if transform_hanh == dm_hanh:
+        return "ty_kien" if same_pol else "kiep_tai"
+    if SINH_MAP[transform_hanh] == dm_hanh:
+        return "chinh_an" if not same_pol else "thien_an"
+    if SINH_MAP[dm_hanh] == transform_hanh:
+        return "thuc_than" if same_pol else "thuong_quan"
+    if KHAC_MAP[dm_hanh] == transform_hanh:
+        return "chinh_tai" if not same_pol else "thien_tai"
+    if KHAC_MAP[transform_hanh] == dm_hanh:
+        return "chinh_quan" if not same_pol else "that_sat"
+    return "ty_kien"
+
+
+def analyze_god_groups(
+    tu_tru: dict,
+    transforms: list[dict] | None = None,
+) -> dict:
+    """
+    Weighted Ten God group energy (surface stems + hidden stems).
+    Surface stems after 合化 use transformed element vs DM.
+    """
+    dm_can = tu_tru["day"]["can_idx"]
+    if transforms is None:
+        transforms = detect_stem_transformations(tu_tru)
+    weights: dict[str, float] = {k: 0.0 for k in GOD_GROUPS}
+
+    for pillar_key in ("year", "month", "hour"):
+        can_idx = tu_tru[pillar_key]["can_idx"]
+        eff_hanh, transformed = effective_stem_hanh(
+            pillar_key, can_idx, transforms,
+        )
+        if transformed:
+            god_key = _god_key_transformed(dm_can, can_idx, eff_hanh)
+        else:
+            god_key = _god_key_from_can(dm_can, can_idx)
+        for group, keys in GOD_GROUPS.items():
+            if god_key in keys:
+                weights[group] += 1.0
+                break
+
+    for pillar_key in ("year", "month", "day", "hour"):
+        for hidden in get_tang_can(tu_tru[pillar_key]["chi_idx"]):
+            god_key = _god_key_from_can(dm_can, hidden["can_idx"])
+            w = hidden["weight"]
+            for group, keys in GOD_GROUPS.items():
+                if god_key in keys:
+                    weights[group] += w
+                    break
+
+    total = sum(weights.values())
+    percent: dict[str, float] = {}
+    if total > 0:
+        for group, w in weights.items():
+            percent[group] = round(w / total * 100, 1)
+    else:
+        for group in GOD_GROUPS:
+            percent[group] = 0.0
+
+    return {
+        "weights": {k: round(v, 2) for k, v in weights.items()},
+        "percent": percent,
+        "labels": GOD_GROUP_LABELS,
+    }
+
+
+def analyze_thap_than(
+    tu_tru: dict,
+    transforms: list[dict] | None = None,
+) -> dict:
     """
     Map all 4 pillars' Cans to their Ten God relationships.
 
@@ -148,12 +246,31 @@ def analyze_thap_than(tu_tru: dict) -> dict:
             dominant_god: the most prominent Ten God (by count)
     """
     dm_can = tu_tru["day"]["can_idx"]
+    if transforms is None:
+        transforms = detect_stem_transformations(tu_tru)
 
-    year_god = get_thap_than(dm_can, tu_tru["year"]["can_idx"])
-    month_god = get_thap_than(dm_can, tu_tru["month"]["can_idx"])
-    hour_god = get_thap_than(dm_can, tu_tru["hour"]["can_idx"])
+    def _pillar_god(pillar_key: str) -> dict:
+        can_idx = tu_tru[pillar_key]["can_idx"]
+        eff_hanh, transformed = effective_stem_hanh(
+            pillar_key, can_idx, transforms,
+        )
+        if transformed:
+            key = _god_key_transformed(dm_can, can_idx, eff_hanh)
+            return {
+                "key": key,
+                "name": THAP_THAN_NAMES[key],
+                "category": (
+                    "thuận lợi"
+                    if key in {"ty_kien", "chinh_an", "thien_an", "thuc_than", "chinh_tai"}
+                    else "bất lợi"
+                ),
+            }
+        return get_thap_than(dm_can, can_idx)
 
-    # Count occurrences of each Ten God
+    year_god = _pillar_god("year")
+    month_god = _pillar_god("month")
+    hour_god = _pillar_god("hour")
+
     gods = [year_god["key"], month_god["key"], hour_god["key"]]
     god_counts: dict[str, int] = {}
     for g in gods:
@@ -162,15 +279,29 @@ def analyze_thap_than(tu_tru: dict) -> dict:
     # Find dominant god
     dominant_key = max(god_counts, key=god_counts.get)
 
+    god_groups = analyze_god_groups(tu_tru, transforms)
+
     return {
         "year_god": year_god,
         "month_god": month_god,
         "hour_god": hour_god,
         "god_counts": god_counts,
+        "surface_god_counts": god_counts,
+        "god_groups": god_groups,
         "dominant_god": {
             "key": dominant_key,
             "name": THAP_THAN_NAMES[dominant_key],
         },
+        "dominant_god_group": _dominant_god_group(god_groups),
+    }
+
+
+def _dominant_god_group(god_groups: dict) -> dict:
+    group_key = max(god_groups["percent"], key=god_groups["percent"].get)
+    return {
+        "key": group_key,
+        "name": GOD_GROUP_LABELS[group_key],
+        "percent": god_groups["percent"][group_key],
     }
 
 

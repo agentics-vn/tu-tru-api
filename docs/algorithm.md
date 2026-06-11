@@ -927,3 +927,62 @@ So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật 
 - **Giờ chuẩn:** `gio_tot`/`gio_xau` dùng một shape slot trên mọi endpoint ngày (xem `api/gio_slots.py`).
 - **`purpose_rows`:** Mỗi intent trong seed → `verdict` (`tot` \| `xau` \| `luu_y` \| `trung`) + `reason_vi` trên `day-detail` personalized.
 - **Rate limit:** Header `X-RateLimit-*`; vượt ngưỡng → 429 `RATE_LIMITED`.
+
+---
+
+## 21. Thiên Can Ngũ Hợp Hóa · Cường Nhược · Nhóm Thập Thần
+
+> Engine: `engine/hoa_hop.py`, `engine/cuong_nhuoc.py`, `engine/thap_than.py`
+
+### 21.1 Ngũ Hợp (天干五合)
+
+| Cặp Can | Hóa thành |
+|---------|-----------|
+| Giáp – Kỷ | Thổ |
+| Ất – Canh | Kim |
+| Bính – Tân | Thủy |
+| Đinh – Nhâm | Mộc |
+| Mậu – Quý | Hỏa |
+
+**Phạm vi:** chỉ cặp **kề nhau** trên Tứ Trụ: Năm–Tháng, Tháng–Ngày, Ngày–Giờ.
+
+**Hóa thành công** khi **Địa Chi tháng** (月令) hỗ trợ hóa thần:
+- Chi tháng cùng hành hóa thần, **hoặc**
+- Hành Chi tháng **sinh** hóa thần (ví dụ Thổ sinh Kim → Chi Thổ hỗ trợ hóa Kim).
+
+**Không hóa** khi Chi tháng không hỗ trợ (ví dụ Ất–Canh hóa Kim nhưng tháng Tỵ thuộc Hỏa).
+
+### 21.2 Điều chỉnh Ngũ Hành sau hóa
+
+- `raw_element_counts`: trước hóa (Thiên Can + Tàng Can).
+- `element_counts`: sau hóa — mỗi Can bị hóa: trừ 1.0 hành gốc, cộng 1.0 hóa thần.
+- `dung_than`, `cuong_nhuoc`, `god_groups` dùng `element_counts` đã điều chỉnh.
+
+### 21.3 Cường nhược — ba đắc
+
+| Yếu tố | Điều kiện | Bonus support |
+|--------|-----------|---------------|
+| **Đắc lệnh** | Nhật chủ cùng hành mùa (`SEASONAL_ELEMENT[chi_tháng]`) | +2.0 (đã có trong `_seasonal_bonus`) |
+| **Đắc địa** | Nhật chủ hoặc hành sinh Nhật chủ có Tàng Can Chủ/Trung Khí (weight ≥ 0.6) | +1.0 |
+| **Đắc thế** | ≥2 Can Năm/Tháng/Giờ cùng hành Nhật chủ hoặc sinh Nhật chủ | +1.0; 1 Can → +0.5 |
+
+Ngưỡng: `support_ratio ≥ 0.55` → vượng; `≤ 0.40` → nhược; còn lại → cân bằng.
+
+### 21.4 Nhóm Thập Thần (`god_groups`)
+
+Năm nhóm: **Tỷ Kiếp**, **Thực Thương**, **Tài Tinh**, **Quan Sát**, **Ấn Tinh**.
+
+- Can bề mặt Năm/Tháng/Giờ: weight 1.0; sau hóa dùng **hóa thần** + cực gốc Can.
+- Tàng Can: weight Chu/Trung/Dư Khí.
+- `percent`: chuẩn hóa 100% trên tổng weight.
+
+### 21.5 API contract (P2)
+
+Response thêm (khi có `birth_time`):
+
+- `stem_transformations[]`: `{ pillars, stems, transform_element, month_chi, label_vi }`
+- `cuong_nhuoc_detail`: `{ dac_lenh, dac_dia, dac_the, dac_the_count }`
+- `god_groups`: `{ weights, percent, labels }`
+- `_raw.raw_element_counts` — trước hóa (cho UI so sánh).
+
+**LLM / chat:** chỉ luận hóa hợp và % nhóm thần khi các field trên có trong JSON facts; không tự suy ngoài API.

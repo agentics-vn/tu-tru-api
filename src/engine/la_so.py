@@ -8,10 +8,8 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from engine.cuong_nhuoc import analyze_chart_strength
+from engine.chart_bundle import build_chart_analysis
 from engine.dai_van import get_current_dai_van
-from engine.dung_than import find_dung_than
-from engine.thap_than import analyze_thap_than
 
 # ── Nhật Chủ (Thiên Can Nhật) → archetype ───────────────────────────────────
 
@@ -244,9 +242,11 @@ def build_la_so(
     dm_can_idx = tu_tru["day"]["can_idx"]
     dm_hanh = tu_tru["nhat_chu"]["hanh"]
 
-    strength_info = analyze_chart_strength(tu_tru)
-    dung_than_info = find_dung_than(tu_tru)
-    thap_than = analyze_thap_than(tu_tru)
+    bundle = build_chart_analysis(tu_tru)
+    strength_info = bundle["strength_info"]
+    dung_than_info = bundle["dung_than_info"]
+    thap_than = bundle["thap_than"]
+    stem_payload = bundle["stem_transformations"]
     dominant_key = thap_than["dominant_god"]["key"]
     career = THAP_THAN_CAREER.get(dominant_key, _DEFAULT_CAREER)
     health = HANH_HEALTH.get(dm_hanh, {
@@ -310,7 +310,16 @@ def build_la_so(
     result["_raw"] = {
         "tu_tru_display": tu_tru["display"],
         "element_counts": strength_info["element_counts"],
+        "raw_element_counts": strength_info["raw_element_counts"],
         "support_ratio": strength_info["support_ratio"],
+        "stem_transformations": stem_payload,
+        "cuong_nhuoc_detail": {
+            "dac_lenh": strength_info["dac_lenh"],
+            "dac_dia": strength_info["dac_dia"],
+            "dac_the": strength_info["dac_the"],
+        },
+        "god_groups": thap_than["god_groups"],
+        "surface_god_counts": thap_than["surface_god_counts"],
         "thap_than_profile": {
             "year": thap_than["year_god"]["name"],
             "month": thap_than["month_god"]["name"],
@@ -400,9 +409,11 @@ def build_la_so_chart_contract(
     from engine.can_chi import NAP_AM_HANH, NAP_AM_NAMES, get_nap_am_pair_idx
     from engine.dai_van import get_current_dai_van, get_dai_van
 
-    strength_info = analyze_chart_strength(tu_tru)
-    dung_than_info = find_dung_than(tu_tru)
-    thap_than = analyze_thap_than(tu_tru)
+    bundle = build_chart_analysis(tu_tru)
+    strength_info = bundle["strength_info"]
+    dung_than_info = bundle["dung_than_info"]
+    thap_than = bundle["thap_than"]
+    stem_payload = bundle["stem_transformations"]
 
     def pillar_contract(pillar: dict) -> dict[str, Any]:
         pair_idx = get_nap_am_pair_idx(pillar["can_idx"], pillar["chi_idx"])
@@ -447,15 +458,35 @@ def build_la_so_chart_contract(
                 "key": thap_than["dominant_god"]["key"],
                 "name": thap_than["dominant_god"]["name"],
             },
+            "dominant_group": thap_than["dominant_god_group"],
+            "surface_god_counts": thap_than["surface_god_counts"],
             "year": thap_than["year_god"]["name"],
             "month": thap_than["month_god"]["name"],
             "hour": thap_than["hour_god"]["name"],
         },
         "element_counts": strength_info["element_counts"],
         "ngu_hanh": strength_info["element_counts"],
+        "stem_transformations": stem_payload,
+        "cuong_nhuoc_detail": {
+            "dac_lenh": strength_info["dac_lenh"],
+            "dac_dia": strength_info["dac_dia"],
+            "dac_the": strength_info["dac_the"],
+            "dac_the_count": strength_info["dac_the_count"],
+        },
+        "god_groups": thap_than["god_groups"],
+        "surface_god_counts": thap_than["surface_god_counts"],
         "_raw": {
             "element_counts": strength_info["element_counts"],
+            "raw_element_counts": strength_info["raw_element_counts"],
             "support_ratio": strength_info["support_ratio"],
+            "god_groups": thap_than["god_groups"],
+            "surface_god_counts": thap_than["surface_god_counts"],
+            "stem_transformations": stem_payload,
+            "cuong_nhuoc_detail": {
+                "dac_lenh": strength_info["dac_lenh"],
+                "dac_dia": strength_info["dac_dia"],
+                "dac_the": strength_info["dac_the"],
+            },
         },
     }
 

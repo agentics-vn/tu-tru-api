@@ -36,6 +36,7 @@ from engine.can_chi import (
 from engine.dung_than import find_dung_than
 from engine.thap_than import analyze_thap_than
 from engine.dai_van import get_current_dai_van, get_dai_van, get_dai_van_direction
+from engine.chart_contract import merge_chart_contract_into_result
 from engine.la_so import build_la_so_chart_contract
 
 logger = logging.getLogger("tu_tru")
@@ -247,12 +248,17 @@ async def tu_tru_endpoint(req: TuTruRequest):
                 result["pillars"][pillar]["nap_am"]["mo_ta"] = (
                     chart["pillars"][pillar]["nap_am"]["mo_ta"]
                 )
-            result["cuong_nhuoc"] = chart["cuong_nhuoc"]
-            result["ngu_hanh"] = chart["ngu_hanh"]
-            result["_raw"] = chart["_raw"]
-            result["thap_than"]["dominant"] = chart["thap_than"]["dominant"]
-            if chart.get("dai_van_list"):
-                result["dai_van_list"] = chart["dai_van_list"]
+            merge_chart_contract_into_result(result, chart)
+            # Preserve tu-tru thap_than detail shape while adding contract extras
+            if "thap_than" in chart and "thap_than" in result:
+                result["thap_than"] = {
+                    **result["thap_than"],
+                    "dominant": chart["thap_than"]["dominant"],
+                    "dominant_group": chart["thap_than"].get("dominant_group"),
+                    "surface_god_counts": chart["thap_than"].get(
+                        "surface_god_counts",
+                    ),
+                }
         else:
             result["_note"] = (
                 "Chỉ có thông tin cơ bản (mệnh Nạp Âm). "

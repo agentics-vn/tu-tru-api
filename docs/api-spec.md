@@ -154,7 +154,7 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
 
 **Notes:**
 - `birth_time` omitted → chỉ trả về Mệnh Nạp Âm (year-level info)
-- `birth_time` provided → trả đầy đủ Tứ Trụ, Dụng Thần, Thập Thần, **`element_counts`** (trọng số ngũ hành — cùng nguồn với `GET /v1/la-so` → `_raw.element_counts`) và **`support_ratio`** (0–1). Để hiển thị %: chia mỗi hành cho tổng các trọng số rồi nhân 100.
+- `birth_time` provided → trả đầy đủ Tứ Trụ, Dụng Thần, Thập Thần, **`element_counts`** (sau hóa hợp Can — parity `GET /v1/la-so`), **`support_ratio`** (0–1), **`stem_transformations[]`**, **`cuong_nhuoc_detail`**, **`god_groups`**, **`surface_god_counts`**. `_raw.raw_element_counts` = trước hóa. Để hiển thị % ngũ hành: chia mỗi hành cho tổng trọng số × 100.
 - `gender` provided (+ birth_time) → thêm Đại Vận (10-year luck cycles)
 - `birth_year_can_chi` và `menh` (Nạp Âm) tính theo **năm Can Chi Bát Tự** (ranh giới **Lập Xuân**, cùng quy ước trụ Năm trong Tứ Trụ): sinh trước Lập Xuân vẫn thuộc năm Can Chi của năm dương lịch trước.
 
@@ -213,11 +213,26 @@ Lập lá số Tứ Trụ (Four Pillars / Bát Tự) cho một ngày sinh.
     "element": "Kim",
     "description": "Nguyên tố sinh ra Kỵ Thần"
   },
+  "stem_transformations": [],
+  "cuong_nhuoc_detail": {
+    "dac_lenh": false,
+    "dac_dia": true,
+    "dac_the": false,
+    "dac_the_count": 1
+  },
+  "god_groups": {
+    "weights": { "ty_kiep": 0, "thuc_thuong": 0, "tai_tinh": 0, "quan_sat": 0, "an_tinh": 0 },
+    "percent": { "ty_kiep": 0, "thuc_thuong": 0, "tai_tinh": 0, "quan_sat": 0, "an_tinh": 0 },
+    "labels": { "ty_kiep": "Tỷ Kiếp", "thuc_thuong": "Thực Thương", "tai_tinh": "Tài Tinh", "quan_sat": "Quan Sát", "an_tinh": "Ấn Tinh" }
+  },
+  "surface_god_counts": { "chinh_tai": 1 },
   "thap_than": {
     "year": { "key": "chinh_tai", "name": "Chính Tài", "category": "favorable" },
     "month": { "key": "thien_tai", "name": "Thiên Tài", "category": "unfavorable" },
     "hour":  { "key": "chinh_an",  "name": "Chính Ấn",  "category": "favorable" },
-    "dominant": { "key": "chinh_tai", "name": "Chính Tài" }
+    "dominant": { "key": "chinh_tai", "name": "Chính Tài" },
+    "dominant_group": { "key": "an_tinh", "name": "Ấn Tinh", "percent": 40.9 },
+    "surface_god_counts": { "chinh_tai": 1 }
   },
   "gender": "male",
   "dai_van": {
@@ -354,7 +369,9 @@ Lá số **diễn giải có cấu trúc**: cùng nguồn tính toán với Tứ
 - `tinh_duyen` và `dai_van_current` chỉ có khi client gửi `gender`.
 - `_raw` dùng thêm ngữ cảnh kỹ thuật cho bước LLM (không bắt buộc hiển thị user).
 - **`personality_traits`** (4 block deterministic cho màn luận Bát tự §02): `diem_manh`, `ca_tinh`, `luu_y`, `tinh_cam` — mỗi phần tử `{ id, title, text }`. Không thay Gemini `la-so-chi-tiet`; dùng khi cần UI structured trước/ song song LLM.
-- **`element_counts`** / **`ngu_hanh`**: cùng nguồn trọng số ngũ hành; dùng vẽ biểu đồ % (chia cho tổng trọng số × 100). Parity với `POST /v1/tu-tru` khi có `birth_time`.
+- **`element_counts`** / **`ngu_hanh`**: trọng số ngũ hành **sau hóa**; vẽ biểu đồ % (tổng trọng số × 100). Parity `POST /v1/tu-tru`.
+- **`stem_transformations`**, **`god_groups`**, **`cuong_nhuoc_detail`**, **`surface_god_counts`**: parity `POST /v1/tu-tru`; LLM chỉ luận khi có trong JSON.
+- **`surface_god_counts`**: 3 Can bề mặt (năm/tháng/giờ). **`god_groups.percent`**: gồm Tàng Can — dùng khi luận nhóm thần.
 - **`dai_van.cycles[]`**: timeline đại vận (khi có `gender`).
 
 ## Error Responses (Lá số)

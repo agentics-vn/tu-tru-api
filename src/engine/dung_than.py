@@ -43,7 +43,7 @@ KHAC_BY: dict[str, str] = {
 }
 
 
-def find_dung_than(tu_tru: dict) -> dict:
+def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
     """
     Find the Useful God element based on chart balance.
 
@@ -71,7 +71,7 @@ def find_dung_than(tu_tru: dict) -> dict:
             strength: str ("vượng" | "nhược" | "cân bằng")
             analysis: dict (full strength analysis)
     """
-    analysis = analyze_chart_strength(tu_tru)
+    analysis = analysis if analysis is not None else analyze_chart_strength(tu_tru)
     strength = analysis["strength"]
     dm_hanh = analysis["day_master_hanh"]
     element_counts = analysis["element_counts"]

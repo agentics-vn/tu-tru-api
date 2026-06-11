@@ -3,13 +3,17 @@ cuong_nhuoc.py — Phase 3a: Ngũ Hành Cường Nhược (Chart Strength Analys
 
 Determines if the Day Master is strong (旺), weak (弱), or balanced.
 
-Source of truth: docs/algorithm.md §19
+Source of truth: docs/algorithm.md §21
 """
 
 from __future__ import annotations
 
-from engine.can_chi import CAN_HANH, CHI_NAMES
-from engine.tang_can import get_all_elements, get_day_master_support
+from engine.can_chi import CAN_HANH
+from engine.hoa_hop import (
+    apply_transformations_to_elements,
+    detect_stem_transformations,
+)
+from engine.tang_can import get_all_elements, get_day_master_support, get_tang_can
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Seasonal strength (Đắc Lệnh / 得令)
@@ -82,7 +86,46 @@ def _seasonal_bonus(day_master_hanh: str, month_chi_idx: int) -> float:
     return 0.0
 
 
-def analyze_chart_strength(tu_tru: dict) -> dict:
+def _has_root_in_branches(tu_tru: dict, target_hanh: str) -> bool:
+    """Đắc địa — DM or Ấn element present as hidden stem (Chủ/Trung Khí)."""
+    for pillar_key in ("year", "month", "day", "hour"):
+        for hidden in get_tang_can(tu_tru[pillar_key]["chi_idx"]):
+            if hidden["hanh"] == target_hanh and hidden["weight"] >= 0.6:
+                return True
+    return False
+
+
+def _effective_stem_hanh_for_support(
+    tu_tru: dict,
+    pillar_key: str,
+    transforms: list[dict],
+) -> str:
+    from engine.hoa_hop import effective_stem_hanh
+
+    can_idx = tu_tru[pillar_key]["can_idx"]
+    eff_hanh, transformed = effective_stem_hanh(pillar_key, can_idx, transforms)
+    return eff_hanh if transformed else CAN_HANH[can_idx]
+
+
+def _count_supporting_stems(
+    tu_tru: dict,
+    dm_hanh: str,
+    transforms: list[dict],
+) -> int:
+    """Đắc thế — stems (year/month/hour) whose effective element supports DM."""
+    parent = SINH_BY_MAP.get(dm_hanh)
+    count = 0
+    for pillar_key in ("year", "month", "hour"):
+        stem_hanh = _effective_stem_hanh_for_support(tu_tru, pillar_key, transforms)
+        if stem_hanh == dm_hanh or stem_hanh == parent:
+            count += 1
+    return count
+
+
+def analyze_chart_strength(
+    tu_tru: dict,
+    transforms: list[dict] | None = None,
+) -> dict:
     """
     Determine Day Master strength.
 
@@ -103,24 +146,46 @@ def analyze_chart_strength(tu_tru: dict) -> dict:
     """
     dm_hanh = tu_tru["nhat_chu"]["hanh"]
     month_chi_idx = tu_tru["month"]["chi_idx"]
+    parent_hanh = SINH_BY_MAP[dm_hanh]
 
-    # 1. Count elements across all pillars + hidden stems
-    element_counts = get_all_elements(tu_tru)
+    # 1. Raw + effective element counts (after 合化)
+    raw_element_counts = get_all_elements(tu_tru)
+    stem_transformations = (
+        transforms if transforms is not None else detect_stem_transformations(tu_tru)
+    )
+    element_counts = apply_transformations_to_elements(
+        raw_element_counts, tu_tru, stem_transformations,
+    )
 
-    # 2. Get support vs opposition
-    support, opposition = get_day_master_support(tu_tru, dm_hanh)
+    # 2. Support vs opposition from effective counts
+    support = (
+        element_counts.get(dm_hanh, 0.0) + element_counts.get(parent_hanh, 0.0)
+    )
+    total = sum(element_counts.values())
+    opposition = total - support
 
-    # 3. Add seasonal bonus
+    # 3. Đắc lệnh / đắc địa / đắc thế bonuses
     season_bonus = _seasonal_bonus(dm_hanh, month_chi_idx)
     support += max(0, season_bonus)
     opposition += max(0, -season_bonus)
 
+    dac_lenh = _is_in_season(dm_hanh, month_chi_idx)
+    dac_dia = _has_root_in_branches(tu_tru, dm_hanh) or _has_root_in_branches(
+        tu_tru, parent_hanh,
+    )
+    dac_the_count = _count_supporting_stems(tu_tru, dm_hanh, stem_transformations)
+    if dac_dia:
+        support += 1.0
+    if dac_the_count >= 2:
+        support += 1.0
+    elif dac_the_count == 1:
+        support += 0.5
+
     # 4. Calculate support ratio
-    total = support + opposition
-    support_ratio = support / total if total > 0 else 0.5
+    total_adj = support + opposition
+    support_ratio = support / total_adj if total_adj > 0 else 0.5
 
     # 5. Determine strength
-    # Thresholds: >55% support → strong, <40% → weak, else balanced
     if support_ratio >= 0.55:
         strength = "vượng"
     elif support_ratio <= 0.40:
@@ -131,8 +196,14 @@ def analyze_chart_strength(tu_tru: dict) -> dict:
     return {
         "strength": strength,
         "element_counts": element_counts,
+        "raw_element_counts": raw_element_counts,
+        "stem_transformations": stem_transformations,
         "seasonal_element": SEASONAL_ELEMENT[month_chi_idx],
-        "is_in_season": _is_in_season(dm_hanh, month_chi_idx),
+        "is_in_season": dac_lenh,
+        "dac_lenh": dac_lenh,
+        "dac_dia": dac_dia,
+        "dac_the": dac_the_count >= 2,
+        "dac_the_count": dac_the_count,
         "day_master_hanh": dm_hanh,
         "day_master_support": round(support, 2),
         "day_master_opposition": round(opposition, 2),
