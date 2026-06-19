@@ -1092,4 +1092,11 @@ Các sao khác (Đào Hoa, Dịch Mã, …) khai báo thêm trong seed `than-sat
 
 ### 22.10 API `POST /v1/la-so-full`
 
-Request: `{ birth_date, birth_time, gender, name? }` — trả object `menh_ban` gồm header, `pillars[]` (surface + tang_can + pho_tinh + truong_sinh), `dai_van`, `luu_nien`, `than_sat`, `menh_cung`, `thai_nguyen`, `tuan_khong`, `tiet_khi`, `am_lich`, cùng các field phân tích §21 khi có `birth_time`.
+Request: `{ birth_date, birth_time, gender, name?, format? }`. Một lần gọi (`format=json`, mặc định) trả cả `menh_ban` (structured, cho LLM) và `html` (fragment để embed). `format=html` trả HTML thuần (`text/html`) cho trường hợp chỉ cần nhúng iframe.
+
+### 22.11 HTML embed (`format=html`)
+
+- `engine/menh_ban_html.render_menh_ban_html(menh_ban)` sinh fragment `<div class="mbtt">` kèm `<style>` scoped (parchment/gold theme, ngũ hành màu chữ).
+- Layout khớp `web/components/MenhBanTuTru.tsx`: header, tứ trụ, đại vận, lưu niên, thần sát, mệnh cung.
+- Mọi text user (`name`) qua `html.escape`.
+- `view_year` → ô lưu niên được class `mbtt-hl`.

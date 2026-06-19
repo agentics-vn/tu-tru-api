@@ -787,6 +787,21 @@ Full **Mệnh Bàn Tứ Trụ** grid for standalone lá số product (not NLTT d
 | name | No | Display name in header |
 | num_dai_van | No | Default `10` cycles |
 | num_luu_nien | No | Default `10` years |
+| view_year | No | Start year for lưu niên strip; marks `selected` on that year |
+| format | No | `json` (default) or `html` — see below |
+
+### Response `format`
+
+Một lần gọi (`format=json`, mặc định) trả **cả hai**: `menh_ban` (structured, đưa LLM) và `html` (fragment để embed). `format=html` trả HTML thuần khi chỉ cần nhúng iframe.
+
+| `format` | Content-Type | Body |
+|----------|--------------|------|
+| `json` (default) | `application/json` | `{ status, menh_ban, html, ... }` — structured + HTML trong cùng response |
+| `html` | `text/html; charset=utf-8` | Chỉ HTML fragment thuần `<div class="mbtt">` + scoped CSS |
+
+> Team gửi LLM **chỉ field `menh_ban`** (không cần gửi `html`), còn `html` dùng để render lên bài.
+
+Renderer: `engine/menh_ban_html.py` — mirrors `web/components/MenhBanTuTru.tsx` layout.
 
 ## Response 200
 

@@ -659,6 +659,9 @@ class TestLaSoFull:
         assert mb["dai_van"]["khoi_van_date"] == "2032-06-13"
         assert len(mb["luu_nien"]) == 10
         assert mb["header"]["tiet_khi"]["name"] == "Mang Chủng"
+        # One call returns both structured data (for LLM) and embeddable HTML.
+        assert "mbtt" in data["html"]
+        assert "Mệnh Bàn Tứ Trụ" in data["html"]
 
     def test_view_year(self):
         r = client.post("/v1/la-so-full", json=self._valid_request(
@@ -687,6 +690,22 @@ class TestLaSoFull:
         r1 = client.post("/v1/la-so-full", json=body)
         r2 = client.post("/v1/la-so-full", json=body)
         assert r1.json() == r2.json()
+
+    def test_format_html(self):
+        r = client.post("/v1/la-so-full", json={
+            **self._valid_request(
+                birth_date="21/03/1990",
+                birth_time=6,
+                birth_minute=15,
+                view_year=2026,
+            ),
+            "format": "html",
+        })
+        assert r.status_code == 200
+        assert "text/html" in r.headers.get("content-type", "")
+        assert "mbtt" in r.text
+        assert "Mệnh Bàn Tứ Trụ" in r.text
+        assert "Canh" in r.text
 
 
 # ─────────────────────────────────────────────────────────────────────────────

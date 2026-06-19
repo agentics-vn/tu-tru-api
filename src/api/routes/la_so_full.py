@@ -6,10 +6,10 @@ from __future__ import annotations
 
 import logging
 from datetime import date
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, field_validator
 
 from api.errors import error_response
@@ -17,6 +17,7 @@ from api.parse_date import parse_dmy
 from api.schemas.direction_c import API_ERROR_RESPONSES
 from api.version import get_engine_version, utc_now_iso
 from engine.chart_bundle import build_full_chart
+from engine.menh_ban_html import render_menh_ban_html
 from engine.pillars import VALID_BIRTH_HOURS, get_tu_tru
 
 logger = logging.getLogger("la_so_full")
@@ -33,6 +34,7 @@ class LaSoFullRequest(BaseModel):
     num_dai_van: int = 10
     num_luu_nien: int = 10
     view_year: Optional[int] = None
+    format: Literal["json", "html"] = "json"
 
     @field_validator("birth_date")
     @classmethod
@@ -90,6 +92,12 @@ async def la_so_full_endpoint(req: LaSoFullRequest):
             num_luu_nien=req.num_luu_nien,
             view_year=req.view_year,
         )
+        chart_html = render_menh_ban_html(chart)
+        if req.format == "html":
+            return HTMLResponse(
+                content=chart_html,
+                media_type="text/html; charset=utf-8",
+            )
         return {
             "status": "success",
             "birth_date": birth_date_str,
@@ -97,6 +105,7 @@ async def la_so_full_endpoint(req: LaSoFullRequest):
             "engine_version": get_engine_version(),
             "computed_at": utc_now_iso(),
             "menh_ban": chart,
+            "html": chart_html,
         }
     except ValueError as e:
         return error_response(400, "INVALID_INPUT", message_vi=str(e))
