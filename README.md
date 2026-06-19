@@ -306,7 +306,8 @@ Dev local vẫn tách: API `:3000`, `cd web && npm run dev` → `:3001`.
 
 ```bash
 curl -s https://tu-tru-api.fly.dev/health
-curl -s -X POST https://tu-tru-api.fly.dev/api/v1/la-so-full \
+# Cả hai path đều được (combined Fly): /v1/... hoặc /api/v1/...
+curl -s -X POST https://tu-tru-api.fly.dev/v1/la-so-full \
   -H 'Content-Type: application/json' \
   -d '{"birth_date":"21/03/1990","birth_time":6,"gender":1,"birth_minute":15,"view_year":2026}'
 ```

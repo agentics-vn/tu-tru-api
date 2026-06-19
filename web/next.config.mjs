@@ -12,6 +12,8 @@ const nextConfig = {
     const api = process.env.API_URL || "http://127.0.0.1:3000";
     return [
       { source: "/api/:path*", destination: `${api}/:path*` },
+      // Swagger + direct API clients use /v1/... (no /api prefix on combined Fly host)
+      { source: "/v1/:path*", destination: `${api}/v1/:path*` },
       // Fly combined image: health check hits Next :3000 → API on loopback
       { source: "/health", destination: `${api}/health` },
       // FastAPI Swagger / OpenAPI (same Fly hostname as UI)
