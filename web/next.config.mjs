@@ -14,6 +14,12 @@ const nextConfig = {
       { source: "/api/:path*", destination: `${api}/:path*` },
       // Fly combined image: health check hits Next :3000 → API on loopback
       { source: "/health", destination: `${api}/health` },
+      // FastAPI Swagger / OpenAPI (same Fly hostname as UI)
+      { source: "/docs", destination: `${api}/docs` },
+      { source: "/docs/:path*", destination: `${api}/docs/:path*` },
+      { source: "/openapi.json", destination: `${api}/openapi.json` },
+      { source: "/redoc", destination: `${api}/redoc` },
+      { source: "/redoc/:path*", destination: `${api}/redoc/:path*` },
     ];
   },
 };

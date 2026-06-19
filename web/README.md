@@ -31,7 +31,7 @@ After `fly deploy`, open the Fly app URL — no separate Vercel project needed.
 2. Environment variable: **`API_URL`** = production API base URL (no trailing slash), e.g. `https://tu-tru-api.fly.dev`
 3. Build: `npm run build` (default Next.js settings)
 
-Browser requests go to `/api/v1/la-so-full`; Next.js rewrites to `$API_URL/v1/la-so-full`.
+Browser requests go to `/api/v1/la-so-full`; Next.js rewrites to `$API_URL/v1/la-so-full`. On combined Fly deploy, Swagger is also proxied at `/docs` and `/openapi.json`.
 
 ## Files to commit
 
