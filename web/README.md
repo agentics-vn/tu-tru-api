@@ -16,7 +16,16 @@ Open http://localhost:3001
 
 Optional: `web/.env.local` with `API_URL=http://127.0.0.1:3000` if API is not on port 3000.
 
-## Production deploy (Vercel)
+## Production on Fly (combined with API)
+
+The root `Dockerfile` builds API + this UI into **one Fly machine** for testing:
+
+- Next.js on port **3000** (public)
+- FastAPI on **127.0.0.1:3001** (internal; Next proxies `/api/*`)
+
+After `fly deploy`, open the Fly app URL — no separate Vercel project needed.
+
+## Optional: separate Vercel deploy
 
 1. Project root directory: **`web/`**
 2. Environment variable: **`API_URL`** = production API base URL (no trailing slash), e.g. `https://tu-tru-api.fly.dev`

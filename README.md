@@ -263,60 +263,53 @@ CI (GitHub Actions) chạy `tests/unit` + `tests/integration` khi push vào `mai
 
 ## Deploy
 
-Dự án gồm **API** (Fly.io) và **Web UI** (`web/`, deploy riêng — Vercel hoặc tương đương).
+**Fly.io (mặc định):** một machine chạy **cả API + Web UI** (phù hợp test/staging).
 
-### API (Fly.io)
+| Port (trong container) | Service |
+|---|---|
+| `3000` (public) | Next.js — UI + proxy `/api/*`, `/health` |
+| `3001` (loopback) | FastAPI — chỉ Next gọi nội bộ |
 
 ```bash
-# Local
-docker compose up --build
+# Local — giống image Fly
+docker build -t tu-tru-combined .
+docker run --rm -p 3000:3000 tu-tru-combined
+# → http://localhost:3000 (UI), API qua /api/v1/...
 
-# Production
+# Fly
 fly deploy
 ```
+
+VM: **1024 MB** (`fly.toml`) — đủ cho Node + Python khi test.
 
 **Fly secrets (production):**
 
 ```bash
 fly secrets set SHARE_TOKEN_SECRET='...'   # bắt buộc cho share token
 fly secrets set REDIS_URL='redis://...'    # khuyến nghị (cache + rate limit)
-fly secrets set CORS_ORIGINS='https://luangiaibattu.vn'  # nếu browser gọi API trực tiếp
 ```
 
-CI: push/PR vào `main` → chạy `tests/unit` + `tests/integration` → deploy Fly khi pass.
+`CORS_ORIGINS` không cần thiết khi browser chỉ gọi same-origin `/api/...` qua Next.
 
-### Web UI (`web/`)
+CI: push/PR vào `main` → `tests/unit` + `tests/integration` → `fly deploy`.
 
-Next.js proxy `/api/*` → backend qua `API_URL` (xem `web/next.config.mjs`).
+### Web riêng (tùy chọn — Vercel)
 
-```bash
-cd web
-npm ci
-npm run build
-npm run start   # port 3001
-```
+Nếu sau này tách frontend production:
 
-**Deploy Vercel (khuyến nghị):**
+1. Project root = `web/`, env **`API_URL`** = URL Fly API
+2. `npm run build` — xem [`web/README.md`](web/README.md)
 
-1. Tạo project, root directory = `web/`
-2. Set env **`API_URL`** = URL Fly API (vd `https://tu-tru-api.fly.dev`)
-3. Build command: `npm run build` — output: Next.js default
+Dev local vẫn tách: API `:3000`, `cd web && npm run dev` → `:3001`.
 
-**Smoke test sau deploy:**
+**Smoke test sau deploy Fly (combined):**
 
 ```bash
-# API trực tiếp
-curl -s -X POST "$API_URL/v1/la-so-full" \
-  -H 'Content-Type: application/json' \
-  -d '{"birth_date":"21/03/1990","birth_time":6,"gender":1,"birth_minute":15,"view_year":2026}'
-
-# Web qua rewrite (thay $WEB_URL)
-curl -s -X POST "$WEB_URL/api/v1/la-so-full" \
+curl -s https://tu-tru-api.fly.dev/health
+curl -s -X POST https://tu-tru-api.fly.dev/api/v1/la-so-full \
   -H 'Content-Type: application/json' \
   -d '{"birth_date":"21/03/1990","birth_time":6,"gender":1,"birth_minute":15,"view_year":2026}'
 ```
-
-Khi dùng rewrite Next.js, browser gọi same-origin `/api/...` — không cần mở CORS rộng trên API.
 
 Tài liệu API chi tiết: [`docs/api-spec.md`](docs/api-spec.md)  
 Web dev: [`web/README.md`](web/README.md)  
