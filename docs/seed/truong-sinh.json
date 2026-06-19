@@ -1,0 +1,44 @@
+{
+  "_description": "Thập nhị trường sinh — Trường Sinh start branch per Day Master stem (index 0-9). Yang stems forward, yin stems backward on 12 branches.",
+  "stages": [
+    "truong_sinh",
+    "moc_duc",
+    "quan_doi",
+    "lam_quan",
+    "de_vuong",
+    "suy",
+    "benh",
+    "tu",
+    "mo",
+    "tuyet",
+    "thai",
+    "duong"
+  ],
+  "stage_labels_vi": {
+    "truong_sinh": "Trường Sinh",
+    "moc_duc": "Mộc Dục",
+    "quan_doi": "Quan Đới",
+    "lam_quan": "Lâm Quan",
+    "de_vuong": "Đế Vượng",
+    "suy": "Suy",
+    "benh": "Bệnh",
+    "tu": "Tử",
+    "mo": "Mộ",
+    "tuyet": "Tuyệt",
+    "thai": "Thai",
+    "duong": "Dưỡng"
+  },
+  "chang_sheng_start_chi": {
+    "0": 11,
+    "1": 6,
+    "2": 2,
+    "3": 9,
+    "4": 2,
+    "5": 9,
+    "6": 5,
+    "7": 0,
+    "8": 8,
+    "9": 3
+  },
+  "yang_stems": [0, 2, 4, 6, 8]
+}

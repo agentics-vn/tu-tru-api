@@ -1,0 +1,68 @@
+{
+  "_description": "Thần sát Mệnh Bàn — lookup rules for full chart grid (tuvivietnam.vn convention).",
+  "san_he_groups": [
+    {"key": "yin_wu_xu", "branches": [2, 6, 10], "jiang_xing": 6, "jie_sha": 11, "wang_shen": 5},
+    {"key": "shen_zi_chen", "branches": [8, 0, 4], "jiang_xing": 0, "jie_sha": 5, "wang_shen": 11},
+    {"key": "si_you_chou", "branches": [5, 9, 1], "jiang_xing": 9, "jie_sha": 2, "wang_shen": 8},
+    {"key": "hai_mao_wei", "branches": [11, 3, 7], "jiang_xing": 3, "jie_sha": 8, "wang_shen": 2}
+  ],
+  "van_xuong_by_day_stem": {
+    "0": [6, 5],
+    "1": [6],
+    "2": [8],
+    "3": [9],
+    "4": [8],
+    "5": [9],
+    "6": [11],
+    "7": [0],
+    "8": [2],
+    "9": [3]
+  },
+  "thien_at_by_day_stem": {
+    "0": [1, 7],
+    "1": [0, 8],
+    "2": [11, 9],
+    "3": [11, 9],
+    "4": [1, 7],
+    "5": [0, 8],
+    "6": [1, 7],
+    "7": [2, 6],
+    "8": [3, 5],
+    "9": [3, 5]
+  },
+  "thien_loc_by_day_stem": {
+    "0": [2],
+    "1": [3],
+    "2": [5],
+    "3": [6],
+    "4": [5],
+    "5": [6],
+    "6": [8],
+    "7": [9],
+    "8": [11],
+    "9": [0]
+  },
+  "stars": {
+    "thien_at": {"name": "Thiên Ất Quý Nhân", "rule": "day_stem_to_chi"},
+    "thien_loc": {"name": "Thiên Lộc", "rule": "day_stem_to_chi"},
+    "van_xuong": {"name": "Văn Xương", "rule": "day_stem_to_chi"},
+    "tuong_tinh": {"name": "Tướng Tinh", "rule": "jiang_xing_on_pillar"},
+    "tai_sat": {"name": "Tai Sát", "rule": "jiang_xing_on_day_only"},
+    "kiep_sat": {"name": "Kiếp Sát", "rule": "san_he_group_marker_jie_sha"},
+    "vong_than": {"name": "Vong Thần", "rule": "san_he_group_marker_wang_shen"},
+    "dao_hoa": {"name": "Đào Hoa", "rule": "tao_hua"},
+    "dich_ma": {"name": "Dịch Mã", "rule": "yi_ma"}
+  },
+  "tao_hua": {
+    "yin_wu_xu": 3,
+    "shen_zi_chen": 9,
+    "si_you_chou": 6,
+    "hai_mao_wei": 0
+  },
+  "yi_ma": {
+    "yin_wu_xu": 8,
+    "shen_zi_chen": 2,
+    "si_you_chou": 11,
+    "hai_mao_wei": 5
+  }
+}

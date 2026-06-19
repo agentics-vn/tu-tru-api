@@ -757,3 +757,52 @@ Set NLTT `BAT_TU_API_URL` to Fly staging/preview URL before QA (see README).
 | P3-05 | `GET /v1/weekly-summary` marked **deprecated** in OpenAPI |
 | P3-06 | `meta.candidates_scanned` alias of `meta.days_passed_layer2` on chon-ngay |
 | P3-07 | `hop-tuoi` v2 `criteria[].points` (0–100 per criterion) |
+
+---
+
+# API Spec — POST /v1/la-so-full
+
+Full **Mệnh Bàn Tứ Trụ** grid for standalone lá số product (not NLTT day scoring).
+
+## Request
+
+```json
+{
+  "birth_date": "2026-06-19",
+  "birth_time": 10,
+  "birth_minute": 57,
+  "gender": 1,
+  "name": "NGUYỄN VĂN T",
+  "num_dai_van": 10,
+  "num_luu_nien": 10
+}
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| birth_date | Yes | ISO `YYYY-MM-DD`, not future |
+| birth_time | Yes | Giờ sinh enum (same as `/v1/tu-tru`) |
+| gender | Yes | `1` nam, `-1` nữ |
+| birth_minute | No | `0–59`, default `0` |
+| name | No | Display name in header |
+| num_dai_van | No | Default `10` cycles |
+| num_luu_nien | No | Default `10` years |
+
+## Response 200
+
+Top-level: `status`, `birth_date`, `birth_time`, `engine_version`, `computed_at`, **`menh_ban`**.
+
+`menh_ban` includes:
+
+- `header`: dương/âm lịch, tiết khí, nguyệt lệnh, khởi vận, giới tính
+- `pillars.{year,month,day,hour}`: can/chi, nạp âm, thập thần, tàng can, phó tinh, trường sinh, thần sát
+- `dai_van`: `khoi_van_date`, `start_age`, `cycles[]` with `start_year`, `age_label`
+- `luu_nien[]`: annual pillars list
+- `menh_cung`, `thai_nguyen`, `tuan_khong`
+- P2 parity fields via `merge_chart_contract_into_result` (`stem_transformations`, `god_groups`, …)
+
+Algorithm: `docs/algorithm.md` §22.
+
+## Frontend
+
+Next.js app in `web/` — dev `npm run dev` (port 3001), proxies `/api/*` → FastAPI (`API_URL`, default `http://127.0.0.1:3000`).

@@ -986,3 +986,110 @@ Response thêm (khi có `birth_time`):
 - `_raw.raw_element_counts` — trước hóa (cho UI so sánh).
 
 **LLM / chat:** chỉ luận hóa hợp và % nhóm thần khi các field trên có trong JSON facts; không tự suy ngoài API.
+
+---
+
+## 22. Mệnh Bàn Tứ Trụ — lá số đầy đủ (GET/POST full chart)
+
+> Engine: `engine/truong_sinh.py`, `engine/cung_menh.py`, `engine/tuan_khong.py`, `engine/than_sat.py`, `engine/chart_bundle.build_full_chart()`  
+> Seed: `docs/seed/truong-sinh.json`, `docs/seed/than-sat.json`, `docs/seed/tiet-khi.json`
+
+### 22.1 Phó tinh (Tàng Can Thập Thần)
+
+- Với mỗi trụ, lấy `get_tang_can_display(chi_idx)` → mỗi tàng can `c`, `get_thap_than(nhat_chu_can, c)`.
+- Nhãn rút gọn UI (map `key` → tên ngắn): `thuong_quan`→Thương, `chinh_tai`/`thien_tai`→Tài, `chinh_an`/`thien_an`→Ấn, `that_sat`→Sát, `thuc_than`→Thực, `ty_kien`→Tỷ, `kiep_tai`→Kiếp, `chinh_quan`→Quan, v.v.
+- Không áp dụng hóa hợp cho tàng can (chỉ Can bề mặt).
+- **Thứ tự hiển thị tàng can (lá số)** theo **Uyên Hải Tử Bình** (khớp tuvivietnam.vn): giống thứ tự khí (`get_tang_can`) trừ **Tỵ** và **Thân** — đảo Trung Khí ↔ Dư Khí:
+  - Tỵ: **Bính, Mậu, Canh** (thay vì Bính, Canh, Mậu)
+  - Thân: **Canh, Mậu, Nhâm** (thay vì Canh, Nhâm, Mậu)
+  - Chỉ ảnh hưởng **hiển thị** (`get_tang_can_display`); chấm điểm ngũ hành vẫn dùng thứ tự khí có trọng số (`get_tang_can`).
+
+### 22.2 Thập nhị trường sinh (十二长生)
+
+- Theo **Nhật Can** (Dương can thuận, Âm can nghịch) trên vòng 12 Chi.
+- Điểm **Trường Sinh** (index 0) theo Nhật Can — bảng `docs/seed/truong-sinh.json`:
+  - Giáp(0)→Hợi(11), Ất(1)→Ngọ(6), Bính(2)/Mậu(4)→Dần(2), Đinh(3)/Kỷ(5)→Dậu(9), Canh(6)→Tỵ(5), Tân(7)→Tý(0), Nhâm(8)→Thân(8), Quý(9)→Mão(3).
+- Thứ tự 12 cung: Trường Sinh, Mộc Dục, Quan Đới, Lâm Quan, Đế Vượng, Suy, Bệnh, Tử, Mộ, Tuyệt, Thai, Dưỡng.
+- Nhãn VN rút gọn: Mộc Dục, Quan Đới, Lâm Quan, Đế Vượng, Suy, Bệnh, Tử, Mộ, Tuyệt, Thai, Dưỡng, Trường Sinh (hoặc tương đương lịch VN: Tử, Mộc Dục, Bệnh, …).
+
+### 22.3 Khởi vận theo ngày (起运日期)
+
+Bổ sung §17.3 — **tinh chỉnh theo giờ sinh**:
+
+1. Xác định **thời điểm tiết 节** kế tiếp (thuận) hoặc liền trước (nghịch) bằng nội suy kinh độ Mặt Trời (`engine/bazi_solar.py`) tới **phút**.
+2. Chênh lệch `Δ` từ **datetime sinh** (ngày + giờ/phút, TZ mặc định +7) tới mốc 节 (giây).
+3. Quy đổi ảo (truyền thống: `3 ngày = 1 năm`) ánh xạ liên tục lên lịch thực:
+   `khoi_van_date = datetime_sinh + (virtual_days / 3) × 365.2422 ngày` (năm chí tuyến `TROPICAL_YEAR_DAYS`).
+   Cách này khớp tuvivietnam tới **đúng ngày** (golden 13/6/2032; ca 21/3/1990 05:15 → 5/4/1995).
+4. `khoi_van_date` = phần ngày (ISO) của datetime trên.
+5. `start_age = max(1, ceil(civil_days / 3))` (civil_days = số ngày dương lịch tới 节, mức nửa đêm) giữ tương thích §17; hiển thị tuổi mụ trên UI. `start_year = year(birth) + start_age - 1` luôn trùng năm của `khoi_van_date`.
+6. Mỗi đại vận: `cycle.start_age = start_age + (cycle_num - 1) * 10`, và `start_year = year(birth) + cycle.start_age - 1` (đã bao gồm offset 10 năm/chu kỳ — **không** cộng `(cycle_num-1)*10` lần nữa).
+
+### 22.4 Lưu niên list
+
+- Sinh `num_years` (mặc định 10) mục `{ year, age, can_chi, can_name, chi_name }`.
+- `year` = năm dương bắt đầu từ năm sinh; `can_chi` = `get_can_chi_year(year)` (Lập Xuân cho từng năm nếu cần chi tiết — MVP dùng `get_can_chi_year`).
+- **`view_year`** (tùy chọn): khi truyền, dải lưu niên bắt đầu từ `view_year` và đánh dấu `selected=true` ở năm đó (để UI chọn năm xem). Không truyền → bắt đầu từ năm sinh (tương thích cũ).
+
+### 22.5 Thai nguyên (胎元)
+
+- `thai_nguyen_can = (month_can + 1) % 10`
+- `thai_nguyen_chi = (month_chi + 3) % 12`
+
+### 22.6 Mệnh cung (命宫)
+
+**Địa Chi** — số hóa Chi (寅=1 … 丑=12):
+
+```
+sum = month_num + hour_num
+ming_num = (14 - sum) if sum < 14 else (26 - sum)
+if ming_num > 12: ming_num -= 12
+```
+
+`month_num` / `hour_num` từ **Địa Chi tháng/giờ** (không phải số tháng âm lịch).
+
+**Thiên Can** — Ngũ Hổ Độn từ **Can năm** tới Chi mệnh cung (寅月起首 stem theo §17 / `YIN_MONTH_STEM_START`).
+
+### 22.7 Tuần không (旬空)
+
+- Từ `(can_idx, chi_idx)` suy **tuần Giáp** (60 vị trí), lấy 2 Chi không vong:
+
+| Tuần | Không vong |
+|------|------------|
+| Giáp Tý | Tuất, Hợi |
+| Giáp Tuất | Thân, Dậu |
+| Giáp Thân | Ngọ, Mùi |
+| Giáp Ngọ | Thìn, Tỵ |
+| Giáp Thìn | Dần, Mão |
+| Giáp Dần | Tý, Sửu |
+
+- `nien_khong`: tuần của trụ **Năm**; `nhat_khong`: tuần của trụ **Ngày**.
+
+### 22.8 Thần sát theo trụ
+
+Bảng `docs/seed/than-sat.json`. Quy tắc chính (khớp lịch tuvivietnam.vn):
+
+| Sao | Cách tra |
+|-----|----------|
+| **Văn Xương** | Nhật Can → Chi: 甲→午, 乙→午, 丙→申, 丁→酉, 戊→申, 己→酉, 庚→亥, 辛→子, 壬→寅, 癸→卯; hiện trên trụ có Chi đó |
+| **Tướng Tinh** | Chi thuộc tam hợp → trụ có Chi **将星**: 寅午戌→午, 申子辰→子, 巳酉丑→酉, 亥卯未→卯 |
+| **Kiếp Sát** | Trụ có Chi thuộc nhóm 三合 của **劫煞**: 寅午戌→亥, 申子辰→巳, 巳酉丑→寅, 亥卯未→申 — hiện sao trên mọi trụ trong nhóm |
+| **Vong Thần** | Tương tự: 寅午戌→巳, 申子辰→亥, 巳酉丑→申, 亥卯未→寅 |
+| **Tai Sát** | Trụ **Ngày** khi Chi ngày là 将星 của tam hợp (cùng điều kiện Tướng Tinh trên trụ Ngày) |
+| **Thiên Lộc** (建禄) | Lộc thần của **Nhật Can** → Chi: 甲→寅, 乙→卯, 丙戊→巳, 丁己→午, 庚→申, 辛→酉, 壬→亥, 癸→子; hiện trên trụ có Chi đó |
+| **Thiên Ất Quý Nhân** (天乙贵人) | Theo **Nhật Can** → Chi: 甲戊庚→丑/未, 乙己→子/申, 丙丁→亥/酉, 壬癸→卯/巳, 辛→寅/午; hiện trên trụ có Chi đó |
+
+Các sao khác (Đào Hoa, Dịch Mã, …) khai báo thêm trong seed `than-sat.json`.
+
+> **Lưu ý**: Thiên Ất Quý Nhân dùng quy tắc chuẩn (theo Nhật Can). Một số lá số tuvivietnam.vn đặt Thiên Ất Quý Nhân ở vị trí không khớp bảng chuẩn — nếu cần khớp tuyệt đối, bổ sung bảng riêng từ nguồn của họ.
+
+### 22.9 Tiết khí · nguyệt lệnh · âm lịch
+
+- **Tiết khí**: `solar_term_bucket(λ)` → key trong `tiet-khi.json` (bucket 0 = 立春 offset). **Tính theo đúng giờ sinh** (kinh độ Mặt Trời tại datetime sinh, không phải nửa đêm) — một tiết bắt đầu trong ngày sinh chỉ được tính sau thời điểm chính xác của nó. VD 21/3/1990 05:15 → Xuân Phân (mốc ~04:19), không phải Kinh Trập.
+- **Nguyệt lệnh**: `chi_name` của Nguyệt trụ (`tu_tru.month.chi_name`).
+- **Âm lịch**: `lunardate` / `engine/lunar.solar_to_lunar()`.
+- **`duong_lich_display`**: `d/m/yyyy - H:MM (GMT±N)`, giờ lấy từ **giờ bắt đầu** của khung giờ sinh (`BIRTH_SLOT_HOUR`) + `birth_minute`. VD slot Tỵ (10) + phút 57 → `9:57`.
+
+### 22.10 API `POST /v1/la-so-full`
+
+Request: `{ birth_date, birth_time, gender, name? }` — trả object `menh_ban` gồm header, `pillars[]` (surface + tang_can + pho_tinh + truong_sinh), `dai_van`, `luu_nien`, `than_sat`, `menh_cung`, `thai_nguyen`, `tuan_khong`, `tiet_khi`, `am_lich`, cùng các field phân tích §21 khi có `birth_time`.

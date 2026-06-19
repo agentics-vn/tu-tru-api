@@ -39,6 +39,17 @@ TANG_CAN_WEIGHTS: list[float] = [1.0, 0.6, 0.3]
 # Role labels
 TANG_CAN_ROLES: list[str] = ["chu_khi", "trung_khi", "du_khi"]
 
+# Lá số display order (Uyên Hải Tử Bình / tuvivietnam convention).
+# Differs from the qi-weight order (子平真诠, used for scoring) only for Tỵ and
+# Thân, where Trung Khí and Dư Khí are listed in swapped order.
+#   Tỵ:  Bính, Mậu, Canh  (vs qi order Bính, Canh, Mậu)
+#   Thân: Canh, Mậu, Nhâm (vs qi order Canh, Nhâm, Mậu)
+# Source: docs/algorithm.md §22.2
+TANG_CAN_DISPLAY_ORDER: dict[int, list[int]] = {
+    5: [2, 4, 6],  # Tỵ:   Bính, Mậu, Canh
+    8: [6, 4, 8],  # Thân: Canh, Mậu, Nhâm
+}
+
 
 def get_tang_can(chi_idx: int) -> list[dict]:
     """
@@ -61,6 +72,22 @@ def get_tang_can(chi_idx: int) -> list[dict]:
             "weight": TANG_CAN_WEIGHTS[i],
         })
     return result
+
+
+def get_tang_can_display(chi_idx: int) -> list[dict]:
+    """
+    Hidden stems in lá số display order (Uyên Hải Tử Bình / tuvivietnam).
+
+    Same stems and per-stem role/weight as get_tang_can(), only reordered for
+    Tỵ and Thân. Used for the grid display (Tàng Can / Phó Tinh rows); scoring
+    keeps using the qi-weight order from get_tang_can().
+    """
+    base = get_tang_can(chi_idx)
+    order = TANG_CAN_DISPLAY_ORDER.get(chi_idx)
+    if not order:
+        return base
+    by_can = {h["can_idx"]: h for h in base}
+    return [by_can[c] for c in order]
 
 
 def get_all_elements(tu_tru: dict) -> dict[str, float]:

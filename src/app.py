@@ -54,6 +54,7 @@ from api.routes.convert_date import router as convert_date_router
 from api.routes.share import router as share_router
 from api.routes.profile import router as profile_router
 from api.routes.weekly_summary import router as weekly_summary_router
+from api.routes.la_so_full import router as la_so_full_router
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Logging
@@ -167,6 +168,7 @@ app.include_router(day_compare_router, prefix="/v1/day-compare")
 app.include_router(convert_date_router, prefix="/v1/convert-date")
 app.include_router(share_router, prefix="/v1/share")
 app.include_router(profile_router, prefix="/v1/profile")
+app.include_router(la_so_full_router, prefix="/v1/la-so-full")
 app.include_router(weekly_summary_router, prefix="/v1/weekly-summary")
 
 

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from engine.can_chi import CAN_HANH, CAN_NAMES
 from engine.hoa_hop import detect_stem_transformations, effective_stem_hanh
-from engine.tang_can import get_tang_can
+from engine.tang_can import get_tang_can, get_tang_can_display
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Polarity: Dương (yang) = even index, Âm (yin) = odd index
@@ -62,17 +62,75 @@ GOD_GROUP_LABELS: dict[str, str] = {
 }
 
 THAP_THAN_NAMES: dict[str, str] = {
-    "ty_kien": "Tỷ Kiên",         # Compare Shoulder
-    "kiep_tai": "Kiếp Tài",       # Rob Wealth
-    "thuc_than": "Thực Thần",     # Eating God
-    "thuong_quan": "Thương Quan",  # Hurting Officer
-    "thien_an": "Thiên Ấn",       # Indirect Resource / Owl
-    "chinh_an": "Chính Ấn",       # Direct Resource
-    "thien_tai": "Thiên Tài",     # Indirect Wealth
-    "chinh_tai": "Chính Tài",     # Direct Wealth
-    "that_sat": "Thất Sát",       # Seven Killing
-    "chinh_quan": "Chính Quan",   # Direct Officer
+    "ty_kien": "Tỷ Kiên",
+    "kiep_tai": "Kiếp Tài",
+    "thuc_than": "Thực Thần",
+    "thuong_quan": "Thương Quan",
+    "thien_an": "Thiên Ấn",
+    "chinh_an": "Chính Ấn",
+    "thien_tai": "Thiên Tài",
+    "chinh_tai": "Chính Tài",
+    "that_sat": "Thất Sát",
+    "chinh_quan": "Chính Quan",
 }
+
+THAP_THAN_SHORT_LABELS: dict[str, str] = {
+    "ty_kien": "Tỷ",
+    "kiep_tai": "Kiếp",
+    "thuc_than": "Thực",
+    "thuong_quan": "Thương",
+    "thien_an": "T.Ấn",
+    "chinh_an": "Ấn",
+    "thien_tai": "T.Tài",
+    "chinh_tai": "Tài",
+    "that_sat": "Sát",
+    "chinh_quan": "Quan",
+}
+
+
+def short_thap_than_label(god_key: str) -> str:
+    return THAP_THAN_SHORT_LABELS.get(god_key, THAP_THAN_NAMES.get(god_key, god_key))
+
+
+def analyze_pho_tinh(tu_tru: dict) -> dict[str, list[dict]]:
+    """
+    Thập Thần for each hidden stem (Phó tinh) per pillar.
+
+    Returns dict pillar_key -> list of {can_name, hanh, role, key, name, short_label}.
+    """
+    dm_can = tu_tru["day"]["can_idx"]
+    result: dict[str, list[dict]] = {}
+    for pillar_key in ("year", "month", "day", "hour"):
+        items: list[dict] = []
+        for hidden in get_tang_can_display(tu_tru[pillar_key]["chi_idx"]):
+            god = get_thap_than(dm_can, hidden["can_idx"])
+            items.append({
+                "can_idx": hidden["can_idx"],
+                "can_name": hidden["can_name"],
+                "hanh": hidden["hanh"],
+                "role": hidden["role"],
+                "weight": hidden["weight"],
+                "key": god["key"],
+                "name": god["name"],
+                "short_label": short_thap_than_label(god["key"]),
+            })
+        result[pillar_key] = items
+    return result
+
+
+def analyze_tang_can_display(tu_tru: dict) -> dict[str, list[dict]]:
+    """Tàng can labels per pillar for lá số grid."""
+    out: dict[str, list[dict]] = {}
+    for pillar_key in ("year", "month", "day", "hour"):
+        out[pillar_key] = [
+            {
+                "can_name": h["can_name"],
+                "hanh": h["hanh"],
+                "role": h["role"],
+            }
+            for h in get_tang_can_display(tu_tru[pillar_key]["chi_idx"])
+        ]
+    return out
 
 
 def get_thap_than(day_master_can: int, target_can: int) -> dict:

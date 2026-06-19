@@ -12,14 +12,27 @@ from __future__ import annotations
 
 import math
 from datetime import date as dt_date
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from engine.bazi_solar import DEFAULT_TZ, solar_apparent_longitude_deg, solar_term_bucket
+from engine.bazi_solar import (
+    DEFAULT_TZ,
+    birth_datetime_from_parts,
+    next_jie_datetime,
+    prev_jie_datetime,
+    solar_apparent_longitude_deg,
+    solar_term_bucket,
+    virtual_days_from_delta,
+)
 from engine.can_chi import CAN_NAMES, CHI_NAMES, CAN_HANH, NAP_AM_HANH, get_nap_am_pair_idx
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Direction rule
 # ─────────────────────────────────────────────────────────────────────────────
+
+# Mean tropical year (days). Maps the "3 ngày = 1 năm" 节 gap onto the real
+# calendar so 起运 lands on the exact day (§22.3).
+TROPICAL_YEAR_DAYS = 365.2422
+
 
 def _is_yang_stem(can_idx: int) -> bool:
     """Dương (Yang) stems: Giáp(0), Bính(2), Mậu(4), Canh(6), Nhâm(8)."""
@@ -115,6 +128,95 @@ def _get_start_age(birth_date: str, direction: int) -> float:
     return max(1, math.ceil(days_diff / 3))
 
 
+def compute_khoi_van(
+    birth_date: str,
+    direction: int,
+    birth_time_slot: int | None = None,
+    birth_minute: int = 0,
+    tz: float = DEFAULT_TZ,
+) -> dict:
+    """
+    Compute 起运 date with hour/minute precision (§22.3).
+
+    Returns: virtual_days, start_age, khoi_van_date (ISO), jie_datetime (ISO)
+    """
+    parts = birth_date.split("-")
+    y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+    if birth_time_slot is not None:
+        birth_dt = birth_datetime_from_parts(
+            birth_date, birth_time_slot, birth_minute, tz,
+        )
+    else:
+        birth_dt = datetime(y, m, d, 12, 0, 0)
+
+    if direction == 1:
+        jie_dt = next_jie_datetime(birth_dt, tz)
+        delta = jie_dt - birth_dt
+    else:
+        jie_dt = prev_jie_datetime(birth_dt, tz)
+        delta = birth_dt - jie_dt
+
+    solar_days = virtual_days_from_delta(delta)
+    birth_d = birth_dt.date()
+    if direction == 1:
+        civil_end = _next_jie_date(birth_d, tz) or jie_dt.date()
+        civil_days = (civil_end - birth_d).days
+    else:
+        civil_start = _prev_jie_date(birth_d, tz) or jie_dt.date()
+        civil_days = (birth_d - civil_start).days
+    start_age = max(1, math.ceil(civil_days / 3))
+
+    # Exact 起运 day: scale the (time-aware) 节 gap by 3 days ≈ 1 năm onto the
+    # real calendar. Matches tuvivietnam to the day (golden 13/6/2032).
+    khoi_dt = birth_dt + timedelta(days=solar_days / 3.0 * TROPICAL_YEAR_DAYS)
+    khoi_date = khoi_dt.date()
+
+    return {
+        "virtual_days": round(solar_days, 4),
+        "civil_days_to_jie": civil_days,
+        "start_age": start_age,
+        "khoi_van_date": khoi_date.isoformat(),
+        "jie_datetime": jie_dt.isoformat(sep=" ", timespec="minutes"),
+        "direction": direction,
+    }
+
+
+def get_dai_van_with_dates(
+    tu_tru: dict,
+    gender: int,
+    birth_date: str,
+    birth_time_slot: int | None = None,
+    birth_minute: int = 0,
+    num_cycles: int = 10,
+) -> dict:
+    """Đại vận cycles with khoi_van_date and start_year per cycle."""
+    year_can_idx = tu_tru["year"]["can_idx"]
+    direction = get_dai_van_direction(year_can_idx, gender)
+    khoi = compute_khoi_van(
+        birth_date, direction, birth_time_slot, birth_minute,
+    )
+    start_age = khoi["start_age"]
+    cycles_raw = get_dai_van(
+        tu_tru, gender, birth_date, num_cycles, start_age=start_age,
+    )
+    birth_y = int(birth_date.split("-")[0])
+    cycles = []
+    for c in cycles_raw:
+        # c["start_age"] already includes the per-cycle +10 offset.
+        start_year = birth_y + c["start_age"] - 1
+        cycles.append({
+            **c,
+            "start_year": start_year,
+            "age_label": f"{c['start_age']}-{c['end_age']}t",
+        })
+    return {
+        "direction": "thuận" if direction == 1 else "nghịch",
+        "direction_step": direction,
+        **khoi,
+        "cycles": cycles,
+    }
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Đại Vận cycle generation
 # ─────────────────────────────────────────────────────────────────────────────
@@ -124,6 +226,7 @@ def get_dai_van(
     gender: int,
     birth_date: str,
     num_cycles: int = 8,
+    start_age: int | None = None,
 ) -> list[dict]:
     """
     Calculate 10-year luck pillars.
@@ -146,7 +249,8 @@ def get_dai_van(
     month_chi_idx = tu_tru["month"]["chi_idx"]
 
     direction = get_dai_van_direction(year_can_idx, gender)
-    start_age = _get_start_age(birth_date, direction)
+    if start_age is None:
+        start_age = _get_start_age(birth_date, direction)
 
     cycles: list[dict] = []
 

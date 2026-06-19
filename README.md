@@ -72,6 +72,7 @@ cp .env.example .env
 | GET | `/v1/lich-thang` | Lịch tháng với badge tốt/xấu + 28 Tú |
 | GET | `/v1/tieu-van` | Tiểu Vận (vận tháng) |
 | POST | `/v1/tu-tru` | Tứ Trụ / Bát Tự đầy đủ |
+| **POST** | **`/v1/la-so-full`** | **Lá số Mệnh Bàn Tứ Trụ (grid đầy đủ + đại vận/lưu niên)** |
 | GET | `/v1/la-so` | Lá số diễn giải (tính cách, sự nghiệp, sức khỏe) |
 | POST | `/v1/hop-tuoi` | Hợp tuổi hai người (v1: điểm, v2: phân tích quan hệ) |
 | GET | `/v1/phong-thuy` | Gợi ý phong thủy (hướng, màu, số, vật phẩm, Phi Tinh) |
@@ -262,18 +263,63 @@ CI (GitHub Actions) chạy `tests/unit` + `tests/integration` khi push vào `mai
 
 ## Deploy
 
-Dự án đã cấu hình cho **Fly.io** (`fly.toml`) và **Docker** (`Dockerfile`, `docker-compose.yml`).
+Dự án gồm **API** (Fly.io) và **Web UI** (`web/`, deploy riêng — Vercel hoặc tương đương).
+
+### API (Fly.io)
 
 ```bash
-# Build image
+# Local
 docker compose up --build
 
-# Deploy Fly.io
+# Production
 fly deploy
 ```
 
+**Fly secrets (production):**
+
+```bash
+fly secrets set SHARE_TOKEN_SECRET='...'   # bắt buộc cho share token
+fly secrets set REDIS_URL='redis://...'    # khuyến nghị (cache + rate limit)
+fly secrets set CORS_ORIGINS='https://luangiaibattu.vn'  # nếu browser gọi API trực tiếp
+```
+
+CI: push/PR vào `main` → chạy `tests/unit` + `tests/integration` → deploy Fly khi pass.
+
+### Web UI (`web/`)
+
+Next.js proxy `/api/*` → backend qua `API_URL` (xem `web/next.config.mjs`).
+
+```bash
+cd web
+npm ci
+npm run build
+npm run start   # port 3001
+```
+
+**Deploy Vercel (khuyến nghị):**
+
+1. Tạo project, root directory = `web/`
+2. Set env **`API_URL`** = URL Fly API (vd `https://tu-tru-api.fly.dev`)
+3. Build command: `npm run build` — output: Next.js default
+
+**Smoke test sau deploy:**
+
+```bash
+# API trực tiếp
+curl -s -X POST "$API_URL/v1/la-so-full" \
+  -H 'Content-Type: application/json' \
+  -d '{"birth_date":"21/03/1990","birth_time":6,"gender":1,"birth_minute":15,"view_year":2026}'
+
+# Web qua rewrite (thay $WEB_URL)
+curl -s -X POST "$WEB_URL/api/v1/la-so-full" \
+  -H 'Content-Type: application/json' \
+  -d '{"birth_date":"21/03/1990","birth_time":6,"gender":1,"birth_minute":15,"view_year":2026}'
+```
+
+Khi dùng rewrite Next.js, browser gọi same-origin `/api/...` — không cần mở CORS rộng trên API.
+
 Tài liệu API chi tiết: [`docs/api-spec.md`](docs/api-spec.md)  
-Hướng dẫn thiết kế FE: [`docs/frontend-design-guide.md`](docs/frontend-design-guide.md)  
+Web dev: [`web/README.md`](web/README.md)  
 Thuật toán: [`docs/algorithm.md`](docs/algorithm.md)
 
 ### Direction C (NLTT)

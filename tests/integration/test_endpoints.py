@@ -631,6 +631,65 @@ class TestTuTru:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# POST /v1/la-so-full
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestLaSoFull:
+
+    def _valid_request(self, **overrides) -> dict:
+        body = {
+            "birth_date": "19/06/2026",
+            "birth_time": 10,
+            "gender": 1,
+            "birth_minute": 57,
+            "name": "NGUYỄN VĂN T",
+        }
+        body.update(overrides)
+        return body
+
+    def test_success(self):
+        r = client.post("/v1/la-so-full", json=self._valid_request())
+        assert r.status_code == 200
+        data = r.json()
+        assert data["status"] == "success"
+        assert "engine_version" in data
+        mb = data["menh_ban"]
+        assert mb["tu_tru_display"] == "Bính Ngọ | Giáp Ngọ | Giáp Tý | Kỷ Tỵ"
+        assert set(mb["pillars"].keys()) == {"year", "month", "day", "hour"}
+        assert mb["dai_van"]["khoi_van_date"] == "2032-06-13"
+        assert len(mb["luu_nien"]) == 10
+        assert mb["header"]["tiet_khi"]["name"] == "Mang Chủng"
+
+    def test_view_year(self):
+        r = client.post("/v1/la-so-full", json=self._valid_request(
+            birth_date="21/03/1990",
+            birth_time=6,
+            birth_minute=15,
+            view_year=2026,
+        ))
+        assert r.status_code == 200
+        mb = r.json()["menh_ban"]
+        assert mb["header"]["tiet_khi"]["name"] == "Xuân Phân"
+        assert mb["dai_van"]["khoi_van_date"] == "1995-04-05"
+        luu = mb["luu_nien"]
+        assert luu[0]["year"] == 2026
+        assert luu[0]["display"] == "Bính Ngọ"
+        assert luu[0]["selected"] is True
+
+    def test_invalid_birth_date_future(self):
+        r = client.post("/v1/la-so-full", json=self._valid_request(
+            birth_date="01/01/2099",
+        ))
+        assert r.status_code in (400, 422)
+
+    def test_deterministic(self):
+        body = self._valid_request()
+        r1 = client.post("/v1/la-so-full", json=body)
+        r2 = client.post("/v1/la-so-full", json=body)
+        assert r1.json() == r2.json()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Purity: same input → same output across all endpoints
 # ─────────────────────────────────────────────────────────────────────────────
 
