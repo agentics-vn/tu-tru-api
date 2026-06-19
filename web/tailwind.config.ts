@@ -30,8 +30,9 @@ const config: Config = {
         hairline: "rgba(154,124,34,0.30)",
       },
       fontFamily: {
-        serif: ["var(--font-serif)", "Lora", "Georgia", "serif"],
-        display: ["var(--font-display)", "Barlow Condensed", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "Open Sans", "system-ui", "sans-serif"],
+        serif: ["var(--font-sans)", "Open Sans", "system-ui", "sans-serif"],
+        display: ["var(--font-sans)", "Open Sans", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "IBM Plex Mono", "ui-monospace", "monospace"],
       },
     },

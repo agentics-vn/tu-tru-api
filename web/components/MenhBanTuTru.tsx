@@ -3,20 +3,22 @@
 import type { MenhBanPayload } from "@/lib/types";
 import { HANH_CLASS } from "@/lib/hanh-colors";
 
-const PILLAR_LABELS: Record<string, string> = {
-  year: "Năm",
-  month: "Tháng",
-  day: "Ngày",
-  hour: "Giờ",
-};
-
 const THAN_SAT_HEADERS = ["Niên Thần", "Nguyệt Thần", "Nhật Thần", "Thời Thần"];
+const MENH_HEADERS = ["Mệnh Cung", "Thai Nguyên", "Niên Không", "Nhật Không"];
 const KEYS = ["year", "month", "day", "hour"] as const;
 
 function formatDmy(iso: string): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
   if (!m) return iso;
   return `${Number(m[3])}/${Number(m[2])}/${m[1]}`;
+}
+
+/** Năm sinh dương cells: [năm, tháng, ngày, giờ] parsed from the header. */
+function birthDateCells(h: MenhBanPayload["header"]): string[] {
+  const d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(h.duong_lich);
+  const t = /-\s*([\d]{1,2}:[\d]{2})/.exec(h.duong_lich_display);
+  if (!d) return ["", "", "", t?.[1] ?? ""];
+  return [String(Number(d[1])), String(Number(d[2])), String(Number(d[3])), t?.[1] ?? ""];
 }
 
 function HanhText({
@@ -38,16 +40,45 @@ function HanhText({
   );
 }
 
-/** Left-hand row label column (vermilion, condensed, uppercase) — matches the source grid. */
-function RowLabel({ children }: { children: React.ReactNode }) {
+/** One full-width row of the sheet: fixed vermilion label column + content area. */
+function SheetRow({
+  label,
+  children,
+}: {
+  label: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
-    <th className="w-24 border border-hairline bg-paper-warm px-2 py-2 text-left align-middle font-display text-[11px] font-semibold uppercase leading-tight tracking-wide text-vermilion">
-      {children}
-    </th>
+    <div className="flex border-t border-hairline">
+      <div className="flex w-24 flex-shrink-0 items-center border-r border-hairline bg-paper-warm px-2 py-2 font-display text-[11px] font-semibold uppercase leading-tight tracking-wide text-vermilion">
+        {label}
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col">{children}</div>
+    </div>
   );
 }
 
-function Cell({
+/** Equal-width columns inside a row's content area. */
+function Cols({
+  n,
+  children,
+  className = "",
+}: {
+  n: number;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`grid grow ${className}`}
+      style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function GCell({
   children,
   className = "",
 }: {
@@ -55,40 +86,31 @@ function Cell({
   className?: string;
 }) {
   return (
-    <td
-      className={`border border-hairline px-2 py-2 text-center align-middle ${className}`}
+    <div
+      className={`border-r border-hairline px-2 py-2 text-center align-middle last:border-r-0 ${className}`}
     >
       {children}
-    </td>
-  );
-}
-
-function SectionTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-2 font-display text-sm font-semibold uppercase tracking-[0.15em] text-jade">
-      {children}
-    </p>
+    </div>
   );
 }
 
 export function MenhBanTuTru({ data }: { data: MenhBanPayload }) {
   const h = data.header;
+  const birthCells = birthDateCells(h);
 
   return (
-    <div className="mx-auto max-w-4xl space-y-4 p-4">
-      {/* Header band */}
-      <div className="overflow-hidden rounded-lg border border-gold/50 bg-paper shadow-lg">
-        <div className="grid gap-4 p-5 md:grid-cols-2">
-          <div className="border-b border-hairline pb-3 md:border-b-0 md:border-r md:pb-0 md:pr-4">
+    <div className="mx-auto max-w-4xl overflow-x-auto p-4">
+      <div className="min-w-[760px] overflow-hidden rounded-md border border-gold bg-paper shadow-lg">
+        {/* Header band */}
+        <div className="flex flex-col gap-4 p-5 md:flex-row md:items-start md:justify-between">
+          <div className="md:pr-6">
             <p className="font-display text-xs uppercase tracking-[0.3em] text-gold-deep">
               Luận Giải Bát Tự
             </p>
             <h1 className="mt-1 font-display text-3xl font-bold tracking-wide text-vermilion">
               Mệnh Bàn Tứ Trụ
             </h1>
-            <p className="mt-2 text-lg font-semibold text-ink">
-              {h.name || "—"}
-            </p>
+            <p className="mt-2 text-lg font-semibold text-ink">{h.name || "—"}</p>
           </div>
           <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm text-ink">
             <dt className="font-display uppercase tracking-wide text-muted">Giới tính</dt>
@@ -105,229 +127,213 @@ export function MenhBanTuTru({ data }: { data: MenhBanPayload }) {
             <dd className="font-semibold text-vermilion">{formatDmy(h.khoi_van_date)}</dd>
           </dl>
         </div>
-      </div>
 
-      {/* Main Tứ Trụ grid */}
-      <div className="overflow-x-auto rounded-lg border border-gold/50 bg-paper shadow-lg">
-        <table className="w-full min-w-[640px] border-collapse">
-          <thead>
-            <tr>
-              <RowLabel> </RowLabel>
-              {KEYS.map((k) => (
-                <Cell key={k} className="bg-paper-warm font-display text-sm font-semibold uppercase tracking-wide text-jade">
-                  {PILLAR_LABELS[k]}
-                </Cell>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <RowLabel>Thập Thần</RowLabel>
-              {KEYS.map((k) => (
-                <Cell key={k} className="text-sm text-ink">
-                  {k === "day" ? (
-                    <span className="font-display font-bold uppercase text-vermilion">
-                      {data.pillars[k].thap_than.short_label}
-                    </span>
-                  ) : (
-                    data.pillars[k].thap_than.short_label
-                  )}
-                </Cell>
-              ))}
-            </tr>
-            <tr>
-              <RowLabel>Bát Tự</RowLabel>
-              {KEYS.map((k) => {
-                const p = data.pillars[k];
-                return (
-                  <Cell key={k} className="bg-paper-warm/60">
-                    <div className="flex flex-col items-center gap-1">
-                      <HanhText text={p.can.name} hanh={p.can.hanh} large />
-                      <HanhText text={p.chi.name} hanh={p.chi.hanh} large />
-                    </div>
-                  </Cell>
-                );
-              })}
-            </tr>
-            <tr>
-              <RowLabel>Nạp Âm Ngũ Hành</RowLabel>
-              {KEYS.map((k) => (
-                <Cell key={k} className="text-sm text-ink">
-                  {data.pillars[k].nap_am.name}
-                </Cell>
-              ))}
-            </tr>
-            <tr>
-              <RowLabel>Can Chi Tàng Ẩn</RowLabel>
-              {KEYS.map((k) => (
-                <Cell key={k} className="text-sm">
-                  <span className="inline-flex flex-wrap justify-center gap-x-2">
-                    {data.pillars[k].tang_can.map((t, i) => (
-                      <HanhText key={`${t.can_name}-${i}`} text={t.can_name} hanh={t.hanh} />
-                    ))}
+        {/* Năm sinh dương */}
+        <SheetRow label="Năm sinh dương">
+          <Cols n={4}>
+            {birthCells.map((v, i) => (
+              <GCell key={KEYS[i]} className="text-sm font-semibold text-ink">
+                {v || "—"}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+
+        {/* Thập Thần */}
+        <SheetRow label="Thập Thần">
+          <Cols n={4}>
+            {KEYS.map((k) => (
+              <GCell key={k} className="text-sm text-ink">
+                {k === "day" ? (
+                  <span className="font-display font-bold uppercase text-vermilion">
+                    {data.pillars[k].thap_than.short_label}
                   </span>
-                </Cell>
-              ))}
-            </tr>
-            <tr>
-              <RowLabel>Phó Tinh</RowLabel>
-              {KEYS.map((k) => (
-                <Cell key={k} className="text-sm text-ink">
-                  {data.pillars[k].pho_tinh.map((p) => p.short_label).join("  ")}
-                </Cell>
-              ))}
-            </tr>
-            <tr>
-              <RowLabel>Thập Nhị Thần</RowLabel>
-              {KEYS.map((k) => (
-                <Cell key={k} className="text-sm text-ink">
-                  {data.pillars[k].truong_sinh.label_vi}
-                </Cell>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                ) : (
+                  data.pillars[k].thap_than.short_label
+                )}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
 
-      {/* Đại Vận */}
-      <div className="overflow-x-auto rounded-lg border border-gold/50 bg-paper p-4 shadow-lg">
-        <SectionTitle>Đại Vận</SectionTitle>
-        <table className="w-full min-w-[680px] border-collapse text-center">
-          <tbody>
-            <tr>
-              {data.dai_van.cycles.map((c) => (
-                <td
-                  key={`dv-${c.start_year}`}
-                  className="border border-hairline px-2 py-1.5 align-top"
-                >
-                  <div className="font-display font-semibold leading-tight text-ink">
-                    {c.display.split(" ").map((w) => (
-                      <div key={w}>{w}</div>
+        {/* Bát Tự */}
+        <SheetRow label="Bát Tự">
+          <Cols n={4}>
+            {KEYS.map((k) => {
+              const p = data.pillars[k];
+              return (
+                <GCell key={k} className="bg-paper-warm/60 py-3">
+                  <div className="flex flex-col items-center gap-1">
+                    <HanhText text={p.can.name} hanh={p.can.hanh} large />
+                    <HanhText text={p.chi.name} hanh={p.chi.hanh} large />
+                  </div>
+                </GCell>
+              );
+            })}
+          </Cols>
+        </SheetRow>
+
+        {/* Nạp Âm */}
+        <SheetRow label="Nạp Âm Ngũ Hành">
+          <Cols n={4}>
+            {KEYS.map((k) => (
+              <GCell key={k} className="text-sm text-ink">
+                {data.pillars[k].nap_am.name}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+
+        {/* Can Chi Tàng Ẩn */}
+        <SheetRow label="Can Chi Tàng Ẩn">
+          <Cols n={4}>
+            {KEYS.map((k) => (
+              <GCell key={k} className="text-sm">
+                <span className="inline-flex flex-wrap justify-center gap-x-2">
+                  {data.pillars[k].tang_can.map((t, i) => (
+                    <HanhText key={`${t.can_name}-${i}`} text={t.can_name} hanh={t.hanh} />
+                  ))}
+                </span>
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+
+        {/* Phó Tinh */}
+        <SheetRow label="Phó Tinh">
+          <Cols n={4}>
+            {KEYS.map((k) => (
+              <GCell key={k} className="text-sm text-ink">
+                {data.pillars[k].pho_tinh.map((p) => p.short_label).join("  ")}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+
+        {/* Thập Nhị Thần */}
+        <SheetRow label="Thập Nhị Thần">
+          <Cols n={4}>
+            {KEYS.map((k) => (
+              <GCell key={k} className="text-sm text-ink">
+                {data.pillars[k].truong_sinh.label_vi}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+
+        {/* Đại Vận */}
+        <SheetRow label="Đại Vận">
+          <Cols n={data.dai_van.cycles.length}>
+            {data.dai_van.cycles.map((c) => (
+              <GCell
+                key={`dv-${c.start_year}`}
+                className="font-display text-sm font-semibold leading-tight text-ink"
+              >
+                {c.display.split(" ").map((w) => (
+                  <div key={w}>{w}</div>
+                ))}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+        <SheetRow label="Năm">
+          <Cols n={data.dai_van.cycles.length}>
+            {data.dai_van.cycles.map((c) => (
+              <GCell key={`dvy-${c.start_year}`} className="text-xs">
+                <div className="text-vermilion">{c.age_label}</div>
+                <div className="text-muted">{c.start_year}</div>
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+
+        {/* Lưu Niên */}
+        <SheetRow label="Lưu Niên">
+          <Cols n={data.luu_nien.length}>
+            {data.luu_nien.map((y) => (
+              <GCell
+                key={`ln-${y.year}`}
+                className={`font-display text-sm font-semibold leading-tight text-ink ${
+                  y.selected ? "bg-gold/30" : ""
+                }`}
+              >
+                {y.display.split(" ").map((w) => (
+                  <div key={w}>{w}</div>
+                ))}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+        <SheetRow label="Năm">
+          <Cols n={data.luu_nien.length}>
+            {data.luu_nien.map((y) => (
+              <GCell
+                key={`lny-${y.year}`}
+                className={`text-xs ${y.selected ? "bg-gold/30" : ""}`}
+              >
+                <div className="text-vermilion">{y.year}</div>
+                <div className="text-muted">{y.age_label}</div>
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
+
+        {/* Thần Sát Nguyên Cục */}
+        <SheetRow label="Thần Sát Nguyên Cục">
+          <Cols n={4}>
+            {THAN_SAT_HEADERS.map((label) => (
+              <GCell
+                key={label}
+                className="bg-paper-warm font-display text-xs font-semibold uppercase tracking-wide text-jade"
+              >
+                {label}
+              </GCell>
+            ))}
+          </Cols>
+          <Cols n={4} className="border-t border-hairline">
+            {KEYS.map((k) => (
+              <GCell key={k} className="align-top text-sm text-ink">
+                {data.pillars[k].than_sat.length > 0 ? (
+                  <div className="flex flex-col gap-0.5">
+                    {data.pillars[k].than_sat.map((s) => (
+                      <span key={s.key}>{s.name}</span>
                     ))}
                   </div>
-                </td>
-              ))}
-            </tr>
-            <tr>
-              {data.dai_van.cycles.map((c) => (
-                <td
-                  key={`dvy-${c.start_year}`}
-                  className="border border-hairline px-2 py-1 text-xs"
-                >
-                  <div className="text-vermilion">{c.age_label}</div>
-                  <div className="text-muted">{c.start_year}</div>
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                ) : (
+                  <span className="text-muted">—</span>
+                )}
+              </GCell>
+            ))}
+          </Cols>
+        </SheetRow>
 
-      {/* Lưu Niên */}
-      <div className="overflow-x-auto rounded-lg border border-gold/50 bg-paper p-4 shadow-lg">
-        <SectionTitle>Lưu Niên</SectionTitle>
-        <table className="w-full min-w-[680px] border-collapse text-center">
-          <tbody>
-            <tr>
-              {data.luu_nien.map((y) => (
-                <td
-                  key={`ln-${y.year}`}
-                  className={`border border-hairline px-2 py-1.5 font-display font-semibold leading-tight text-ink ${
-                    y.selected ? "bg-gold/30" : ""
-                  }`}
-                >
-                  {y.display.split(" ").map((w) => (
-                    <div key={w}>{w}</div>
-                  ))}
-                </td>
-              ))}
-            </tr>
-            <tr>
-              {data.luu_nien.map((y) => (
-                <td
-                  key={`lny-${y.year}`}
-                  className={`border border-hairline px-2 py-1 text-xs ${
-                    y.selected ? "bg-gold/30" : ""
-                  }`}
-                >
-                  <div className="text-vermilion">{y.year}</div>
-                  <div className="text-muted">{y.age_label}</div>
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* Thần Sát */}
-      <div className="overflow-x-auto rounded-lg border border-gold/50 bg-paper p-4 shadow-lg">
-        <SectionTitle>Thần Sát Nguyên Cục</SectionTitle>
-        <table className="w-full border-collapse text-center">
-          <thead>
-            <tr>
-              {THAN_SAT_HEADERS.map((label) => (
-                <Cell
-                  key={label}
-                  className="bg-paper-warm font-display text-xs font-semibold uppercase tracking-wide text-jade"
-                >
-                  {label}
-                </Cell>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {KEYS.map((k) => (
-                <Cell key={k} className="align-top text-sm text-ink">
-                  {data.pillars[k].than_sat.length > 0 ? (
-                    <div className="flex flex-col gap-0.5">
-                      {data.pillars[k].than_sat.map((s) => (
-                        <span key={s.key}>{s.name}</span>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="text-muted">—</span>
-                  )}
-                </Cell>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* Mệnh */}
-      <div className="overflow-x-auto rounded-lg border border-gold/50 bg-paper p-4 shadow-lg">
-        <SectionTitle>Mệnh</SectionTitle>
-        <table className="w-full border-collapse text-center">
-          <thead>
-            <tr>
-              {["Mệnh Cung", "Thai Nguyên", "Niên Không", "Nhật Không"].map((label) => (
-                <Cell
-                  key={label}
-                  className="bg-paper-warm font-display text-xs font-semibold uppercase tracking-wide text-jade"
-                >
-                  {label}
-                </Cell>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <Cell className="text-sm font-semibold text-ink">
-                {data.menh_cung.display}
-              </Cell>
-              <Cell className="text-sm font-semibold text-ink">
-                {data.thai_nguyen.display}
-              </Cell>
-              <Cell className="text-sm text-ink">
-                {data.tuan_khong.nien_khong.display}
-              </Cell>
-              <Cell className="text-sm text-ink">
-                {data.tuan_khong.nhat_khong.display}
-              </Cell>
-            </tr>
-          </tbody>
-        </table>
+        {/* Mệnh */}
+        <SheetRow label="Mệnh">
+          <Cols n={4}>
+            {MENH_HEADERS.map((label) => (
+              <GCell
+                key={label}
+                className="bg-paper-warm font-display text-xs font-semibold uppercase tracking-wide text-jade"
+              >
+                {label}
+              </GCell>
+            ))}
+          </Cols>
+          <Cols n={4} className="border-t border-hairline">
+            <GCell className="text-sm font-semibold text-ink">
+              {data.menh_cung.display}
+            </GCell>
+            <GCell className="text-sm font-semibold text-ink">
+              {data.thai_nguyen.display}
+            </GCell>
+            <GCell className="text-sm text-ink">
+              {data.tuan_khong.nien_khong.display}
+            </GCell>
+            <GCell className="text-sm text-ink">
+              {data.tuan_khong.nhat_khong.display}
+            </GCell>
+          </Cols>
+        </SheetRow>
       </div>
     </div>
   );
