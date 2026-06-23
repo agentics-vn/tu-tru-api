@@ -13,12 +13,21 @@ function formatDmy(iso: string): string {
   return `${Number(m[3])}/${Number(m[2])}/${m[1]}`;
 }
 
-/** Năm sinh dương cells: [năm, tháng, ngày, giờ] parsed from the header. */
+/** Short zodiac hour label (e.g. Giờ Mão, Giờ Tý Sớm) for the Năm sinh dương row. */
+function birthHourDisplay(h: MenhBanPayload["header"]): string {
+  if (h.birth_time_label) {
+    return h.birth_time_label.split(" (")[0];
+  }
+  const t = /-\s*([\d]{1,2}:[\d]{2})/.exec(h.duong_lich_display);
+  return t?.[1] ?? "";
+}
+
+/** Năm sinh dương cells: [năm, tháng, ngày, giờ] */
 function birthDateCells(h: MenhBanPayload["header"]): string[] {
   const d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(h.duong_lich);
-  const t = /-\s*([\d]{1,2}:[\d]{2})/.exec(h.duong_lich_display);
-  if (!d) return ["", "", "", t?.[1] ?? ""];
-  return [String(Number(d[1])), String(Number(d[2])), String(Number(d[3])), t?.[1] ?? ""];
+  const hour = birthHourDisplay(h);
+  if (!d) return ["", "", "", hour];
+  return [String(Number(d[1])), String(Number(d[2])), String(Number(d[3])), hour];
 }
 
 function HanhText({

@@ -93,17 +93,25 @@ def _format_dmy(iso: str) -> str:
     return f"{int(d)}/{int(m)}/{y}"
 
 
-def _birth_cells(header: dict[str, Any]) -> list[str]:
-    """[năm, tháng, ngày, giờ] parsed from duong_lich + duong_lich_display."""
-    iso = str(header.get("duong_lich", ""))
+def _birth_hour_display(header: dict[str, Any]) -> str:
+    """Short zodiac hour label for the Năm sinh dương row (e.g. Giờ Mão, Giờ Tý Sớm)."""
+    label = header.get("birth_time_label")
+    if label:
+        return str(label).split(" (", 1)[0]
     disp = str(header.get("duong_lich_display", ""))
     time_match = re.search(r"-\s*(\d{1,2}:\d{2})", disp)
-    time_str = time_match.group(1) if time_match else ""
+    return time_match.group(1) if time_match else ""
+
+
+def _birth_cells(header: dict[str, Any]) -> list[str]:
+    """[năm, tháng, ngày, giờ] for the Năm sinh dương row."""
+    iso = str(header.get("duong_lich", ""))
     date_match = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", iso)
+    hour = _birth_hour_display(header)
     if not date_match:
-        return ["", "", "", time_str]
+        return ["", "", "", hour]
     y, m, d = date_match.groups()
-    return [str(int(y)), str(int(m)), str(int(d)), time_str]
+    return [str(int(y)), str(int(m)), str(int(d)), hour]
 
 
 def _hanh_span(text: str, hanh: str, *, large: bool = False) -> str:
