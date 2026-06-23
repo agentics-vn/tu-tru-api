@@ -25,7 +25,6 @@ export default function HomePage() {
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("1990-01-15");
   const [birthTime, setBirthTime] = useState(10);
-  const [birthMinute, setBirthMinute] = useState(0);
   const [gender, setGender] = useState(1);
   const [viewYear, setViewYear] = useState(new Date().getFullYear());
   const [loading, setLoading] = useState(false);
@@ -43,7 +42,6 @@ export default function HomePage() {
         name: name || undefined,
         birth_date: `${d}/${m}/${y}`,
         birth_time: birthTime,
-        birth_minute: birthMinute,
         gender,
         view_year: viewYear,
       });
@@ -104,17 +102,6 @@ export default function HomePage() {
               </option>
             ))}
           </select>
-        </label>
-        <label className="flex w-20 flex-col gap-1 font-display text-sm uppercase tracking-wide text-muted">
-          Phút
-          <input
-            type="number"
-            min={0}
-            max={59}
-            className={inputCls}
-            value={birthMinute}
-            onChange={(e) => setBirthMinute(Number(e.target.value))}
-          />
         </label>
         <label className="flex w-24 flex-col gap-1 font-display text-sm uppercase tracking-wide text-muted">
           Năm xem

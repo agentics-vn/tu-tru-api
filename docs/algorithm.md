@@ -1088,7 +1088,7 @@ Các sao khác (Đào Hoa, Dịch Mã, …) khai báo thêm trong seed `than-sat
 - **Tiết khí**: `solar_term_bucket(λ)` → key trong `tiet-khi.json` (bucket 0 = 立春 offset). **Tính theo đúng giờ sinh** (kinh độ Mặt Trời tại datetime sinh, không phải nửa đêm) — một tiết bắt đầu trong ngày sinh chỉ được tính sau thời điểm chính xác của nó. VD 21/3/1990 05:15 → Xuân Phân (mốc ~04:19), không phải Kinh Trập.
 - **Nguyệt lệnh**: `chi_name` của Nguyệt trụ (`tu_tru.month.chi_name`).
 - **Âm lịch**: `lunardate` / `engine/lunar.solar_to_lunar()`.
-- **`duong_lich_display`**: `d/m/yyyy - H:MM (GMT±N)`, giờ lấy từ **giờ bắt đầu** của khung giờ sinh (`BIRTH_SLOT_HOUR`) + `birth_minute`. VD slot Tỵ (10) + phút 57 → `9:57`.
+- **`duong_lich_display`**: `d/m/yyyy - H:MM (GMT±N)`, giờ lấy từ **giờ bắt đầu** của khung giờ sinh (`BIRTH_SLOT_HOUR`) + `birth_minute`. VD slot Tỵ (10) + phút 57 → `9:57`. **API `POST /v1/la-so-full` luôn dùng `birth_minute = 0`** (không nhận field này), nên qua API phút luôn là `:00`; tham số `birth_minute` chỉ còn dùng nội bộ trong engine.
 
 ### 22.10 API `POST /v1/la-so-full`
 

@@ -4,7 +4,6 @@ export interface LaSoFullRequest {
   birth_date: string;
   birth_time: number;
   gender: number;
-  birth_minute?: number;
   name?: string;
   view_year?: number;
 }

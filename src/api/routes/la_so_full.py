@@ -29,7 +29,6 @@ class LaSoFullRequest(BaseModel):
     birth_date: str
     birth_time: int
     gender: int
-    birth_minute: int = 0
     name: Optional[str] = None
     num_dai_van: int = 10
     num_luu_nien: int = 10
@@ -62,13 +61,6 @@ class LaSoFullRequest(BaseModel):
             raise ValueError("gender phải là 1 (nam) hoặc -1 (nữ)")
         return v
 
-    @field_validator("birth_minute")
-    @classmethod
-    def minute_valid(cls, v: int) -> int:
-        if v < 0 or v > 59:
-            raise ValueError("birth_minute phải từ 0 đến 59")
-        return v
-
 
 @router.post(
     "",
@@ -86,7 +78,7 @@ async def la_so_full_endpoint(req: LaSoFullRequest):
             birth_date_str,
             req.gender,
             req.birth_time,
-            req.birth_minute,
+            0,
             name=req.name,
             num_dai_van=req.num_dai_van,
             num_luu_nien=req.num_luu_nien,

@@ -641,7 +641,6 @@ class TestLaSoFull:
             "birth_date": "19/06/2026",
             "birth_time": 10,
             "gender": 1,
-            "birth_minute": 57,
             "name": "NGUYỄN VĂN T",
         }
         body.update(overrides)
@@ -656,7 +655,7 @@ class TestLaSoFull:
         mb = data["menh_ban"]
         assert mb["tu_tru_display"] == "Bính Ngọ | Giáp Ngọ | Giáp Tý | Kỷ Tỵ"
         assert set(mb["pillars"].keys()) == {"year", "month", "day", "hour"}
-        assert mb["dai_van"]["khoi_van_date"] == "2032-06-13"
+        assert mb["dai_van"]["khoi_van_date"] == "2032-06-18"
         assert len(mb["luu_nien"]) == 10
         assert mb["header"]["tiet_khi"]["name"] == "Mang Chủng"
         # One call returns both structured data (for LLM) and embeddable HTML.
@@ -667,13 +666,12 @@ class TestLaSoFull:
         r = client.post("/v1/la-so-full", json=self._valid_request(
             birth_date="21/03/1990",
             birth_time=6,
-            birth_minute=15,
             view_year=2026,
         ))
         assert r.status_code == 200
         mb = r.json()["menh_ban"]
         assert mb["header"]["tiet_khi"]["name"] == "Xuân Phân"
-        assert mb["dai_van"]["khoi_van_date"] == "1995-04-05"
+        assert mb["dai_van"]["khoi_van_date"] == "1995-04-10"
         luu = mb["luu_nien"]
         assert luu[0]["year"] == 2026
         assert luu[0]["display"] == "Bính Ngọ"
@@ -696,7 +694,6 @@ class TestLaSoFull:
             **self._valid_request(
                 birth_date="21/03/1990",
                 birth_time=6,
-                birth_minute=15,
                 view_year=2026,
             ),
             "format": "html",

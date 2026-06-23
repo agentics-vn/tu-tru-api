@@ -770,7 +770,6 @@ Full **Mệnh Bàn Tứ Trụ** grid for standalone lá số product (not NLTT d
 {
   "birth_date": "2026-06-19",
   "birth_time": 10,
-  "birth_minute": 57,
   "gender": 1,
   "name": "NGUYỄN VĂN T",
   "num_dai_van": 10,
@@ -783,7 +782,6 @@ Full **Mệnh Bàn Tứ Trụ** grid for standalone lá số product (not NLTT d
 | birth_date | Yes | ISO `YYYY-MM-DD`, not future |
 | birth_time | Yes | Giờ sinh enum (same as `/v1/tu-tru`) |
 | gender | Yes | `1` nam, `-1` nữ |
-| birth_minute | No | `0–59`, default `0` |
 | name | No | Display name in header |
 | num_dai_van | No | Default `10` cycles |
 | num_luu_nien | No | Default `10` years |

@@ -309,7 +309,7 @@ curl -s https://tu-tru-api.fly.dev/health
 # Cả hai path đều được (combined Fly): /v1/... hoặc /api/v1/...
 curl -s -X POST https://tu-tru-api.fly.dev/v1/la-so-full \
   -H 'Content-Type: application/json' \
-  -d '{"birth_date":"21/03/1990","birth_time":6,"gender":1,"birth_minute":15,"view_year":2026}'
+  -d '{"birth_date":"21/03/1990","birth_time":6,"gender":1,"view_year":2026}'
 ```
 
 Tài liệu API chi tiết: [`docs/api-spec.md`](docs/api-spec.md)  
