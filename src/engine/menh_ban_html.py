@@ -93,6 +93,18 @@ def _format_dmy(iso: str) -> str:
     return f"{int(d)}/{int(m)}/{y}"
 
 
+def _duong_lich_with_zodiac_hour(header: dict[str, Any]) -> str:
+    """Overview header: e.g. 21/3/1990 - Giờ Mão."""
+    iso = str(header.get("duong_lich", ""))
+    date_match = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", iso)
+    hour = _birth_hour_display(header)
+    if not date_match:
+        return hour or str(header.get("duong_lich_display", ""))
+    y, m, d = date_match.groups()
+    date_str = f"{int(d)}/{int(m)}/{y}"
+    return f"{date_str} - {hour}" if hour else date_str
+
+
 def _birth_hour_display(header: dict[str, Any]) -> str:
     """Short zodiac hour label for the Năm sinh dương row (e.g. Giờ Mão, Giờ Tý Sớm)."""
     label = header.get("birth_time_label")
@@ -162,7 +174,7 @@ def render_menh_ban_html(chart: dict[str, Any]) -> str:
         "</div>",
         '<dl class="mbtt-meta">',
         f"<dt>Giới tính</dt><dd>{_esc(h.get('gender_label', ''))}</dd>",
-        f"<dt>Dương lịch</dt><dd>{_esc(h.get('duong_lich_display', ''))}</dd>",
+        f"<dt>Dương lịch</dt><dd>{_esc(_duong_lich_with_zodiac_hour(h))}</dd>",
         f"<dt>Âm lịch</dt><dd>{_esc(h['am_lich']['display'])}</dd>",
         f"<dt>Tiết khí</dt><dd>{_esc(h['tiet_khi']['name'])} "
         f"(nguyệt lệnh {_esc(h.get('nguyet_lenh', ''))})</dd>",

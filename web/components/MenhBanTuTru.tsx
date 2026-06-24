@@ -13,6 +13,15 @@ function formatDmy(iso: string): string {
   return `${Number(m[3])}/${Number(m[2])}/${m[1]}`;
 }
 
+/** Overview header: e.g. 21/3/1990 - Giờ Mão */
+function duongLichWithZodiacHour(h: MenhBanPayload["header"]): string {
+  const d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(h.duong_lich);
+  const hour = birthHourDisplay(h);
+  if (!d) return h.duong_lich_display;
+  const date = `${Number(d[3])}/${Number(d[2])}/${d[1]}`;
+  return hour ? `${date} - ${hour}` : date;
+}
+
 /** Short zodiac hour label (e.g. Giờ Mão, Giờ Tý Sớm) for the Năm sinh dương row. */
 function birthHourDisplay(h: MenhBanPayload["header"]): string {
   if (h.birth_time_label) {
@@ -125,7 +134,7 @@ export function MenhBanTuTru({ data }: { data: MenhBanPayload }) {
             <dt className="font-display uppercase tracking-wide text-muted">Giới tính</dt>
             <dd>{h.gender_label}</dd>
             <dt className="font-display uppercase tracking-wide text-muted">Dương lịch</dt>
-            <dd>{h.duong_lich_display}</dd>
+            <dd>{duongLichWithZodiacHour(h)}</dd>
             <dt className="font-display uppercase tracking-wide text-muted">Âm lịch</dt>
             <dd>{h.am_lich.display}</dd>
             <dt className="font-display uppercase tracking-wide text-muted">Tiết khí</dt>

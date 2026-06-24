@@ -47,3 +47,4 @@ def test_html_highlights_view_year():
 def test_html_birth_hour_shows_zodiac_label():
     html_out = render_menh_ban_html(_chart())  # slot 6 → Giờ Mão
     assert "Giờ Mão" in html_out
+    assert "21/3/1990 - Giờ Mão" in html_out
