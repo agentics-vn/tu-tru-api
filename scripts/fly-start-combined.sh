@@ -19,7 +19,7 @@ cleanup() {
 trap cleanup INT TERM
 
 # Avoid proxy 502s while uvicorn is still starting (Fly health check too).
-for _ in $(seq 1 30); do
+for _ in $(seq 1 60); do
   if python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:${API_PORT}/health')" 2>/dev/null; then
     break
   fi
@@ -31,6 +31,14 @@ export PORT="$WEB_PORT"
 export HOSTNAME="${HOSTNAME:-0.0.0.0}"
 node server.js &
 NODE_PID=$!
+
+# Fly health check hits Next :3000/health (rewrite → API). Wait until both are up.
+for _ in $(seq 1 60); do
+  if python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:${WEB_PORT}/health')" 2>/dev/null; then
+    break
+  fi
+  sleep 1
+done
 
 wait "$NODE_PID"
 EXIT=$?

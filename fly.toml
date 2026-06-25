@@ -21,11 +21,11 @@ primary_region = 'sin'
   processes = ['app']
 
   [[http_service.checks]]
-    grace_period = "30s"
+    grace_period = "90s"
     interval = "15s"
     method = "GET"
     path = "/health"
-    timeout = "5s"
+    timeout = "10s"
 
 [[vm]]
   cpu_kind = 'shared'
