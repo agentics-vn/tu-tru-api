@@ -18,6 +18,9 @@ from engine.bazi_solar import (
 from engine.lunar import solar_to_lunar
 from engine.seed_loader import load_seed_json
 
+# Loại tiết khí (节/气) bằng tiếng Việt cho output API.
+_TIET_KHI_LOAI_VI: dict[str, str] = {"tiet": "Tiết", "khi": "Khí"}
+
 
 def get_tiet_khi_at_date(
     year: int,
@@ -40,8 +43,7 @@ def get_tiet_khi_at_date(
     return {
         "key": entry["key"],
         "name": entry["name"],
-        "han_tu": entry["han_tu"],
-        "type": entry["type"],
+        "loai": _TIET_KHI_LOAI_VI.get(entry["type"], entry["type"]),
         "bucket": bucket,
         "longitude_deg": round(lam % 360, 3),
     }

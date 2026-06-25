@@ -64,7 +64,10 @@ def test_golden_truong_sinh(golden_chart):
 def test_golden_than_sat(golden_chart):
     p = golden_chart["pillars"]
     assert [s["name"] for s in p["year"]["than_sat"]] == [
-        "Văn Xương", "Tướng Tinh",
+        "Văn Xương", "Tướng Tinh", "Hồng Diễm",
+    ]
+    assert [s["name"] for s in p["day"]["than_sat"]] == [
+        "Tướng Tinh", "Tai Sát",
     ]
     assert [s["name"] for s in p["hour"]["than_sat"]] == [
         "Văn Xương", "Kiếp Sát", "Vong Thần",
@@ -76,9 +79,18 @@ def test_thien_loc_and_view_year_1990():
     tu_tru = get_tu_tru("1990-03-21", 6)
     chart = build_full_chart(tu_tru, "1990-03-21", 1, 6, 15, view_year=2026)
     p = chart["pillars"]
-    assert [s["name"] for s in p["month"]["than_sat"]] == ["Thiên Lộc", "Đào Hoa"]
-    assert [s["name"] for s in p["hour"]["than_sat"]] == ["Thiên Lộc", "Đào Hoa"]
-    assert [s["name"] for s in p["day"]["than_sat"]] == ["Tướng Tinh"]
+    assert [s["name"] for s in p["month"]["than_sat"]] == [
+        "Thiên Lộc", "Đào Hoa", "Thiên Hỷ",
+    ]
+    assert [s["name"] for s in p["hour"]["than_sat"]] == [
+        "Thiên Lộc", "Đào Hoa", "Thiên Hỷ",
+    ]
+    assert [s["name"] for s in p["day"]["than_sat"]] == [
+        "Tướng Tinh", "Hồng Loan",
+    ]
+    assert [s["name"] for s in p["year"]["than_sat"]] == [
+        "Văn Xương", "Tướng Tinh", "Đào Hoa", "Hồng Loan",
+    ]
     # view_year drives the lưu niên strip and marks the selected year.
     luu = chart["luu_nien"]
     assert luu[0]["year"] == 2026

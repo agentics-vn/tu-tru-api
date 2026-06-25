@@ -39,6 +39,13 @@ TANG_CAN_WEIGHTS: list[float] = [1.0, 0.6, 0.3]
 # Role labels
 TANG_CAN_ROLES: list[str] = ["chu_khi", "trung_khi", "du_khi"]
 
+# Vietnamese display labels for tàng can roles (Chủ khí / Trung khí / Dư khí).
+TANG_CAN_ROLE_LABELS: dict[str, str] = {
+    "chu_khi": "Chủ khí",
+    "trung_khi": "Trung khí",
+    "du_khi": "Dư khí",
+}
+
 # Lá số display order (Uyên Hải Tử Bình / tuvivietnam convention).
 # Differs from the qi-weight order (子平真诠, used for scoring) only for Tỵ and
 # Thân, where Trung Khí and Dư Khí are listed in swapped order.

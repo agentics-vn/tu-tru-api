@@ -1003,6 +1003,7 @@ Response thêm (khi có `birth_time`):
   - Tỵ: **Bính, Mậu, Canh** (thay vì Bính, Canh, Mậu)
   - Thân: **Canh, Mậu, Nhâm** (thay vì Canh, Nhâm, Mậu)
   - Chỉ ảnh hưởng **hiển thị** (`get_tang_can_display`); chấm điểm ngũ hành vẫn dùng thứ tự khí có trọng số (`get_tang_can`).
+- **Trọng số tàng can** (`TANG_CAN_WEIGHTS = [1.0, 0.6, 0.3]`) theo chuẩn **子平真詮** dùng cho tính cường nhược/dụng thần nội bộ. Bảng Lý Cư Minh ghi tỷ lệ hiển thị **60/30/10** (3 can) và **70/30** (chi 2 can: Ngọ, Hợi); danh sách + thứ tự can **trùng khớp**, chỉ khác con số trọng số. Khác biệt này **không hiển thị trên lá số** và chỉ tác động điểm số nội bộ.
 
 ### 22.2 Thập nhị trường sinh (十二长生)
 
@@ -1071,17 +1072,27 @@ Bảng `docs/seed/than-sat.json`. Quy tắc chính (khớp lịch tuvivietnam.vn
 
 | Sao | Cách tra |
 |-----|----------|
-| **Văn Xương** | Nhật Can → Chi: 甲→午, 乙→午, 丙→申, 丁→酉, 戊→申, 己→酉, 庚→亥, 辛→子, 壬→寅, 癸→卯; hiện trên trụ có Chi đó |
+| **Văn Xương** | Nhật Can → Chi: 甲→午/巳, 乙→午, 丙→申, 丁→酉, 戊→申, 己→酉, 庚→亥, 辛→子, 壬→寅, 癸→卯; hiện trên trụ có Chi đó (xem ghi chú nguồn ở dưới) |
 | **Tướng Tinh** | Chi thuộc tam hợp → trụ có Chi **将星**: 寅午戌→午, 申子辰→子, 巳酉丑→酉, 亥卯未→卯 |
 | **Kiếp Sát** | Trụ có Chi thuộc nhóm 三合 của **劫煞**: 寅午戌→亥, 申子辰→巳, 巳酉丑→寅, 亥卯未→申 — hiện sao trên mọi trụ trong nhóm |
 | **Vong Thần** | Tương tự: 寅午戌→巳, 申子辰→亥, 巳酉丑→申, 亥卯未→寅 |
 | **Tai Sát** | Trụ **Ngày** khi Chi ngày là 将星 của tam hợp (cùng điều kiện Tướng Tinh trên trụ Ngày) |
 | **Thiên Lộc** (建禄) | Lộc thần của **Nhật Can** → Chi: 甲→寅, 乙→卯, 丙戊→巳, 丁己→午, 庚→申, 辛→酉, 壬→亥, 癸→子; hiện trên trụ có Chi đó |
-| **Thiên Ất Quý Nhân** (天乙贵人) | Theo **Nhật Can** → Chi: 甲戊庚→丑/未, 乙己→子/申, 丙丁→亥/酉, 壬癸→卯/巳, 辛→寅/午; hiện trên trụ có Chi đó |
+| **Thiên Ất Quý Nhân** (天乙贵人) | Theo **Nhật Can** → Chi (bảng Lý Cư Minh): 甲→丑/未, 乙→子/申, 丙丁→亥/酉, 戊→丑/未, 己→子/申, **庚辛→寅/午**, 壬癸→卯/巳; hiện trên trụ có Chi đó |
+| **Hồng Diễm** (红艳) | Theo **Nhật Can** → Chi: 甲→午, 乙→申, 丙→寅, 丁→未, 戊己→辰, 庚→戌, 辛→酉, 壬→子, 癸→申 |
+| **Hoa Cái** (华盖) | Tam hợp → Chi: 寅午戌→戌, 申子辰→辰, 巳酉丑→丑, 亥卯未→未 (theo Niên/Nhật Chi) |
+| **Hồng Loan** (红鸾) | Tra **Niên Chi & Nhật Chi**: 子→卯, 丑→寅, 寅→丑, 卯→子, 辰→亥, 巳→戌, 午→酉, 未→申, 申→未, 酉→午, 戌→巳, 亥→辰 |
+| **Thiên Hỷ** (天喜) | Đối xung Hồng Loan (+6 Chi): 子→酉, 丑→申, … |
+| **Cô Thần / Quả Tú** | Tam hội mùa theo Niên/Nhật Chi: 亥子丑→孤寅/寡戌, 寅卯辰→孤巳/寡丑, 巳午未→孤申/寡辰, 申酉戌→孤亥/寡未 |
 
-Các sao khác (Đào Hoa, Dịch Mã, …) khai báo thêm trong seed `than-sat.json`.
+Các sao khác (Đào Hoa, Dịch Mã, …) khai báo trong seed `than-sat.json`.
 
-> **Lưu ý**: Thiên Ất Quý Nhân dùng quy tắc chuẩn (theo Nhật Can). Một số lá số tuvivietnam.vn đặt Thiên Ất Quý Nhân ở vị trí không khớp bảng chuẩn — nếu cần khớp tuyệt đối, bổ sung bảng riêng từ nguồn của họ.
+> **Nguồn & đối chiếu** (audit 25/06/2026): bảng `than-sat.json` đã so khớp **154/154 ô** với bảng tra **Lý Cư Minh — Tra Cứu Bát Tự** (12 chi × 10 can) và công thức tam hợp/tam hội cổ điển.
+>
+> Các điểm chọn phái / lệch so với một nguồn cổ điển khác, có chủ ý:
+> - **Thiên Ất Quý Nhân — 庚辛→寅/午**: theo **三命通会** (`甲戊兼牛羊… 庚辛逢虎马`), khớp bảng thầy. Phái **渊海子平** (`甲戊庚牛羊`) cho Canh = Sửu/Mùi — engine **không** dùng phái này.
+> - **Văn Xương — Giáp → cả Ngọ (午) lẫn Tỵ (巳)**: khớp lá số tham chiếu **tuvivietnam.vn** (golden fixture). Ca quyết cổ điển `食神临官` chỉ cho Giáp→Tỵ. Sao này **không có trong bảng thầy**; giữ theo tuvivietnam để bảo toàn parity hiển thị. Các can còn lại đều 1 chi và trùng cổ điển.
+> - **Điểm tham chiếu**: thần sát tính theo **cả Niên Chi lẫn Nhật Chi** (year+day) cho toàn bộ sao, nhất quán với các sao tam hợp sẵn có (đã validate tuvivietnam). Cổ điển nghiêm ngặt tính Hồng Loan/Thiên Hỷ/Cô Thần/Quả Tú **chỉ theo Niên Chi** — engine dùng quy ước rộng hơn.
 
 ### 22.9 Tiết khí · nguyệt lệnh · âm lịch
 

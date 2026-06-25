@@ -57,6 +57,15 @@ def build_chart_analysis(tu_tru: dict) -> dict[str, Any]:
     }
 
 
+# Nhãn tiếng Việt cho vị trí trụ trong Tứ Trụ.
+_PILLAR_LABELS_VI: dict[str, str] = {
+    "year": "Trụ Năm",
+    "month": "Trụ Tháng",
+    "day": "Trụ Ngày",
+    "hour": "Trụ Giờ",
+}
+
+
 def _pillar_surface_thap_than(pillar_key: str, thap_than: dict) -> dict:
     if pillar_key == "day":
         return {"key": "nhat_chu", "name": "NHẬT CHỦ", "short_label": "NHẬT CHỦ"}
@@ -85,6 +94,7 @@ def _build_pillar_row(
     )
     return {
         "key": pillar_key,
+        "label_vi": _PILLAR_LABELS_VI.get(pillar_key, pillar_key),
         "can": {
             "idx": p["can_idx"],
             "name": p["can_name"],

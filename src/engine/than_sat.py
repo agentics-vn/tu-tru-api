@@ -1,11 +1,11 @@
 """
 than_sat.py — Thần sát grouped by pillar for Mệnh Bàn.
 
-Each star resolves to a target Địa Chi computed from the year/day 三合 triad;
-a pillar earns the star only when its branch equals that target (no blanket
-per-position assignment).
+Each star resolves to a target Địa Chi computed from the year/day 三合 triad,
+season triad, or day-stem lookup; a pillar earns the star only when its branch
+equals that target (no blanket per-position assignment).
 
-Source: docs/algorithm.md §22.8, docs/seed/than-sat.json
+Source: docs/algorithm.md §22.8, docs/seed/than-sat.json (Lý Cư Minh Tra Cứu)
 """
 
 from __future__ import annotations
@@ -23,6 +23,12 @@ _STAR_ORDER = (
     "vong_than",
     "dao_hoa",
     "dich_ma",
+    "hoa_cai",
+    "hong_loan",
+    "thien_hi",
+    "hong_diem",
+    "co_than",
+    "qua_tu",
 )
 
 # Stars keyed off the day stem → target branch(es); each maps star_key → seed key.
@@ -30,6 +36,7 @@ _DAY_STEM_STARS: dict[str, str] = {
     "van_xuong": "van_xuong_by_day_stem",
     "thien_at": "thien_at_by_day_stem",
     "thien_loc": "thien_loc_by_day_stem",
+    "hong_diem": "hong_diem_by_day_stem",
 }
 
 
@@ -40,11 +47,23 @@ def _group_for_branch(chi_idx: int, groups: list[dict]) -> dict | None:
     return None
 
 
-def _build_target_map(tu_tru: dict, data: dict) -> dict[int, list[str]]:
-    """Map target Địa Chi index → list of star keys (deduped, ordered later)."""
+def _season_triad_for_branch(chi_idx: int, triads: list[dict]) -> dict | None:
+    for triad in triads:
+        if chi_idx in triad["branches"]:
+            return triad
+    return None
+
+
+def _build_target_map(tu_tru: dict, data: dict) -> dict[int, set[str]]:
+    """Map target Địa Chi index → set of star keys."""
     groups: list[dict] = data["san_he_groups"]
+    season_triads: list[dict] = data["season_triads"]
     tao_hua: dict[str, int] = data["tao_hua"]
     yi_ma: dict[str, int] = data["yi_ma"]
+    hoa_cai: dict[str, int] = data["hoa_cai"]
+    hong_loan: dict[int, int] = {
+        int(k): v for k, v in data["hong_loan_by_branch"].items()
+    }
 
     year_chi = tu_tru["year"]["chi_idx"]
     day_chi = tu_tru["day"]["chi_idx"]
@@ -72,8 +91,24 @@ def _build_target_map(tu_tru: dict, data: dict) -> dict[int, list[str]]:
     add(tao_hua[dg["key"]], "dao_hoa")
     add(yi_ma[yg["key"]], "dich_ma")
     add(yi_ma[dg["key"]], "dich_ma")
+    # Hoa Cái (华盖): from both year & day triads
+    add(hoa_cai[yg["key"]], "hoa_cai")
+    add(hoa_cai[dg["key"]], "hoa_cai")
 
-    return {chi: keys for chi, keys in targets.items()}
+    # Hồng Loan / Thiên Hỷ: tra theo Niên Chi & Nhật Chi (子见卯…)
+    for ref_chi in (year_chi, day_chi):
+        hl = hong_loan[ref_chi]
+        add(hl, "hong_loan")
+        add((hl + 6) % 12, "thien_hi")
+
+    # Cô Thần / Quả Tú: tam hội mùa (亥子丑 / 寅卯辰 / 巳午未 / 申酉戌)
+    for ref_chi in (year_chi, day_chi):
+        triad = _season_triad_for_branch(ref_chi, season_triads)
+        if triad:
+            add(triad["co_than"], "co_than")
+            add(triad["qua_tu"], "qua_tu")
+
+    return targets
 
 
 def analyze_than_sat(tu_tru: dict) -> dict[str, list[dict]]:

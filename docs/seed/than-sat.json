@@ -1,10 +1,16 @@
 {
-  "_description": "Thần sát Mệnh Bàn — lookup rules for full chart grid (tuvivietnam.vn convention).",
+  "_description": "Thần sát Mệnh Bàn — lookup rules (Lý Cư Minh Tra Cứu Bát Tự + tuvivietnam convention).",
   "san_he_groups": [
     {"key": "yin_wu_xu", "branches": [2, 6, 10], "jiang_xing": 6, "jie_sha": 11, "wang_shen": 5},
     {"key": "shen_zi_chen", "branches": [8, 0, 4], "jiang_xing": 0, "jie_sha": 5, "wang_shen": 11},
     {"key": "si_you_chou", "branches": [5, 9, 1], "jiang_xing": 9, "jie_sha": 2, "wang_shen": 8},
     {"key": "hai_mao_wei", "branches": [11, 3, 7], "jiang_xing": 3, "jie_sha": 8, "wang_shen": 2}
+  ],
+  "season_triads": [
+    {"key": "hai_zi_chou", "branches": [11, 0, 1], "co_than": 2, "qua_tu": 10},
+    {"key": "yin_mao_chen", "branches": [2, 3, 4], "co_than": 5, "qua_tu": 1},
+    {"key": "si_wu_wei", "branches": [5, 6, 7], "co_than": 8, "qua_tu": 4},
+    {"key": "shen_you_xu", "branches": [8, 9, 10], "co_than": 11, "qua_tu": 7}
   ],
   "van_xuong_by_day_stem": {
     "0": [6, 5],
@@ -25,7 +31,7 @@
     "3": [11, 9],
     "4": [1, 7],
     "5": [0, 8],
-    "6": [1, 7],
+    "6": [2, 6],
     "7": [2, 6],
     "8": [3, 5],
     "9": [3, 5]
@@ -42,16 +48,48 @@
     "8": [11],
     "9": [0]
   },
+  "hong_diem_by_day_stem": {
+    "0": [6],
+    "1": [8],
+    "2": [2],
+    "3": [7],
+    "4": [4],
+    "5": [4],
+    "6": [10],
+    "7": [9],
+    "8": [0],
+    "9": [8]
+  },
+  "hong_loan_by_branch": {
+    "0": 3,
+    "1": 2,
+    "2": 1,
+    "3": 0,
+    "4": 11,
+    "5": 10,
+    "6": 9,
+    "7": 8,
+    "8": 7,
+    "9": 6,
+    "10": 5,
+    "11": 4
+  },
   "stars": {
     "thien_at": {"name": "Thiên Ất Quý Nhân", "rule": "day_stem_to_chi"},
     "thien_loc": {"name": "Thiên Lộc", "rule": "day_stem_to_chi"},
     "van_xuong": {"name": "Văn Xương", "rule": "day_stem_to_chi"},
+    "hong_diem": {"name": "Hồng Diễm", "rule": "day_stem_to_chi"},
     "tuong_tinh": {"name": "Tướng Tinh", "rule": "jiang_xing_on_pillar"},
-    "tai_sat": {"name": "Tai Sát", "rule": "jiang_xing_on_day_only"},
+    "tai_sat": {"name": "Tai Sát", "rule": "jiang_xing_clash_year"},
     "kiep_sat": {"name": "Kiếp Sát", "rule": "san_he_group_marker_jie_sha"},
     "vong_than": {"name": "Vong Thần", "rule": "san_he_group_marker_wang_shen"},
     "dao_hoa": {"name": "Đào Hoa", "rule": "tao_hua"},
-    "dich_ma": {"name": "Dịch Mã", "rule": "yi_ma"}
+    "dich_ma": {"name": "Dịch Mã", "rule": "yi_ma"},
+    "hoa_cai": {"name": "Hoa Cái", "rule": "hoa_cai"},
+    "hong_loan": {"name": "Hồng Loan", "rule": "hong_loan_by_branch"},
+    "thien_hi": {"name": "Thiên Hỷ", "rule": "thien_hi_opposite_hong_loan"},
+    "co_than": {"name": "Cô Thần", "rule": "season_triad_co_than"},
+    "qua_tu": {"name": "Quả Tú", "rule": "season_triad_qua_tu"}
   },
   "tao_hua": {
     "yin_wu_xu": 3,
@@ -64,5 +102,11 @@
     "shen_zi_chen": 2,
     "si_you_chou": 11,
     "hai_mao_wei": 5
+  },
+  "hoa_cai": {
+    "yin_wu_xu": 10,
+    "shen_zi_chen": 4,
+    "si_you_chou": 1,
+    "hai_mao_wei": 7
   }
 }

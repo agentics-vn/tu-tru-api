@@ -658,6 +658,16 @@ class TestLaSoFull:
         assert mb["dai_van"]["khoi_van_date"] == "2032-06-18"
         assert len(mb["luu_nien"]) == 10
         assert mb["header"]["tiet_khi"]["name"] == "Mang Chủng"
+        # tiet_khi is fully Vietnamese: no Hán tự, loai is "Tiết"/"Khí".
+        tk = mb["header"]["tiet_khi"]
+        assert "han_tu" not in tk
+        assert tk["loai"] in ("Tiết", "Khí")
+        # Vietnamese display labels for pillar position and tàng can role.
+        assert mb["pillars"]["day"]["label_vi"] == "Trụ Ngày"
+        assert mb["pillars"]["year"]["label_vi"] == "Trụ Năm"
+        assert mb["pillars"]["day"]["tang_can"][0]["role_label"] in (
+            "Chủ khí", "Trung khí", "Dư khí",
+        )
         # One call returns both structured data (for LLM) and embeddable HTML.
         assert "mbtt" in data["html"]
         assert "Mệnh Bàn Tứ Trụ" in data["html"]

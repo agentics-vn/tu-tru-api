@@ -10,7 +10,11 @@ from __future__ import annotations
 
 from engine.can_chi import CAN_HANH, CAN_NAMES
 from engine.hoa_hop import detect_stem_transformations, effective_stem_hanh
-from engine.tang_can import get_tang_can, get_tang_can_display
+from engine.tang_can import (
+    TANG_CAN_ROLE_LABELS,
+    get_tang_can,
+    get_tang_can_display,
+)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Polarity: Dương (yang) = even index, Âm (yin) = odd index
@@ -127,6 +131,7 @@ def analyze_tang_can_display(tu_tru: dict) -> dict[str, list[dict]]:
                 "can_name": h["can_name"],
                 "hanh": h["hanh"],
                 "role": h["role"],
+                "role_label": TANG_CAN_ROLE_LABELS.get(h["role"], h["role"]),
             }
             for h in get_tang_can_display(tu_tru[pillar_key]["chi_idx"])
         ]
