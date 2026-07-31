@@ -331,6 +331,10 @@ class PhongThuyResponse(BaseModel):
     ky_than: str
     hi_than: Optional[str] = None
     cuu_than: Optional[str] = None
+    # Chỉ có khi dung_than_method == "tu_tru". Đường nạp âm cố ý KHÔNG phát
+    # trường này: bộ vai suy từ nạp âm năm sinh không cùng gốc với tứ trụ, phát
+    # ra sẽ thành bộ Dụng-Kỵ thứ hai.
+    vai_5_hanh: Optional[dict[str, str]] = None
     precision_note: Optional[str] = None
     huong_tot: list[HuongItem] = Field(default_factory=list)
     huong_xau: list[HuongItem] = Field(default_factory=list)

@@ -113,6 +113,7 @@ async def phong_thuy_endpoint(
         tu_tru = None
         hi_than: str | None = None
         cuu_than: str | None = None
+        vai_5_hanh: dict[str, str] | None = None
         if birth_time is not None:
             tu_tru = get_tu_tru(bd.isoformat(), birth_time)
             dung_result = find_dung_than(tu_tru)
@@ -120,6 +121,7 @@ async def phong_thuy_endpoint(
             ky_than = dung_result["ky_than"]
             hi_than = dung_result.get("hi_than")
             cuu_than = dung_result.get("cuu_than")
+            vai_5_hanh = dung_result.get("vai_5_hanh")
             dung_than_method = "tu_tru"
             precision_note = None
         else:
@@ -150,6 +152,7 @@ async def phong_thuy_endpoint(
             "ky_than": ky_than,
             **({"hi_than": hi_than} if hi_than else {}),
             **({"cuu_than": cuu_than} if cuu_than else {}),
+            **({"vai_5_hanh": vai_5_hanh} if vai_5_hanh else {}),
             **({"precision_note": precision_note} if precision_note else {}),
             "huong_tot": huong_tot,
             "huong_xau": huong_xau,
