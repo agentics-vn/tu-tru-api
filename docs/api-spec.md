@@ -686,10 +686,11 @@ Gợi ý phong thủy theo Dụng Thần / Kỵ Thần (hướng, màu, số, v�
 
 ### Phi Tinh — giả định API (quan trọng cho client)
 
-- **Năm & nhập trung:** Dùng **năm dương lịch** `year`. Nhập trung mặc định: neo 2024 = 3, bước −1/năm (mod 9); có thể ghi đè trong `docs/seed/phi-tinh-year-center.json` (chỉ số 1–9). Override **chỉ** đổi trung tinh; thuận/nghịch phi vẫn theo can **Gregorian** của `year`.
-- **Thuận / nghịch:** `(year - 4) % 10` chẵn → Dương can (phi thuận), lẻ → Âm can (phi nghịch). **Không** theo Lập Xuân hay đổi năm âm lịch — có thể không khớp mọi sách.
+- **Năm & nhập trung:** Dùng **năm dương lịch** `year`. Nhập trung mặc định: neo 2024 = 3, bước −1/năm (mod 9); có thể ghi đè trong `docs/seed/phi-tinh-year-center.json` (chỉ số 1–9). Seed hiện **không ghi đè năm nào**.
+- **Hướng phi: LUÔN thuận**, không phân biệt can âm/dương. Đối chiếu *Cải vận mệnh khuyết* (Lý Cư Minh): khớp 9/9 lưới cửu cung và 80/80 năm; bay nghịch khớp 0/9. Nghịch phi là chuyện của sơn tinh/hướng tinh trong trạch bàn, không phải của sao lưu niên.
+- **Ranh giới năm:** theo dương lịch, **không** theo Lập Xuân — có thể lệch sách ở các ngày đầu năm.
 - **huong_tot_nam_nay / huong_xau_nam_nay:** Theo `nature` sao trong `phi-tinh-stars.json`, **không** lọc theo Dụng Thần người dùng. Chi tiết trong `phi_tinh_note_vi`.
-- **Override vs thuận/nghịch:** Nếu JSON override lệch so với bảng bạn tin, có thể ra lưới khác tài liệu — xem `_comment` trong `phi-tinh-year-center.json`.
+- **Trước khi thêm override:** phải dẫn được nguồn sách. Xem `_canh_bao` trong `phi-tinh-year-center.json` — bản trước từng ghi đè `"2026": 5` mà không có căn cứ, trong khi sách xếp 2026 vào Nhất Bạch (nhập trung 1).
 
 ## Error Responses (Phong thủy)
 

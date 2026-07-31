@@ -14,13 +14,12 @@ from engine.phi_tinh import (
     annual_center_star,
     build_phi_tinh_payload,
     fly_nine_palaces,
-    is_yang_year_stem,
     load_star_meta,
 )
 
 
 def test_fly_nine_palaces_center_5_forward_matches_luo_shu():
-    g = fly_nine_palaces(5, forward=True)
+    g = fly_nine_palaces(5)
     assert g["Trung Tâm"] == 5
     assert g["Đông Nam"] == 4
     assert g["Nam"] == 9
@@ -32,15 +31,16 @@ def test_fly_nine_palaces_center_5_forward_matches_luo_shu():
     assert g["Tây Bắc"] == 6
 
 
-def test_annual_center_star_2026_override():
-    ovr = {"2026": 5}
-    assert annual_center_star(2026, overrides=ovr) == 5
+def test_annual_center_star_override_co_hieu_luc():
+    """Cơ chế override vẫn dùng được — chỉ seed là không còn ghi đè năm nào.
+
+    Giá trị dưới đây là số bịa để thử cơ chế, KHÔNG phải mệnh lý. Nhập trung
+    thật của 2026 là 1; xem test_phi_tinh_doi_chieu_sach.py.
+    """
+    ovr = {"2026": 4}
+    assert annual_center_star(2026, overrides=ovr) == 4
     # 2025 không nằm trong override → công thức neo 2024 = 3
     assert annual_center_star(2025, overrides=ovr) == 2
-
-
-def test_is_yang_year_stem_2026():
-    assert is_yang_year_stem(2026) is True
 
 
 def test_build_phi_tinh_payload_structure():

@@ -123,14 +123,6 @@
   "phi_tinh": [
     {
       "direction": "Đông Nam",
-      "star": 4,
-      "star_name": "Tứ Lục Văn Xương",
-      "hanh": "Mộc",
-      "nature": "tốt",
-      "meaning": "Văn Xương chiếu — tốt cho học hành, thi cử, sáng tạo."
-    },
-    {
-      "direction": "Nam",
       "star": 9,
       "star_name": "Cửu Tử Hữu Bật",
       "hanh": "Hỏa",
@@ -138,23 +130,7 @@
       "meaning": "Hữu Bật — vui mừng, hỷ sự, danh tiếng."
     },
     {
-      "direction": "Tây Nam",
-      "star": 2,
-      "star_name": "Nhị Hắc Cự Môn",
-      "hanh": "Thổ",
-      "nature": "xấu",
-      "meaning": "Cự Môn — dễ bệnh tật, tiểu nhân; nên ít động, ít ồn."
-    },
-    {
-      "direction": "Đông",
-      "star": 3,
-      "star_name": "Tam Bích Lộc Tồn",
-      "hanh": "Mộc",
-      "nature": "xấu",
-      "meaning": "Lộc Tồn — tranh chấp, thị phi; cần giữ hòa khí."
-    },
-    {
-      "direction": "Trung Tâm",
+      "direction": "Nam",
       "star": 5,
       "star_name": "Ngũ Hoàng Liêm Trinh",
       "hanh": "Thổ",
@@ -162,7 +138,7 @@
       "meaning": "Ngũ Hoàng đại sát — tránh động thổ, sửa chữa lớn khu vực trung tâm hoặc cung này."
     },
     {
-      "direction": "Tây",
+      "direction": "Tây Nam",
       "star": 7,
       "star_name": "Thất Xích Phá Quân",
       "hanh": "Kim",
@@ -170,7 +146,7 @@
       "meaning": "Phá Quân — hao tán, thị phi; cẩn thận tranh chấp."
     },
     {
-      "direction": "Đông Bắc",
+      "direction": "Đông",
       "star": 8,
       "star_name": "Bát Bạch Tả Phụ",
       "hanh": "Thổ",
@@ -178,7 +154,7 @@
       "meaning": "Tả Phụ — tốt cho tài lộc, quý nhân phụ trợ."
     },
     {
-      "direction": "Bắc",
+      "direction": "Trung Tâm",
       "star": 1,
       "star_name": "Nhất Bạch Tham Lang",
       "hanh": "Thủy",
@@ -186,48 +162,72 @@
       "meaning": "Tham Lang chiếu — tốt cho danh tiếng, giao tế, tài lộc nhẹ."
     },
     {
-      "direction": "Tây Bắc",
+      "direction": "Tây",
+      "star": 3,
+      "star_name": "Tam Bích Lộc Tồn",
+      "hanh": "Mộc",
+      "nature": "xấu",
+      "meaning": "Lộc Tồn — tranh chấp, thị phi; cần giữ hòa khí."
+    },
+    {
+      "direction": "Đông Bắc",
+      "star": 4,
+      "star_name": "Tứ Lục Văn Xương",
+      "hanh": "Mộc",
+      "nature": "tốt",
+      "meaning": "Văn Xương chiếu — tốt cho học hành, thi cử, sáng tạo."
+    },
+    {
+      "direction": "Bắc",
       "star": 6,
       "star_name": "Lục Bạch Vũ Khúc",
       "hanh": "Kim",
       "nature": "tốt",
       "meaning": "Vũ Khúc — tốt cho quyền uy, sự nghiệp, tài chính."
+    },
+    {
+      "direction": "Tây Bắc",
+      "star": 2,
+      "star_name": "Nhị Hắc Cự Môn",
+      "hanh": "Thổ",
+      "nature": "xấu",
+      "meaning": "Cự Môn — dễ bệnh tật, tiểu nhân; nên ít động, ít ồn."
     }
   ],
   "huong_tot_nam_nay": [
     "Đông Nam",
-    "Nam",
-    "Đông Bắc",
-    "Bắc",
-    "Tây Bắc"
-  ],
-  "huong_xau_nam_nay": [
-    "Tây Nam",
     "Đông",
     "Trung Tâm",
-    "Tây"
+    "Đông Bắc",
+    "Bắc"
+  ],
+  "huong_xau_nam_nay": [
+    "Nam",
+    "Tây Nam",
+    "Tây",
+    "Tây Bắc"
   ],
   "hoa_giai": [
     {
-      "direction": "Tây Nam",
-      "star": 2,
-      "remedy": "Đặt hồ lô đồng, chuông gió 6 ống kim loại hoặc vật Kim để hóa giải Thổ hung."
-    },
-    {
-      "direction": "Đông",
-      "star": 3,
-      "remedy": "Thêm đèn đỏ nhỏ hoặc tông Hỏa vừa phải để chế Mộc quá vượng."
-    },
-    {
-      "direction": "Trung Tâm",
+      "direction": "Nam",
       "star": 5,
       "remedy": "Dùng âm thanh Kim (chuông đồng), màu trắng/bạc vừa phải; không kích hoạt bằng lửa mạnh."
     },
     {
-      "direction": "Tây",
+      "direction": "Tây Nam",
       "star": 7,
       "remedy": "Tránh kích động; có thể dùng nước nhỏ (Thủy) hóa Kim hung vừa phải theo chỉ dẫn thầy."
+    },
+    {
+      "direction": "Tây",
+      "star": 3,
+      "remedy": "Thêm đèn đỏ nhỏ hoặc tông Hỏa vừa phải để chế Mộc quá vượng."
+    },
+    {
+      "direction": "Tây Bắc",
+      "star": 2,
+      "remedy": "Đặt hồ lô đồng, chuông gió 6 ống kim loại hoặc vật Kim để hóa giải Thổ hung."
     }
   ],
-  "phi_tinh_note_vi": "Hướng tốt/xấu năm nay xếp theo tính chất sao lưu niên trong seed — không lọc theo Dụng Thần / Kỵ Thần cá nhân. Năm và thuận/nghịch phi theo quy ước dương lịch đơn giản; có thể lệch sách dùng Lập Xuân."
+  "phi_tinh_note_vi": "Hướng tốt/xấu năm nay xếp theo tính chất sao lưu niên trong seed — không lọc theo Dụng Thần / Kỵ Thần cá nhân. Sao lưu niên tính theo năm dương lịch và luôn bay thuận; có thể lệch sách dùng Lập Xuân."
 }
