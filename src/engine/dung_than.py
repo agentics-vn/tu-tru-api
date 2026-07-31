@@ -42,6 +42,91 @@ KHAC_BY: dict[str, str] = {
     "Hỏa": "Thủy", "Thổ": "Mộc",
 }
 
+NGU_HANH: tuple[str, ...] = ("Mộc", "Hỏa", "Thổ", "Kim", "Thủy")
+
+VAI_DUNG = "Dụng"
+VAI_HI = "Hỉ"
+VAI_KY = "Kỵ"
+VAI_CUU = "Cừu"
+
+
+def assign_vai_5_hanh(dm_hanh: str, dung_than: str) -> dict[str, str]:
+    """
+    Gán TRỌN 5 hành vào đúng một vai Dụng/Hỉ/Kỵ/Cừu — không để hành nào lửng lơ.
+
+    Nguồn: BT285 Rule 0 BƯỚC 4 ("PHÂN VAI TRỌN 5 HÀNH"). Đây là hợp đồng dữ
+    liệu mà prompt sinh bài dựa vào: nếu một hành không có vai, mỗi mục sẽ tự
+    diễn giải lại và sinh mâu thuẫn giữa các mục.
+
+    Nhánh được chọn theo CHỖ ĐỨNG CỦA DỤNG THẦN, không theo nhãn cường nhược:
+
+    * Dụng nằm ở nhóm ức chế thân (Thực Thương / Tài / Quan Sát) — ca thân
+      vượng, ca cân bằng, và cả ca tòng:
+        Ấn = Kỵ, Tỷ Kiếp = Cừu (nuôi thân đã quá vượng, hoặc phá tòng).
+        Hai hành ức chế còn lại phân theo QUY ƯỚC QUAN SÁT của Rule 0:
+          Dụng = Thực Thương → Tài = Hỉ, Quan Sát = Kỵ (Thương Quan kiến Quan)
+          Dụng = Tài         → Thực Thương = Hỉ, Quan Sát = Hỉ (dòng sinh thuận)
+          Dụng = Quan Sát    → Tài = Hỉ, Thực Thương = Kỵ (khắc gãy dòng chảy)
+
+    * Dụng nằm ở nhóm phù thân (Ấn / Tỷ Kiếp) — ca thân nhược:
+        Hành phù thân còn lại = Hỉ. Cả ba hành tiết-khắc-hao thân đều bất lợi:
+        hành khắc Dụng và hành khắc Nhật Chủ = Kỵ, phần còn lại = Cừu.
+
+    Args:
+        dm_hanh: hành của Nhật Chủ
+        dung_than: hành đã chốt ở Bước 2
+
+    Returns:
+        dict 5 khóa (mỗi hành → một vai). Bất biến: đủ 5 hành, đúng một vai
+        Dụng, và không hành nào thiếu vai.
+    """
+    an = SINH_BY[dm_hanh]            # Ấn — sinh Nhật Chủ
+    ty_kiep = dm_hanh                # Tỷ Kiếp — cùng hành Nhật Chủ
+    thuc_thuong = SINH_TARGET[dm_hanh]  # Thực Thương — Nhật Chủ sinh ra
+    tai = KHAC_TARGET[dm_hanh]       # Tài — Nhật Chủ khắc
+    quan_sat = KHAC_BY[dm_hanh]      # Quan Sát — khắc Nhật Chủ
+
+    vai: dict[str, str] = {}
+
+    if dung_than in (thuc_thuong, tai, quan_sat):
+        vai[an] = VAI_KY
+        vai[ty_kiep] = VAI_CUU
+        if dung_than == thuc_thuong:
+            vai[tai] = VAI_HI
+            vai[quan_sat] = VAI_KY
+        elif dung_than == tai:
+            vai[thuc_thuong] = VAI_HI
+            vai[quan_sat] = VAI_HI
+        else:  # dung_than == quan_sat
+            vai[tai] = VAI_HI
+            vai[thuc_thuong] = VAI_KY
+    else:
+        # Dụng thuộc nhóm phù thân → thân nhược
+        vai[an if dung_than == ty_kiep else ty_kiep] = VAI_HI
+        attackers = {KHAC_BY[dung_than], KHAC_BY[dm_hanh]}
+        for hanh in (thuc_thuong, tai, quan_sat):
+            vai[hanh] = VAI_KY if hanh in attackers else VAI_CUU
+
+    # Dụng thần ghi sau cùng để không bị nhánh nào ghi đè
+    vai[dung_than] = VAI_DUNG
+
+    missing = [h for h in NGU_HANH if h not in vai]
+    if missing:  # pragma: no cover — bất biến, chỉ nổ khi map ngũ hành hỏng
+        raise ValueError(
+            f"vai_5_hanh thiếu hành {missing} (dm={dm_hanh}, dụng={dung_than})"
+        )
+    return {h: vai[h] for h in NGU_HANH}
+
+
+def _dai_dien(vai_5_hanh: dict[str, str], vai: str, uu_tien: str | None = None) -> str | None:
+    """Chọn một hành đại diện cho vai, ưu tiên hành gọi ý nếu nó mang đúng vai đó."""
+    ung_vien = [h for h in NGU_HANH if vai_5_hanh[h] == vai]
+    if not ung_vien:
+        return None
+    if uu_tien in ung_vien:
+        return uu_tien
+    return ung_vien[0]
+
 
 def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
     """
@@ -121,11 +206,16 @@ def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
         ky_than = max(non_dm, key=non_dm.get) if non_dm else KHAC_BY[dm_hanh]
         cuu_than = SINH_BY[ky_than]
 
+    # hi_than / ky_than / cuu_than giữ NGUYÊN công thức cũ — chúng là đầu vào đã
+    # hiệu chỉnh của bộ chấm điểm ngày tốt (scoring.py, filter.py). Cố ý không
+    # suy lại từ vai_5_hanh: làm vậy sẽ đổi điểm ngày tốt ở cả 25/25 tổ hợp
+    # Nhật Chủ × thân × Dụng. vai_5_hanh là hợp đồng riêng cho phần luận giải.
     return {
         "dung_than": dung_than,
         "hi_than": hi_than,
         "ky_than": ky_than,
         "cuu_than": cuu_than,
+        "vai_5_hanh": assign_vai_5_hanh(dm_hanh, dung_than),
         "strength": strength,
         "analysis": analysis,
     }
