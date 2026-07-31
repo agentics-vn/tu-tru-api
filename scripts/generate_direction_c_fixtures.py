@@ -105,7 +105,9 @@ def main() -> None:
         "phong-thuy-year-2026.json",
         client.get(
             "/v1/phong-thuy",
-            params={"birth_date": "15/03/1984", "year": 2026},
+            # birth_time BẮT BUỘC: thiếu nó endpoint rơi về đường nạp âm và trả
+            # một bộ Dụng-Kỵ khác hẳn la-so.json của cùng người này.
+            params={"birth_date": "15/03/1984", "birth_time": 8, "gender": 1, "year": 2026},
         ),
     )
 
