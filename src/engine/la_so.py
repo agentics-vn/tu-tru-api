@@ -451,6 +451,10 @@ def build_la_so_chart_contract(
         "ky_than": dung_than_info["ky_than"],
         "hi_than": dung_than_info["hi_than"],
         "cuu_than": dung_than_info["cuu_than"],
+        # Phân vai TRỌN 5 hành — nguồn chuẩn cho phần luận giải. Bốn trường
+        # trên là vai ĐẠI DIỆN đã hiệu chỉnh cho bộ chấm điểm ngày tốt và có
+        # thể bỏ sót hành; khi hai bên lệch nhau, lấy vai_5_hanh.
+        "vai_5_hanh": dung_than_info["vai_5_hanh"],
         "cuong_nhuoc": strength_info["strength"],
         "chart_strength": strength_info["strength"],
         "thap_than": {
