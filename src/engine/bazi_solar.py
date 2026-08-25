@@ -6,6 +6,7 @@ Built on engine.lich_hnd (Ho Ngoc Duc / Meeus).
 
 from __future__ import annotations
 
+import calendar
 from datetime import date, datetime, timedelta
 
 from engine.lich_hnd import solar_apparent_longitude_deg
@@ -51,7 +52,14 @@ def bazi_cycle_year(y: int, m: int, d: int, tz: float = DEFAULT_TZ) -> int:
     Sexagenary year index for 年柱 (same convention as get_can_chi_year argument).
 
     Before Lập Xuân of calendar year y → use y-1; on/after → y.
+
+    Natal 29/02 is a real Gregorian day and must keep its day pillar. When the
+    same month/day is projected onto a non-leap year (lưu niên list, view_year),
+    do not construct date(y, 2, 29) and do not rewrite the natal day to 28/02.
+    Lập Xuân is ~4/2, so 29/02 is always after Lập Xuân → cycle year is y.
     """
+    if m == 2 and d == 29 and not calendar.isleap(y):
+        return y
     birth = date(y, m, d)
     if birth < _lichun_date(y, tz):
         return y - 1
