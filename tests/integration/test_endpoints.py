@@ -514,6 +514,18 @@ class TestTuTru:
         assert "pillars" not in data
         assert "element_counts" not in data
 
+    def test_leap_day_birth_accepted(self):
+        r = client.post("/v1/tu-tru", json={
+            "birth_date": "29/02/2000",
+            "birth_time": 6,
+            "gender": 1,
+        })
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert data["status"] == "success"
+        assert data["birth_date"] == "2000-02-29"
+        assert data["pillars"]["day"]["can_chi"] == "Đinh Tỵ"
+
     def test_full_with_birth_time(self):
         """With birth_time, returns full Tứ Trụ analysis."""
         r = client.post("/v1/tu-tru", json={
@@ -713,6 +725,53 @@ class TestLaSoFull:
         assert "mbtt" in r.text
         assert "Mệnh Bàn Tứ Trụ" in r.text
         assert "Canh" in r.text
+
+    @pytest.mark.parametrize("birth_date", [
+        "29/02/1988",
+        "29/02/1992",
+        "29/02/1996",
+        "29/02/2000",
+        "29/02/2004",
+    ])
+    def test_leap_day_birth_accepted(self, birth_date: str):
+        """Natal 29/02 of a leap year must produce a chart — never 400 out-of-range."""
+        r = client.post("/v1/la-so-full", json=self._valid_request(
+            birth_date=birth_date,
+            birth_time=6,
+            view_year=2026,
+        ))
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert data["status"] == "success"
+        assert data["birth_date"].endswith("-02-29")
+        mb = data["menh_ban"]
+        assert mb["header"]["duong_lich"].endswith("-02-29")
+        assert "29/2/" in mb["header"]["duong_lich_display"]
+        assert mb["luu_nien"][0]["year"] == 2026
+
+    def test_leap_day_keeps_feb_29_day_pillar(self):
+        r29 = client.post("/v1/la-so-full", json=self._valid_request(
+            birth_date="29/02/2000",
+            birth_time=6,
+            view_year=2026,
+        ))
+        r28 = client.post("/v1/la-so-full", json=self._valid_request(
+            birth_date="28/02/2000",
+            birth_time=6,
+            view_year=2026,
+        ))
+        assert r29.status_code == 200, r29.text
+        assert r28.status_code == 200, r28.text
+        p29 = r29.json()["menh_ban"]["pillars"]["day"]["display"]
+        p28 = r28.json()["menh_ban"]["pillars"]["day"]["display"]
+        assert p29 == "Đinh Tỵ"
+        assert p29 != p28
+
+    def test_non_leap_feb_29_rejected(self):
+        r = client.post("/v1/la-so-full", json=self._valid_request(
+            birth_date="29/02/2001",
+        ))
+        assert r.status_code in (400, 422)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -1031,6 +1031,7 @@ Bổ sung §17.3 — **tinh chỉnh theo giờ sinh**:
 - Sinh `num_years` (mặc định 10) mục `{ year, age, can_chi, can_name, chi_name }`.
 - `year` = năm dương bắt đầu từ năm sinh; `can_chi` = `get_can_chi_year(year)` (Lập Xuân cho từng năm nếu cần chi tiết — MVP dùng `get_can_chi_year`).
 - **`view_year`** (tùy chọn): khi truyền, dải lưu niên bắt đầu từ `view_year` và đánh dấu `selected=true` ở năm đó (để UI chọn năm xem). Không truyền → bắt đầu từ năm sinh (tương thích cũ).
+- **Ngày sinh 29/02 (năm nhuận Gregorian):** trụ ngày phải tính đúng 29/02 — **không** được đổi thành 28/02 (lệch trụ ngày là sai mệnh lý). Khi chiếu tháng/ngày sinh sang năm không nhuận (`bazi_cycle_year(year, 2, 29)` trong dải lưu niên), 29/02 luôn sau Lập Xuân (~4/2) nên năm trụ = năm dương lịch đang xét. Không tạo `date(năm_không_nhuận, 2, 29)`.
 
 ### 22.5 Thai nguyên (胎元)
 
