@@ -1112,3 +1112,84 @@ Request: `{ birth_date, birth_time, gender, name?, format? }`. Một lần gọi
 - Layout khớp `web/components/MenhBanTuTru.tsx`: header, tứ trụ, đại vận, lưu niên, thần sát, mệnh cung.
 - Mọi text user (`name`) qua `html.escape`.
 - `view_year` → ô lưu niên được class `mbtt-hl`.
+
+## 23. Dụng / Hỉ / Kỵ / Cừu / Nhàn — luật `2026-10.1` (bật theo lời gọi)
+
+> **Nguồn sự thật:** đặc tả `2026-10-14-dung-ky-dac-ta-thuat-toan.md` (repo `nuoiconthuanmenh.vn`,
+> `docs/superpowers/specs/`), mục 3–9; 8.1 là hợp đồng đầu ra. Mục này chỉ tóm tắt; khi lệch thì
+> đặc tả thắng. Mã: `src/engine/dung_than_v2.py`. Ca chuẩn: `tests/fixtures/dung_ky_ca_chuan.json`
+> (67 ca, chép nguyên). Bản cài thử kèm đặc tả là đặc tả chạy được: các trường luật phải trùng nó
+> (test `test_van_tay_mau_tong_hop_khop_ban_cai_thu`, 6.786 lá số × có/không giờ).
+
+### 23.1 Cổng phiên bản
+
+- `find_dung_than(tu_tru, analysis=None, rule="v1", co_gio=True)` ·
+  `build_chart_analysis(tu_tru, dung_than_rule="v1", co_gio=True)`.
+- `rule` vắng hoặc `"v1"`: luật cũ, đầu ra **không đổi** (golden `tests/golden/`). `co_gio=False`
+  với v1 là lỗi (v1 không có nhánh thiếu giờ). Mã khác hai mã trên: `ValueError`.
+- `rule="2026-10.1"`: trả các trường 8.1 của `dung_than_v2.tinh` cộng `strength` (= `cuong_nhuoc`
+  của luật mới) và `analysis` (phân tích cường nhược v1 của tứ trụ; không có trụ giờ thì `null`).
+- Route API chưa nhận `dung_than_rule` / `birth_time = null` ở bước này.
+
+### 23.2 Đầu vào (đặc tả mục 3)
+
+`L[h]`: can bề mặt 1,0 (kể cả can ngày, theo hành sau hợp hoá) + tàng can 1,0/0,6/0,3. `W[nhóm]`
+(TK · AN · TT · TAI · QS): như `L` nhưng **không** tính can ngày. `r = (L[DM]+L[AN]+thưởng mùa
+dương) / tổng có điều chỉnh mùa` (cùng §21.3). Ngưỡng so trên `r` **chưa làm tròn**; `L` cộng theo
+thứ tự Mộc, Hỏa, Thổ, Kim, Thủy như bản cài thử. Hệ quả đo được: lá số 09/11/2024 giờ 22 có `r`
+đúng 0,40 nên là "nhược" ở luật mới, còn `strength` v1 (cộng theo thứ tự khoá khác) ra
+0,4000000000000001 → "cân bằng". Đây là lá số duy nhất lệch nhãn trong 6.786 lá số mẫu.
+
+Thiếu giờ (`co_gio=False`, mục 7): chỉ ba trụ năm–tháng–ngày, bỏ mọi cặp hợp hoá có trụ giờ, không
+xét cách đặc biệt, `co.thieu_gio = true`; `tu_tru` không cần khoá `hour`.
+
+### 23.3 Thứ tự quyết định (mục 4)
+
+1. Có giờ: Nhất hành đắc khí (5.1) → [r ≤ 0,40] Hoá khí (5.2) → Tòng Tài/Sát/Nhi (5.3) →
+   [r ≥ 0,55] Tòng Vượng/Cường (5.4). Khớp cách nào thì dừng.
+2. Chính cách: r ≥ 0,55 vượng (6.2), r ≤ 0,40 nhược (6.1), còn lại cân bằng: điều hậu (6.3.1) →
+   thông quan (6.3.2) → nghiêng (6.3.3, r < 0,50 theo 6.1, còn lại theo 6.2, tiền tố `CB-`).
+3. Vượng/nhược mà đủ điều kiện điều hậu (6.4): không đổi dụng; hành điều hậu đang Nhàn thì nâng
+   thành Hỉ (cuối `hy_tap`); luôn ghi `co.dieu_hau = "<HAN|NHIET>:<vai trước khi nâng>"`.
+
+Hằng: `NGUONG_VUONG 0,55` · `NGUONG_NHUOC 0,40` · `NGUONG_CUC_VUONG 0,70` · `TQ_TY_LE_MIN 0,30` ·
+`TQ_LECH_MAX 0,15` · `VANG 1,0` · tháng hàn Tý Sửu Dần · tháng nhiệt Tỵ Ngọ Mùi. Hoà: nguyên nhân
+nhược QS → TT → TAI; nhóm được tòng QS → TAI → TT; vượng hoà TK; thông quan theo Mộc → Thủy.
+
+### 23.4 Bảng vai (một nhánh, một dòng)
+
+| Nhánh | Dụng | Hỉ | Kỵ | Cừu | Nhàn |
+|---|---|---|---|---|---|
+| `N-QS` / `CB-N-QS` | AN | TK | QS | TAI | TT |
+| `N-TAI` / `CB-N-TAI` | TK | AN | TAI | QS, TT | — |
+| `N-TT` / `CB-N-TT` | AN | TK, QS | TT | TAI | — |
+| `V-AN` / `CB-V-AN` | TAI | TT | AN | TK | QS |
+| `V-TK-QS` / `CB-V-TK-QS` | QS | TAI | TK | AN | TT |
+| `V-TK-TT` (r ≥ 0,70) | TT | TAI | TK | AN | QS |
+| `CB-DH-HAN` | Hỏa | Mộc | Thủy | Kim | Thổ |
+| `CB-DH-NHIET` | Thủy | Kim | Hỏa | Mộc | Thổ |
+| `CB-TQ` (M khắc Y) | hành M sinh | — | hành khắc dụng | hành khắc M | M, Y |
+| `DB-NHAT-HANH` | TK | AN, TT | QS | — | TAI |
+| `DB-HOA` (hoá thần H) | H | hành sinh H, hành H sinh | hành khắc H | — | hành H khắc |
+| `DB-TONG-TAI` | TAI | TT | TK | AN | QS |
+| `DB-TONG-SAT` | QS | TAI | AN | TK, TT | — |
+| `DB-TONG-NHI` | TT | TAI, TK | AN | QS | — |
+| `DB-TONG-VUONG` | TK | AN | QS | TAI | TT |
+| `DB-TONG-CUONG` | TK | AN | QS | TAI, TT | — |
+
+Ô đơn là phần tử đầu của tập theo thứ tự nguồn. Rỗng hợp lệ đúng ba cặp (`VAI_RONG_HOP_LE`):
+`hi_than` ở `CB-TQ`; `cuu_than` ở `DB-NHAT-HANH`, `DB-HOA`. `cuu_than` **đổi nghĩa** so với v1
+("hành bất lợi đứng sau kỵ", không còn là "hành sinh kỵ").
+
+### 23.5 Đầu ra và bất biến
+
+Trường: `rule_version` · `nhanh` (21 mã, `NHANH_HOP_LE`) · `dung_than` · `hi_than` · `ky_than` ·
+`cuu_than` · `hy_tap` · `ky_tap` (= `[ky_than] + cừu`) · `nhan_tap` · `vai_5_hanh`
+(`Dụng|Hỉ|Kỵ|Cừu|Nhàn`, dựng từ đúng dòng bảng) · `cuong_nhuoc` (theo r, kể cả ở cách đặc biệt) ·
+`co` (`ty_le` ba chữ số, `thieu_gio`, `dieu_hau`?, `dung_vang` = `L[dụng] < 1,0`) · `ly_do` (mã ngắn,
+ví dụ 01/01/2005 giờ 2 `CB-N-QS`: `["r=0.481", "nguyen_nhan=QS:2.3>TT:2.0", "khong_dieu_hau",
+"khong_thong_quan"]`; mã chỉ để truy vết, không phải câu cho khách).
+
+`kiem_bat_bien(kq)` kiểm 9.1–9.5 (năm hành, đúng một Dụng; ô đơn khớp `vai_5_hanh`; bốn ô khác nhau
+từng đôi; ba tập và {dụng} rời nhau, hợp đủ năm hành; nhánh thuộc 21 mã và bộ vai trùng dòng bảng
+sau 6.4) cùng `rule_version`. Danh sách rỗng là đạt.
