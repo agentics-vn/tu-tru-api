@@ -16,6 +16,8 @@ cùng lúc mọi vai. Không vai nào tính bằng công thức riêng.
 
 from __future__ import annotations
 
+import re
+
 from engine.can_chi import CAN_HANH, CAN_NAMES, CHI_HANH, CHI_NAMES
 from engine.cuong_nhuoc import _seasonal_bonus
 from engine.hoa_hop import detect_stem_transformations, effective_stem_hanh
@@ -24,17 +26,23 @@ from engine.tang_can import get_tang_can
 RULE_VERSION = "2026-10.1"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Hằng (đặc tả mục 3–6). So ngưỡng trên giá trị CHƯA làm tròn.
+# Hằng (đặc tả mục 3–6) và số học chính xác (đặc tả 3.1, chốt 16/10/2026).
+#
+# L, W, thưởng mùa đếm bằng SỐ NGUYÊN đơn vị 0,1 (can 10; tàng can 10/6/3; thưởng mùa của
+# engine × 10). Ngưỡng ghi bằng phần trăm nguyên, so bằng nhân chéo:
+# r ≤ 0,40 ⇔ 100·hộ ≤ 40·tổng. Số thực chỉ dùng để in (co.ty_le, ly_do). Cộng bằng số thực
+# thì sai ở chữ số thứ 16, và ở lá số nằm đúng ngưỡng hay hoà, sai số ấy chọn nhánh thay luật.
 # ─────────────────────────────────────────────────────────────────────────────
 
-NGUONG_VUONG = 0.55
-NGUONG_NHUOC = 0.40
-NGUONG_CUC_VUONG = 0.70
-NGUONG_NGHIENG = 0.50          # 6.3.3: r < 0,50 nghiêng nhược, còn lại nghiêng vượng
-TQ_TY_LE_MIN = 0.30
-TQ_LECH_MAX = 0.15
-VANG = 1.0                     # L < 1,0: hành không thành khí (điều hậu vắng, dụng vắng)
-GOC_MIN = 0.6                  # tàng can ≥ 0,6 (chủ/trung khí) mới là gốc
+DON_VI = 10                    # 1,0 = 10 đơn vị
+NGUONG_VUONG = 55              # r ≥ 0,55 (phần trăm)
+NGUONG_NHUOC = 40              # r ≤ 0,40
+NGUONG_CUC_VUONG = 70          # r ≥ 0,70
+NGUONG_NGHIENG = 50            # 6.3.3: r < 0,50 nghiêng nhược, còn lại nghiêng vượng
+TQ_TY_LE_MIN = 30              # mỗi hành ≥ 30% tổng lực
+TQ_LECH_MAX = 15               # chênh ≤ 15% lực của hành lớn hơn
+VANG = 10                      # L < 1,0: hành không thành khí (điều hậu vắng, dụng vắng)
+GOC_MIN = 6                    # tàng can ≥ 0,6 (chủ/trung khí) mới là gốc
 
 HANH = ("Mộc", "Hỏa", "Thổ", "Kim", "Thủy")   # thứ tự vòng sinh, cũng là thứ tự hoà ở 6.3.2
 _IDX = {h: i for i, h in enumerate(HANH)}
@@ -163,6 +171,36 @@ VAI_RONG_HOP_LE = frozenset({("hi_than", "CB-TQ"), ("cuu_than", "DB-NHAT-HANH"),
 
 VAI_TEN = ("Dụng", "Hỉ", "Kỵ", "Cừu", "Nhàn")
 
+# Ngữ pháp mã ``ly_do`` (8.1; docs/algorithm.md §23.5). Mỗi phần tử khớp ĐÚNG một mẫu. Ký hiệu
+# so sánh (>, =, <, >=) lấy từ phép so số nguyên; số in một chữ số thập phân (đơn vị 0,1).
+_H = "(?:Mộc|Hỏa|Thổ|Kim|Thủy)"
+_NH = "(?:TK|AN|TT|TAI|QS)"
+_SO = r"\d+\.\d"
+_CHI_RE = "(?:" + "|".join(CHI_NAMES) + ")"
+_CAN_RE = "(?:" + "|".join(CAN_NAMES) + ")"
+LY_DO_MAU = tuple(re.compile(m) for m in (
+    r"r=\d\.\d{3}",                                            # r làm tròn ba chữ số (nửa lên)
+    "thieu_gio",
+    rf"nguyen_nhan={_NH}:{_SO}[>=]{_NH}:{_SO}",                  # nhóm thắng, rồi nhóm đứng sau
+    "cuc_vuong", "khong_cuc_vuong",
+    "khong_dieu_hau",
+    "dieu_hau=(?:HAN|NHIET)(?::(?:Dụng|Hỉ|Kỵ|Cừu|Nhàn))?",       # có ":vai" là 6.4 (vai trước khi nâng)
+    rf"thang={_CHI_RE}",
+    rf"(?:Hỏa|Thủy):{_SO}<1\.0",
+    rf"Kim\+Thủy:{_SO}>Mộc\+Hỏa:{_SO}", rf"Mộc\+Hỏa:{_SO}>Kim\+Thủy:{_SO}",
+    "khong_thong_quan",
+    rf"thong_quan={_H}_khac_{_H}:{_SO}/{_SO}",
+    rf"nhat_hanh={_H}", "cuc=(?:TAM_HOI|TAM_HOP|TU_KHO|THUAN_THO)", "khong_chu_pha",
+    rf"hoa={_CAN_RE}-{_CAN_RE}@(?:month|hour):{_H}", "khong_hanh_pha",
+    rf"tong=(?:QS|TAI|TT):{_SO}", "khong_an_can", "khong_goc",
+    "khong_tai_quan", rf"2AN:{_SO}(?:<|>=)TK:{_SO}",
+))
+
+
+def ly_do_hop_le(ma: str) -> bool:
+    """Một mã ``ly_do`` có khớp ngữ pháp ``LY_DO_MAU`` không."""
+    return any(m.fullmatch(ma) for m in LY_DO_MAU)
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Lực (đặc tả mục 3, đúng cách engine đếm — ENG §21)
@@ -203,39 +241,68 @@ def _can_hieu_luc(tu_tru: dict, tru: tuple[str, ...], hh: list[dict]) -> dict[st
     return ra
 
 
+def _dv(x: float) -> int:
+    """Một trọng số của engine (bội của 0,1) → số nguyên đơn vị 0,1. Không phải bội thì lỗi."""
+    n = round(x * DON_VI)
+    if abs(n - x * DON_VI) > 1e-6:
+        raise ValueError(f"dung_than 2026-10.1: trọng số {x!r} không là bội của 0,1")
+    return n
+
+
 def _dem(tu_tru: dict, tru: tuple[str, ...], can_hl: dict[str, str], g: dict[str, str]):
-    """L[hành] (mọi can kể cả can ngày + tàng can) và W[nhóm] (không tính can ngày)."""
+    """L[hành] (mọi can kể cả can ngày + tàng can) và W[nhóm] (không tính can ngày), đơn vị 0,1."""
     nhom_cua = {h: k for k, h in g.items()}
-    L = {h: 0.0 for h in HANH}
-    W = {k: 0.0 for k in g}
+    L = {h: 0 for h in HANH}
+    W = {k: 0 for k in g}
     for p in tru:
-        L[can_hl[p]] += 1.0
+        L[can_hl[p]] += DON_VI
         if p != "day":
-            W[nhom_cua[can_hl[p]]] += 1.0
+            W[nhom_cua[can_hl[p]]] += DON_VI
         for an in get_tang_can(tu_tru[p]["chi_idx"]):
-            L[an["hanh"]] += an["weight"]
-            W[nhom_cua[an["hanh"]]] += an["weight"]
+            w = _dv(an["weight"])
+            L[an["hanh"]] += w
+            W[nhom_cua[an["hanh"]]] += w
     return L, W
 
 
-def _ty_le(dm: str, L: dict[str, float], thang: int) -> float:
+def _ho_tong(dm: str, L: dict[str, int], thang: int) -> tuple[int, int]:
+    """(hộ, tổng có điều chỉnh mùa), đơn vị 0,1: r = hộ / tổng (ENG §21.3)."""
     ho = L[dm] + L[me(dm)]
     chong = sum(L.values()) - ho
-    b = _seasonal_bonus(dm, thang)
+    b = _dv(_seasonal_bonus(dm, thang))
     ho += max(0, b)
     chong += max(0, -b)
-    return ho / (ho + chong) if ho + chong else 0.5
+    if ho + chong == 0:          # không xảy ra (can ngày luôn có lực); engine trả 0,5
+        return 1, 2
+    return ho, ho + chong
+
+
+def _r_ge(ho: int, tong: int, pct: int) -> bool:
+    """r ≥ pct/100, so bằng nhân chéo."""
+    return 100 * ho >= pct * tong
+
+
+def _r_le(ho: int, tong: int, pct: int) -> bool:
+    """r ≤ pct/100, so bằng nhân chéo."""
+    return 100 * ho <= pct * tong
+
+
+def _ty_le_nghin(ho: int, tong: int) -> int:
+    """r làm tròn ba chữ số, nửa lên, tính trên số nguyên: 1000·r làm tròn (0,4875 → 488)."""
+    return (2000 * ho + tong) // (2 * tong)
 
 
 def luc(tu_tru: dict, co_gio: bool = True) -> dict:
-    """L, W, r của đúng các trụ được dùng (đặc tả mục 3; thiếu giờ: ba trụ)."""
+    """L, W (số nguyên đơn vị 0,1), hộ/tổng và r (số thực, chỉ để in) của đúng các trụ được dùng
+    (đặc tả mục 3; thiếu giờ: ba trụ)."""
     tru = _tru_dung(tu_tru, co_gio)
     hh = _hop_hoa(tu_tru, co_gio)
     dm = CAN_HANH[tu_tru["day"]["can_idx"]]
     g = nhom_hanh(dm)
     can_hl = _can_hieu_luc(tu_tru, tru, hh)
     L, W = _dem(tu_tru, tru, can_hl, g)
-    return {"dm": dm, "g": g, "L": L, "W": W, "r": _ty_le(dm, L, tu_tru["month"]["chi_idx"]),
+    ho, tong = _ho_tong(dm, L, tu_tru["month"]["chi_idx"])
+    return {"dm": dm, "g": g, "L": L, "W": W, "ho": ho, "tong": tong, "r": ho / tong,
             "can_hl": can_hl, "tru": tru}
 
 
@@ -243,8 +310,9 @@ def luc(tu_tru: dict, co_gio: bool = True) -> dict:
 # Cách đặc biệt (mục 5) — chỉ xét khi có giờ
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _so(x: float) -> str:
-    return f"{x:.1f}"
+def _so(x: int) -> str:
+    """Số nguyên đơn vị 0,1 → chuỗi một chữ số thập phân (chỉ để in)."""
+    return f"{x // DON_VI}.{x % DON_VI}" if x >= 0 else f"-{_so(-x)}"
 
 
 def _ten_can(tu_tru: dict, p: str) -> str:
@@ -327,22 +395,22 @@ def _co_goc(tu_tru: dict, tru: tuple[str, ...], hanh: set[str], cuc: dict[int, s
         c = tu_tru[p]["chi_idx"]
         if c in cuc and cuc[c] not in hanh:
             continue
-        if any(an["hanh"] in hanh and an["weight"] >= GOC_MIN for an in get_tang_can(c)):
+        if any(an["hanh"] in hanh and _dv(an["weight"]) >= GOC_MIN for an in get_tang_can(c)):
             return True
     return False
 
 
-def _lon_nhat(W: dict[str, float], thu_tu: tuple[str, ...]) -> str:
-    """Nhóm W lớn nhất; hoà thì nhóm đứng trước trong ``thu_tu``."""
+def _lon_nhat(W: dict[str, int], thu_tu: tuple[str, ...]) -> str:
+    """Nhóm W lớn nhất; hoà thì nhóm đứng trước trong ``thu_tu`` (max trả phần tử lớn nhất ĐẦU TIÊN)."""
     return max(thu_tu, key=lambda k: W[k])
 
 
-def _so_sanh(W: dict[str, float], a: str, b: str) -> str:
+def _so_sanh(W: dict[str, int], a: str, b: str) -> str:
     return f"{a}:{_so(W[a])}{'>' if W[a] > W[b] else '='}{b}:{_so(W[b])}"
 
 
 def _dac_biet(tu_tru: dict, lc: dict) -> tuple[str, tuple, list[str]] | None:
-    dm, g, L, W, r, can_hl, tru = (lc[k] for k in ("dm", "g", "L", "W", "r", "can_hl", "tru"))
+    dm, g, W, ho, tong, can_hl, tru = (lc[k] for k in ("dm", "g", "W", "ho", "tong", "can_hl", "tru"))
     thang = tu_tru["month"]["chi_idx"]
     ten_thang = f"thang={CHI_NAMES[thang]}"
     chis = [tu_tru[p]["chi_idx"] for p in tru]
@@ -352,7 +420,7 @@ def _dac_biet(tu_tru: dict, lc: dict) -> tuple[str, tuple, list[str]] | None:
         return "DB-NHAT-HANH", BANG_NHOM["DB-NHAT-HANH"], [
             f"nhat_hanh={dm}", ten_thang, f"cuc={cuc_nh}", "khong_chu_pha"]
 
-    if r <= NGUONG_NHUOC:
+    if _r_le(ho, tong, NGUONG_NHUOC):
         hk = _hoa_khi(tu_tru, thang, can_hl)
         if hk:
             than, o = hk
@@ -368,12 +436,12 @@ def _dac_biet(tu_tru: dict, lc: dict) -> tuple[str, tuple, list[str]] | None:
 
     khong_tai_quan = (all(can_hl[p] not in (g["QS"], g["TAI"]) for p in TRU if p != "day")
                       and not _co_goc(tu_tru, tru, {g["QS"], g["TAI"]}, {}))
-    if khong_tai_quan and CHI_HANH[thang] in (g["TK"], g["AN"]) and r >= NGUONG_VUONG:
-        vuong = W["AN"] < W["TK"] / 2
+    if khong_tai_quan and CHI_HANH[thang] in (g["TK"], g["AN"]) and _r_ge(ho, tong, NGUONG_VUONG):
+        vuong = 2 * W["AN"] < W["TK"]                  # W[AN] < W[TK] / 2
         ten = "DB-TONG-VUONG" if vuong else "DB-TONG-CUONG"
         return ten, BANG_NHOM[ten], [
             ten_thang, "khong_tai_quan",
-            f"AN:{_so(W['AN'])}{'<' if vuong else '>='}TK/2:{W['TK'] / 2:.2f}"]
+            f"2AN:{_so(2 * W['AN'])}{'<' if vuong else '>='}TK:{_so(W['TK'])}"]
     return None
 
 
@@ -381,7 +449,7 @@ def _dac_biet(tu_tru: dict, lc: dict) -> tuple[str, tuple, list[str]] | None:
 # Chính cách (mục 6)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _dieu_hau(L: dict[str, float], thang: int) -> str | None:
+def _dieu_hau(L: dict[str, int], thang: int) -> str | None:
     """6.3.1: đủ ba điều kiện thì trả "HAN" / "NHIET"."""
     lanh, am = L["Kim"] + L["Thủy"], L["Mộc"] + L["Hỏa"]
     if thang in THANG_HAN and L["Hỏa"] < VANG and lanh > am:
@@ -391,7 +459,7 @@ def _dieu_hau(L: dict[str, float], thang: int) -> str | None:
     return None
 
 
-def _phu_uc(W: dict[str, float], r: float, nghieng: str) -> tuple[str, list[str]]:
+def _phu_uc(W: dict[str, int], ho: int, tong: int, nghieng: str) -> tuple[str, list[str]]:
     """Bảng 6.1 (nghieng="N") hoặc 6.2 (nghieng="V") theo nguyên nhân."""
     if nghieng == "N":
         nn = _lon_nhat(W, THU_TU_NGUYEN_NHAN_NHUOC)
@@ -400,12 +468,12 @@ def _phu_uc(W: dict[str, float], r: float, nghieng: str) -> tuple[str, list[str]
     if W["AN"] > W["TK"]:
         return "V-AN", [f"nguyen_nhan={_so_sanh(W, 'AN', 'TK')}"]
     ly = [f"nguyen_nhan={_so_sanh(W, 'TK', 'AN')}"]
-    if r >= NGUONG_CUC_VUONG:
+    if _r_ge(ho, tong, NGUONG_CUC_VUONG):
         return "V-TK-TT", ly + ["cuc_vuong"]
     return "V-TK-QS", ly + ["khong_cuc_vuong"]
 
 
-def _thong_quan(L: dict[str, float]) -> tuple[str, list[str]] | None:
+def _thong_quan(L: dict[str, int]) -> tuple[str, list[str]] | None:
     """6.3.2: trả (hành khắc M, lý do) khi hai hành lớn nhất khắc nhau và cân sức."""
     xep = sorted(HANH, key=lambda h: -L[h])        # sắp ổn định: hoà theo thứ tự HANH
     a, b = xep[0], xep[1]
@@ -416,7 +484,8 @@ def _thong_quan(L: dict[str, float]) -> tuple[str, list[str]] | None:
     else:
         return None
     tong = sum(L.values())
-    if L[a] >= TQ_TY_LE_MIN * tong and L[b] >= TQ_TY_LE_MIN * tong and L[a] - L[b] <= TQ_LECH_MAX * L[a]:
+    if (100 * L[a] >= TQ_TY_LE_MIN * tong and 100 * L[b] >= TQ_TY_LE_MIN * tong
+            and 100 * (L[a] - L[b]) <= TQ_LECH_MAX * L[a]):
         return manh, [f"thong_quan={manh}_khac_{yeu}:{_so(L[manh])}/{_so(L[yeu])}"]
     return None
 
@@ -450,10 +519,10 @@ def _dong(nhanh: str, dong: tuple, g: dict[str, str] | None) -> dict:
     }
 
 
-def _cuong_nhuoc(r: float) -> str:
-    if r >= NGUONG_VUONG:
+def _cuong_nhuoc(ho: int, tong: int) -> str:
+    if _r_ge(ho, tong, NGUONG_VUONG):
         return "vượng"
-    if r <= NGUONG_NHUOC:
+    if _r_le(ho, tong, NGUONG_NHUOC):
         return "nhược"
     return "cân bằng"
 
@@ -470,10 +539,12 @@ def tinh(tu_tru: dict, co_gio: bool = True) -> dict:
     Returns: các trường của đặc tả 8.1.
     """
     lc = luc(tu_tru, co_gio)
-    g, L, W, r = lc["g"], lc["L"], lc["W"], lc["r"]
+    g, L, W, ho, tong = lc["g"], lc["L"], lc["W"], lc["ho"], lc["tong"]
     thang = tu_tru["month"]["chi_idx"]
-    ly_do = [f"r={r:.3f}"]
-    co: dict = {"ty_le": round(r, 3), "thieu_gio": not co_gio}
+    cn = _cuong_nhuoc(ho, tong)
+    nghin = _ty_le_nghin(ho, tong)                     # in r: không dùng round() của số thực
+    ly_do = [f"r={nghin // 1000}.{nghin % 1000:03d}"]
+    co: dict = {"ty_le": nghin / 1000, "thieu_gio": not co_gio}
 
     db = _dac_biet(tu_tru, lc) if co_gio else None
     if not co_gio:
@@ -484,8 +555,8 @@ def tinh(tu_tru: dict, co_gio: bool = True) -> dict:
         nhanh, dong, ly = db
         kq = _dong(nhanh, dong, None if nhanh == "DB-HOA" else g)
         ly_do += ly
-    elif r >= NGUONG_VUONG or r <= NGUONG_NHUOC:
-        nhanh, ly = _phu_uc(W, r, "V" if r >= NGUONG_VUONG else "N")
+    elif cn != "cân bằng":
+        nhanh, ly = _phu_uc(W, ho, tong, "V" if cn == "vượng" else "N")
         kq = _dong(nhanh, BANG_NHOM[nhanh], g)
         ly_do += ly
         if dh:                                         # 6.4: ghi nhận, không đổi dụng
@@ -513,7 +584,7 @@ def tinh(tu_tru: dict, co_gio: bool = True) -> dict:
             kq = _dong("CB-TQ", vai_thong_quan(manh), None)
             ly_do += ["khong_dieu_hau"] + ly
         else:
-            goc, ly = _phu_uc(W, r, "N" if r < NGUONG_NGHIENG else "V")
+            goc, ly = _phu_uc(W, ho, tong, "N" if 100 * ho < NGUONG_NGHIENG * tong else "V")
             kq = _dong(f"CB-{goc}", BANG_NHOM[goc], g)
             ly_do += ly + ["khong_dieu_hau", "khong_thong_quan"]
 
@@ -521,7 +592,7 @@ def tinh(tu_tru: dict, co_gio: bool = True) -> dict:
     return {
         "rule_version": RULE_VERSION,
         **kq,
-        "cuong_nhuoc": _cuong_nhuoc(r),
+        "cuong_nhuoc": cn,
         "co": co,
         "ly_do": ly_do,
     }
@@ -553,8 +624,11 @@ def _dong_ky_vong(kq: dict) -> tuple | None:
     return g[dong[0]], tuple(hy), g[dong[2]], tuple(g[x] for x in dong[3])
 
 
-def kiem_bat_bien(kq: dict) -> list[str]:
-    """Bất biến 9.1–9.5 (và phiên bản). Danh sách rỗng là đạt."""
+def kiem_bat_bien(kq: dict, tu_tru: dict | None = None) -> list[str]:
+    """Bất biến 9.1–9.5 (và phiên bản). Danh sách rỗng là đạt.
+
+    Có ``tu_tru`` thì đối chiếu thêm nhật chủ: dòng bảng phải dựng từ đúng hành can ngày (nhánh
+    theo nhóm) hoặc đúng hoá thần của can ngày (``DB-HOA``)."""
     loi: list[str] = []
     try:
         vai = kq["vai_5_hanh"]
@@ -623,4 +697,17 @@ def kiem_bat_bien(kq: dict) -> list[str]:
     dh = (kq.get("co") or {}).get("dieu_hau")
     if dh is not None and nhanh not in _CHINH_CACH:
         loi.append("6.4: cờ dieu_hau ngoài nhánh vượng/nhược")
+    if tu_tru is not None and nhanh in NHANH_HOP_LE:
+        dm = CAN_HANH[tu_tru["day"]["can_idx"]]
+        ngay = CAN_NAMES[tu_tru["day"]["can_idx"]]
+        goc = nhanh[3:] if nhanh.startswith(("CB-N-", "CB-V-")) else nhanh
+        if goc in BANG_NHOM and nhom_hanh(dm)[BANG_NHOM[goc][0]] != o["dung_than"]:
+            loi.append("9.5: dụng không dựng từ nhật chủ của tứ trụ")
+        if nhanh == "DB-HOA" and not any(ngay in cap and h == o["dung_than"] for cap, h, _t in HOA):
+            loi.append("9.5: hoá thần không phải của can ngày")
+    for ma in kq.get("ly_do") or []:
+        if not (isinstance(ma, str) and ly_do_hop_le(ma)):
+            loi.append(f"8.1: mã ly_do sai ngữ pháp: {ma!r}")
+    if not kq.get("ly_do"):
+        loi.append("8.1: ly_do rỗng")
     return loi

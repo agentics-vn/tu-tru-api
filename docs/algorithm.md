@@ -1128,17 +1128,26 @@ Request: `{ birth_date, birth_time, gender, name?, format? }`. Một lần gọi
 - `rule` vắng hoặc `"v1"`: luật cũ, đầu ra **không đổi** (golden `tests/golden/`). `co_gio=False`
   với v1 là lỗi (v1 không có nhánh thiếu giờ). Mã khác hai mã trên: `ValueError`.
 - `rule="2026-10.1"`: trả các trường 8.1 của `dung_than_v2.tinh` cộng `strength` (= `cuong_nhuoc`
-  của luật mới) và `analysis` (phân tích cường nhược v1 của tứ trụ; không có trụ giờ thì `null`).
-- Route API chưa nhận `dung_than_rule` / `birth_time = null` ở bước này.
+  của luật mới) và `analysis` (phân tích cường nhược v1 bốn trụ). `co_gio=False` thì `analysis = null`,
+  kể cả khi người gọi truyền vào: phân tích ấy là bốn trụ, trụ giờ ở sản phẩm là giờ giả.
+- Route API chưa nhận `dung_than_rule` / `birth_time = null` ở bước này. `build_chart_analysis(...,
+  co_gio=False)` vẫn trả `strength_info` bốn trụ ở cấp bundle; lớp đọc v2 lấy `cuong_nhuoc`/`nhanh`.
 
 ### 23.2 Đầu vào (đặc tả mục 3)
 
 `L[h]`: can bề mặt 1,0 (kể cả can ngày, theo hành sau hợp hoá) + tàng can 1,0/0,6/0,3. `W[nhóm]`
 (TK · AN · TT · TAI · QS): như `L` nhưng **không** tính can ngày. `r = (L[DM]+L[AN]+thưởng mùa
-dương) / tổng có điều chỉnh mùa` (cùng §21.3). Ngưỡng so trên `r` **chưa làm tròn**; `L` cộng theo
-thứ tự Mộc, Hỏa, Thổ, Kim, Thủy như bản cài thử. Hệ quả đo được: lá số 09/11/2024 giờ 22 có `r`
-đúng 0,40 nên là "nhược" ở luật mới, còn `strength` v1 (cộng theo thứ tự khoá khác) ra
-0,4000000000000001 → "cân bằng". Đây là lá số duy nhất lệch nhãn trong 6.786 lá số mẫu.
+dương) / tổng có điều chỉnh mùa` (cùng §21.3).
+
+**Số học chính xác (đặc tả 3.1, chốt 16/10/2026).** `L`, `W`, thưởng mùa là **số nguyên đơn vị 0,1**
+(can 10; tàng can 10/6/3; thưởng mùa +20/+10/−5/−10). Mọi phép so làm trên số nguyên: ngưỡng `r` bằng
+nhân chéo (`r ≤ 0,40 ⇔ 100·hộ ≤ 40·tổng`), hoà và lớn nhất ở 5.3–6.3, `lạnh`/`ấm`, 30%/15% của thông
+quan, gốc ≥ 0,6. Trọng số, thưởng mùa, ngưỡng và thứ tự hoà không đổi. Số thực chỉ để in:
+`co.ty_le` = r làm tròn ba chữ số **nửa lên** trên số nguyên (0,2875 → 0,288), `ly_do` in một chữ số.
+Lý do: cộng 0,6 và 0,3 bằng số thực sai ở chữ số thứ 16; trên mẫu 6.786 lá số, 118 lá số có r đúng
+bằng một ngưỡng (0,50: 82 · 0,40: 29 · 0,55: 5 · 0,70: 2), thêm các lá số hoà W/L, và 34 lá số đổi
+nhánh hoặc cờ khi tính đúng. Luật v1 giữ nguyên cách cộng số thực, kể cả **8 lá số mẫu** có r đúng
+0,40 hoặc 0,55 mà `strength` v1 ra "cân bằng" (`V1_LECH_NHAN` trong test); luật mới ra nhãn đúng.
 
 Thiếu giờ (`co_gio=False`, mục 7): chỉ ba trụ năm–tháng–ngày, bỏ mọi cặp hợp hoá có trụ giờ, không
 xét cách đặc biệt, `co.thieu_gio = true`; `tu_tru` không cần khoá `hour`.
@@ -1152,9 +1161,12 @@ xét cách đặc biệt, `co.thieu_gio = true`; `tu_tru` không cần khoá `ho
 3. Vượng/nhược mà đủ điều kiện điều hậu (6.4): không đổi dụng; hành điều hậu đang Nhàn thì nâng
    thành Hỉ (cuối `hy_tap`); luôn ghi `co.dieu_hau = "<HAN|NHIET>:<vai trước khi nâng>"`.
 
-Hằng: `NGUONG_VUONG 0,55` · `NGUONG_NHUOC 0,40` · `NGUONG_CUC_VUONG 0,70` · `TQ_TY_LE_MIN 0,30` ·
-`TQ_LECH_MAX 0,15` · `VANG 1,0` · tháng hàn Tý Sửu Dần · tháng nhiệt Tỵ Ngọ Mùi. Hoà: nguyên nhân
-nhược QS → TT → TAI; nhóm được tòng QS → TAI → TT; vượng hoà TK; thông quan theo Mộc → Thủy.
+Hằng (phần trăm nguyên / đơn vị 0,1): `NGUONG_VUONG 55` · `NGUONG_NHUOC 40` · `NGUONG_CUC_VUONG 70` ·
+`NGUONG_NGHIENG 50` · `TQ_TY_LE_MIN 30` · `TQ_LECH_MAX 15` · `VANG 10` (= 1,0) · `GOC_MIN 6` (= 0,6) ·
+tháng hàn Tý Sửu Dần · tháng nhiệt Tỵ Ngọ Mùi. Hoà: nguyên nhân nhược QS → TT → TAI; nhóm được tòng
+QS → TAI → TT; vượng hoà TK; Tòng Vượng chỉ khi `2·W[AN] < W[TK]` (bằng là Tòng Cường); thông quan
+xếp L theo Mộc → Thủy; `lạnh = ấm` thì không điều hậu. Mỗi loại hoà và mỗi ngưỡng có một lá số ghim
+trong `test_ranh_gioi`.
 
 ### 23.4 Bảng vai (một nhánh, một dòng)
 
@@ -1190,6 +1202,25 @@ Trường: `rule_version` · `nhanh` (21 mã, `NHANH_HOP_LE`) · `dung_than` · 
 ví dụ 01/01/2005 giờ 2 `CB-N-QS`: `["r=0.481", "nguyen_nhan=QS:2.3>TT:2.0", "khong_dieu_hau",
 "khong_thong_quan"]`; mã chỉ để truy vết, không phải câu cho khách).
 
-`kiem_bat_bien(kq)` kiểm 9.1–9.5 (năm hành, đúng một Dụng; ô đơn khớp `vai_5_hanh`; bốn ô khác nhau
+**Ngữ pháp `ly_do`** (`dung_than_v2.LY_DO_MAU`; `kiem_bat_bien` từ chối mã lạ). `<so>` là số một chữ
+số thập phân; ký hiệu so sánh lấy từ phép so số nguyên (`=` là hoà, nhóm đứng trước thắng theo thứ tự
+hoà). Bộ mã chờ chủ đầu tư duyệt trước khi lớp viết bài đọc nó (8.6).
+
+| Mã | Nghĩa |
+|---|---|
+| `r=0.ddd` | luôn đứng đầu |
+| `thieu_gio` | ba trụ, không xét cách đặc biệt |
+| `nguyen_nhan=<NHÓM>:<so>(>\|=)<NHÓM>:<so>` | 6.1/6.2: nhóm thắng và nhóm đứng sau |
+| `cuc_vuong` · `khong_cuc_vuong` | V-TK: r ≥ 0,70 hay không |
+| `khong_dieu_hau` · `dieu_hau=HAN\|NHIET[:<vai>]` | không/có điều hậu; có `:<vai>` là 6.4 |
+| `thang=<chi>` · `<Hỏa\|Thủy>:<so><1.0` · `Kim+Thủy:<so>>Mộc+Hỏa:<so>` (hoặc ngược) | điều kiện điều hậu, cách đặc biệt |
+| `khong_thong_quan` · `thong_quan=<M>_khac_<Y>:<so>/<so>` | 6.3.2 |
+| `nhat_hanh=<hành>` · `cuc=TAM_HOI\|TAM_HOP\|TU_KHO\|THUAN_THO` · `khong_chu_pha` | 5.1 |
+| `hoa=<can>-<can>@month\|hour:<hành>` · `khong_hanh_pha` | 5.2 |
+| `tong=QS\|TAI\|TT:<so>` · `khong_an_can` · `khong_goc` | 5.3 |
+| `khong_tai_quan` · `2AN:<so>(<\|>=)TK:<so>` | 5.4 |
+
+`kiem_bat_bien(kq, tu_tru=None)` kiểm 9.1–9.5 (năm hành, đúng một Dụng; ô đơn khớp `vai_5_hanh`; bốn ô khác nhau
 từng đôi; ba tập và {dụng} rời nhau, hợp đủ năm hành; nhánh thuộc 21 mã và bộ vai trùng dòng bảng
-sau 6.4) cùng `rule_version`. Danh sách rỗng là đạt.
+sau 6.4) cùng `rule_version` và ngữ pháp `ly_do`. Có `tu_tru` thì đối chiếu thêm nhật chủ (dụng dựng từ
+đúng hành can ngày; hoá thần đúng của can ngày). Danh sách rỗng là đạt.

@@ -1,1332 +1,1508 @@
-[
- {
-  "loai": "sach",
-  "ten": "曲直",
-  "tu_tru": "Nhâm Dần | Quý Mão | Giáp Thìn | Giáp Tý",
-  "han": "壬寅 癸卯 甲辰 甲子",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.839,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy",
-   "Hỏa"
-  ],
-  "ky": "Kim",
-  "cuu": [],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "曲直",
-  "tu_tru": "Quý Hợi | Ất Mão | Ất Mão | Quý Mùi",
-  "han": "癸亥 乙卯 乙卯 癸未",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.861,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy",
-   "Hỏa"
-  ],
-  "ky": "Kim",
-  "cuu": [],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "炎上",
-  "tu_tru": "Đinh Tỵ | Bính Ngọ | Bính Dần | Ất Mùi",
-  "han": "丁巳 丙午 丙寅 乙未",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.789,
-  "dung": "Hỏa",
-  "hy": [
-   "Mộc",
-   "Thổ"
-  ],
-  "ky": "Thủy",
-  "cuu": [],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "炎上",
-  "tu_tru": "Bính Tuất | Giáp Ngọ | Đinh Mão | Nhâm Dần",
-  "han": "丙戌 甲午 丁卯 壬寅",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.718,
-  "dung": "Hỏa",
-  "hy": [
-   "Mộc",
-   "Thổ"
-  ],
-  "ky": "Thủy",
-  "cuu": [],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "稼穡",
-  "tu_tru": "Mậu Tuất | Kỷ Mùi | Mậu Thìn | Quý Sửu",
-  "han": "戊戌 己未 戊辰 癸丑",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.728,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa",
-   "Kim"
-  ],
-  "ky": "Mộc",
-  "cuu": [],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "稼穡",
-  "tu_tru": "Mậu Thìn | Kỷ Mùi | Kỷ Mùi | Mậu Thìn",
-  "han": "戊辰 己未 己未 戊辰",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.824,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa",
-   "Kim"
-  ],
-  "ky": "Mộc",
-  "cuu": [],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從革",
-  "tu_tru": "Mậu Thân | Tân Dậu | Canh Tuất | Ất Dậu",
-  "han": "戊申 辛酉 庚戌 乙酉",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.924,
-  "dung": "Kim",
-  "hy": [
-   "Thổ",
-   "Thủy"
-  ],
-  "ky": "Hỏa",
-  "cuu": [],
-  "nhan": [
-   "Mộc"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從革",
-  "tu_tru": "Mậu Tuất | Tân Dậu | Tân Tỵ | Kỷ Sửu",
-  "han": "戊戌 辛酉 辛巳 己丑",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.85,
-  "dung": "Kim",
-  "hy": [
-   "Thổ",
-   "Thủy"
-  ],
-  "ky": "Hỏa",
-  "cuu": [],
-  "nhan": [
-   "Mộc"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "潤下",
-  "tu_tru": "Nhâm Thân | Nhâm Tý | Nhâm Thìn | Canh Tý",
-  "han": "壬申 壬子 壬辰 庚子",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.839,
-  "dung": "Thủy",
-  "hy": [
-   "Kim",
-   "Mộc"
-  ],
-  "ky": "Thổ",
-  "cuu": [],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "潤下",
-  "tu_tru": "Tân Hợi | Canh Tý | Quý Sửu | Quý Sửu",
-  "han": "辛亥 庚子 癸丑 癸丑",
-  "mong": "DB-NHAT-HANH",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.79,
-  "dung": "Thủy",
-  "hy": [
-   "Kim",
-   "Mộc"
-  ],
-  "ky": "Thổ",
-  "cuu": [],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從財",
-  "tu_tru": "Canh Tuất | Ất Dậu | Bính Thân | Kỷ Sửu",
-  "han": "庚戌 乙酉 丙申 己丑",
-  "mong": "DB-TONG-TAI",
-  "nhanh": "DB-TONG-TAI",
-  "ty_le": 0.121,
-  "dung": "Kim",
-  "hy": [
-   "Thổ"
-  ],
-  "ky": "Hỏa",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從財",
-  "tu_tru": "Mậu Thân | Tân Dậu | Đinh Tỵ | Tân Sửu",
-  "han": "戊申 辛酉 丁巳 辛丑",
-  "mong": "DB-TONG-TAI",
-  "nhanh": "DB-TONG-TAI",
-  "ty_le": 0.187,
-  "dung": "Kim",
-  "hy": [
-   "Thổ"
-  ],
-  "ky": "Hỏa",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從殺",
-  "tu_tru": "Mậu Tuất | Tân Dậu | Ất Dậu | Ất Dậu",
-  "han": "戊戌 辛酉 乙酉 乙酉",
-  "mong": "DB-TONG-SAT",
-  "nhanh": "DB-TONG-SAT",
-  "ty_le": 0.202,
-  "dung": "Kim",
-  "hy": [
-   "Thổ"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Mộc",
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從兒",
-  "tu_tru": "Đinh Mão | Nhâm Dần | Quý Mão | Bính Thìn",
-  "han": "丁卯 壬寅 癸卯 丙辰",
-  "mong": "DB-TONG-NHI",
-  "nhanh": "DB-TONG-NHI",
-  "ty_le": 0.126,
-  "dung": "Mộc",
-  "hy": [
-   "Hỏa",
-   "Thủy"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從旺",
-  "tu_tru": "Quý Mão | Ất Mão | Giáp Dần | Ất Hợi",
-  "han": "癸卯 乙卯 甲寅 乙亥",
-  "mong": "DB-TONG-VUONG",
-  "nhanh": "DB-TONG-VUONG",
-  "ty_le": 0.922,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "從強",
-  "tu_tru": "Nhâm Tý | Quý Mão | Giáp Tý | Giáp Tý",
-  "han": "壬子 癸卯 甲子 甲子",
-  "mong": "DB-TONG-CUONG",
-  "nhanh": "DB-TONG-CUONG",
-  "ty_le": 1.0,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ",
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "化土",
-  "tu_tru": "Mậu Thìn | Nhâm Tuất | Giáp Thìn | Kỷ Tỵ",
-  "han": "戊辰 壬戌 甲辰 己巳",
-  "mong": "DB-HOA",
-  "nhanh": "DB-HOA",
-  "ty_le": 0.241,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa",
-   "Kim"
-  ],
-  "ky": "Mộc",
-  "cuu": [],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "化金",
-  "tu_tru": "Giáp Thân | Quý Dậu | Ất Sửu | Canh Thìn",
-  "han": "甲申 癸酉 乙丑 庚辰",
-  "mong": "DB-HOA",
-  "nhanh": "DB-HOA",
-  "ty_le": 0.35,
-  "dung": "Kim",
-  "hy": [
-   "Thổ",
-   "Thủy"
-  ],
-  "ky": "Hỏa",
-  "cuu": [],
-  "nhan": [
-   "Mộc"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "化水",
-  "tu_tru": "Giáp Thìn | Bính Tý | Tân Sửu | Nhâm Thìn",
-  "han": "甲辰 丙子 辛丑 壬辰",
-  "mong": "DB-HOA",
-  "nhanh": "DB-HOA",
-  "ty_le": 0.295,
-  "dung": "Thủy",
-  "hy": [
-   "Kim",
-   "Mộc"
-  ],
-  "ky": "Thổ",
-  "cuu": [],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "化木",
-  "tu_tru": "Ất Mão | Đinh Mão | Nhâm Ngọ | Quý Mão",
-  "han": "乙卯 丁卯 壬午 癸卯",
-  "mong": "DB-HOA",
-  "nhanh": "DB-HOA",
-  "ty_le": 0.11,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy",
-   "Hỏa"
-  ],
-  "ky": "Kim",
-  "cuu": [],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "化火",
-  "tu_tru": "Bính Tuất | Mậu Tuất | Quý Tỵ | Giáp Dần",
-  "han": "丙戌 戊戌 癸巳 甲寅",
-  "mong": "DB-HOA",
-  "nhanh": "DB-HOA",
-  "ty_le": 0.222,
-  "dung": "Hỏa",
-  "hy": [
-   "Mộc",
-   "Thổ"
-  ],
-  "ky": "Thủy",
-  "cuu": [],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "破化-克",
-  "tu_tru": "Canh Tuất | Mậu Tý | Tân Mùi | Bính Thân",
-  "han": "庚戌 戊子 辛未 丙申",
-  "mong": "!DB-HOA",
-  "nhanh": "CB-DH-HAN",
-  "ty_le": 0.527,
-  "dung": "Hỏa",
-  "hy": [
-   "Mộc"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "破化-妒",
-  "tu_tru": "Giáp Tuất | Đinh Mão | Nhâm Ngọ | Đinh Mùi",
-  "han": "甲戌 丁卯 壬午 丁未",
-  "mong": "!DB-HOA",
-  "nhanh": "N-TT",
-  "ty_le": 0.055,
-  "dung": "Kim",
-  "hy": [
-   "Thủy",
-   "Thổ"
-  ],
-  "ky": "Mộc",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "破化-化",
-  "tu_tru": "Nhâm Thìn | Đinh Mùi | Giáp Tý | Kỷ Tỵ",
-  "han": "壬辰 丁未 甲子 己巳",
-  "mong": "!DB-HOA",
-  "nhanh": "N-TAI",
-  "ty_le": 0.299,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim",
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "不化-隔位",
-  "tu_tru": "Tân Hợi | Canh Tý | Bính Dần | Nhâm Thìn",
-  "han": "辛亥 庚子 丙寅 壬辰",
-  "mong": "!DB-HOA",
-  "nhanh": "N-QS",
-  "ty_le": 0.333,
-  "dung": "Mộc",
-  "hy": [
-   "Hỏa"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sach",
-  "ten": "不化-月令",
-  "tu_tru": "Bính Ngọ | Mậu Tuất | Đinh Hợi | Nhâm Dần",
-  "han": "丙午 戊戌 丁亥 壬寅",
-  "mong": "!DB-HOA",
-  "nhanh": "CB-N-TT",
-  "ty_le": 0.478,
-  "dung": "Mộc",
-  "hy": [
-   "Hỏa",
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-01",
-  "slot": 2,
-  "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Sửu",
-  "nhanh": "CB-N-QS",
-  "ty_le": 0.481,
-  "dung": "Thủy",
-  "hy": [
-   "Mộc"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-01",
-  "slot": 6,
-  "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Kỷ Mão",
-  "nhanh": "V-TK-QS",
-  "ty_le": 0.566,
-  "dung": "Kim",
-  "hy": [
-   "Thổ"
-  ],
-  "ky": "Mộc",
-  "cuu": [
-   "Thủy"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-01",
-  "slot": 14,
-  "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Quý Mùi",
-  "nhanh": "CB-V-AN",
-  "ty_le": 0.546,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-01",
-  "slot": 22,
-  "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Hợi",
-  "nhanh": "V-AN",
-  "ty_le": 0.59,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-08",
-  "slot": 6,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Quý Mão",
-  "nhanh": "CB-N-TT",
-  "ty_le": 0.41,
-  "dung": "Kim",
-  "hy": [
-   "Thủy",
-   "Thổ"
-  ],
-  "ky": "Mộc",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-08",
-  "slot": 10,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Ất Tỵ",
-  "nhanh": "N-TT",
-  "ty_le": 0.349,
-  "dung": "Kim",
-  "hy": [
-   "Thủy",
-   "Thổ"
-  ],
-  "ky": "Mộc",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-08",
-  "slot": 14,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Đinh Mùi",
-  "nhanh": "N-QS",
-  "ty_le": 0.302,
-  "dung": "Kim",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [
-   "Mộc"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-15",
-  "slot": 2,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Ất Sửu",
-  "nhanh": "CB-N-TAI",
-  "ty_le": 0.474,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Mộc",
-   "Kim"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-15",
-  "slot": 14,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Tân Mùi",
-  "nhanh": "CB-V-TK-QS",
-  "ty_le": 0.519,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-01-29",
-  "slot": 10,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Quý Sửu | Đinh Tỵ",
-  "nhanh": "N-TAI",
-  "ty_le": 0.397,
-  "dung": "Thủy",
-  "hy": [
-   "Kim"
-  ],
-  "ky": "Hỏa",
-  "cuu": [
-   "Thổ",
-   "Mộc"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-02-19",
-  "slot": 14,
-  "tu_tru": "Ất Dậu | Mậu Dần | Giáp Tuất | Tân Mùi",
-  "nhanh": "CB-TQ",
-  "ty_le": 0.417,
-  "dung": "Hỏa",
-  "hy": [],
-  "ky": "Thủy",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [
-   "Mộc",
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-03-26",
-  "slot": 22,
-  "tu_tru": "Ất Dậu | Kỷ Mão | Kỷ Dậu | Ất Hợi",
-  "nhanh": "DB-TONG-SAT",
-  "ty_le": 0.208,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Hỏa",
-  "cuu": [
-   "Thổ",
-   "Kim"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-04-16",
-  "slot": 6,
-  "tu_tru": "Ất Dậu | Canh Thìn | Canh Ngọ | Kỷ Mão",
-  "nhanh": "V-TK-TT",
-  "ty_le": 0.724,
-  "dung": "Thủy",
-  "hy": [
-   "Mộc"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-04-30",
-  "slot": 10,
-  "tu_tru": "Ất Dậu | Canh Thìn | Giáp Thân | Kỷ Tỵ",
-  "nhanh": "DB-HOA",
-  "ty_le": 0.14,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa",
-   "Kim"
-  ],
-  "ky": "Mộc",
-  "cuu": [],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-05-07",
-  "slot": 14,
-  "tu_tru": "Ất Dậu | Tân Tỵ | Tân Mão | Ất Mùi",
-  "nhanh": "CB-DH-NHIET",
-  "ty_le": 0.454,
-  "dung": "Thủy",
-  "hy": [
-   "Kim"
-  ],
-  "ky": "Hỏa",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2005-12-10",
-  "slot": 2,
-  "tu_tru": "Ất Dậu | Mậu Tý | Mậu Thìn | Quý Sửu",
-  "nhanh": "CB-DH-HAN",
-  "ty_le": 0.408,
-  "dung": "Hỏa",
-  "hy": [
-   "Mộc"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2006-10-14",
-  "slot": 2,
-  "tu_tru": "Bính Tuất | Mậu Tuất | Bính Tý | Kỷ Sửu",
-  "nhanh": "DB-TONG-NHI",
-  "ty_le": 0.232,
-  "dung": "Thổ",
-  "hy": [
-   "Kim",
-   "Hỏa"
-  ],
-  "ky": "Mộc",
-  "cuu": [
-   "Thủy"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2007-02-03",
-  "slot": 14,
-  "tu_tru": "Bính Tuất | Tân Sửu | Mậu Thìn | Kỷ Mùi",
-  "nhanh": "DB-NHAT-HANH",
-  "ty_le": 0.728,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa",
-   "Kim"
-  ],
-  "ky": "Mộc",
-  "cuu": [],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2007-02-10",
-  "slot": 22,
-  "tu_tru": "Đinh Hợi | Nhâm Dần | Ất Hợi | Đinh Hợi",
-  "nhanh": "DB-TONG-CUONG",
-  "ty_le": 0.85,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ",
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2008-10-04",
-  "slot": 2,
-  "tu_tru": "Mậu Tý | Tân Dậu | Đinh Sửu | Tân Sửu",
-  "nhanh": "DB-TONG-TAI",
-  "ty_le": 0.102,
-  "dung": "Kim",
-  "hy": [
-   "Thổ"
-  ],
-  "ky": "Hỏa",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "nhanh",
-  "ngay": "2023-02-25",
-  "slot": 6,
-  "tu_tru": "Quý Mão | Giáp Dần | Giáp Dần | Đinh Mão",
-  "nhanh": "DB-TONG-VUONG",
-  "ty_le": 0.763,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sat_nguong_0.4",
-  "ngay": "2005-01-22",
-  "slot": 22,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Bính Ngọ | Kỷ Hợi",
-  "nhanh": "N-TT",
-  "ty_le": 0.4,
-  "dung": "Mộc",
-  "hy": [
-   "Hỏa",
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "sat_nguong_0.4",
-  "ngay": "2006-10-14",
-  "slot": 14,
-  "tu_tru": "Bính Tuất | Mậu Tuất | Bính Tý | Ất Mùi",
-  "nhanh": "CB-N-TT",
-  "ty_le": 0.402,
-  "dung": "Mộc",
-  "hy": [
-   "Hỏa",
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "sat_nguong_0.55",
-  "ngay": "2009-06-13",
-  "slot": 22,
-  "tu_tru": "Kỷ Sửu | Canh Ngọ | Kỷ Sửu | Ất Hợi",
-  "nhanh": "CB-V-TK-QS",
-  "ty_le": 0.55,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sat_nguong_0.55",
-  "ngay": "2005-02-05",
-  "slot": 2,
-  "tu_tru": "Ất Dậu | Mậu Dần | Canh Thân | Đinh Sửu",
-  "nhanh": "V-AN",
-  "ty_le": 0.551,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sat_nguong_0.7",
-  "ngay": "2009-12-05",
-  "slot": 22,
-  "tu_tru": "Kỷ Sửu | Ất Hợi | Giáp Thân | Ất Hợi",
-  "nhanh": "V-TK-TT",
-  "ty_le": 0.7,
-  "dung": "Hỏa",
-  "hy": [
-   "Thổ"
-  ],
-  "ky": "Mộc",
-  "cuu": [
-   "Thủy"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "sat_nguong_0.7",
-  "ngay": "2006-01-21",
-  "slot": 2,
-  "tu_tru": "Ất Dậu | Kỷ Sửu | Canh Tuất | Đinh Sửu",
-  "nhanh": "V-AN",
-  "ty_le": 0.701,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "doi_nguyen_nhan_N-QS_N-TAI",
-  "ngay": "2005-01-29",
-  "slot": 14,
-  "tu_tru": "Giáp Thân | Đinh Sửu | Quý Sửu | Kỷ Mùi",
-  "nhanh": "N-QS",
-  "ty_le": 0.349,
-  "dung": "Kim",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [
-   "Mộc"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "doi_nguyen_nhan_N-QS_N-TAI",
-  "ngay": "2010-04-17",
-  "slot": 22,
-  "tu_tru": "Canh Dần | Canh Thìn | Đinh Dậu | Tân Hợi",
-  "nhanh": "N-TAI",
-  "ty_le": 0.349,
-  "dung": "Hỏa",
-  "hy": [
-   "Mộc"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thủy",
-   "Thổ"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "doi_nguyen_nhan_CB-N-QS_CB-N-TT",
-  "ngay": "2005-01-01",
-  "slot": 2,
-  "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Sửu",
-  "nhanh": "CB-N-QS",
-  "ty_le": 0.481,
-  "dung": "Thủy",
-  "hy": [
-   "Mộc"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "doi_nguyen_nhan_CB-N-QS_CB-N-TT",
-  "ngay": "2005-10-15",
-  "slot": 6,
-  "tu_tru": "Ất Dậu | Bính Tuất | Nhâm Thân | Quý Mão",
-  "nhanh": "CB-N-TT",
-  "ty_le": 0.481,
-  "dung": "Kim",
-  "hy": [
-   "Thủy",
-   "Thổ"
-  ],
-  "ky": "Mộc",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "doi_nguyen_nhan_V-AN_V-TK-QS",
-  "ngay": "2005-02-05",
-  "slot": 2,
-  "tu_tru": "Ất Dậu | Mậu Dần | Canh Thân | Đinh Sửu",
-  "nhanh": "V-AN",
-  "ty_le": 0.551,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [
-   "Hỏa"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "doi_nguyen_nhan_V-AN_V-TK-QS",
-  "ngay": "2006-02-11",
-  "slot": 6,
-  "tu_tru": "Bính Tuất | Canh Dần | Tân Mùi | Tân Mão",
-  "nhanh": "V-TK-QS",
-  "ty_le": 0.551,
-  "dung": "Hỏa",
-  "hy": [
-   "Mộc"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thổ"
-  ],
-  "nhan": [
-   "Thủy"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "thieu_gio",
-  "ngay": "2005-01-01",
-  "slot": 11,
-  "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Sửu",
-  "du_gio": "CB-N-QS",
-  "nhanh": "V-AN",
-  "ty_le": 0.582,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": false
- },
- {
-  "loai": "thieu_gio",
-  "ngay": "2007-02-03",
-  "slot": 11,
-  "tu_tru": "Bính Tuất | Tân Sửu | Mậu Thìn | Kỷ Mùi",
-  "du_gio": "DB-NHAT-HANH",
-  "nhanh": "V-TK-QS",
-  "ty_le": 0.682,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": false
- },
- {
-  "loai": "loi_that",
-  "ngay": "2024-10-21",
-  "slot": 16,
-  "tu_tru": "Giáp Thìn | Giáp Tuất | Mậu Ngọ | Canh Thân",
-  "nhanh": "CB-V-TK-QS",
-  "ty_le": 0.541,
-  "dung": "Mộc",
-  "hy": [
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Hỏa"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "loi_that",
-  "ngay": "2015-11-18",
-  "slot": 16,
-  "tu_tru": "Ất Mùi | Đinh Hợi | Mậu Tuất | Canh Thân",
-  "nhanh": "CB-N-TT",
-  "ty_le": 0.46,
-  "dung": "Hỏa",
-  "hy": [
-   "Thổ",
-   "Mộc"
-  ],
-  "ky": "Kim",
-  "cuu": [
-   "Thủy"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "loi_that",
-  "ngay": "2025-11-12",
-  "slot": 14,
-  "tu_tru": "Ất Tỵ | Đinh Hợi | Ất Dậu | Quý Mùi",
-  "nhanh": "CB-V-AN",
-  "ty_le": 0.518,
-  "dung": "Thổ",
-  "hy": [
-   "Hỏa"
-  ],
-  "ky": "Thủy",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Kim"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "loi_that",
-  "ngay": "2026-08-21",
-  "slot": 16,
-  "tu_tru": "Bính Ngọ | Bính Thân | Đinh Mão | Mậu Thân",
-  "nhanh": "CB-N-TT",
-  "ty_le": 0.481,
-  "dung": "Mộc",
-  "hy": [
-   "Hỏa",
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [],
-  "co_gio": true
- },
- {
-  "loai": "loi_that",
-  "ngay": "2026-08-20",
-  "slot": 8,
-  "tu_tru": "Bính Ngọ | Bính Thân | Bính Dần | Nhâm Thìn",
-  "nhanh": "CB-V-TK-QS",
-  "ty_le": 0.549,
-  "dung": "Thủy",
-  "hy": [
-   "Kim"
-  ],
-  "ky": "Hỏa",
-  "cuu": [
-   "Mộc"
-  ],
-  "nhan": [
-   "Thổ"
-  ],
-  "co_gio": true
- },
- {
-  "loai": "loi_that",
-  "ngay": "2026-01-03",
-  "slot": 14,
-  "tu_tru": "Ất Tỵ | Mậu Tý | Đinh Sửu | Đinh Mùi",
-  "nhanh": "CB-N-TT",
-  "ty_le": 0.419,
-  "dung": "Mộc",
-  "hy": [
-   "Hỏa",
-   "Thủy"
-  ],
-  "ky": "Thổ",
-  "cuu": [
-   "Kim"
-  ],
-  "nhan": [],
-  "co_gio": true
- }
-]
+{
+ "phien_ban_ca": "2026-10-16.1",
+ "rule_version": "2026-10.1",
+ "so_hoc": "số nguyên đơn vị 0,1 (đặc tả 3.1, chốt 16/10/2026)",
+ "so_ca": 73,
+ "sha256_ca": "ad77d3804783e1574827809a7b0498e0954d173469917400c6a2fa30e7e9fd0a",
+ "cach_tinh_sha256_ca": "sha256 của json.dumps(ca, ensure_ascii=False, sort_keys=True, separators=(',', ':')) mã UTF-8",
+ "ca": [
+  {
+   "loai": "sach",
+   "ten": "曲直",
+   "tu_tru": "Nhâm Dần | Quý Mão | Giáp Thìn | Giáp Tý",
+   "han": "壬寅 癸卯 甲辰 甲子",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.839,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy",
+    "Hỏa"
+   ],
+   "ky": "Kim",
+   "cuu": [],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "曲直",
+   "tu_tru": "Quý Hợi | Ất Mão | Ất Mão | Quý Mùi",
+   "han": "癸亥 乙卯 乙卯 癸未",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.861,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy",
+    "Hỏa"
+   ],
+   "ky": "Kim",
+   "cuu": [],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "炎上",
+   "tu_tru": "Đinh Tỵ | Bính Ngọ | Bính Dần | Ất Mùi",
+   "han": "丁巳 丙午 丙寅 乙未",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.789,
+   "dung": "Hỏa",
+   "hy": [
+    "Mộc",
+    "Thổ"
+   ],
+   "ky": "Thủy",
+   "cuu": [],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "炎上",
+   "tu_tru": "Bính Tuất | Giáp Ngọ | Đinh Mão | Nhâm Dần",
+   "han": "丙戌 甲午 丁卯 壬寅",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.718,
+   "dung": "Hỏa",
+   "hy": [
+    "Mộc",
+    "Thổ"
+   ],
+   "ky": "Thủy",
+   "cuu": [],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "稼穡",
+   "tu_tru": "Mậu Tuất | Kỷ Mùi | Mậu Thìn | Quý Sửu",
+   "han": "戊戌 己未 戊辰 癸丑",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.728,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa",
+    "Kim"
+   ],
+   "ky": "Mộc",
+   "cuu": [],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "稼穡",
+   "tu_tru": "Mậu Thìn | Kỷ Mùi | Kỷ Mùi | Mậu Thìn",
+   "han": "戊辰 己未 己未 戊辰",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.824,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa",
+    "Kim"
+   ],
+   "ky": "Mộc",
+   "cuu": [],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從革",
+   "tu_tru": "Mậu Thân | Tân Dậu | Canh Tuất | Ất Dậu",
+   "han": "戊申 辛酉 庚戌 乙酉",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.924,
+   "dung": "Kim",
+   "hy": [
+    "Thổ",
+    "Thủy"
+   ],
+   "ky": "Hỏa",
+   "cuu": [],
+   "nhan": [
+    "Mộc"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從革",
+   "tu_tru": "Mậu Tuất | Tân Dậu | Tân Tỵ | Kỷ Sửu",
+   "han": "戊戌 辛酉 辛巳 己丑",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.85,
+   "dung": "Kim",
+   "hy": [
+    "Thổ",
+    "Thủy"
+   ],
+   "ky": "Hỏa",
+   "cuu": [],
+   "nhan": [
+    "Mộc"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "潤下",
+   "tu_tru": "Nhâm Thân | Nhâm Tý | Nhâm Thìn | Canh Tý",
+   "han": "壬申 壬子 壬辰 庚子",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.839,
+   "dung": "Thủy",
+   "hy": [
+    "Kim",
+    "Mộc"
+   ],
+   "ky": "Thổ",
+   "cuu": [],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "潤下",
+   "tu_tru": "Tân Hợi | Canh Tý | Quý Sửu | Quý Sửu",
+   "han": "辛亥 庚子 癸丑 癸丑",
+   "mong": "DB-NHAT-HANH",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.79,
+   "dung": "Thủy",
+   "hy": [
+    "Kim",
+    "Mộc"
+   ],
+   "ky": "Thổ",
+   "cuu": [],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從財",
+   "tu_tru": "Canh Tuất | Ất Dậu | Bính Thân | Kỷ Sửu",
+   "han": "庚戌 乙酉 丙申 己丑",
+   "mong": "DB-TONG-TAI",
+   "nhanh": "DB-TONG-TAI",
+   "ty_le": 0.121,
+   "dung": "Kim",
+   "hy": [
+    "Thổ"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從財",
+   "tu_tru": "Mậu Thân | Tân Dậu | Đinh Tỵ | Tân Sửu",
+   "han": "戊申 辛酉 丁巳 辛丑",
+   "mong": "DB-TONG-TAI",
+   "nhanh": "DB-TONG-TAI",
+   "ty_le": 0.187,
+   "dung": "Kim",
+   "hy": [
+    "Thổ"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從殺",
+   "tu_tru": "Mậu Tuất | Tân Dậu | Ất Dậu | Ất Dậu",
+   "han": "戊戌 辛酉 乙酉 乙酉",
+   "mong": "DB-TONG-SAT",
+   "nhanh": "DB-TONG-SAT",
+   "ty_le": 0.202,
+   "dung": "Kim",
+   "hy": [
+    "Thổ"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Mộc",
+    "Hỏa"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從兒",
+   "tu_tru": "Đinh Mão | Nhâm Dần | Quý Mão | Bính Thìn",
+   "han": "丁卯 壬寅 癸卯 丙辰",
+   "mong": "DB-TONG-NHI",
+   "nhanh": "DB-TONG-NHI",
+   "ty_le": 0.126,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa",
+    "Thủy"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從旺",
+   "tu_tru": "Quý Mão | Ất Mão | Giáp Dần | Ất Hợi",
+   "han": "癸卯 乙卯 甲寅 乙亥",
+   "mong": "DB-TONG-VUONG",
+   "nhanh": "DB-TONG-VUONG",
+   "ty_le": 0.922,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "從強",
+   "tu_tru": "Nhâm Tý | Quý Mão | Giáp Tý | Giáp Tý",
+   "han": "壬子 癸卯 甲子 甲子",
+   "mong": "DB-TONG-CUONG",
+   "nhanh": "DB-TONG-CUONG",
+   "ty_le": 1.0,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ",
+    "Hỏa"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "化土",
+   "tu_tru": "Mậu Thìn | Nhâm Tuất | Giáp Thìn | Kỷ Tỵ",
+   "han": "戊辰 壬戌 甲辰 己巳",
+   "mong": "DB-HOA",
+   "nhanh": "DB-HOA",
+   "ty_le": 0.241,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa",
+    "Kim"
+   ],
+   "ky": "Mộc",
+   "cuu": [],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "化金",
+   "tu_tru": "Giáp Thân | Quý Dậu | Ất Sửu | Canh Thìn",
+   "han": "甲申 癸酉 乙丑 庚辰",
+   "mong": "DB-HOA",
+   "nhanh": "DB-HOA",
+   "ty_le": 0.35,
+   "dung": "Kim",
+   "hy": [
+    "Thổ",
+    "Thủy"
+   ],
+   "ky": "Hỏa",
+   "cuu": [],
+   "nhan": [
+    "Mộc"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "化水",
+   "tu_tru": "Giáp Thìn | Bính Tý | Tân Sửu | Nhâm Thìn",
+   "han": "甲辰 丙子 辛丑 壬辰",
+   "mong": "DB-HOA",
+   "nhanh": "DB-HOA",
+   "ty_le": 0.295,
+   "dung": "Thủy",
+   "hy": [
+    "Kim",
+    "Mộc"
+   ],
+   "ky": "Thổ",
+   "cuu": [],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "化木",
+   "tu_tru": "Ất Mão | Đinh Mão | Nhâm Ngọ | Quý Mão",
+   "han": "乙卯 丁卯 壬午 癸卯",
+   "mong": "DB-HOA",
+   "nhanh": "DB-HOA",
+   "ty_le": 0.11,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy",
+    "Hỏa"
+   ],
+   "ky": "Kim",
+   "cuu": [],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "化火",
+   "tu_tru": "Bính Tuất | Mậu Tuất | Quý Tỵ | Giáp Dần",
+   "han": "丙戌 戊戌 癸巳 甲寅",
+   "mong": "DB-HOA",
+   "nhanh": "DB-HOA",
+   "ty_le": 0.222,
+   "dung": "Hỏa",
+   "hy": [
+    "Mộc",
+    "Thổ"
+   ],
+   "ky": "Thủy",
+   "cuu": [],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "破化-克",
+   "tu_tru": "Canh Tuất | Mậu Tý | Tân Mùi | Bính Thân",
+   "han": "庚戌 戊子 辛未 丙申",
+   "mong": "!DB-HOA",
+   "nhanh": "CB-DH-HAN",
+   "ty_le": 0.527,
+   "dung": "Hỏa",
+   "hy": [
+    "Mộc"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "破化-妒",
+   "tu_tru": "Giáp Tuất | Đinh Mão | Nhâm Ngọ | Đinh Mùi",
+   "han": "甲戌 丁卯 壬午 丁未",
+   "mong": "!DB-HOA",
+   "nhanh": "N-TT",
+   "ty_le": 0.055,
+   "dung": "Kim",
+   "hy": [
+    "Thủy",
+    "Thổ"
+   ],
+   "ky": "Mộc",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "破化-化",
+   "tu_tru": "Nhâm Thìn | Đinh Mùi | Giáp Tý | Kỷ Tỵ",
+   "han": "壬辰 丁未 甲子 己巳",
+   "mong": "!DB-HOA",
+   "nhanh": "N-TAI",
+   "ty_le": 0.299,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim",
+    "Hỏa"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "不化-隔位",
+   "tu_tru": "Tân Hợi | Canh Tý | Bính Dần | Nhâm Thìn",
+   "han": "辛亥 庚子 丙寅 壬辰",
+   "mong": "!DB-HOA",
+   "nhanh": "N-QS",
+   "ty_le": 0.333,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sach",
+   "ten": "不化-月令",
+   "tu_tru": "Bính Ngọ | Mậu Tuất | Đinh Hợi | Nhâm Dần",
+   "han": "丙午 戊戌 丁亥 壬寅",
+   "mong": "!DB-HOA",
+   "nhanh": "CB-N-TT",
+   "ty_le": 0.478,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa",
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-01",
+   "slot": 2,
+   "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Sửu",
+   "nhanh": "CB-N-QS",
+   "ty_le": 0.481,
+   "dung": "Thủy",
+   "hy": [
+    "Mộc"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-01",
+   "slot": 6,
+   "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Kỷ Mão",
+   "nhanh": "V-TK-QS",
+   "ty_le": 0.566,
+   "dung": "Kim",
+   "hy": [
+    "Thổ"
+   ],
+   "ky": "Mộc",
+   "cuu": [
+    "Thủy"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-01",
+   "slot": 14,
+   "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Quý Mùi",
+   "nhanh": "CB-V-AN",
+   "ty_le": 0.546,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-01",
+   "slot": 22,
+   "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Hợi",
+   "nhanh": "V-AN",
+   "ty_le": 0.59,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-08",
+   "slot": 6,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Quý Mão",
+   "nhanh": "CB-N-TT",
+   "ty_le": 0.41,
+   "dung": "Kim",
+   "hy": [
+    "Thủy",
+    "Thổ"
+   ],
+   "ky": "Mộc",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "hoi_quy",
+   "ngay": "2005-01-08",
+   "slot": 10,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Ất Tỵ",
+   "nhanh": "N-QS",
+   "ty_le": 0.349,
+   "dung": "Kim",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Mộc"
+   ],
+   "co_gio": true,
+   "ky_vong_cu": {
+    "loai": "nhanh",
+    "nhanh": "N-TT",
+    "ty_le": 0.349,
+    "dung": "Kim",
+    "hy": [
+     "Thủy",
+     "Thổ"
+    ],
+    "ky": "Mộc",
+    "cuu": [
+     "Hỏa"
+    ],
+    "nhan": []
+   },
+   "giai_trinh": {
+    "gia_tri_dung": "W[QS] = W[TT] = 2,6 (26 đơn vị 0,1); W[TAI] = 2,0; r = 22/63",
+    "cau_dac_ta": "6.1: «Hoà thì xét theo thứ tự QS, TT, TAI» → nguyên nhân QS → N-QS",
+    "so_thuc_gay_loi": "cộng số thực: W[QS] = 2.5999999999999996 < W[TT] = 2.6 → N-TT",
+    "sua": "đặc tả 3.1 (chốt 16/10/2026): đếm số nguyên đơn vị 0,1"
+   }
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-08",
+   "slot": 14,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Đinh Mùi",
+   "nhanh": "N-QS",
+   "ty_le": 0.302,
+   "dung": "Kim",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Mộc"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-15",
+   "slot": 2,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Ất Sửu",
+   "nhanh": "CB-N-TAI",
+   "ty_le": 0.474,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Mộc",
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-15",
+   "slot": 14,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Tân Mùi",
+   "nhanh": "CB-V-TK-QS",
+   "ty_le": 0.519,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-29",
+   "slot": 10,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Quý Sửu | Đinh Tỵ",
+   "nhanh": "N-TAI",
+   "ty_le": 0.397,
+   "dung": "Thủy",
+   "hy": [
+    "Kim"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Thổ",
+    "Mộc"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-02-19",
+   "slot": 14,
+   "tu_tru": "Ất Dậu | Mậu Dần | Giáp Tuất | Tân Mùi",
+   "nhanh": "CB-TQ",
+   "ty_le": 0.417,
+   "dung": "Hỏa",
+   "hy": [],
+   "ky": "Thủy",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Mộc",
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-03-26",
+   "slot": 22,
+   "tu_tru": "Ất Dậu | Kỷ Mão | Kỷ Dậu | Ất Hợi",
+   "nhanh": "DB-TONG-SAT",
+   "ty_le": 0.208,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Thổ",
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-04-16",
+   "slot": 6,
+   "tu_tru": "Ất Dậu | Canh Thìn | Canh Ngọ | Kỷ Mão",
+   "nhanh": "V-TK-TT",
+   "ty_le": 0.724,
+   "dung": "Thủy",
+   "hy": [
+    "Mộc"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-04-30",
+   "slot": 10,
+   "tu_tru": "Ất Dậu | Canh Thìn | Giáp Thân | Kỷ Tỵ",
+   "nhanh": "DB-HOA",
+   "ty_le": 0.14,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa",
+    "Kim"
+   ],
+   "ky": "Mộc",
+   "cuu": [],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-05-07",
+   "slot": 14,
+   "tu_tru": "Ất Dậu | Tân Tỵ | Tân Mão | Ất Mùi",
+   "nhanh": "CB-DH-NHIET",
+   "ty_le": 0.454,
+   "dung": "Thủy",
+   "hy": [
+    "Kim"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-12-10",
+   "slot": 2,
+   "tu_tru": "Ất Dậu | Mậu Tý | Mậu Thìn | Quý Sửu",
+   "nhanh": "CB-DH-HAN",
+   "ty_le": 0.408,
+   "dung": "Hỏa",
+   "hy": [
+    "Mộc"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2006-10-14",
+   "slot": 2,
+   "tu_tru": "Bính Tuất | Mậu Tuất | Bính Tý | Kỷ Sửu",
+   "nhanh": "DB-TONG-NHI",
+   "ty_le": 0.232,
+   "dung": "Thổ",
+   "hy": [
+    "Kim",
+    "Hỏa"
+   ],
+   "ky": "Mộc",
+   "cuu": [
+    "Thủy"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2007-02-03",
+   "slot": 14,
+   "tu_tru": "Bính Tuất | Tân Sửu | Mậu Thìn | Kỷ Mùi",
+   "nhanh": "DB-NHAT-HANH",
+   "ty_le": 0.728,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa",
+    "Kim"
+   ],
+   "ky": "Mộc",
+   "cuu": [],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2007-02-10",
+   "slot": 22,
+   "tu_tru": "Đinh Hợi | Nhâm Dần | Ất Hợi | Đinh Hợi",
+   "nhanh": "DB-TONG-CUONG",
+   "ty_le": 0.85,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ",
+    "Hỏa"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2008-10-04",
+   "slot": 2,
+   "tu_tru": "Mậu Tý | Tân Dậu | Đinh Sửu | Tân Sửu",
+   "nhanh": "DB-TONG-TAI",
+   "ty_le": 0.102,
+   "dung": "Kim",
+   "hy": [
+    "Thổ"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2023-02-25",
+   "slot": 6,
+   "tu_tru": "Quý Mão | Giáp Dần | Giáp Dần | Đinh Mão",
+   "nhanh": "DB-TONG-VUONG",
+   "ty_le": 0.763,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sat_nguong_0.4",
+   "ngay": "2005-01-22",
+   "slot": 22,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Bính Ngọ | Kỷ Hợi",
+   "nhanh": "N-TT",
+   "ty_le": 0.4,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa",
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "sat_nguong_0.4",
+   "ngay": "2006-10-14",
+   "slot": 14,
+   "tu_tru": "Bính Tuất | Mậu Tuất | Bính Tý | Ất Mùi",
+   "nhanh": "CB-N-TT",
+   "ty_le": 0.402,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa",
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "hoi_quy",
+   "ngay": "2009-06-13",
+   "slot": 22,
+   "tu_tru": "Kỷ Sửu | Canh Ngọ | Kỷ Sửu | Ất Hợi",
+   "nhanh": "V-TK-QS",
+   "ty_le": 0.55,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true,
+   "ky_vong_cu": {
+    "loai": "sat_nguong_0.55",
+    "nhanh": "CB-V-TK-QS",
+    "ty_le": 0.55,
+    "dung": "Mộc",
+    "hy": [
+     "Thủy"
+    ],
+    "ky": "Thổ",
+    "cuu": [
+     "Hỏa"
+    ],
+    "nhan": [
+     "Kim"
+    ]
+   },
+   "giai_trinh": {
+    "gia_tri_dung": "r = 66/120 = 11/20 = 0,55 đúng (hộ 6,6 / tổng 12,0)",
+    "cau_dac_ta": "mục 4: «r ≥ 0,55 → Vượng» → V-TK-QS (W[TK] 3,6 > W[AN] 1,0; r < 0,70)",
+    "so_thuc_gay_loi": "cộng số thực: r = 0.5499999999999999 < 0,55 → cân bằng, CB-V-TK-QS",
+    "sua": "đặc tả 3.1 (chốt 16/10/2026): so ngưỡng bằng nhân chéo số nguyên"
+   }
+  },
+  {
+   "loai": "sat_nguong_0.55",
+   "ngay": "2005-02-05",
+   "slot": 2,
+   "tu_tru": "Ất Dậu | Mậu Dần | Canh Thân | Đinh Sửu",
+   "nhanh": "V-AN",
+   "ty_le": 0.551,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sat_nguong_0.7",
+   "ngay": "2009-12-05",
+   "slot": 22,
+   "tu_tru": "Kỷ Sửu | Ất Hợi | Giáp Thân | Ất Hợi",
+   "nhanh": "V-TK-TT",
+   "ty_le": 0.7,
+   "dung": "Hỏa",
+   "hy": [
+    "Thổ"
+   ],
+   "ky": "Mộc",
+   "cuu": [
+    "Thủy"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "sat_nguong_0.7",
+   "ngay": "2006-01-21",
+   "slot": 2,
+   "tu_tru": "Ất Dậu | Kỷ Sửu | Canh Tuất | Đinh Sửu",
+   "nhanh": "V-AN",
+   "ty_le": 0.701,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "doi_nguyen_nhan_N-QS_N-TAI",
+   "ngay": "2005-01-29",
+   "slot": 14,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Quý Sửu | Kỷ Mùi",
+   "nhanh": "N-QS",
+   "ty_le": 0.349,
+   "dung": "Kim",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Mộc"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "doi_nguyen_nhan_N-QS_N-TAI",
+   "ngay": "2010-04-17",
+   "slot": 22,
+   "tu_tru": "Canh Dần | Canh Thìn | Đinh Dậu | Tân Hợi",
+   "nhanh": "N-TAI",
+   "ty_le": 0.349,
+   "dung": "Hỏa",
+   "hy": [
+    "Mộc"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thủy",
+    "Thổ"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "doi_nguyen_nhan_CB-N-QS_CB-N-TT",
+   "ngay": "2005-01-01",
+   "slot": 2,
+   "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Sửu",
+   "nhanh": "CB-N-QS",
+   "ty_le": 0.481,
+   "dung": "Thủy",
+   "hy": [
+    "Mộc"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "doi_nguyen_nhan_CB-N-QS_CB-N-TT",
+   "ngay": "2005-10-15",
+   "slot": 6,
+   "tu_tru": "Ất Dậu | Bính Tuất | Nhâm Thân | Quý Mão",
+   "nhanh": "CB-N-TT",
+   "ty_le": 0.481,
+   "dung": "Kim",
+   "hy": [
+    "Thủy",
+    "Thổ"
+   ],
+   "ky": "Mộc",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "doi_nguyen_nhan_V-AN_V-TK-QS",
+   "ngay": "2005-02-05",
+   "slot": 2,
+   "tu_tru": "Ất Dậu | Mậu Dần | Canh Thân | Đinh Sửu",
+   "nhanh": "V-AN",
+   "ty_le": 0.551,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Hỏa"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "doi_nguyen_nhan_V-AN_V-TK-QS",
+   "ngay": "2006-02-11",
+   "slot": 6,
+   "tu_tru": "Bính Tuất | Canh Dần | Tân Mùi | Tân Mão",
+   "nhanh": "V-TK-QS",
+   "ty_le": 0.551,
+   "dung": "Hỏa",
+   "hy": [
+    "Mộc"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "thieu_gio",
+   "ngay": "2005-01-01",
+   "slot": 11,
+   "tu_tru": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Sửu",
+   "du_gio": "CB-N-QS",
+   "nhanh": "V-AN",
+   "ty_le": 0.582,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": false
+  },
+  {
+   "loai": "thieu_gio",
+   "ngay": "2007-02-03",
+   "slot": 11,
+   "tu_tru": "Bính Tuất | Tân Sửu | Mậu Thìn | Kỷ Mùi",
+   "du_gio": "DB-NHAT-HANH",
+   "nhanh": "V-TK-QS",
+   "ty_le": 0.682,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": false
+  },
+  {
+   "loai": "loi_that",
+   "ngay": "2024-10-21",
+   "slot": 16,
+   "tu_tru": "Giáp Thìn | Giáp Tuất | Mậu Ngọ | Canh Thân",
+   "nhanh": "CB-V-TK-QS",
+   "ty_le": 0.541,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "loi_that",
+   "ngay": "2015-11-18",
+   "slot": 16,
+   "tu_tru": "Ất Mùi | Đinh Hợi | Mậu Tuất | Canh Thân",
+   "nhanh": "CB-N-TT",
+   "ty_le": 0.46,
+   "dung": "Hỏa",
+   "hy": [
+    "Thổ",
+    "Mộc"
+   ],
+   "ky": "Kim",
+   "cuu": [
+    "Thủy"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "loi_that",
+   "ngay": "2025-11-12",
+   "slot": 14,
+   "tu_tru": "Ất Tỵ | Đinh Hợi | Ất Dậu | Quý Mùi",
+   "nhanh": "CB-V-AN",
+   "ty_le": 0.518,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "loi_that",
+   "ngay": "2026-08-21",
+   "slot": 16,
+   "tu_tru": "Bính Ngọ | Bính Thân | Đinh Mão | Mậu Thân",
+   "nhanh": "CB-N-TT",
+   "ty_le": 0.481,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa",
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "loi_that",
+   "ngay": "2026-08-20",
+   "slot": 8,
+   "tu_tru": "Bính Ngọ | Bính Thân | Bính Dần | Nhâm Thìn",
+   "nhanh": "CB-V-TK-QS",
+   "ty_le": 0.549,
+   "dung": "Thủy",
+   "hy": [
+    "Kim"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true
+  },
+  {
+   "loai": "loi_that",
+   "ngay": "2026-01-03",
+   "slot": 14,
+   "tu_tru": "Ất Tỵ | Mậu Tý | Đinh Sửu | Đinh Mùi",
+   "nhanh": "CB-N-TT",
+   "ty_le": 0.419,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa",
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true
+  },
+  {
+   "loai": "nhanh",
+   "ngay": "2005-01-22",
+   "slot": 2,
+   "tu_tru": "Giáp Thân | Đinh Sửu | Bính Ngọ | Kỷ Sửu",
+   "nhanh": "N-TT",
+   "ty_le": 0.339,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa",
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [],
+   "co_gio": true,
+   "ghi_chu": "thay ca N-TT cũ (nay là hồi quy): W[TT] 3,9 > W[QS] 1,8, W[TAI] 1,6; r = 0,339 không sát ngưỡng"
+  },
+  {
+   "loai": "sat_nguong_0.55",
+   "ngay": "2007-03-10",
+   "slot": 18,
+   "tu_tru": "Đinh Hợi | Quý Mão | Quý Mão | Tân Dậu",
+   "nhanh": "CB-V-TK-QS",
+   "ty_le": 0.549,
+   "dung": "Thổ",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Mộc"
+   ],
+   "co_gio": true,
+   "ghi_chu": "thay ca dưới 0,55 cũ (nay là hồi quy): r = 50/91 = 0,5495, lá số có r lớn nhất dưới 0,55 của mẫu mục 11"
+  },
+  {
+   "loai": "ranh_gioi",
+   "ngay": "2005-06-04",
+   "slot": 10,
+   "tu_tru": "Ất Dậu | Tân Tỵ | Kỷ Mùi | Kỷ Tỵ",
+   "nhanh": "V-TK-QS",
+   "ty_le": 0.615,
+   "dung": "Mộc",
+   "hy": [
+    "Thủy"
+   ],
+   "ky": "Thổ",
+   "cuu": [
+    "Hỏa"
+   ],
+   "nhan": [
+    "Kim"
+   ],
+   "co_gio": true,
+   "ghi_chu": "W[AN] = W[TK] = 2,6 đúng; 6.2 «hoà thì TK» → V-TK-QS. Số thực: W[TK] = 2.5999999999999996 → V-AN (sai)"
+  },
+  {
+   "loai": "ranh_gioi",
+   "ngay": "2006-06-10",
+   "slot": 14,
+   "tu_tru": "Bính Tuất | Giáp Ngọ | Canh Ngọ | Quý Mùi",
+   "nhanh": "N-QS",
+   "ty_le": 0.4,
+   "dung": "Thổ",
+   "hy": [
+    "Kim"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Mộc"
+   ],
+   "nhan": [
+    "Thủy"
+   ],
+   "co_gio": true,
+   "ghi_chu": "r = 48/120 = 0,40 đúng → nhược, N-QS. Số thực: r = 0.4000000000000001 → CB-N-QS (sai); v1 cũng ghi cân bằng"
+  },
+  {
+   "loai": "ranh_gioi",
+   "ngay": "2007-09-08",
+   "slot": 22,
+   "tu_tru": "Đinh Hợi | Mậu Thân | Ất Tỵ | Đinh Hợi",
+   "nhanh": "N-TT",
+   "ty_le": 0.4,
+   "dung": "Thủy",
+   "hy": [
+    "Mộc",
+    "Kim"
+   ],
+   "ky": "Hỏa",
+   "cuu": [
+    "Thổ"
+   ],
+   "nhan": [],
+   "co_gio": true,
+   "ghi_chu": "r = 48/120 = 0,40 đúng → nhược, N-TT; thêm W[QS] = W[TAI] = 1,6. Số thực: r = 0.4000000000000001 → CB-N-TT (sai)"
+  },
+  {
+   "loai": "ranh_gioi",
+   "ngay": "2024-11-09",
+   "slot": 22,
+   "tu_tru": "Giáp Thìn | Ất Hợi | Đinh Sửu | Tân Hợi",
+   "nhanh": "N-QS",
+   "ty_le": 0.4,
+   "dung": "Mộc",
+   "hy": [
+    "Hỏa"
+   ],
+   "ky": "Thủy",
+   "cuu": [
+    "Kim"
+   ],
+   "nhan": [
+    "Thổ"
+   ],
+   "co_gio": true,
+   "ghi_chu": "r = 48/120 = 0,40 đúng → nhược, N-QS. Bản số thực cũng ra 0,4 ở đây; v1 cộng theo thứ tự khác ra 0.4000000000000001 → strength cân bằng"
+  }
+ ]
+}

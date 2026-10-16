@@ -157,9 +157,12 @@ def find_dung_than(
 
 def _find_dung_than_v2(tu_tru: dict, analysis: dict | None, co_gio: bool) -> dict:
     """Luật 2026-10.1. ``strength`` = ``cuong_nhuoc`` của chính luật, để một đầu ra không mang
-    hai nhãn (khớp nhãn v1 ở 6.785/6.786 lá số mẫu; lệch khi r đúng ngưỡng, algorithm.md §23.2).
-    ``analysis`` là phân tích cường nhược v1 của tứ trụ (không có trụ giờ thì None)."""
+    hai nhãn (lệch nhãn v1 ở 8/6.786 lá số mẫu có r đúng ngưỡng, algorithm.md §23.2).
+    ``analysis`` là phân tích cường nhược v1 của tứ trụ; ``co_gio=False`` thì None (bỏ qua cả giá trị
+    người gọi truyền vào: nó là phân tích bốn trụ, trụ giờ ở sản phẩm là giờ giả)."""
     kq = dung_than_v2.tinh(tu_tru, co_gio=co_gio)
-    if analysis is None and isinstance(tu_tru.get("hour"), dict):
+    if not co_gio:
+        analysis = None          # phân tích v1 là bốn trụ; thiếu giờ thì không có bản đúng để đặt cạnh
+    elif analysis is None:
         analysis = analyze_chart_strength(tu_tru)
     return {**kq, "strength": kq["cuong_nhuoc"], "analysis": analysis}
