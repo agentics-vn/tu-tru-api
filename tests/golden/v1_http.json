@@ -49034,6 +49034,363 @@
    "method": "POST",
    "params": null,
    "path": "/v1/chon-ngay"
+  },
+  {
+   "id": "err-00",
+   "json": {
+    "birth_date": "31/02/2020",
+    "birth_time": 8,
+    "format": "json",
+    "gender": 1,
+    "num_dai_van": 10,
+    "num_luu_nien": 20
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → birth_date: Value error, Ngày '31/02/2020' không đúng định dạng dd/mm/yyyy",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/la-so-full"
+  },
+  {
+   "id": "err-01",
+   "json": {
+    "birth_date": "29/02/2023",
+    "birth_time": 8,
+    "format": "json",
+    "gender": 1,
+    "num_dai_van": 10,
+    "num_luu_nien": 20
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → birth_date: Value error, Ngày '29/02/2023' không đúng định dạng dd/mm/yyyy",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/la-so-full"
+  },
+  {
+   "id": "err-02",
+   "json": {
+    "birth_date": "15/06/1899",
+    "birth_time": 8,
+    "format": "json",
+    "gender": 1,
+    "num_dai_van": 10,
+    "num_luu_nien": 20
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → birth_date: Value error, birth_date phải có năm >= 1900",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/la-so-full"
+  },
+  {
+   "id": "err-03",
+   "json": {
+    "birth_date": "01/01/2027",
+    "birth_time": 8,
+    "format": "json",
+    "gender": 1,
+    "num_dai_van": 10,
+    "num_luu_nien": 20
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → birth_date: Value error, birth_date không được ở tương lai",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/la-so-full"
+  },
+  {
+   "id": "err-04",
+   "json": {
+    "birth_date": "06/05/1994",
+    "birth_time": 7,
+    "format": "json",
+    "gender": 1,
+    "num_dai_van": 10,
+    "num_luu_nien": 20
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → birth_time: Value error, birth_time phải là một trong [0, 2, 4, 6, 8, 10, 11, 14, 16, 18, 20, 22, 23]",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/la-so-full"
+  },
+  {
+   "id": "err-05",
+   "json": null,
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "Ngày '29/02/2023' không đúng định dạng dd/mm/yyyy",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "GET",
+   "params": {
+    "birth_date": "29/02/2023",
+    "birth_time": 8,
+    "gender": 1
+   },
+   "path": "/v1/la-so"
+  },
+  {
+   "id": "err-06",
+   "json": null,
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "gender phải là 1 (nam) hoặc -1 (nữ).",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "GET",
+   "params": {
+    "birth_date": "06/05/1994",
+    "birth_time": 8,
+    "gender": 2
+   },
+   "path": "/v1/la-so"
+  },
+  {
+   "id": "err-07",
+   "json": null,
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "query → year: Input should be less than or equal to 2100",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "GET",
+   "params": {
+    "birth_date": "06/05/1994",
+    "birth_time": 8,
+    "gender": 1,
+    "year": 2101
+   },
+   "path": "/v1/la-so/luu-nien"
+  },
+  {
+   "id": "err-08",
+   "json": null,
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "Ngày '29/02/2025' không đúng định dạng dd/mm/yyyy",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "GET",
+   "params": {
+    "birth_date": "29/02/2025",
+    "birth_time": 8,
+    "gender": 1,
+    "year": 2026
+   },
+   "path": "/v1/la-so/luu-nien"
+  },
+  {
+   "id": "err-09",
+   "json": {
+    "person1_birth_date": "06/05/1994",
+    "person1_birth_time": 8,
+    "person1_gender": 1,
+    "person2_birth_date": "12/08/1975",
+    "person2_birth_time": 18,
+    "person2_gender": -1,
+    "relationship_type": "XYZ"
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → relationship_type: Value error, relationship_type phải là một trong: ANH_CHI_EM, BAN_BE, DOI_TAC, DONG_NGHIEP, PHU_THE, PHU_TU, SEP_NHAN_VIEN, THAY_TRO",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/hop-tuoi"
+  },
+  {
+   "id": "err-10",
+   "json": {
+    "person1_birth_date": "29/02/2023",
+    "person1_birth_time": 8,
+    "person1_gender": 1,
+    "person2_birth_date": "12/08/1975",
+    "person2_birth_time": 18,
+    "person2_gender": -1
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → person1_birth_date: Value error, Ngày '29/02/2023' không đúng định dạng dd/mm/yyyy",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/hop-tuoi"
+  },
+  {
+   "id": "err-11",
+   "json": null,
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "birth_time phải là một trong [0, 2, 4, 6, 8, 10, 11, 14, 16, 18, 20, 22, 23]",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "GET",
+   "params": {
+    "birth_date": "06/05/1994",
+    "birth_time": 7,
+    "gender": 1
+   },
+   "path": "/v1/phong-thuy"
+  },
+  {
+   "id": "err-12",
+   "json": null,
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "Ngày '30/02/2000' không đúng định dạng dd/mm/yyyy",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "GET",
+   "params": {
+    "birth_date": "06/05/1994",
+    "birth_time": 8,
+    "gender": 1,
+    "partner_birth_date": "30/02/2000"
+   },
+   "path": "/v1/phong-thuy"
+  },
+  {
+   "id": "err-13",
+   "json": {
+    "birth_date": "06/05/1994",
+    "birth_time": 8,
+    "gender": 1,
+    "intent": "KHAI_TRUONG",
+    "range_end": "31/03/2027",
+    "range_start": "17/10/2026",
+    "top_n": 4
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "RANGE_TOO_LARGE",
+     "message": "Value error, Khoảng cách không được vượt quá 90 ngày",
+     "message_en": "Date range exceeds the allowed limit.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/chon-ngay"
+  },
+  {
+   "id": "err-14",
+   "json": {
+    "birth_date": "06/05/1994",
+    "birth_time": 8,
+    "gender": 1,
+    "intent": "KHONG_CO",
+    "range_end": "14/01/2027",
+    "range_start": "17/10/2026",
+    "top_n": 4
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body → intent: Input should be 'KHAI_TRUONG', 'KY_HOP_DONG', 'CAU_TAI', 'NHAM_CHUC', 'AN_HOI', 'CUOI_HOI', 'DAM_CUOI', 'CAU_TU', 'DONG_THO', 'NHAP_TRACH', 'LAM_NHA', 'MUA_NHA_DAT', 'XAY_BEP', 'LAM_GIUONG', 'DAO_GIENG', 'AN_TANG', 'CAI_TANG', 'XUAT_HANH', 'DI_CHUYEN_NGOAI', 'TE_TU', 'GIAI_HAN', 'KHAM_BENH', 'PHAU_THUAT', 'NHAP_HOC_THI_CU', 'KIEN_TUNG', 'TRONG_CAY', 'CAT_TOC', 'XAM_MINH' or 'MAC_DINH'",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/chon-ngay"
+  },
+  {
+   "id": "err-15",
+   "json": {
+    "birth_date": "06/05/1994",
+    "birth_time": 8,
+    "gender": 1,
+    "intent": "KHAI_TRUONG",
+    "range_end": "17/10/2026",
+    "range_start": "14/01/2027",
+    "top_n": 4
+   },
+   "ket_qua": {
+    "body": {
+     "error_code": "INVALID_INPUT",
+     "message": "body: Value error, Ngày kết thúc phải bằng hoặc sau ngày bắt đầu",
+     "message_en": "Invalid input data.",
+     "status": "error"
+    },
+    "status": 400
+   },
+   "method": "POST",
+   "params": null,
+   "path": "/v1/chon-ngay"
   }
  ],
  "ngay_dong_bang": "2026-10-16"

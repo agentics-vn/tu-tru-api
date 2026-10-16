@@ -4390,5 +4390,4794 @@
     }
    }
   }
- ]
+ ],
+ "dem_nhanh_mau_tong_hop": {
+  "CB-DH-HAN": 102,
+  "CB-DH-NHIET": 90,
+  "CB-N-QS": 539,
+  "CB-N-TAI": 409,
+  "CB-N-TT": 488,
+  "CB-TQ": 113,
+  "CB-V-AN": 380,
+  "CB-V-TK-QS": 354,
+  "DB-HOA": 57,
+  "DB-NHAT-HANH": 37,
+  "DB-TONG-CUONG": 23,
+  "DB-TONG-NHI": 32,
+  "DB-TONG-SAT": 14,
+  "DB-TONG-TAI": 23,
+  "DB-TONG-VUONG": 5,
+  "N-QS": 779,
+  "N-TAI": 646,
+  "N-TT": 718,
+  "V-AN": 900,
+  "V-TK-QS": 870,
+  "V-TK-TT": 207
+ },
+ "dem_theo_nhanh": {
+  "CB-DH-HAN": 3,
+  "CB-DH-NHIET": 3,
+  "CB-N-QS": 3,
+  "CB-N-TAI": 3,
+  "CB-N-TT": 3,
+  "CB-TQ": 3,
+  "CB-V-AN": 3,
+  "CB-V-TK-QS": 3,
+  "DB-HOA": 3,
+  "DB-NHAT-HANH": 3,
+  "DB-TONG-CUONG": 3,
+  "DB-TONG-NHI": 3,
+  "DB-TONG-SAT": 3,
+  "DB-TONG-TAI": 3,
+  "DB-TONG-VUONG": 3,
+  "N-QS": 3,
+  "N-TAI": 3,
+  "N-TT": 3,
+  "V-AN": 3,
+  "V-TK-QS": 3,
+  "V-TK-TT": 3
+ },
+ "theo_nhanh": [
+  {
+   "birth_date": "2005-12-10",
+   "birth_time": 2,
+   "id": "nh-CB-DH-HAN-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 5.8,
+     "day_master_support": 4.0,
+     "element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 1.3,
+      "Mộc": 1.6,
+      "Thổ": 4.0,
+      "Thủy": 2.9
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 1.3,
+      "Mộc": 1.6,
+      "Thổ": 4.0,
+      "Thủy": 2.9
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.408
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-DH-HAN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Ất Dậu | Mậu Tý | Mậu Thìn | Quý Sửu",
+    "hour": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-12-31",
+   "birth_time": 2,
+   "id": "nh-CB-DH-HAN-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 5.8,
+     "day_master_support": 4.0,
+     "element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 1.6,
+      "Mộc": 2.0,
+      "Thổ": 4.0,
+      "Thủy": 2.2
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 1.6,
+      "Mộc": 2.0,
+      "Thổ": 4.0,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.408
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-DH-HAN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Ất Dậu | Mậu Tý | Kỷ Sửu | Ất Sửu",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-12-31",
+   "birth_time": 14,
+   "id": "nh-CB-DH-HAN-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 5.2,
+     "day_master_support": 4.6,
+     "element_counts": {
+      "Hỏa": 0.6,
+      "Kim": 2.3,
+      "Mộc": 1.3,
+      "Thổ": 4.0,
+      "Thủy": 1.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 0.6,
+      "Kim": 2.3,
+      "Mộc": 1.3,
+      "Thổ": 4.0,
+      "Thủy": 1.6
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.469
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-DH-HAN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Ất Dậu | Mậu Tý | Kỷ Sửu | Tân Mùi",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-05-07",
+   "birth_time": 14,
+   "id": "nh-CB-DH-NHIET-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 5.9,
+     "day_master_support": 4.9,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 3.6,
+      "Mộc": 3.3,
+      "Thổ": 1.3,
+      "Thủy": 0.0
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 3.6,
+      "Mộc": 3.3,
+      "Thổ": 1.3,
+      "Thủy": 0.0
+     },
+     "seasonal_element": "Hỏa",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.454
+    },
+    "cuu_than": "Thủy",
+    "dung_than": "Thủy",
+    "hi_than": "Kim",
+    "ky_than": "Mộc",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-DH-NHIET",
+   "tu_tru": {
+    "day": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "display": "Ất Dậu | Tân Tỵ | Tân Mão | Ất Mùi",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "nhat_chu": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-05-14",
+   "birth_time": 6,
+   "id": "nh-CB-DH-NHIET-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 6.2,
+     "day_master_support": 4.6,
+     "element_counts": {
+      "Hỏa": 1.3,
+      "Kim": 3.2,
+      "Mộc": 3.0,
+      "Thổ": 2.3,
+      "Thủy": 0.0
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.3,
+      "Kim": 3.2,
+      "Mộc": 3.0,
+      "Thổ": 2.3,
+      "Thủy": 0.0
+     },
+     "seasonal_element": "Hỏa",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.426
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-DH-NHIET",
+   "tu_tru": {
+    "day": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    },
+    "display": "Ất Dậu | Tân Tỵ | Mậu Tuất | Ất Mão",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "nhat_chu": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-06-04",
+   "birth_time": 2,
+   "id": "nh-CB-DH-NHIET-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 5.8,
+     "day_master_support": 5.9,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 2.9,
+      "Mộc": 2.3,
+      "Thổ": 3.3,
+      "Thủy": 0.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 2.9,
+      "Mộc": 2.3,
+      "Thổ": 3.3,
+      "Thủy": 0.6
+     },
+     "seasonal_element": "Hỏa",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.504
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-DH-NHIET",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "display": "Ất Dậu | Tân Tỵ | Kỷ Mùi | Ất Sửu",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-01",
+   "birth_time": 2,
+   "id": "nh-CB-N-QS-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 5.6,
+     "day_master_support": 5.2,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 2.3,
+      "Mộc": 2.0,
+      "Thổ": 1.3,
+      "Thủy": 2.2
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 2.3,
+      "Mộc": 2.0,
+      "Thổ": 1.3,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.481
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Hỏa",
+    "hi_than": "Mộc",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Sửu",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-01",
+   "birth_time": 10,
+   "id": "nh-CB-N-QS-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 6.2,
+     "day_master_support": 4.6,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 3.6,
+      "Mộc": 2.0,
+      "Thổ": 0.6,
+      "Thủy": 1.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 3.6,
+      "Mộc": 2.0,
+      "Thổ": 0.6,
+      "Thủy": 1.6
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.426
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Hỏa",
+    "hi_than": "Mộc",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Giáp Thân | Bính Tý | Ất Dậu | Tân Tỵ",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-08",
+   "birth_time": 2,
+   "id": "nh-CB-N-QS-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 6.9,
+     "day_master_support": 5.7,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.5999999999999996,
+      "Mộc": 1.6,
+      "Thổ": 3.3,
+      "Thủy": 3.1
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.5999999999999996,
+      "Mộc": 1.6,
+      "Thổ": 3.3,
+      "Thủy": 3.1
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.452
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Mộc",
+    "hi_than": "Thủy",
+    "ky_than": "Thổ",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Tân Sửu",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-15",
+   "birth_time": 2,
+   "id": "nh-CB-N-TAI-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 7.0,
+     "day_master_support": 6.3,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.6,
+      "Mộc": 2.6,
+      "Thổ": 3.3,
+      "Thủy": 2.8000000000000003
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.6,
+      "Mộc": 2.6,
+      "Thổ": 3.3,
+      "Thủy": 2.8000000000000003
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.474
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Ất Sửu",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-15",
+   "birth_time": 18,
+   "id": "nh-CB-N-TAI-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 7.1,
+     "day_master_support": 5.3,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.3,
+      "Mộc": 1.6,
+      "Thổ": 2.3,
+      "Thủy": 3.2
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.3,
+      "Mộc": 1.6,
+      "Thổ": 2.3,
+      "Thủy": 3.2
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.427
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Quý Dậu",
+    "hour": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-22",
+   "birth_time": 6,
+   "id": "nh-CB-N-TAI-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 5.9,
+     "day_master_support": 5.0,
+     "element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 2.3,
+      "Mộc": 2.0,
+      "Thổ": 1.9,
+      "Thủy": 1.2
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 2.3,
+      "Mộc": 2.0,
+      "Thổ": 1.9,
+      "Thủy": 1.2
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.459
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Thổ",
+    "hi_than": "Hỏa",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Bính Ngọ | Tân Mão",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-08",
+   "birth_time": 6,
+   "id": "nh-CB-N-TT-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 6.9,
+     "day_master_support": 4.8,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.3,
+      "Mộc": 2.6,
+      "Thổ": 2.3,
+      "Thủy": 3.5
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.3,
+      "Mộc": 2.6,
+      "Thổ": 2.3,
+      "Thủy": 3.5
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.41
+    },
+    "cuu_than": "Thủy",
+    "dung_than": "Mộc",
+    "hi_than": "Thủy",
+    "ky_than": "Mộc",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Quý Mão",
+    "hour": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-03-26",
+   "birth_time": 10,
+   "id": "nh-CB-N-TT-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 5.6,
+     "day_master_support": 4.3,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.6,
+      "Mộc": 2.0,
+      "Thổ": 3.3,
+      "Thủy": 0.0
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.6,
+      "Mộc": 2.0,
+      "Thổ": 3.3,
+      "Thủy": 0.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.434
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Ất Dậu | Kỷ Mão | Kỷ Dậu | Kỷ Tỵ",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-04-02",
+   "birth_time": 2,
+   "id": "nh-CB-N-TT-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 6.2,
+     "day_master_support": 4.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.3,
+      "Mộc": 2.6,
+      "Thổ": 4.0,
+      "Thủy": 0.8999999999999999
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.3,
+      "Mộc": 2.6,
+      "Thổ": 4.0,
+      "Thủy": 0.8999999999999999
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.426
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Thổ",
+    "hi_than": "Hỏa",
+    "ky_than": "Thổ",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-N-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Ất Dậu | Kỷ Mão | Bính Thìn | Kỷ Sửu",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-02-19",
+   "birth_time": 14,
+   "id": "nh-CB-TQ-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 7.4,
+     "day_master_support": 5.3,
+     "element_counts": {
+      "Hỏa": 1.5,
+      "Kim": 2.6,
+      "Mộc": 3.3,
+      "Thổ": 3.3,
+      "Thủy": 0.0
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.5,
+      "Kim": 2.6,
+      "Mộc": 3.3,
+      "Thổ": 3.3,
+      "Thủy": 0.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.417
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Hỏa",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-TQ",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    },
+    "display": "Ất Dậu | Mậu Dần | Giáp Tuất | Tân Mùi",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-03-12",
+   "birth_time": 2,
+   "id": "nh-CB-TQ-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 5.9,
+     "day_master_support": 5.9,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 1.3,
+      "Mộc": 3.3,
+      "Thổ": 3.0,
+      "Thủy": 0.6
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 1.3,
+      "Mộc": 3.3,
+      "Thổ": 3.0,
+      "Thủy": 0.6
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.5
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Hỏa",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-TQ",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "display": "Ất Dậu | Kỷ Mão | Ất Mùi | Đinh Sửu",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-04-02",
+   "birth_time": 22,
+   "id": "nh-CB-TQ-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 5.3,
+     "day_master_support": 5.2,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.0,
+      "Mộc": 3.2,
+      "Thổ": 3.0,
+      "Thủy": 1.3
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.0,
+      "Mộc": 3.2,
+      "Thổ": 3.0,
+      "Thủy": 1.3
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.495
+    },
+    "cuu_than": "Thủy",
+    "dung_than": "Thổ",
+    "hi_than": "Hỏa",
+    "ky_than": "Mộc",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-TQ",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Ất Dậu | Kỷ Mão | Bính Thìn | Kỷ Hợi",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-01",
+   "birth_time": 14,
+   "id": "nh-CB-V-AN-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 4.9,
+     "day_master_support": 5.9,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 2.0,
+      "Mộc": 2.3,
+      "Thổ": 1.3,
+      "Thủy": 2.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 2.0,
+      "Mộc": 2.3,
+      "Thổ": 1.3,
+      "Thủy": 2.6
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.546
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Hỏa",
+    "hi_than": "Mộc",
+    "ky_than": "Thủy",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-V-AN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Giáp Thân | Bính Tý | Ất Dậu | Quý Mùi",
+    "hour": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-15",
+   "birth_time": 6,
+   "id": "nh-CB-V-AN-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 6.1,
+     "day_master_support": 6.3,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 1.3,
+      "Mộc": 2.6,
+      "Thổ": 2.3,
+      "Thủy": 2.2
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 1.3,
+      "Mộc": 2.6,
+      "Thổ": 2.3,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.508
+    },
+    "cuu_than": "Thủy",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Mộc",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-V-AN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Đinh Mão",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-29",
+   "birth_time": 18,
+   "id": "nh-CB-V-AN-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 5.3,
+     "day_master_support": 6.4,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.6,
+      "Mộc": 1.0,
+      "Thổ": 2.3,
+      "Thủy": 2.8000000000000003
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.6,
+      "Mộc": 1.0,
+      "Thổ": 2.3,
+      "Thủy": 2.8000000000000003
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.547
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Mộc",
+    "hi_than": "Thủy",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-V-AN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Quý Sửu | Tân Dậu",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-15",
+   "birth_time": 14,
+   "id": "nh-CB-V-TK-QS-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 6.4,
+     "day_master_support": 6.9,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 2.3,
+      "Mộc": 1.9000000000000001,
+      "Thổ": 3.3,
+      "Thủy": 2.2
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 2.3,
+      "Mộc": 1.9000000000000001,
+      "Thổ": 3.3,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.519
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Kim",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-V-TK-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Tân Mùi",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-22",
+   "birth_time": 14,
+   "id": "nh-CB-V-TK-QS-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 3,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 5.9,
+     "day_master_support": 5.9,
+     "element_counts": {
+      "Hỏa": 3.6,
+      "Kim": 1.3,
+      "Mộc": 2.3,
+      "Thổ": 2.9,
+      "Thủy": 1.2
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 3.6,
+      "Kim": 1.3,
+      "Mộc": 2.3,
+      "Thổ": 2.9,
+      "Thủy": 1.2
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.5
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Thổ",
+    "hi_than": "Hỏa",
+    "ky_than": "Thổ",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-V-TK-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Bính Ngọ | Ất Mùi",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-29",
+   "birth_time": 2,
+   "id": "nh-CB-V-TK-QS-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 6.3,
+     "day_master_support": 6.3,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.9000000000000001,
+      "Mộc": 1.0,
+      "Thổ": 3.3,
+      "Thủy": 4.4
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 1.9000000000000001,
+      "Mộc": 1.0,
+      "Thổ": 3.3,
+      "Thủy": 4.4
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.5
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Mộc",
+    "hi_than": "Thủy",
+    "ky_than": "Thổ",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "CB-V-TK-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Quý Sửu | Quý Sửu",
+    "hour": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-04-30",
+   "birth_time": 10,
+   "id": "nh-DB-HOA-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 9.2,
+     "day_master_support": 1.5,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 4.6,
+      "Mộc": 0.6000000000000001,
+      "Thổ": 3.5999999999999996,
+      "Thủy": 0.8999999999999999
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.6,
+      "Mộc": 2.6,
+      "Thổ": 2.5999999999999996,
+      "Thủy": 0.8999999999999999
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [
+      {
+       "can_a": 1,
+       "can_a_name": "Ất",
+       "can_b": 6,
+       "can_b_name": "Canh",
+       "label_vi": "Ất–Canh hóa Kim",
+       "original_a_hanh": "Mộc",
+       "original_b_hanh": "Kim",
+       "pillar_a": "year",
+       "pillar_b": "month",
+       "success": true,
+       "transform_element": "Kim"
+      },
+      {
+       "can_a": 0,
+       "can_a_name": "Giáp",
+       "can_b": 5,
+       "can_b_name": "Kỷ",
+       "label_vi": "Giáp–Kỷ hóa Thổ",
+       "original_a_hanh": "Mộc",
+       "original_b_hanh": "Thổ",
+       "pillar_a": "day",
+       "pillar_b": "hour",
+       "success": true,
+       "transform_element": "Thổ"
+      }
+     ],
+     "strength": "nhược",
+     "support_ratio": 0.14
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Kim",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-HOA",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    },
+    "display": "Ất Dậu | Canh Thìn | Giáp Thân | Kỷ Tỵ",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-08-20",
+   "birth_time": 6,
+   "id": "nh-DB-HOA-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 5.9,
+     "day_master_support": 3.0,
+     "element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 2.0,
+      "Mộc": 3.0,
+      "Thổ": 0.3,
+      "Thủy": 3.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.0,
+      "Mộc": 3.0,
+      "Thổ": 0.3,
+      "Thủy": 1.6
+     },
+     "seasonal_element": "Kim",
+     "stem_transformations": [
+      {
+       "can_a": 2,
+       "can_a_name": "Bính",
+       "can_b": 7,
+       "can_b_name": "Tân",
+       "label_vi": "Bính–Tân hóa Thủy",
+       "original_a_hanh": "Hỏa",
+       "original_b_hanh": "Kim",
+       "pillar_a": "day",
+       "pillar_b": "hour",
+       "success": true,
+       "transform_element": "Thủy"
+      }
+     ],
+     "strength": "nhược",
+     "support_ratio": 0.337
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-HOA",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "display": "Ất Dậu | Giáp Thân | Bính Tý | Tân Mão",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2006-04-15",
+   "birth_time": 10,
+   "id": "nh-DB-HOA-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 9.7,
+     "day_master_support": 1.9,
+     "element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 1.7999999999999998,
+      "Mộc": 0.6000000000000001,
+      "Thổ": 5.3,
+      "Thủy": 1.3
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 1.7999999999999998,
+      "Mộc": 1.6,
+      "Thổ": 4.3,
+      "Thủy": 1.3
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [
+      {
+       "can_a": 0,
+       "can_a_name": "Giáp",
+       "can_b": 5,
+       "can_b_name": "Kỷ",
+       "label_vi": "Giáp–Kỷ hóa Thổ",
+       "original_a_hanh": "Mộc",
+       "original_b_hanh": "Thổ",
+       "pillar_a": "day",
+       "pillar_b": "hour",
+       "success": true,
+       "transform_element": "Thổ"
+      }
+     ],
+     "strength": "nhược",
+     "support_ratio": 0.164
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Kim",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-HOA",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    },
+    "display": "Bính Tuất | Nhâm Thìn | Giáp Tuất | Kỷ Tỵ",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    }
+   }
+  },
+  {
+   "birth_date": "2007-02-03",
+   "birth_time": 14,
+   "id": "nh-DB-NHAT-HANH-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 3.7,
+     "day_master_support": 9.9,
+     "element_counts": {
+      "Hỏa": 1.9,
+      "Kim": 1.9000000000000001,
+      "Mộc": 0.8999999999999999,
+      "Thổ": 6.0,
+      "Thủy": 0.8999999999999999
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.9,
+      "Kim": 1.9000000000000001,
+      "Mộc": 0.8999999999999999,
+      "Thổ": 6.0,
+      "Thủy": 0.8999999999999999
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.728
+    },
+    "cuu_than": "Mộc",
+    "dung_than": "Mộc",
+    "hi_than": "Thủy",
+    "ky_than": "Hỏa",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-NHAT-HANH",
+   "tu_tru": {
+    "day": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Bính Tuất | Tân Sửu | Mậu Thìn | Kỷ Mùi",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    }
+   }
+  },
+  {
+   "birth_date": "2009-02-28",
+   "birth_time": 6,
+   "id": "nh-DB-NHAT-HANH-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 6.2,
+     "day_master_support": 6.5,
+     "element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 0.3,
+      "Mộc": 3.6,
+      "Thổ": 3.3,
+      "Thủy": 0.8999999999999999
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 0.3,
+      "Mộc": 3.6,
+      "Thổ": 3.3,
+      "Thủy": 0.8999999999999999
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "cân bằng",
+     "support_ratio": 0.512
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Hỏa",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "cân bằng"
+   },
+   "nhanh_ban_cai_thu": "DB-NHAT-HANH",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Kỷ Sửu | Bính Dần | Giáp Thìn | Đinh Mão",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    }
+   }
+  },
+  {
+   "birth_date": "2009-09-12",
+   "birth_time": 10,
+   "id": "nh-DB-NHAT-HANH-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 3.2,
+     "day_master_support": 9.5,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 4.8999999999999995,
+      "Mộc": 0.0,
+      "Thổ": 2.5999999999999996,
+      "Thủy": 2.2
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 4.8999999999999995,
+      "Mộc": 0.0,
+      "Thổ": 2.5999999999999996,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Kim",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.748
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Hỏa",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-NHAT-HANH",
+   "tu_tru": {
+    "day": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    },
+    "display": "Kỷ Sửu | Quý Dậu | Canh Thân | Tân Tỵ",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "nhat_chu": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    }
+   }
+  },
+  {
+   "birth_date": "2007-02-10",
+   "birth_time": 22,
+   "id": "nh-DB-TONG-CUONG-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 1.9,
+     "day_master_support": 10.8,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 0.0,
+      "Mộc": 5.800000000000001,
+      "Thổ": 0.3,
+      "Thủy": 3.0
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 0.0,
+      "Mộc": 3.8000000000000003,
+      "Thổ": 0.3,
+      "Thủy": 4.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [
+      {
+       "can_a": 3,
+       "can_a_name": "Đinh",
+       "can_b": 8,
+       "can_b_name": "Nhâm",
+       "label_vi": "Đinh–Nhâm hóa Mộc",
+       "original_a_hanh": "Hỏa",
+       "original_b_hanh": "Thủy",
+       "pillar_a": "year",
+       "pillar_b": "month",
+       "success": true,
+       "transform_element": "Mộc"
+      }
+     ],
+     "strength": "vượng",
+     "support_ratio": 0.85
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-CUONG",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "display": "Đinh Hợi | Nhâm Dần | Ất Hợi | Đinh Hợi",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    }
+   }
+  },
+  {
+   "birth_date": "2007-03-31",
+   "birth_time": 6,
+   "id": "nh-DB-TONG-CUONG-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 2.0,
+     "day_master_support": 8.6,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 0.0,
+      "Mộc": 3.6,
+      "Thổ": 0.0,
+      "Thủy": 3.0
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 0.0,
+      "Mộc": 3.6,
+      "Thổ": 0.0,
+      "Thủy": 3.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.811
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-CUONG",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "display": "Đinh Hợi | Quý Mão | Giáp Tý | Đinh Mão",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    }
+   }
+  },
+  {
+   "birth_date": "2007-03-31",
+   "birth_time": 22,
+   "id": "nh-DB-TONG-CUONG-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 1.0,
+     "day_master_support": 10.2,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 0.0,
+      "Mộc": 4.2,
+      "Thổ": 0.0,
+      "Thủy": 4.0
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 0.0,
+      "Mộc": 4.2,
+      "Thổ": 0.0,
+      "Thủy": 4.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.911
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-CUONG",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "display": "Đinh Hợi | Quý Mão | Giáp Tý | Ất Hợi",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    }
+   }
+  },
+  {
+   "birth_date": "2006-10-14",
+   "birth_time": 2,
+   "id": "nh-DB-TONG-NHI-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": false,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 8.6,
+     "day_master_support": 2.6,
+     "element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 1.5,
+      "Mộc": 0.0,
+      "Thổ": 5.0,
+      "Thủy": 1.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 1.5,
+      "Mộc": 0.0,
+      "Thổ": 5.0,
+      "Thủy": 1.6
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.232
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-NHI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "display": "Bính Tuất | Mậu Tuất | Bính Tý | Kỷ Sửu",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    }
+   }
+  },
+  {
+   "birth_date": "2006-10-14",
+   "birth_time": 18,
+   "id": "nh-DB-TONG-NHI-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": false,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 6.7,
+     "day_master_support": 3.6,
+     "element_counts": {
+      "Hỏa": 3.6,
+      "Kim": 2.2,
+      "Mộc": 0.0,
+      "Thổ": 3.0,
+      "Thủy": 1.0
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 3.6,
+      "Kim": 2.2,
+      "Mộc": 0.0,
+      "Thổ": 3.0,
+      "Thủy": 1.0
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.35
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-NHI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "display": "Bính Tuất | Mậu Tuất | Bính Tý | Đinh Dậu",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    }
+   }
+  },
+  {
+   "birth_date": "2006-11-04",
+   "birth_time": 2,
+   "id": "nh-DB-TONG-NHI-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": false,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 8.6,
+     "day_master_support": 2.6,
+     "element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 3.5,
+      "Mộc": 0.0,
+      "Thổ": 4.0,
+      "Thủy": 0.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 3.5,
+      "Mộc": 0.0,
+      "Thổ": 4.0,
+      "Thủy": 0.6
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.232
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-NHI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Bính Tuất | Mậu Tuất | Đinh Dậu | Tân Sửu",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    },
+    "nhat_chu": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-03-26",
+   "birth_time": 22,
+   "id": "nh-DB-TONG-SAT-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": false,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 7.6,
+     "day_master_support": 2.0,
+     "element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 2.0,
+      "Mộc": 3.6,
+      "Thổ": 2.0,
+      "Thủy": 1.0
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 2.0,
+      "Mộc": 3.6,
+      "Thổ": 2.0,
+      "Thủy": 1.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.208
+    },
+    "cuu_than": "Thủy",
+    "dung_than": "Hỏa",
+    "hi_than": "Thổ",
+    "ky_than": "Mộc",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-SAT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Ất Dậu | Kỷ Mão | Kỷ Dậu | Ất Hợi",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-10-08",
+   "birth_time": 10,
+   "id": "nh-DB-TONG-SAT-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 7.2,
+     "day_master_support": 3.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.9,
+      "Mộc": 3.0,
+      "Thổ": 1.3,
+      "Thủy": 0.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.9,
+      "Mộc": 3.0,
+      "Thổ": 1.3,
+      "Thủy": 0.6
+     },
+     "seasonal_element": "Kim",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.333
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Kim",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-SAT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Ất Dậu | Ất Dậu | Ất Sửu | Tân Tỵ",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2007-06-16",
+   "birth_time": 14,
+   "id": "nh-DB-TONG-SAT-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 8.5,
+     "day_master_support": 3.5,
+     "element_counts": {
+      "Hỏa": 4.6,
+      "Kim": 1.6,
+      "Mộc": 1.9000000000000001,
+      "Thổ": 1.9,
+      "Thủy": 1.0
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 4.6,
+      "Kim": 1.6,
+      "Mộc": 1.9000000000000001,
+      "Thổ": 1.9,
+      "Thủy": 1.0
+     },
+     "seasonal_element": "Hỏa",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.292
+    },
+    "cuu_than": "Mộc",
+    "dung_than": "Thổ",
+    "hi_than": "Kim",
+    "ky_than": "Hỏa",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-SAT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "display": "Đinh Hợi | Bính Ngọ | Tân Tỵ | Ất Mùi",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "nhat_chu": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    }
+   }
+  },
+  {
+   "birth_date": "2008-10-04",
+   "birth_time": 2,
+   "id": "nh-DB-TONG-TAI-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": false,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 8.8,
+     "day_master_support": 1.0,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.5999999999999996,
+      "Mộc": 0.0,
+      "Thổ": 3.0,
+      "Thủy": 2.2
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.5999999999999996,
+      "Mộc": 0.0,
+      "Thổ": 3.0,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Kim",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.102
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Mậu Tý | Tân Dậu | Đinh Sửu | Tân Sửu",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "nhat_chu": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    }
+   }
+  },
+  {
+   "birth_date": "2008-10-04",
+   "birth_time": 18,
+   "id": "nh-DB-TONG-TAI-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": false,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 7.9,
+     "day_master_support": 1.0,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.3,
+      "Mộc": 0.0,
+      "Thổ": 3.0,
+      "Thủy": 1.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.3,
+      "Mộc": 0.0,
+      "Thổ": 3.0,
+      "Thủy": 1.6
+     },
+     "seasonal_element": "Kim",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.112
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Mậu Tý | Tân Dậu | Đinh Sửu | Kỷ Dậu",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "month": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "nhat_chu": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    }
+   }
+  },
+  {
+   "birth_date": "2008-10-04",
+   "birth_time": 22,
+   "id": "nh-DB-TONG-TAI-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 7.9,
+     "day_master_support": 1.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.3,
+      "Mộc": 0.6,
+      "Thổ": 2.0,
+      "Thủy": 2.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.3,
+      "Mộc": 0.6,
+      "Thổ": 2.0,
+      "Thủy": 2.6
+     },
+     "seasonal_element": "Kim",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.168
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Mậu Tý | Tân Dậu | Đinh Sửu | Tân Hợi",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "nhat_chu": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    }
+   }
+  },
+  {
+   "birth_date": "2023-02-25",
+   "birth_time": 6,
+   "id": "nh-DB-TONG-VUONG-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 2.8,
+     "day_master_support": 9.0,
+     "element_counts": {
+      "Hỏa": 2.2,
+      "Kim": 0.0,
+      "Mộc": 6.0,
+      "Thổ": 0.6,
+      "Thủy": 1.0
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 2.2,
+      "Kim": 0.0,
+      "Mộc": 6.0,
+      "Thổ": 0.6,
+      "Thủy": 1.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.763
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-VUONG",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "display": "Quý Mão | Giáp Dần | Giáp Dần | Đinh Mão",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    }
+   }
+  },
+  {
+   "birth_date": "2023-02-25",
+   "birth_time": 22,
+   "id": "nh-DB-TONG-VUONG-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 3,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 1.8,
+     "day_master_support": 10.6,
+     "element_counts": {
+      "Hỏa": 1.2,
+      "Kim": 0.0,
+      "Mộc": 6.6,
+      "Thổ": 0.6,
+      "Thủy": 2.0
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.2,
+      "Kim": 0.0,
+      "Mộc": 6.6,
+      "Thổ": 0.6,
+      "Thủy": 2.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.855
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Kim",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-VUONG",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "display": "Quý Mão | Giáp Dần | Giáp Dần | Ất Hợi",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    }
+   }
+  },
+  {
+   "birth_date": "2023-09-02",
+   "birth_time": 22,
+   "id": "nh-DB-TONG-VUONG-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 3,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 2.5,
+     "day_master_support": 8.6,
+     "element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 2.0,
+      "Mộc": 2.2,
+      "Thổ": 0.3,
+      "Thủy": 5.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 0.0,
+      "Kim": 2.0,
+      "Mộc": 2.2,
+      "Thổ": 0.3,
+      "Thủy": 5.6
+     },
+     "seasonal_element": "Kim",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.775
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Thổ",
+    "hi_than": "Hỏa",
+    "ky_than": "Kim",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "DB-TONG-VUONG",
+   "tu_tru": {
+    "day": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "display": "Quý Mão | Canh Thân | Quý Hợi | Quý Hợi",
+    "hour": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    },
+    "nhat_chu": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-08",
+   "birth_time": 14,
+   "id": "nh-N-QS-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 8.8,
+     "day_master_support": 3.8,
+     "element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 1.3,
+      "Mộc": 1.9000000000000001,
+      "Thổ": 3.3,
+      "Thủy": 2.5
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.6,
+      "Kim": 1.3,
+      "Mộc": 1.9000000000000001,
+      "Thổ": 3.3,
+      "Thủy": 2.5
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.302
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Kim",
+    "hi_than": "Thủy",
+    "ky_than": "Thổ",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Đinh Mùi",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-29",
+   "birth_time": 14,
+   "id": "nh-N-QS-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 8.2,
+     "day_master_support": 4.4,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 1.6,
+      "Mộc": 1.3,
+      "Thổ": 4.3,
+      "Thủy": 2.8000000000000003
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 1.6,
+      "Mộc": 1.3,
+      "Thổ": 4.3,
+      "Thủy": 2.8000000000000003
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.349
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Kim",
+    "hi_than": "Thủy",
+    "ky_than": "Thổ",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Quý Sửu | Kỷ Mùi",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 7,
+     "chi_name": "Mùi"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-03-05",
+   "birth_time": 6,
+   "id": "nh-N-QS-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 7.0,
+     "day_master_support": 2.9,
+     "element_counts": {
+      "Hỏa": 0.6,
+      "Kim": 1.0,
+      "Mộc": 4.0,
+      "Thổ": 2.3,
+      "Thủy": 1.0
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 0.6,
+      "Kim": 1.0,
+      "Mộc": 4.0,
+      "Thổ": 2.3,
+      "Thủy": 1.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.293
+    },
+    "cuu_than": "Thủy",
+    "dung_than": "Hỏa",
+    "hi_than": "Thổ",
+    "ky_than": "Mộc",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "display": "Ất Dậu | Mậu Dần | Mậu Tý | Ất Mão",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-29",
+   "birth_time": 10,
+   "id": "nh-N-TAI-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 7.6,
+     "day_master_support": 5.0,
+     "element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 2.2,
+      "Mộc": 1.0,
+      "Thổ": 2.5999999999999996,
+      "Thủy": 2.8000000000000003
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 2.2,
+      "Mộc": 1.0,
+      "Thổ": 2.5999999999999996,
+      "Thủy": 2.8000000000000003
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.397
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Kim",
+    "hi_than": "Thủy",
+    "ky_than": "Thổ",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Quý Sửu | Đinh Tỵ",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 9,
+     "can_name": "Quý",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-02-19",
+   "birth_time": 10,
+   "id": "nh-N-TAI-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 7.7,
+     "day_master_support": 5.0,
+     "element_counts": {
+      "Hỏa": 1.9,
+      "Kim": 2.2,
+      "Mộc": 3.0,
+      "Thổ": 3.5999999999999996,
+      "Thủy": 0.0
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 1.9,
+      "Kim": 2.2,
+      "Mộc": 3.0,
+      "Thổ": 3.5999999999999996,
+      "Thủy": 0.0
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.394
+    },
+    "cuu_than": "Thổ",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Kim",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 10,
+     "chi_name": "Tuất"
+    },
+    "display": "Ất Dậu | Mậu Dần | Giáp Tuất | Kỷ Tỵ",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-04-23",
+   "birth_time": 2,
+   "id": "nh-N-TAI-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 9.6,
+     "day_master_support": 1.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 4.6,
+      "Mộc": 0.6000000000000001,
+      "Thổ": 3.0,
+      "Thủy": 1.5
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.5999999999999996,
+      "Mộc": 1.6,
+      "Thổ": 3.0,
+      "Thủy": 1.5
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [
+      {
+       "can_a": 1,
+       "can_a_name": "Ất",
+       "can_b": 6,
+       "can_b_name": "Canh",
+       "label_vi": "Ất–Canh hóa Kim",
+       "original_a_hanh": "Mộc",
+       "original_b_hanh": "Kim",
+       "pillar_a": "year",
+       "pillar_b": "month",
+       "success": true,
+       "transform_element": "Kim"
+      }
+     ],
+     "strength": "nhược",
+     "support_ratio": 0.143
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-TAI",
+   "tu_tru": {
+    "day": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "display": "Ất Dậu | Canh Thìn | Đinh Sửu | Tân Sửu",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "nhat_chu": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-08",
+   "birth_time": 10,
+   "id": "nh-N-TT-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 0,
+     "day_master_hanh": "Thủy",
+     "day_master_opposition": 8.2,
+     "day_master_support": 4.4,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 1.9,
+      "Mộc": 2.6,
+      "Thổ": 2.5999999999999996,
+      "Thủy": 2.5
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 1.9,
+      "Mộc": 2.6,
+      "Thổ": 2.5999999999999996,
+      "Thủy": 2.5
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.349
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Kim",
+    "hi_than": "Thủy",
+    "ky_than": "Thổ",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Nhâm Thìn | Ất Tỵ",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 8,
+     "can_name": "Nhâm",
+     "hanh": "Thủy"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-22",
+   "birth_time": 2,
+   "id": "nh-N-TT-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 7.8,
+     "day_master_support": 4.0,
+     "element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 1.6,
+      "Mộc": 1.0,
+      "Thổ": 3.9,
+      "Thủy": 1.7999999999999998
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 1.6,
+      "Mộc": 1.0,
+      "Thổ": 3.9,
+      "Thủy": 1.7999999999999998
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.339
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Bính Ngọ | Kỷ Sửu",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-22",
+   "birth_time": 22,
+   "id": "nh-N-TT-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Hỏa",
+     "day_master_opposition": 6.9,
+     "day_master_support": 4.6,
+     "element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 1.3,
+      "Mộc": 1.6,
+      "Thổ": 2.9,
+      "Thủy": 2.2
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 3.0,
+      "Kim": 1.3,
+      "Mộc": 1.6,
+      "Thổ": 2.9,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "nhược",
+     "support_ratio": 0.4
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Mộc",
+    "hi_than": "Hỏa",
+    "ky_than": "Thủy",
+    "strength": "nhược"
+   },
+   "nhanh_ban_cai_thu": "N-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Bính Ngọ | Kỷ Hợi",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "hanh": "Hỏa"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-01",
+   "birth_time": 22,
+   "id": "nh-V-AN-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 4.3,
+     "day_master_support": 6.2,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 2.0,
+      "Mộc": 2.6,
+      "Thổ": 0.3,
+      "Thủy": 2.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 2.0,
+      "Mộc": 2.6,
+      "Thổ": 0.3,
+      "Thủy": 2.6
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.59
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Hỏa",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-AN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Giáp Thân | Bính Tý | Ất Dậu | Đinh Hợi",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-02-05",
+   "birth_time": 2,
+   "id": "nh-V-AN-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 4.8,
+     "day_master_support": 5.9,
+     "element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 3.3,
+      "Mộc": 2.0,
+      "Thổ": 2.6,
+      "Thủy": 1.2
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.6,
+      "Kim": 3.3,
+      "Mộc": 2.0,
+      "Thổ": 2.6,
+      "Thủy": 1.2
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.551
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-AN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    },
+    "display": "Ất Dậu | Mậu Dần | Canh Thân | Đinh Sửu",
+    "hour": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-02-05",
+   "birth_time": 6,
+   "id": "nh-V-AN-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 4.2,
+     "day_master_support": 5.6,
+     "element_counts": {
+      "Hỏa": 0.6,
+      "Kim": 3.0,
+      "Mộc": 3.0,
+      "Thổ": 2.6,
+      "Thủy": 0.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 0.6,
+      "Kim": 3.0,
+      "Mộc": 3.0,
+      "Thổ": 2.6,
+      "Thủy": 0.6
+     },
+     "seasonal_element": "Mộc",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.571
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-AN",
+   "tu_tru": {
+    "day": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    },
+    "display": "Ất Dậu | Mậu Dần | Canh Thân | Kỷ Mão",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 4,
+     "can_name": "Mậu",
+     "chi_idx": 2,
+     "chi_name": "Dần"
+    },
+    "nhat_chu": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-01",
+   "birth_time": 6,
+   "id": "nh-V-TK-QS-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": false,
+     "dac_the_count": 1,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 4.3,
+     "day_master_support": 5.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.0,
+      "Mộc": 3.0,
+      "Thổ": 1.3,
+      "Thủy": 1.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 2.0,
+      "Mộc": 3.0,
+      "Thổ": 1.3,
+      "Thủy": 1.6
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.566
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Hỏa",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-TK-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Giáp Thân | Bính Tý | Ất Dậu | Kỷ Mão",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-01",
+   "birth_time": 18,
+   "id": "nh-V-TK-QS-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Mộc",
+     "day_master_opposition": 4.3,
+     "day_master_support": 5.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.0,
+      "Mộc": 3.0,
+      "Thổ": 0.3,
+      "Thủy": 1.6
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.0,
+      "Mộc": 3.0,
+      "Thổ": 0.3,
+      "Thủy": 1.6
+     },
+     "seasonal_element": "Thủy",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.566
+    },
+    "cuu_than": "Kim",
+    "dung_than": "Hỏa",
+    "hi_than": "Thổ",
+    "ky_than": "Thủy",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-TK-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "display": "Giáp Thân | Bính Tý | Ất Dậu | Ất Dậu",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "month": {
+     "can_idx": 2,
+     "can_name": "Bính",
+     "chi_idx": 0,
+     "chi_name": "Tý"
+    },
+    "nhat_chu": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "hanh": "Mộc"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-01-15",
+   "birth_time": 10,
+   "id": "nh-V-TK-QS-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": true,
+     "dac_the": true,
+     "dac_the_count": 2,
+     "day_master_hanh": "Thổ",
+     "day_master_opposition": 5.7,
+     "day_master_support": 7.6,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 1.9,
+      "Mộc": 1.6,
+      "Thổ": 3.5999999999999996,
+      "Thủy": 2.2
+     },
+     "is_in_season": true,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 1.9,
+      "Mộc": 1.6,
+      "Thổ": 3.5999999999999996,
+      "Thủy": 2.2
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [],
+     "strength": "vượng",
+     "support_ratio": 0.571
+    },
+    "cuu_than": "Mộc",
+    "dung_than": "Mộc",
+    "hi_than": "Thủy",
+    "ky_than": "Hỏa",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-TK-QS",
+   "tu_tru": {
+    "day": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 11,
+     "chi_name": "Hợi"
+    },
+    "display": "Giáp Thân | Đinh Sửu | Kỷ Hợi | Kỷ Tỵ",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 3,
+     "can_name": "Đinh",
+     "chi_idx": 1,
+     "chi_name": "Sửu"
+    },
+    "nhat_chu": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "hanh": "Thổ"
+    },
+    "year": {
+     "can_idx": 0,
+     "can_name": "Giáp",
+     "chi_idx": 8,
+     "chi_name": "Thân"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-04-16",
+   "birth_time": 6,
+   "id": "nh-V-TK-TT-0",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 3,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 2.9,
+     "day_master_support": 7.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 4.0,
+      "Mộc": 1.6,
+      "Thổ": 2.6,
+      "Thủy": 0.3
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 3.0,
+      "Mộc": 2.6,
+      "Thổ": 2.6,
+      "Thủy": 0.3
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [
+      {
+       "can_a": 1,
+       "can_a_name": "Ất",
+       "can_b": 6,
+       "can_b_name": "Canh",
+       "label_vi": "Ất–Canh hóa Kim",
+       "original_a_hanh": "Mộc",
+       "original_b_hanh": "Kim",
+       "pillar_a": "year",
+       "pillar_b": "month",
+       "success": true,
+       "transform_element": "Kim"
+      }
+     ],
+     "strength": "vượng",
+     "support_ratio": 0.724
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-TK-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "display": "Ất Dậu | Canh Thìn | Canh Ngọ | Kỷ Mão",
+    "hour": {
+     "can_idx": 5,
+     "can_name": "Kỷ",
+     "chi_idx": 3,
+     "chi_name": "Mão"
+    },
+    "month": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "nhat_chu": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-04-16",
+   "birth_time": 10,
+   "id": "nh-V-TK-TT-1",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 3,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 2.9,
+     "day_master_support": 8.5,
+     "element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 5.6,
+      "Mộc": 0.6000000000000001,
+      "Thổ": 1.9000000000000001,
+      "Thủy": 0.3
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 2.0,
+      "Kim": 4.6,
+      "Mộc": 1.6,
+      "Thổ": 1.9000000000000001,
+      "Thủy": 0.3
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [
+      {
+       "can_a": 1,
+       "can_a_name": "Ất",
+       "can_b": 6,
+       "can_b_name": "Canh",
+       "label_vi": "Ất–Canh hóa Kim",
+       "original_a_hanh": "Mộc",
+       "original_b_hanh": "Kim",
+       "pillar_a": "year",
+       "pillar_b": "month",
+       "success": true,
+       "transform_element": "Kim"
+      }
+     ],
+     "strength": "vượng",
+     "support_ratio": 0.746
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-TK-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "display": "Ất Dậu | Canh Thìn | Canh Ngọ | Tân Tỵ",
+    "hour": {
+     "can_idx": 7,
+     "can_name": "Tân",
+     "chi_idx": 5,
+     "chi_name": "Tỵ"
+    },
+    "month": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "nhat_chu": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  },
+  {
+   "birth_date": "2005-04-16",
+   "birth_time": 18,
+   "id": "nh-V-TK-TT-2",
+   "ket_qua": {
+    "analysis": {
+     "dac_dia": true,
+     "dac_lenh": false,
+     "dac_the": true,
+     "dac_the_count": 3,
+     "day_master_hanh": "Kim",
+     "day_master_opposition": 1.9,
+     "day_master_support": 8.6,
+     "element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 6.0,
+      "Mộc": 0.6000000000000001,
+      "Thổ": 1.6,
+      "Thủy": 0.3
+     },
+     "is_in_season": false,
+     "raw_element_counts": {
+      "Hỏa": 1.0,
+      "Kim": 4.0,
+      "Mộc": 2.6,
+      "Thổ": 1.6,
+      "Thủy": 0.3
+     },
+     "seasonal_element": "Thổ",
+     "stem_transformations": [
+      {
+       "can_a": 1,
+       "can_a_name": "Ất",
+       "can_b": 6,
+       "can_b_name": "Canh",
+       "label_vi": "Ất–Canh hóa Kim",
+       "original_a_hanh": "Mộc",
+       "original_b_hanh": "Kim",
+       "pillar_a": "year",
+       "pillar_b": "month",
+       "success": true,
+       "transform_element": "Kim"
+      },
+      {
+       "can_a": 6,
+       "can_a_name": "Canh",
+       "can_b": 1,
+       "can_b_name": "Ất",
+       "label_vi": "Canh–Ất hóa Kim",
+       "original_a_hanh": "Kim",
+       "original_b_hanh": "Mộc",
+       "pillar_a": "day",
+       "pillar_b": "hour",
+       "success": true,
+       "transform_element": "Kim"
+      }
+     ],
+     "strength": "vượng",
+     "support_ratio": 0.819
+    },
+    "cuu_than": "Hỏa",
+    "dung_than": "Thủy",
+    "hi_than": "Mộc",
+    "ky_than": "Thổ",
+    "strength": "vượng"
+   },
+   "nhanh_ban_cai_thu": "V-TK-TT",
+   "tu_tru": {
+    "day": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 6,
+     "chi_name": "Ngọ"
+    },
+    "display": "Ất Dậu | Canh Thìn | Canh Ngọ | Ất Dậu",
+    "hour": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    },
+    "month": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "chi_idx": 4,
+     "chi_name": "Thìn"
+    },
+    "nhat_chu": {
+     "can_idx": 6,
+     "can_name": "Canh",
+     "hanh": "Kim"
+    },
+    "year": {
+     "can_idx": 1,
+     "can_name": "Ất",
+     "chi_idx": 9,
+     "chi_name": "Dậu"
+    }
+   }
+  }
+ ],
+ "van_tay_mau": {
+  "n": 6786,
+  "sha256": "6f15a1ca726a345ec0c4300be12521c2ba5586ce12a9f8d65c9b90fbd70f8c95"
+ }
 }
