@@ -564,9 +564,9 @@ def test_thieu_gio_khong_phu_thuoc_gio_gia():
     """co_gio=False: đổi trụ giờ giữ chỗ qua đủ 13 khung giờ, MỌI khoá của đầu ra v2 phải đứng yên —
     ở ``tinh``, ở ``find_dung_than(rule=2026-10.1)`` và ở ``build_chart_analysis().dung_than_info``.
 
-    Ở cấp bundle, ``transforms``, ``strength_info``, ``thap_than``, ``stem_transformations`` vẫn là
-    v1 bốn trụ và ĐỔI theo giờ giả: đó là trường v1, không thuộc đầu ra luật mới; tách chúng khỏi
-    trụ giờ là việc của Task 3 (route nhận ``birth_time = null``). Phép kiểm ghi đúng danh sách ấy."""
+    Task 3 (19/10/2026): ở cấp bundle cũng không khoá nào đổi. ``transforms``/``stem_transformations``
+    là các cặp hợp hoá ba trụ; ``strength_info``/``thap_than`` (v1 bốn trụ) là ``None``. Mức phản hồi
+    HTTP: ``tests/integration/test_la_so_full_v2.py``."""
     ngay = [iso for iso, h in MAU if h == 2][::4] + [c["ngay"] for c in CA if c["loai"] == "thieu_gio"]
     so_ngay = bo_qua = 0
     bundle_doi = set()
@@ -588,5 +588,179 @@ def test_thieu_gio_khong_phu_thuoc_gio_gia():
                 bundle_doi.add(k)
         so_ngay += 1
     assert so_ngay >= 25
-    assert bundle_doi <= {"transforms", "strength_info", "thap_than", "stem_transformations"}
-    assert "strength_info" in bundle_doi          # v1 bốn trụ thật sự đọc giờ giả: phải thấy nó đổi
+    assert bundle_doi == set()
+    b = next(iter(bd.values()))
+    assert b["strength_info"] is None and b["thap_than"] is None
+    assert all("hour" not in (t["pillar_a"], t["pillar_b"]) for t in b["transforms"])
+    # Không xanh suông: ở cùng tập ngày, bundle có giờ thật sự đổi theo khung giờ.
+    co = {v1.chuoi(json.loads(json.dumps(build_chart_analysis(get_tu_tru(ngay[0], s))["strength_info"])))
+          for s in SLOT}
+    assert len(co) > 1
+
+
+# ─── 5.4 quanh ngưỡng 0,55 (R-M1, câu chốt 19/10/2026) ────────────────────────────────────
+
+def _dk_54(tt: dict, x: dict) -> bool:
+    """Điều kiện 2 và 3 của mục 5.4 (không xét r), viết lại từ chữ đặc tả, không qua module:
+    chi tháng mang hành DM hoặc Ấn; không can năm/tháng/giờ nào có hành hiệu lực TAI/QS; không chi
+    nào cho gốc TAI/QS (tàng can hành ấy trọng số ≥ 0,6; dư khí không tính)."""
+    g = x["g"]
+    hh = detect_stem_transformations(tt)
+    if CHI_HANH[tt["month"]["chi_idx"]] not in (g["TK"], g["AN"]):
+        return False
+    for p in ("year", "month", "hour"):
+        eh, ok = effective_stem_hanh(p, tt[p]["can_idx"], hh)
+        if (eh if ok else CAN_HANH[tt[p]["can_idx"]]) in (g["TAI"], g["QS"]):
+            return False
+    return not any(an["hanh"] in (g["TAI"], g["QS"]) and F(str(an["weight"])) >= F(3, 5)
+                   for p in TRU for an in get_tang_can(tt[p]["chi_idx"]))
+
+
+# Lá số THẬT gần 0,55 nhất mỗi phía mà đủ điều kiện 2–3 của 5.4 (dò mỗi ngày 1900-01-01..2026-10-16
+# × 13 khung giờ = 602.030 lá số, scratchpad Task 3 `tim_gan_055.py`): phía dưới r = 6/11 ≈ 0,5455
+# (3 lá số, đều CB-V-TK-QS), phía trên r = 36/65 ≈ 0,5538 (DB-TONG-CUONG); Tòng Vượng gần nhất
+# r = 74/133 ≈ 0,5564. Không lá số nào có r = 0,55 đúng: xem test_khong_la_so_that_nao_dung_055.
+QUANH_055 = [
+    ("1995-12-07", 6, "CB-V-TK-QS", F(6, 11)),
+    ("1988-06-30", 11, "DB-TONG-CUONG", F(36, 65)),
+    ("1988-06-21", 14, "DB-TONG-VUONG", F(74, 133)),
+]
+
+
+@pytest.mark.parametrize("iso,gio,nhanh,r", QUANH_055, ids=[f"{q[0]}-{q[1]}" for q in QUANH_055])
+def test_tong_vuong_cuong_quanh_055(iso, gio, nhanh, r):
+    """Kẹp ngưỡng 5.4 bằng hai lá số thật sát nhất: đổi 55 thành 54 hoặc 56 là đỏ."""
+    tt = get_tu_tru(iso, gio)
+    x = _chinh_xac(tt, True)
+    assert x["r"] == r and _dk_54(tt, x), "lá số không còn nằm sát ngưỡng 5.4"
+    kq = v2.tinh(tt)
+    assert kq["nhanh"] == nhanh
+    assert v2.kiem_bat_bien(kq, tt) == []
+
+
+@pytest.mark.parametrize("nhanh,iso,gio", [("DB-TONG-CUONG", "1988-06-30", 11),
+                                           ("DB-TONG-VUONG", "1988-06-21", 14)])
+def test_cong_055_tong_vuong_cuong_phan_thuc(nhanh, iso, gio):
+    """Cổng «r ≥ 0,55» của 5.4 trên ĐÚNG giá trị 0,55, bằng một phép thử PHẢN THỰC: lá số Tòng thật,
+    thay (hộ, tổng) bằng 11/20 rồi bằng 1099/2000. Không lá số thật nào đủ điều kiện 5.4 với r = 0,55
+    (phép kiểm dưới), nên chỉ phép thử này phân biệt được ``>=`` với ``>``; đổi dấu theo chiều nào
+    cũng đỏ."""
+    tt = get_tu_tru(iso, gio)
+    lc = v2.luc(tt)
+    assert v2._dac_biet(tt, lc)[0] == nhanh
+    assert v2._dac_biet(tt, {**lc, "ho": 11, "tong": 20})[0] == nhanh            # r = 0,55: tòng
+    assert v2._dac_biet(tt, {**lc, "ho": 1099, "tong": 2000}) is None             # r < 0,55: không
+    assert v2._dac_biet(tt, {**lc, "ho": 1101, "tong": 2000})[0] == nhanh
+
+
+def test_khong_la_so_that_nao_dung_055():
+    """Toàn miền: mọi tứ trụ có thật (năm 60 × chi tháng 12, can tháng theo 五虎遁 × ngày 60 × chi giờ
+    12, can giờ theo 五鼠遁 = 518.400; luật chỉ đọc can/chi nên đây là cả miền đầu vào có giờ). Không tổ
+    hợp nào đủ điều kiện 2–3 của 5.4 mà r = 11/20 đúng, nên trên lá số thật ``>=`` và ``>`` ở cổng ấy
+    cho cùng kết quả. Trọng số hay luật hợp hoá đổi làm xuất hiện tổ hợp như thế thì phép kiểm này đỏ,
+    và phải ghim lá số ấy vào QUANH_055. Đếm bằng Fraction, không qua ``luc``."""
+    from engine.bazi_solar import bazi_month_can_idx
+    from engine.pillars import HOUR_CAN_START
+
+    def tru(c, z):
+        return {"can_idx": c, "chi_idx": z, "can_name": CAN_NAMES[c], "chi_name": CHI_NAMES[z]}
+
+    goc_tq = {}                                   # (hành DM, chi) → chi cho gốc TAI/QS?
+    n = Counter()
+    for d in range(60):
+        dc, dz = d % 10, d % 12
+        dm = CAN_HANH[dc]
+        g = {"TK": dm, "AN": SINH_BY[dm], "TAI": KHAC_TARGET[dm], "QS": KHAC_BY[dm]}
+        for c in range(12):
+            goc_tq[dm, c] = any(an["hanh"] in (g["TAI"], g["QS"]) and F(str(an["weight"])) >= F(3, 5)
+                                for an in get_tang_can(c))
+        for mz in range(12):
+            n["tong"] += 60 * 12
+            if CHI_HANH[mz] not in (g["TK"], g["AN"]) or goc_tq[dm, mz] or goc_tq[dm, dz]:
+                continue
+            for y in range(60):
+                yc, yz = y % 10, y % 12
+                if goc_tq[dm, yz]:
+                    continue
+                for hz in range(12):
+                    if goc_tq[dm, hz]:
+                        continue
+                    tt = {"year": tru(yc, yz), "month": tru(bazi_month_can_idx(yc, mz), mz),
+                          "day": tru(dc, dz), "hour": tru((HOUR_CAN_START[dc % 5] + hz) % 10, hz)}
+                    x = _chinh_xac(tt, True)
+                    if not _dk_54(tt, x):
+                        continue
+                    n["dk_54"] += 1
+                    n["tren" if x["r"] > F(11, 20) else "dung" if x["r"] == F(11, 20) else "duoi"] += 1
+    assert n["tong"] == 518_400                  # mẫu số: đủ miền
+    assert n["dung"] == 0, n
+    assert n["duoi"] > 0 and n["tren"] > 0, n     # cổng r có kẹp thật: cả hai phía đều có lá số
+
+
+def _dac_biet_54_doc_lap(tt: dict, x: dict) -> str | None:
+    """Kỳ vọng ở nhánh 5.4 từ số hữu tỉ: đủ điều kiện và r ≥ 0,55 thì Tòng Vượng/Cường."""
+    if _dk_54(tt, x) and x["r"] >= F(55, 100):
+        return "DB-TONG-VUONG" if x["W"]["AN"] < x["W"]["TK"] / 2 else "DB-TONG-CUONG"
+    return None
+
+
+def test_tong_vuong_cuong_hai_chieu():
+    """Chiều ngược của kiểm độc lập (R-M1): trên toàn mẫu mục 11 và các lá số dò quanh ngưỡng, đủ
+    điều kiện 5.4 thì module PHẢI ra Tòng Vượng/Cường (trừ khi Nhất hành đắc khí, xét trước), và
+    module ra Tòng Vượng/Cường thì điều kiện PHẢI đủ."""
+    n = Counter()
+    them = [(q[0], q[1]) for q in QUANH_055]
+    for iso, gio in list(v1.mau_tong_hop()) + them:
+        tt = get_tu_tru(iso, gio)
+        x = _chinh_xac(tt, True)
+        ky = _dac_biet_54_doc_lap(tt, x)
+        nh = v2.tinh(tt)["nhanh"]
+        if nh in ("DB-TONG-VUONG", "DB-TONG-CUONG"):
+            assert ky == nh, (iso, gio)
+            n[nh] += 1
+        elif ky is not None:
+            assert nh == "DB-NHAT-HANH", (iso, gio, nh, ky)
+            n["nhat_hanh_truoc"] += 1
+    assert n["DB-TONG-VUONG"] > 0 and n["DB-TONG-CUONG"] > 0, n
+
+
+# ─── Làm tròn khi in (đặc tả 3.1 [Quy ước], câu chốt 19/10/2026) ─────────────────────────
+
+def test_ty_le_nua_len_o_x_xxx5():
+    """r có 1000·r đúng x,5: in nửa lên từ giá trị chính xác. Có lá số mà ``round()`` số thực cho
+    chữ số khác (phép kiểm không suông)."""
+    n = Counter()
+    for iso, hour in v1.mau_tong_hop():
+        for co_gio in (True, False):
+            tt = get_tu_tru(iso, hour)
+            x = _chinh_xac(tt, co_gio)
+            if (x["r"] * 1000).denominator != 2:
+                continue
+            kq = v2.tinh(tt, co_gio=co_gio)
+            nua_len = F(int(x["r"] * 1000 + F(1, 2)), 1000)
+            assert kq["co"]["ty_le"] == float(nua_len), (iso, hour, co_gio)
+            assert kq["ly_do"][0] == f"r={float(nua_len):.3f}"
+            n["x5"] += 1
+            n["round_khac"] += round(float(x["r"]), 3) != float(nua_len)
+    assert n["x5"] > 0 and n["round_khac"] > 0, n
+
+
+def test_khong_nhanh_nao_doc_so_lam_tron(monkeypatch):
+    """Số đã làm tròn (và r số thực của ``luc``) chỉ để in: thay chúng bằng rác thì mọi trường trừ
+    ``co.ty_le`` và mã ``r=`` đứng yên trên toàn mẫu × có/không giờ."""
+    goc = {(iso, h, cg): v2.tinh(get_tu_tru(iso, h), co_gio=cg)
+           for iso, h in v1.mau_tong_hop() for cg in (True, False)}
+    luc_that = v2.luc
+    monkeypatch.setattr(v2, "_ty_le_nghin", lambda ho, tong: 999)
+    monkeypatch.setattr(v2, "luc", lambda tt, co_gio=True: {**luc_that(tt, co_gio), "r": float("nan")})
+
+    def bo_in(kq):
+        return {**kq, "co": {k: v for k, v in kq["co"].items() if k != "ty_le"}, "ly_do": kq["ly_do"][1:]}
+
+    doi = 0
+    for (iso, h, cg), kq in goc.items():
+        moi = v2.tinh(get_tu_tru(iso, h), co_gio=cg)
+        assert moi["co"]["ty_le"] == 0.999 and moi["ly_do"][0] == "r=0.999"     # đột biến có ăn
+        assert v1.chuoi(bo_in(moi)) == v1.chuoi(bo_in(kq)), (iso, h, cg)
+        doi += moi["co"]["ty_le"] != kq["co"]["ty_le"]
+    assert len(goc) == 13_572 and doi > 13_000

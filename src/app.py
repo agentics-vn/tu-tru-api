@@ -24,6 +24,7 @@ from fastapi.responses import JSONResponse
 
 from api.errors import error_response
 from api.rate_limit import RateLimitMiddleware
+from api.routes.la_so_full import la_duong_moi
 from api.schemas.direction_c import HealthResponse
 from api.version import get_engine_version
 
@@ -114,7 +115,10 @@ app.add_middleware(RateLimitMiddleware)
 async def validation_exception_handler(
     _request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    """Map Pydantic / FastAPI validation errors to the API error contract."""
+    """Map Pydantic / FastAPI validation errors to the API error contract.
+
+    Mã 400 là hợp đồng v1. Riêng POST /v1/la-so-full khi thân có trường mới (``dung_than_rule`` /
+    ``co_gio``, xem ``la_so_full.la_duong_moi``): 422, cùng dạng thân lỗi."""
     errors = exc.errors()
     first = errors[0] if errors else {}
     msg = first.get("msg", "Dữ liệu không hợp lệ")
@@ -125,7 +129,10 @@ async def validation_exception_handler(
         return error_response(400, "RANGE_TOO_LARGE", message_vi=msg)
 
     detail_vi = f"{field}: {msg}" if field else msg
-    return error_response(400, "INVALID_INPUT", message_vi=detail_vi)
+    ma = 400
+    if _request.url.path.rstrip("/") == "/v1/la-so-full" and la_duong_moi(getattr(exc, "body", None)):
+        ma = 422
+    return error_response(ma, "INVALID_INPUT", message_vi=detail_vi)
 
 
 @app.exception_handler(Exception)

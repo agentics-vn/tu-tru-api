@@ -231,6 +231,13 @@ def _hop_hoa(tu_tru: dict, co_gio: bool) -> list[dict]:
     return [t for t in detect_stem_transformations(gia) if "hour" not in (t["pillar_a"], t["pillar_b"])]
 
 
+def hop_hoa(tu_tru: dict, co_gio: bool = True) -> list[dict]:
+    """Cặp can hợp hoá mà luật này dùng (thiếu giờ: không cặp nào có trụ giờ). Cùng danh sách mà
+    ``luc`` đếm; ``chart_bundle`` dựng ``stem_transformations`` thiếu giờ từ đây."""
+    _tru_dung(tu_tru, co_gio)
+    return _hop_hoa(tu_tru, co_gio)
+
+
 def _can_hieu_luc(tu_tru: dict, tru: tuple[str, ...], hh: list[dict]) -> dict[str, str]:
     """Hành thiên can sau hợp hoá, theo trụ."""
     ra = {}
