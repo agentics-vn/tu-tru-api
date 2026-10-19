@@ -10,19 +10,35 @@ from typing import Literal, Optional
 
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, StrictBool, field_validator, model_validator
 
 from api.errors import error_response
 from api.parse_date import parse_dmy
 from api.schemas.direction_c import API_ERROR_RESPONSES
 from api.version import get_engine_version, utc_now_iso
 from engine.chart_bundle import build_full_chart
+from engine.dung_than import RULE_V1, RULE_V2
 from engine.menh_ban_html import render_menh_ban_html
 from engine.pillars import VALID_BIRTH_HOURS, get_tu_tru
 
 logger = logging.getLogger("la_so_full")
 
 router = APIRouter()
+
+# Hợp đồng thiếu giờ ở gốc thân phản hồi (``menh_ban``: ``chart_bundle.THIEU_GIO_MENH_BAN``).
+THIEU_GIO_GOC: dict[str, str] = {
+    "birth_time": "null",   # giờ giữ chỗ của yêu cầu, không phải giờ sinh: không trả lại
+    "html": "null",         # lưới HTML cần trụ giờ; format="html" + co_gio=false là 422
+}
+
+# "Đường mới" của route: thân yêu cầu có một trong hai khoá này (kể cả giá trị v1 tường minh).
+# Đầu vào sai trên đường mới trả 422 (``app.validation_exception_handler`` và ``ValueError`` của
+# route); lời gọi không có hai khoá giữ nguyên hợp đồng lỗi cũ (400), golden v1 canh.
+KHOA_DUONG_MOI = frozenset({"dung_than_rule", "co_gio"})
+
+
+def la_duong_moi(body) -> bool:
+    return isinstance(body, dict) and not KHOA_DUONG_MOI.isdisjoint(body)
 
 
 class LaSoFullRequest(BaseModel):
@@ -34,6 +50,11 @@ class LaSoFullRequest(BaseModel):
     num_luu_nien: int = 10
     view_year: Optional[int] = None
     format: Literal["json", "html"] = "json"
+    # Luật dụng–kỵ (đặc tả 8.1): vắng = "v1", hành vi cũ từng byte.
+    dung_than_rule: Literal["v1", "2026-10.1"] = "v1"
+    # False = khách không khai giờ: ``birth_time`` vẫn bắt buộc nhưng chỉ GIỮ CHỖ (hợp đồng
+    # THIEU_GIO_GOC / chart_bundle.THIEU_GIO_MENH_BAN). StrictBool: "false", 0, null là 422.
+    co_gio: StrictBool = True
 
     @field_validator("birth_date")
     @classmethod
@@ -61,6 +82,17 @@ class LaSoFullRequest(BaseModel):
             raise ValueError("gender phải là 1 (nam) hoặc -1 (nữ)")
         return v
 
+    @model_validator(mode="after")
+    def thieu_gio_hop_le(self) -> "LaSoFullRequest":
+        if not self.co_gio and self.dung_than_rule != RULE_V2:
+            raise ValueError(
+                f"co_gio=false chỉ dùng với dung_than_rule='{RULE_V2}' "
+                f"(luật '{RULE_V1}' không có nhánh thiếu giờ)",
+            )
+        if not self.co_gio and self.format == "html":
+            raise ValueError("format='html' cần trụ giờ; co_gio=false chỉ trả json")
+        return self
+
 
 @router.post(
     "",
@@ -83,8 +115,10 @@ async def la_so_full_endpoint(req: LaSoFullRequest):
             num_dai_van=req.num_dai_van,
             num_luu_nien=req.num_luu_nien,
             view_year=req.view_year,
+            dung_than_rule=req.dung_than_rule,
+            co_gio=req.co_gio,
         )
-        chart_html = render_menh_ban_html(chart)
+        chart_html = render_menh_ban_html(chart) if req.co_gio else None
         if req.format == "html":
             return HTMLResponse(
                 content=chart_html,
@@ -93,14 +127,15 @@ async def la_so_full_endpoint(req: LaSoFullRequest):
         return {
             "status": "success",
             "birth_date": birth_date_str,
-            "birth_time": req.birth_time,
+            "birth_time": req.birth_time if req.co_gio else None,
             "engine_version": get_engine_version(),
             "computed_at": utc_now_iso(),
             "menh_ban": chart,
             "html": chart_html,
         }
     except ValueError as e:
-        return error_response(400, "INVALID_INPUT", message_vi=str(e))
+        ma = 422 if not KHOA_DUONG_MOI.isdisjoint(req.model_fields_set) else 400
+        return error_response(ma, "INVALID_INPUT", message_vi=str(e))
     except Exception:
         logger.exception("Internal error in la_so_full")
         return error_response(500, "INTERNAL_ERROR")
