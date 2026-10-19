@@ -897,11 +897,15 @@ So tuổi đã tròn (năm − năm sinh, trừ 1 nếu chưa tới sinh nhật 
 
 **Dụng Thần / Kỵ Thần / hướng–màu–số:** Khi không có `birth_time`, lấy Dương Thần / Kỵ Thần từ **Nạp Âm năm sinh** (`get_menh_nap_am_from_date` theo ngày sinh, ranh giới Lập Xuân). Khi có `birth_time`, dùng `find_dung_than` trên Tứ Trụ. Gợi ý vật phẩm theo mục đích đọc từ `docs/seed/phong-thuy-purposes.json`; hóa giải cặp đôi (Nạp Âm tương khắc trực tiếp) từ `phong-thuy-couple-remedies.json`.
 
-**Phi Tinh (Cửu cung lưu niên):** Tính theo **năm dương lịch** tham số `year`. **Nhập trung:** mặc định neo năm 2024 = sao 3, mỗi năm giảm 1 (mod 9, 0 → 9); có thể ghi đè từng năm trong `docs/seed/phi-tinh-year-center.json` (chỉ số nhập trung 1–9). **Thuận / nghịch phi:** theo **can năm Gregorian** `(year - 4) % 10` chẵn → Dương can (thuận phi), lẻ → Âm can (nghịch phi) — **không** dùng tiết Lập Xuân hay năm âm lịch. Do đó có thể lệch một số bảng sách hoặc phần mềm khác.
+**Phi Tinh (Cửu cung lưu niên):** Tính theo **năm dương lịch** tham số `year`. **Nhập trung:** mặc định neo năm 2024 = sao 3, mỗi năm giảm 1 (mod 9, 0 → 9); có thể ghi đè từng năm trong `docs/seed/phi-tinh-year-center.json` (chỉ số nhập trung 1–9). **Hướng phi: LUÔN thuận**, không phân biệt can âm hay can dương. Ranh giới năm vẫn theo dương lịch chứ **không** dùng tiết Lập Xuân, nên có thể lệch sách ở các ngày đầu năm.
+
+> **Đối chiếu nguồn (audit 31/07/2026):** khớp **80/80 năm** trong các bảng "CÁC NĂM MÀ SAO … VÀO CUNG GIỮA" và **9/9 lưới cửu cung** của *Cải vận mệnh khuyết* (Lý Cư Minh). Bay nghịch khớp **0/9** lưới — nghịch phi thuộc về sơn tinh / hướng tinh trong trạch bàn, không thuộc về sao lưu niên. Kiểm tự động: `tests/unit/test_phi_tinh_doi_chieu_sach.py`.
+>
+> Hai chỗ sách in lỗi, đã ghi trong test: bảng Bát Bạch in trùng nguyên văn danh sách Thất Xích (Bát Bạch thật sự là 2001, 2010, 2019, 2028); và "Năm 1017 Đinh Dậu" là lỗi một chữ số của 2017.
 
 **Hướng tốt / xấu năm (`huong_tot_nam_nay` / `huong_xau_nam_nay`):** Phân loại theo trường `nature` của từng sao trong `phi-tinh-stars.json` — **không** lọc theo Dụng Thần cá nhân. Ghi chú giải thích thêm nằm trong `phi_tinh_note_vi` của response.
 
-**Override nhập trung:** Nếu JSON override khác với công thức mà vẫn giữ cùng quy ước thuận/nghịch theo can dương lịch, có thể xảy ra tổ hợp không trùng mọi tài liệu truyền thống — client nên đọc `docs/seed/phi-tinh-year-center.json` (`_comment`) và phần mô tả API.
+**Override nhập trung:** Cơ chế còn đó nhưng seed hiện **không ghi đè năm nào** — công thức neo tự khớp sách ở cả 80 năm đối chiếu. Thêm override là tự tách khỏi nguồn, nên chỉ làm khi dẫn được sách kèm theo; xem `_canh_bao` trong `docs/seed/phi-tinh-year-center.json`. Bản trước từng ghi đè `"2026": 5`, sai — sách xếp 2026 Bính Ngọ vào bảng Nhất Bạch, còn nhập trung 5 là của 2031 Tân Hợi.
 
 ## 19. Direction C — Day score presentation (NLTT contract)
 
