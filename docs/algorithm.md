@@ -987,6 +987,47 @@ Response thêm (khi có `birth_time`):
 
 **LLM / chat:** chỉ luận hóa hợp và % nhóm thần khi các field trên có trong JSON facts; không tự suy ngoài API.
 
+### 21.6 Dụng Thần — gán bốn vai (`find_dung_than`)
+
+> Engine: `engine/dung_than.py`. Phương pháp **Cường Nhược (phù ức)** trên `strength` của §21.3.
+> **Chưa** có bước điều hậu (hàn – noãn theo mùa) khi chọn Dụng thần; mùa chỉ vào `strength` qua đắc lệnh.
+
+Ký hiệu theo quan hệ với Nhật chủ (DM): **Tỷ** = cùng hành DM · **Ấn** = sinh DM · **Thực** = DM sinh · **Tài** = DM khắc · **Quan** = khắc DM.
+
+| `strength` | Dụng | Hỷ | Kỵ | Cừu (mặc định = hành sinh Kỵ) |
+|---|---|---|---|---|
+| nhược | Ấn | Tỷ | Quan | Tài |
+| vượng | Thực **hoặc** Quan — hành nào `element_counts` ít hơn (hoà → Thực) | Tài | Ấn | Quan |
+| cân bằng | Thực | Tỷ | hành nhiều nhất trong các hành **khác DM và khác Dụng** | hành sinh Kỵ |
+
+**Bất biến:** Dụng, Hỷ, Kỵ, Cừu là **bốn hành khác nhau**.
+
+Trước bản này có ba ca vi phạm (đo trên mẫu ngẫu nhiên khoảng 1/3 lá số):
+
+1. **vượng, Dụng = Quan** → Cừu (hành sinh Kỵ = Ấn) là Quan = **trùng Dụng**.
+2. **cân bằng, Kỵ = Tài** → Cừu (hành sinh Tài) là Thực = **trùng Dụng**.
+3. **cân bằng, Thực là hành nhiều nhất** → Kỵ = Thực = **trùng Dụng**, và Cừu = Tỷ = **trùng Hỷ**.
+
+Quy tắc giải quyết:
+
+- **Ca 3:** Kỵ chọn trong các hành khác DM **và khác Dụng** (Dụng không thể đồng thời là Kỵ). Sau đó Kỵ ∈ {Ấn, Quan, Tài}.
+- **Cừu thần:** mặc định = hành **sinh** Kỵ thần. Nếu hành đó trùng Dụng hoặc Hỷ → dùng định nghĩa thứ hai của Cừu thần: hành **khắc Hỷ thần**.
+
+Bảng đủ mọi nhánh sau khi áp quy tắc (chứng minh bất biến luôn giữ):
+
+| Nhánh | Dụng | Hỷ | Kỵ | Cừu |
+|---|---|---|---|---|
+| nhược | Ấn | Tỷ | Quan | Tài |
+| vượng, Dụng = Thực | Thực | Tài | Ấn | Quan |
+| vượng, Dụng = Quan | Quan | Tài | Ấn | **Tỷ** (khắc Tài — đồng thời trợ thân vượng) |
+| cân bằng, Kỵ = Ấn | Thực | Tỷ | Ấn | Quan |
+| cân bằng, Kỵ = Quan | Thực | Tỷ | Quan | Tài |
+| cân bằng, Kỵ = Tài | Thực | Tỷ | Tài | **Quan** (khắc Tỷ) |
+
+`_resolve_cuu_than` ném lỗi nếu một tổ hợp ngoài bảng xuất hiện (không thể với các nhánh trên).
+
+**Ngoài phạm vi mục này (phương pháp, chưa quyết):** điều hậu khi chọn Dụng thần; ca "tài đa thân nhược" (phù ức cổ điển thường dùng Tỷ Kiếp thay Ấn); ca cân bằng mà Thực đã là hành nhiều nhất vẫn chọn Thực làm Dụng.
+
 ---
 
 ## 22. Mệnh Bàn Tứ Trụ — lá số đầy đủ (GET/POST full chart)
