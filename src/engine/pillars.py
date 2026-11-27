@@ -13,10 +13,13 @@ Source of truth: docs/algorithm.md §17
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Optional
 
 from engine.bazi_solar import (
+    BIRTH_SLOT_HOUR,
     DEFAULT_TZ,
+    _longitude_at_local_dt,
     bazi_cycle_year,
     bazi_month_can_idx,
     bazi_month_chi_idx,
@@ -120,10 +123,16 @@ def get_tu_tru(birth_date: str, birth_time: int) -> dict:
     year, month, day = int(parts[0]), int(parts[1]), int(parts[2])
 
     tz = DEFAULT_TZ
-    cycle_y = bazi_cycle_year(year, month, day, tz)
+    # Year and month turn at the exact 节 instant, so both are read at the
+    # birth's clock time (slot start, same convention as compute_khoi_van), not
+    # at local midnight. Reading at midnight made every birth on a 节 day after
+    # the instant keep the previous month (and on Lập Xuân day, the previous
+    # year): 23/23 节 of 1986 and 1995 checked against ephemeris all failed.
+    slot_hour = BIRTH_SLOT_HOUR[birth_time]
+    cycle_y = bazi_cycle_year(year, month, day, tz, hour=slot_hour)
     year_pillar = _pillar_from_can_chi(get_can_chi_year(cycle_y))
 
-    lam = solar_apparent_longitude_deg(day, month, year, tz)
+    lam = _longitude_at_local_dt(datetime(year, month, day, slot_hour), tz)
     m_chi = bazi_month_chi_idx(lam)
     m_can = bazi_month_can_idx(year_pillar["can_idx"], m_chi)
     month_pillar = {

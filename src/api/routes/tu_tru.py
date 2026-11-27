@@ -22,7 +22,7 @@ from api.schemas.direction_c import API_ERROR_RESPONSES
 from api.schemas.p2_responses import TuTruResponse
 from api.version import get_engine_version, utc_now_iso
 
-from engine.bazi_solar import bazi_cycle_year
+from engine.bazi_solar import BIRTH_SLOT_HOUR, bazi_cycle_year
 from engine.pillars import get_tu_tru, VALID_BIRTH_HOURS, BIRTH_HOUR_LABELS
 from engine.can_chi import (
     CAN_NAMES,
@@ -124,9 +124,11 @@ async def tu_tru_endpoint(req: TuTruRequest):
         birth_year = bd.year
 
         # ── Year-level info (always available) ──────────────────────────
-        cycle_y = bazi_cycle_year(bd.year, bd.month, bd.day)
+        # với giờ sinh: Lập Xuân theo thời khắc, khớp trụ năm của get_tu_tru
+        hour = None if req.birth_time is None else BIRTH_SLOT_HOUR.get(req.birth_time)
+        cycle_y = bazi_cycle_year(bd.year, bd.month, bd.day, hour=hour)
         year_cc = get_can_chi_year(cycle_y)
-        menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day)
+        menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day, birth_time=req.birth_time)
 
         result: dict = {
             "status": "success",
