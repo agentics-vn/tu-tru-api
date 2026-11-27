@@ -7,7 +7,7 @@ Uses the Cường Nhược (Strong/Weak) method (強弱法):
 - Weak Day Master → support it (Ấn Tinh / Tỷ Kiên)
 - Strong Day Master → drain/control it (Thực Thương / Tài Tinh / Quan Sát)
 
-Source of truth: docs/algorithm.md §19
+Source of truth: docs/algorithm.md §21.6
 """
 
 from __future__ import annotations
@@ -43,6 +43,24 @@ KHAC_BY: dict[str, str] = {
 }
 
 
+def _resolve_cuu_than(dung_than: str, hi_than: str, ky_than: str, cuu_than: str) -> str:
+    """Bốn vai phải là bốn hành khác nhau (§21.6).
+
+    Cừu thần mặc định = hành sinh ra Kỵ thần. Khi hành đó trùng Dụng hoặc Hỷ
+    (vượng chọn Quan Sát làm dụng; cân bằng có Kỵ = Tài Tinh), dùng định nghĩa
+    thứ hai của Cừu thần: hành khắc Hỷ thần. Bảng liệt kê ở §21.6 cho thấy
+    nhánh thay thế luôn ra một hành khác ba vai còn lại.
+    """
+    if cuu_than not in (dung_than, hi_than, ky_than):
+        return cuu_than
+    alt = KHAC_BY[hi_than]
+    if alt in (dung_than, hi_than, ky_than):
+        raise AssertionError(
+            f"Không gán được Cừu thần khác ba vai: dụng={dung_than} hỷ={hi_than} kỵ={ky_than}"
+        )
+    return alt
+
+
 def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
     """
     Find the Useful God element based on chart balance.
@@ -57,7 +75,8 @@ def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
     Also determines:
     - Hỷ Thần: secondary helpful element (supports Dụng Thần)
     - Kỵ Thần: most harmful element (opposes Dụng Thần)
-    - Cừu Thần: element that generates Kỵ Thần
+    - Cừu Thần: element that generates Kỵ Thần (or controls Hỷ Thần when the
+      former collides with another role — see _resolve_cuu_than)
 
     Args:
         tu_tru: dict from get_tu_tru()
@@ -117,10 +136,12 @@ def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
 
         # Least desirable: whatever would tip the balance
         # The most abundant non-DM element is Kỵ Thần
-        non_dm = {k: v for k, v in element_counts.items() if k != dm_hanh}
-        ky_than = max(non_dm, key=non_dm.get) if non_dm else KHAC_BY[dm_hanh]
+        # Kỵ thần không được là chính dụng thần (§21.6): loại cả DM lẫn dụng.
+        candidates = {k: v for k, v in element_counts.items() if k not in (dm_hanh, dung_than)}
+        ky_than = max(candidates, key=candidates.get) if candidates else KHAC_BY[dm_hanh]
         cuu_than = SINH_BY[ky_than]
 
+    cuu_than = _resolve_cuu_than(dung_than, hi_than, ky_than, cuu_than)
     return {
         "dung_than": dung_than,
         "hi_than": hi_than,
