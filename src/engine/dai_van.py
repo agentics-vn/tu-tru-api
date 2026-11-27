@@ -158,12 +158,18 @@ def compute_khoi_van(
 
     solar_days = virtual_days_from_delta(delta)
     birth_d = birth_dt.date()
+    # Civil day of the 节 actually used (jie_dt): the first local midnight at or
+    # after its instant, i.e. _next_jie_date(jie_day - 1). Anchoring on jie_dt
+    # rather than searching from the birth day matters only for births on or
+    # just after a 节 day: the old search from birth_d skipped the 节 that had
+    # just passed (backward: counted ~30 days to the 节 before it; forward:
+    # landed on the passed 节's civil day, 1 day). For every other birth it
+    # returns the same day as before.
+    jie_civil = _next_jie_date(jie_dt.date() - timedelta(days=1), tz) or jie_dt.date()
     if direction == 1:
-        civil_end = _next_jie_date(birth_d, tz) or jie_dt.date()
-        civil_days = (civil_end - birth_d).days
+        civil_days = (jie_civil - birth_d).days
     else:
-        civil_start = _prev_jie_date(birth_d, tz) or jie_dt.date()
-        civil_days = (birth_d - civil_start).days
+        civil_days = max(0, (birth_d - jie_civil).days)
     start_age = max(1, math.ceil(civil_days / 3))
 
     # Exact 起运 day: scale the (time-aware) 节 gap by 3 days ≈ 1 năm onto the

@@ -47,11 +47,26 @@ def _lichun_date(solar_year: int, tz: float = DEFAULT_TZ) -> date:
     raise RuntimeError(f"Could not find Lập Xuân for solar year {solar_year}")
 
 
-def bazi_cycle_year(y: int, m: int, d: int, tz: float = DEFAULT_TZ) -> int:
+def bazi_cycle_year(
+    y: int,
+    m: int,
+    d: int,
+    tz: float = DEFAULT_TZ,
+    hour: int | None = None,
+    minute: int = 0,
+) -> int:
     """
     Sexagenary year index for 年柱 (same convention as get_can_chi_year argument).
 
     Before Lập Xuân of calendar year y → use y-1; on/after → y.
+
+    With ``hour`` (local clock time of birth) the boundary is the exact Lập Xuân
+    instant (sun at 315°), not the calendar day: on the Lập Xuân day itself a
+    birth before the instant belongs to y-1 and a birth after it to y
+    (e.g. 4/2/1986: Lập Xuân ≈ 09:56 UTC+7, so 21:00 → Bính Dần, not Ất Sửu).
+    Without ``hour`` the old day-level rule is kept for callers that only know
+    a date (calendar views, compatibility lists): the year turns at the first
+    local midnight at or after the instant.
 
     Natal 29/02 is a real Gregorian day and must keep its day pillar. When the
     same month/day is projected onto a non-leap year (lưu niên list, view_year),
@@ -60,6 +75,10 @@ def bazi_cycle_year(y: int, m: int, d: int, tz: float = DEFAULT_TZ) -> int:
     """
     if m == 2 and d == 29 and not calendar.isleap(y):
         return y
+    if hour is not None:
+        lam = _longitude_at_local_dt(datetime(y, m, d, hour, minute), tz)
+        # Jan–Feb with the sun still short of 315° → before Lập Xuân.
+        return y - 1 if (m <= 2 and 270.0 <= lam < 315.0) else y
     birth = date(y, m, d)
     if birth < _lichun_date(y, tz):
         return y - 1

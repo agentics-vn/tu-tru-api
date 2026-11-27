@@ -9,7 +9,7 @@ All functions are pure — no side effects, no I/O.
 
 from __future__ import annotations
 
-from engine.bazi_solar import DEFAULT_TZ, bazi_cycle_year
+from engine.bazi_solar import BIRTH_SLOT_HOUR, DEFAULT_TZ, bazi_cycle_year
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. LOOKUP TABLES
@@ -185,6 +185,7 @@ def get_menh_nap_am_from_date(
     month: int,
     day: int,
     tz: float | None = None,
+    birth_time: int | None = None,
 ) -> dict:
     """
     Nạp Âm mệnh theo **năm Can Chi Bát Tự** (ranh giới Lập Xuân).
@@ -195,7 +196,10 @@ def get_menh_nap_am_from_date(
     Returns dict with keys: hanh, name, duong_than, ky_than
     """
     t = DEFAULT_TZ if tz is None else tz
-    cycle_y = bazi_cycle_year(year, month, day, t)
+    # birth_time (dropdown slot) → Lập Xuân by the exact instant, same rule as
+    # the 年柱 in get_tu_tru; without it the day-level rule is kept.
+    hour = None if birth_time is None else BIRTH_SLOT_HOUR.get(birth_time)
+    cycle_y = bazi_cycle_year(year, month, day, t, hour=hour)
     cc = get_can_chi_year(cycle_y)
     return _menh_nap_am_from_can_chi(cc)
 

@@ -109,7 +109,7 @@ async def phong_thuy_endpoint(
                 message_vi=f"purpose phải là một trong: {allowed}",
             )
 
-        menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day)
+        menh = get_menh_nap_am_from_date(bd.year, bd.month, bd.day, birth_time=birth_time)
         tu_tru = None
         hi_than: str | None = None
         cuu_than: str | None = None

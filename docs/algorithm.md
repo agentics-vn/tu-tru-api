@@ -103,6 +103,8 @@ This is NOT the same as the element of the Can or Chi individually.
 
 **Ranh giới năm (Bát Tự):** Can Chi **năm** dùng cho Nạp Âm mệnh phải trùng năm trụ trong Tứ Trụ — tức sau **Lập Xuân** (tiết khí ~4–5/2) mới đổi sang năm dương lịch mới; trước đó vẫn thuộc năm Can Chi của năm dương lịch trước. API: `get_menh_nap_am_from_date(y,m,d)`; `get_menh_nap_am(year)` chỉ là shortcut theo số năm (không dùng cho sinh đầu năm).
 
+**Ranh giới năm và tháng tính theo THỜI KHẮC, không theo ngày (vá 27/11/2026).** Trụ năm đổi đúng thời khắc Lập Xuân (Mặt Trời tới 315°), trụ tháng đổi đúng thời khắc của từng 节, đọc kinh độ Mặt Trời **tại giờ sinh** (đầu khung giờ, `BIRTH_SLOT_HOUR`, cùng quy ước §22.3). VD sinh giờ Hợi 4/2/1986: Lập Xuân ≈ 09:56 (UTC+7) cùng ngày → **Bính Dần · Canh Dần**, không phải Ất Sửu · Kỷ Sửu. Bản cũ đọc kinh độ lúc 0h nên mọi người sinh trong ngày giao tiết, sau thời khắc giao tiết, bị giữ tháng (và với Lập Xuân, năm) cũ — đo bằng lịch thiên văn 23/23 tiết của 1986 và 1995 đều đổi muộn một ngày. `bazi_cycle_year(y, m, d, hour=…)` và `get_menh_nap_am_from_date(…, birth_time=…)` nhận giờ; caller chỉ có ngày (lịch, danh sách lưu niên) giữ quy ước ngày cũ. Khung giờ chứa đúng thời khắc giao tiết vẫn mập mờ ±1 khung, vì form chỉ có khung 2 tiếng.
+
 ### Complete 60 Hoa Giáp → Ngũ Hành Mệnh
 ```javascript
 // Key: "can_index-chi_index", Value: ngu_hanh_menh
@@ -1023,7 +1025,7 @@ Bổ sung §17.3 — **tinh chỉnh theo giờ sinh**:
    `khoi_van_date = datetime_sinh + (virtual_days / 3) × 365.2422 ngày` (năm chí tuyến `TROPICAL_YEAR_DAYS`).
    Cách này khớp tuvivietnam tới **đúng ngày** (golden 13/6/2032; ca 21/3/1990 05:15 → 5/4/1995).
 4. `khoi_van_date` = phần ngày (ISO) của datetime trên.
-5. `start_age = max(1, ceil(civil_days / 3))` (civil_days = số ngày dương lịch tới 节, mức nửa đêm) giữ tương thích §17; hiển thị tuổi mụ trên UI. `start_year = year(birth) + start_age - 1` luôn trùng năm của `khoi_van_date`.
+5. `start_age = max(1, ceil(civil_days / 3))` (civil_days = số ngày dương lịch tới 节, mức nửa đêm) giữ tương thích §17; hiển thị tuổi mụ trên UI. `start_year = year(birth) + start_age - 1` luôn trùng năm của `khoi_van_date`. `civil_days` đếm tới **ngày dân sự của chính tiết 节 ở bước 1** (nửa đêm đầu tiên kể từ thời khắc đó), không dò lại từ ngày sinh: dò từ ngày sinh làm người sinh ngay sau một 节 bị bỏ qua tiết vừa qua (nghịch: đếm ~30 ngày tới tiết trước nữa; thuận: rơi vào chính tiết đã qua, 1 ngày) — `start_age` lệch ~10 tuổi so với `khoi_van_date`. Với mọi ca khác kết quả không đổi (so 3.990 ca ngẫu nhiên: chỉ 119 ca đổi, đều sát ngày giao tiết).
 6. Mỗi đại vận: `cycle.start_age = start_age + (cycle_num - 1) * 10`, và `start_year = year(birth) + cycle.start_age - 1` (đã bao gồm offset 10 năm/chu kỳ — **không** cộng `(cycle_num-1)*10` lần nữa).
 
 ### 22.4 Lưu niên list
