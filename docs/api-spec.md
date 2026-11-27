@@ -787,6 +787,12 @@ Full **Mệnh Bàn Tứ Trụ** grid for standalone lá số product (not NLTT d
 | num_luu_nien | No | Default `10` years |
 | view_year | No | Start year for lưu niên strip; marks `selected` on that year |
 | format | No | `json` (default) or `html` — see below |
+| dung_than_rule | No | `"v1"` (default, byte-identical to before) or `"2026-10.1"` — algorithm §23 |
+| co_gio | No | `true` (default). `false` = no birth hour (only with `"2026-10.1"`, only `format=json`): `birth_time` is a placeholder and no response field reads it — contract in algorithm §23.6 |
+
+Errors: requests WITHOUT `dung_than_rule`/`co_gio` keep the v1 contract (400 `INVALID_INPUT`). Requests
+that carry either key get **422** `INVALID_INPUT` for any invalid input (unknown rule, wrong type,
+`co_gio=false` with `"v1"`, `format=html` with `co_gio=false`, or an invalid legacy field).
 
 ### Response `format`
 

@@ -8,11 +8,19 @@ Uses the Cường Nhược (Strong/Weak) method (強弱法):
 - Strong Day Master → drain/control it (Thực Thương / Tài Tinh / Quan Sát)
 
 Source of truth: docs/algorithm.md §19
+
+Luật ``2026-10.1`` (docs/algorithm.md §23, ``engine.dung_than_v2``) chỉ chạy khi người gọi
+truyền ``rule="2026-10.1"``; vắng hoặc ``"v1"`` thì giữ nguyên luật cũ.
 """
 
 from __future__ import annotations
 
+from engine import dung_than_v2
 from engine.cuong_nhuoc import analyze_chart_strength
+
+RULE_V1 = "v1"
+RULE_V2 = dung_than_v2.RULE_VERSION      # "2026-10.1"
+RULES = (RULE_V1, RULE_V2)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Ngũ Hành relationship maps
@@ -43,9 +51,18 @@ KHAC_BY: dict[str, str] = {
 }
 
 
-def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
+def find_dung_than(
+    tu_tru: dict,
+    analysis: dict | None = None,
+    rule: str = RULE_V1,
+    co_gio: bool = True,
+) -> dict:
     """
     Find the Useful God element based on chart balance.
+
+    ``rule``: ``"v1"`` (mặc định, luật bên dưới, đầu ra không đổi) hoặc ``"2026-10.1"``
+    (trả các trường đặc tả 8.1 của ``dung_than_v2.tinh`` cộng ``strength`` và ``analysis``
+    như v1 để người gọi cũ không gãy). ``co_gio=False`` chỉ có nghĩa ở ``2026-10.1``.
 
     Core logic (Cường Nhược pháp):
     - Weak Day Master → Dụng Thần = element that SUPPORTS it
@@ -71,6 +88,13 @@ def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
             strength: str ("vượng" | "nhược" | "cân bằng")
             analysis: dict (full strength analysis)
     """
+    if rule not in RULES:
+        raise ValueError(f"dung_than_rule không hợp lệ: {rule!r} (nhận {', '.join(RULES)})")
+    if rule == RULE_V2:
+        return _find_dung_than_v2(tu_tru, analysis, co_gio)
+    if not co_gio:
+        raise ValueError("dung_than_rule 'v1' không có nhánh thiếu giờ (co_gio=False)")
+
     analysis = analysis if analysis is not None else analyze_chart_strength(tu_tru)
     strength = analysis["strength"]
     dm_hanh = analysis["day_master_hanh"]
@@ -129,3 +153,16 @@ def find_dung_than(tu_tru: dict, analysis: dict | None = None) -> dict:
         "strength": strength,
         "analysis": analysis,
     }
+
+
+def _find_dung_than_v2(tu_tru: dict, analysis: dict | None, co_gio: bool) -> dict:
+    """Luật 2026-10.1. ``strength`` = ``cuong_nhuoc`` của chính luật, để một đầu ra không mang
+    hai nhãn (lệch nhãn v1 ở 8/6.786 lá số mẫu có r đúng ngưỡng, algorithm.md §23.2).
+    ``analysis`` là phân tích cường nhược v1 của tứ trụ; ``co_gio=False`` thì None (bỏ qua cả giá trị
+    người gọi truyền vào: nó là phân tích bốn trụ, trụ giờ ở sản phẩm là giờ giả)."""
+    kq = dung_than_v2.tinh(tu_tru, co_gio=co_gio)
+    if not co_gio:
+        analysis = None          # phân tích v1 là bốn trụ; thiếu giờ thì không có bản đúng để đặt cạnh
+    elif analysis is None:
+        analysis = analyze_chart_strength(tu_tru)
+    return {**kq, "strength": kq["cuong_nhuoc"], "analysis": analysis}
