@@ -1,6 +1,6 @@
 {
-  "_comment": "Ghi đè số sao nhập trung (1–9) theo năm dương lịch (key string). Giá trị phải từ 1 đến 9; sai bị bỏ qua. Nếu không có key năm → engine dùng công thức neo 2024=3, mỗi năm giảm 1 (mod 9, 0→9). Lưu ý: override chỉ đổi trung tinh; hướng thuận/nghịch phi vẫn theo Dương/Âm can của năm Gregorian (year-4)%10 — có thể không trùng mọi sách nếu sách dùng Lập Xuân hoặc bảng khác.",
-  "overrides": {
-    "2026": 5
-  }
+  "_comment": "Ghi đè số sao nhập trung (1–9) theo năm dương lịch (key string). Giá trị phải từ 1 đến 9; sai bị bỏ qua. Nếu không có key năm → engine dùng công thức neo 2024=3, mỗi năm giảm 1 (mod 9, 0→9). Hướng phi LUÔN thuận cho sao lưu niên.",
+  "_nguon": "Đối chiếu 'Cải vận mệnh khuyết' — Lý Cư Minh: mười bảng 'CÁC NĂM MÀ SAO … VÀO CUNG GIỮA' và 9 lưới cửu cung in kèm. Công thức neo 2024=3 khớp mọi bảng năm; hướng thuận khớp 9/9 lưới, nghịch khớp 0/9. Kiểm tự động ở tests/unit/test_phi_tinh_doi_chieu_sach.py.",
+  "_canh_bao": "ĐỪNG thêm override nếu không dẫn được nguồn sách kèm theo. Bản trước từng có \"2026\": 5 — sai: sách xếp 2026 Bính Ngọ vào bảng NHẤT BẠCH (nhập trung 1); nhập trung 5 là của 2031 Tân Hợi.",
+  "overrides": {}
 }

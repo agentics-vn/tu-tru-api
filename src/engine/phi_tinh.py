@@ -6,11 +6,15 @@ Lưới Lạc Thư (từ Đông Nam theo hàng):
   Đông     | TT  | Tây
   Đông Bắc | Bắc | Tây Bắc
 
-Thứ tự phi thuận (dương niên): sau Trung tâm lần lượt gán vào
+Thứ tự phi thuận: sau Trung tâm lần lượt gán vào
 Tây Bắc → Tây → Đông Bắc → Nam → Bắc → Tây Nam → Đông → Đông Nam.
+Sao lưu niên luôn bay thuận — xem fly_nine_palaces().
 
 Nhập trung: mặc định neo (2024 = 3), mỗi năm giảm 1 (mod 9, 0 → 9);
 có thể ghi đè trong docs/seed/phi-tinh-year-center.json.
+
+Đối chiếu nguồn: chín lưới cửu cung và mười bảng "các năm mà sao … vào cung
+giữa" trong 'Cải vận mệnh khuyết' (Lý Cư Minh) — xem tests/unit/test_phi_tinh_doi_chieu_sach.py.
 
 Giả định & hạn chế: xem docs/algorithm.md §18 và docs/api-spec.md (GET /v1/phong-thuy).
 """
@@ -128,23 +132,18 @@ def annual_center_star(year: int, overrides: dict[str, int] | None = None) -> in
     return 9 if c == 0 else c
 
 
-def is_yang_year_stem(year: int) -> bool:
-    """Can năm dương lịch (neo Giáp Tý = 1984): (year-4)%10 chẵn → Dương can."""
-    return ((year - 4) % 10) % 2 == 0
-
-
-def fly_nine_palaces(center: int, forward: bool) -> dict[str, int]:
+def fly_nine_palaces(center: int) -> dict[str, int]:
     """
-    Gán sao 1–9 vào 9 cung. Trung tâm = center.
-    forward True = thuận phi (+1 mỗi bước), False = nghịch phi.
+    Gán sao 1–9 vào 9 cung, Trung tâm = center. Sao lưu niên LUÔN bay thuận.
+
+    Trước đây hàm nhận thêm cờ forward và bay nghịch ở năm can âm. Đối chiếu
+    với chín lưới cửu cung in trong 'Cải vận mệnh khuyết' (Lý Cư Minh): cả chín
+    lưới đều thuận, 0/9 khớp khi bay nghịch. Nghịch phi thuộc về sơn tinh /
+    hướng tinh trong trạch bàn, không thuộc về sao lưu niên.
     """
     grid: dict[str, int] = {"Trung Tâm": center}
     for i, direction in enumerate(PALACES_ORDER, start=1):
-        if forward:
-            star = ((center - 1 + i) % 9) + 1
-        else:
-            star = ((center - 1 - i) % 9) + 1
-        grid[direction] = star
+        grid[direction] = ((center - 1 + i) % 9) + 1
     return grid
 
 
@@ -167,8 +166,7 @@ def build_phi_tinh_payload(year: int) -> dict:
     Trả block phi_tinh đầy đủ cho response API.
     """
     center = annual_center_star(year)
-    forward = is_yang_year_stem(year)
-    grid = fly_nine_palaces(center, forward)
+    grid = fly_nine_palaces(center)
     stars = load_star_meta()
 
     phi_list: list[dict] = []
@@ -216,6 +214,6 @@ def build_phi_tinh_payload(year: int) -> dict:
         "phi_tinh_note_vi": (
             "Hướng tốt/xấu năm nay xếp theo tính chất sao lưu niên trong seed — "
             "không lọc theo Dụng Thần / Kỵ Thần cá nhân. "
-            "Năm và thuận/nghịch phi theo quy ước dương lịch đơn giản; có thể lệch sách dùng Lập Xuân."
+            "Sao lưu niên tính theo năm dương lịch và luôn bay thuận; có thể lệch sách dùng Lập Xuân."
         ),
     }
